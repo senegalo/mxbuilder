@@ -1,0 +1,47 @@
+.context-menu {
+
+    background: #aaaaaa;
+    box-shadow: 0 8px 6px -6px black;
+    border:1px solid #000000 !important;
+    border-radius: 4px; 
+    overflow:hidden;
+
+}
+
+.context-menu {
+    text-align: left;
+    padding:5px;
+    position:fixed;
+    min-width: 200px;
+    z-index: 10000005;
+}
+
+.context-menu hr {
+    margin: 0 !important;
+}
+
+.context-item {
+    cursor: pointer;
+    padding: 3px;
+    font-weight: normal;
+    color: #000;
+    font-size: 12px;
+}
+
+.context-selected{
+    background-color: #e4e4e4;
+}
+
+.context-item .icon {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+}
+
+.context-menu .submenu-arrow {
+    background-image: url('../images/submenu_arrow.png');
+    height: 13px;
+    width: 12px;
+    display: inline-block;
+    float:right;
+}

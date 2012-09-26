@@ -1,0 +1,72 @@
+@import "colors/01.less";
+
+html {color: @color2}
+body {background-color:@color5}
+
+#header {
+	
+/*	background-color: @color2;*/
+/*	min-height:120px*/
+
+}
+	
+.site-title {
+	
+	color:@color1;
+        display:inline-block
+	
+}
+
+.slogan {
+	
+	color:@color3
+	
+}
+
+
+	
+#footer {
+	
+/*	background-color:@color2;*/
+}
+
+.footer-text, .footer-text a {color:@color3;}
+
+
+.menu a {
+	color:@color3;
+	border-color:@color3;
+	}
+	
+.menu a:hover {
+	color:@color1;
+	border-color:@color1;
+	}	
+	
+.p-title {
+	padding-bottom:20px;
+	padding-top: 14px;
+	border-top: 2px solid;
+		
+			}
+			
+.box {
+	
+	background-color: spin(@color1, -12); 
+	border-radius:6px;
+}
+
+.button {
+	background-color: @color1;
+	color: @color2;
+	padding: 13px 20px 0px 20px;
+	border-radius:6px;
+	text-align:center;
+
+}
+
+.button:hover {
+	background-color: lighten(@color1, 10%);
+
+
+}

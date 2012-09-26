@@ -1,0 +1,32 @@
+@content-height: 680px;
+
+#container {
+    width:980px;
+    height: 100%;
+    position:absolute;
+    top:0;
+    left:50%;
+    margin-left: -490px;
+}
+
+#header-content {	
+}
+
+#content {
+    min-height: @content-height;
+}
+
+#content-area {
+    min-height: @content-height;
+}
+
+
+#footer-content {
+    height:120px;
+}
+
+
+.an-item {
+
+}
+
