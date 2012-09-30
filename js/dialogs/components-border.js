@@ -107,6 +107,7 @@
         mxBuilder.dialogs.componentsBorder = {
             __theDialog: theDialog,
             __instance: null,
+            __originalInstance: null,
             setSimWidth: function setSimWidth(width){
                 this.__theDialog.find(".component-sim").children("div").each(function(){
                     var that = $(this);
@@ -120,9 +121,13 @@
                 });
             },
             show: function show(instance){
-                this.__instance = instance;
-                this.setWidth(instance.css("borderWidth").replace("px",""));
-                this.setRadius(instance.css("borderRadius").replace("px",""));
+                this.__originalInstance = instance;
+                //cache the instances
+                this.__instance = instance.find(".apply-border");
+                this.__instance = this.__instance.length == 0 ? instance : this.__instance;
+                
+                this.setWidth(this.__instance.css("borderWidth").replace("px",""));
+                this.setRadius(this.__instance.css("borderRadius").replace("px",""));
                 this.setColor(this.getColor());
                 this.__theDialog.dialog("open");
                 mxBuilder.activeStack.push(this.__theDialog);
@@ -137,6 +142,7 @@
                         borderWidth:width,
                         borderStyle: "solid"
                     });
+                    this.__originalInstance.trigger("borderWidthChanged");
                     mxBuilder.selection.revalidateSelectionContainer();
                 }
             },
@@ -153,6 +159,7 @@
                 
                 if(this.__instance){
                     this.__instance.css("borderRadius",radius);
+                    this.__originalInstance.trigger("borderRadiusChanged");
                 }
             },
             getColor: function getColor(){

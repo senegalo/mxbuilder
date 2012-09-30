@@ -45,3 +45,10 @@
     display: inline-block;
     float:right;
 }
+
+.context-item-checked {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background-image: url('../images/check13x13.png');
+}

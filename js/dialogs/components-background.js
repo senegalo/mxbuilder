@@ -58,7 +58,10 @@
             __theDialog: theDialog,
             __instance: null,
             show: function show(instance){
-                this.__instance = instance;
+                //cache the instances
+                this.__instance = instance.find(".apply-background");
+                this.__instance = this.__instance.length == 0 ? instance : this.__instance;
+                
                 this.setColor(this.getColor());
                 this.__theDialog.dialog("open");
                 mxBuilder.activeStack.push(this.__theDialog);

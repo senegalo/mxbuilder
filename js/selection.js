@@ -194,6 +194,7 @@
         enableMultiComponentSelect: function enableMultiComponentSelect(enableFlag){
             if(enableFlag){
                 $(document.body).selectable({
+                    distance: 2,
                     filter: ".mx-selectable-component",
                     selected: function(event,ui){
                         mxBuilder.selection.addToSelection(ui.selected)

@@ -112,4 +112,17 @@
     
     mxBuilder.dialogs = {};
     
+    /**
+     * JQUERY UI RESIZABLE ASPECTRATIO PATCH
+     */
+    (function() {
+        var oldSetOption = $.ui.resizable.prototype._setOption;
+        $.ui.resizable.prototype._setOption = function(key, value) {
+            oldSetOption.apply(this, arguments);
+            if (key === "aspectRatio") {
+                this._aspectRatio = !!value;
+            }
+        };
+    })();
+    
 }(jQuery));

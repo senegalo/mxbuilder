@@ -9,13 +9,13 @@
             this.__GUIDS[randString] = true;
             return randString;
         },
-        assignGUID: function(instance){
+        assignGUID: function(instance,optional_guid){
             instance = $(instance);
             var currentGUID = this.getElementGUID(instance);
             if(currentGUID){
                 return currentGUID;
             }
-            var guid = this.GUID();
+            var guid = optional_guid?optional_guid:this.GUID();
             instance.data("GUID",guid);
             return guid;
         },

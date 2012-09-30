@@ -20,6 +20,7 @@
         <style>
             html {
                 font-size: 12px;
+                overflow-x: hidden;
             }
             .mx-component, .mx-component .content {
                 outline: 0px solid transparent;
@@ -54,7 +55,7 @@
             .ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; }
             .ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 49%; height: 7px; }
             .ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 49%; height: 7px; }
-            .ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: -6px; bottom: -6px; }
+            .ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: 0px; bottom: 0px; }
             .ui-resizable-sw { cursor: sw-resize; width: 7px; height: 7px; left: -6px; bottom: -6px; }
             .ui-resizable-nw { cursor: nw-resize; width: 7px; height: 7px; left: -6px; top: -6px; }
             .ui-resizable-ne { cursor: ne-resize; width: 7px; height: 7px; right: -6px; top: -6px;}
@@ -66,7 +67,7 @@
                 margin:6px;
                 display-type: inline-block;
             }
-            
+
             .cke {
                 z-index: 100000;
             }
@@ -85,6 +86,7 @@
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;
         </script>
+        <script type="text/javascript" src="js-libs/plupload/plupload.full.js"></script>
 
         <script type="text/javascript" src="js/mxbuilder.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
@@ -92,12 +94,18 @@
         <script type="text/javascript" src="js/activestack.js"></script>
         <script type="text/javascript" src="js/ctx-menu.js"></script>
         <script type="text/javascript" src="js/components-instance-manager.js"></script>
+        <script type="text/javascript" src="js/assets-manager.js"></script>
         <script type="text/javascript" src="js/selection.js"></script>
         <script type="text/javascript" src="js/components.js"></script>
+        
         <script type="text/javascript" src="js/simple-div-component.js"></script>
         <script type="text/javascript" src="js/text-component.js"></script>
         <script type="text/javascript" src="js/box-component.js"></script>
-        
+        <script type="text/javascript" src="js/horizontal-line-component.js"></script>
+        <script type="text/javascript" src="js/vertical-line-component.js"></script>
+        <script type="text/javascript" src="js/strip-component.js"></script>
+        <script type="text/javascript" src="js/image-component.js"></script>
+
         <script type="text/javascript" src="js/dialogs/linkto.js"></script>
         <script type="text/javascript" src="js/dialogs/components-delete.js"></script>
         <script type="text/javascript" src="js/dialogs/components-border.js"></script>
@@ -106,7 +114,7 @@
         <script type="text/javascript" src="js/init.js"></script>
     </head>
     <body>
-        
+
         <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:100px;height:200px;margin-top:-100px;z-index:10000009"></div>
         <div id="header" style="height: 100px;" ></div>        
         <div id="body" style="height: 300px;"></div>
@@ -115,7 +123,7 @@
 
         <div id="container">
 
-            
+
 
             <div id="header-content">
                 <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
@@ -132,9 +140,9 @@
 
             </div>
             <div id="body-content">
-<!--                <div class="an-item" style="height:384px;width:980px;">
-                    <img id="img01" src="images/img01l.jpg"  />
-                </div>-->
+                <!--                <div class="an-item" style="height:384px;width:980px;">
+                                    <img id="img01" src="images/img01l.jpg"  />
+                                </div>-->
 
 
                 <div class="an-item p" id="p01">

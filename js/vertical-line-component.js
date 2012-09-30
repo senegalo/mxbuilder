@@ -1,18 +1,20 @@
 (function($){
-    mxBuilder.BoxComponent = function BoxComponent(instance){
+    mxBuilder.VerticalLineComponent = function VerticalLineComponent(instance){
+        var handle = $('<div class="component-resizable-handle"/>');
         mxBuilder.Component.apply(this,[{
-            ID: "box-component",
-            title: "Box Component",
+            ID: "vline-component",
+            title: "Vertical Line Component",
             draggable: {},
-            resizable: {},
+            resizable: {
+                orientation: "v"
+            },
             ctxZIndex: true,
-            ctxEditableBorder: true,
             ctxEditableBackground: true,
             selectable: true,
             instance: instance
         }]);
     
-        instance.addClass("box-component-instance").on({
+        instance.addClass("vline-component-instance").on({
             selected: function(){
                 mxBuilder.activeStack.push(instance);
             },
@@ -21,15 +23,15 @@
             }
         });
     }
-    mxBuilder.BoxComponent.prototype = new mxBuilder.Component();
+    mxBuilder.VerticalLineComponent.prototype = new mxBuilder.Component();
     
     //Adding the whole thing to the menu
     $(function(){
-        $('<div class="box-component menu-item" style="cursor:move;">Box</div>').draggable({
+        $('<div class="vline-component menu-item" style="cursor:move;">Vertical line</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = $('<div style="width:300px;height:200px;background-color:rgba(0,0,0,0.5);border-radius:6px;"></div>')
-                .data("component",mxBuilder.BoxComponent)
+                var theContent = $('<div style="height:200px;width:1px;background-color:black;"></div>')
+                .data("component",mxBuilder.VerticalLineComponent)
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
             }

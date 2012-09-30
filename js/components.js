@@ -9,13 +9,8 @@
             }
             
             this.position = obj.instance.position();
-            
+                
             //Context Menus
-            
-            
-            
-            
-            
             obj.instance.on({
                 mousedown: function mousedown(event){
                     if(mxBuilder.selection.getSelectionCount() < 2){
@@ -142,7 +137,8 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                         that.data("lastOffset",false).css("cursor","default");
                         mxBuilder.components.getComponent(that).setPosition(that.position());
-                    }
+                    },
+                    scroll: false
                 });
                 obj.instance.draggable(obj.draggable);
             }
@@ -150,18 +146,33 @@
             //Making it resizable
             if(typeof obj.resizable != "undefined"){
                 var handle = $('<div class="component-resizable-handle"/>');
-                $.extend(obj.resizable,{
-                    grid: mxBuilder.properties.gridSize,
-                    handles: {
-                        n: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-n"), 
+                var orientation = obj.resizable.orientation?obj.resizable.orientation:"hv";
+                var handles = {};
+                
+                if(orientation.match(/h/i)){
+                    $.extend(handles,{
                         e: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-e"),
+                        w: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-w")
+                    });
+                } 
+                if(orientation.match(/v/i)){
+                    $.extend(handles,{
                         s: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-s"), 
-                        w: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-w"), 
+                        n: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-n")
+                    });
+                }
+                if(orientation.match(/(hv|vh)/i)){
+                    $.extend(handles,{
                         ne: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-ne"), 
                         se: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-se"), 
                         sw: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-sw"), 
                         nw: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-nw")
-                    },
+                    })
+                }
+                
+                $.extend(obj.resizable,{
+                    grid: mxBuilder.properties.gridSize,
+                    handles: handles,
                     start: function start(event,ui){
                         mxBuilder.selection.clearSelection($(this));
                     },
@@ -281,6 +292,18 @@
             }
             return size;
         },
+        openBackgroundStyleDialog: function openBackgroundStyleDialog(){
+            mxBuilder.dialogs.componentsBackground.show(this.instance);
+        },
+        openBorderStyleDialog: function openBorderStyleDialog(){
+            mxBuilder.dialogs.componentsBorder.show(this.instance);
+        },
+        openDeleteComponentDialog: function openDeleteComponentDialog(){
+            var that = this.instance;
+            mxBuilder.dialogs.deleteComponents(function(){
+                that.trigger("destroy"); 
+            });
+        },
         destroy: function destroy(){
             mxBuilder.components.removeComponent(this.instance);
             this.instance.remove();
@@ -301,6 +324,7 @@
                 var theClass =  ui.helper.data("component");
                 if(theClass){
                     var instance = ui.helper.clone();
+                    instance.data("extra",ui.helper.data("extra"));
                     /**
                      * @todo: check this part elements should be added to their appropriate layout part
                      */
@@ -310,11 +334,12 @@
                     theComponent.setContainer(container);
                     mxBuilder.selection.clearSelection();
                     mxBuilder.selection.addToSelection(instance);
+                    instance.trigger('componentDropped');
                 } else {
                     mxBuilder.selection.getSelection().each(function(){
                         mxBuilder.components.getComponent($(this)).setContainer(container);
                     });
-                }   
+                }
                 clearOutline.apply(this);
             }
         }

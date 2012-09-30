@@ -1,10 +1,14 @@
 (function($){
-    mxBuilder.BoxComponent = function BoxComponent(instance){
+    mxBuilder.StripComponent = function StripComponent(instance){
         mxBuilder.Component.apply(this,[{
-            ID: "box-component",
-            title: "Box Component",
-            draggable: {},
-            resizable: {},
+            ID: "strip-component",
+            title: "strip Component",
+            draggable: {
+                axis: "y"
+            },
+            resizable: {
+                orientation: "v"
+            },
             ctxZIndex: true,
             ctxEditableBorder: true,
             ctxEditableBackground: true,
@@ -12,24 +16,27 @@
             instance: instance
         }]);
     
-        instance.addClass("box-component-instance").on({
+        instance.addClass("strip-component-instance").on({
             selected: function(){
                 mxBuilder.activeStack.push(instance);
             },
             dblclick: function(){
                 mxBuilder.components.getComponent(instance).openBackgroundStyleDialog();
             }
+        }).css({
+            width: $(document).width()+50,
+            left: (mxBuilder.layout.container.offset().left*-1)-25
         });
     }
-    mxBuilder.BoxComponent.prototype = new mxBuilder.Component();
+    mxBuilder.StripComponent.prototype = new mxBuilder.Component();
     
     //Adding the whole thing to the menu
     $(function(){
-        $('<div class="box-component menu-item" style="cursor:move;">Box</div>').draggable({
+        $('<div class="strip-component menu-item" style="cursor:move;">Strip</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = $('<div style="width:300px;height:200px;background-color:rgba(0,0,0,0.5);border-radius:6px;"></div>')
-                .data("component",mxBuilder.BoxComponent)
+                var theContent = $('<div style="width:900px;height:200px;background-color:rgba(0,0,0,1)"></div>')
+                .data("component",mxBuilder.StripComponent)
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
             }
