@@ -78,7 +78,7 @@
 
 
         </style>
-
+        <!-- Loading Libs -->
         <script type="text/javascript" src="js-libs/less.js"></script>
         <script type="text/javascript" src="js-libs/jquery-1.8.1.min.js"></script>
         <script type="text/javascript" src="js-libs/jquery-ui-1.8.23.custom.min.js"></script>
@@ -88,6 +88,7 @@
         </script>
         <script type="text/javascript" src="js-libs/plupload/plupload.full.js"></script>
 
+        <!--Loading Framework-->
         <script type="text/javascript" src="js/mxbuilder.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/layout.js"></script>
@@ -97,7 +98,8 @@
         <script type="text/javascript" src="js/assets-manager.js"></script>
         <script type="text/javascript" src="js/selection.js"></script>
         <script type="text/javascript" src="js/components.js"></script>
-        
+
+        <!--Loading Components-->
         <script type="text/javascript" src="js/simple-div-component.js"></script>
         <script type="text/javascript" src="js/text-component.js"></script>
         <script type="text/javascript" src="js/box-component.js"></script>
@@ -106,10 +108,12 @@
         <script type="text/javascript" src="js/strip-component.js"></script>
         <script type="text/javascript" src="js/image-component.js"></script>
 
+        <!--Loading Dialogs-->
         <script type="text/javascript" src="js/dialogs/linkto.js"></script>
         <script type="text/javascript" src="js/dialogs/components-delete.js"></script>
         <script type="text/javascript" src="js/dialogs/components-border.js"></script>
         <script type="text/javascript" src="js/dialogs/components-background.js"></script>
+        <script type="text/javascript" src="js/dialogs/image-component-settings.js"></script>
 
         <script type="text/javascript" src="js/init.js"></script>
     </head>
@@ -179,6 +183,113 @@
                 <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
                 <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>
             </div>
+        </div>
+
+        <div id="templates" style="display:none;">
+
+            <div class="assets-upload-dialog">
+                <div id="assets-upload-container">
+                    <a href="javascript:void(0);" id="assets-select-files">[select files]</a>
+                    <a href="javascript:void(0);" id="assets-upload-files">[upload files]</a>
+                </div>
+                <hr/>
+                <div id="assets-upload-files-info"></div>
+                <hr/>
+                <div id="assets-container"></div><div style="clear:both;"></div>
+            </div>
+
+            <div class="image-component-chtitle-dialog">
+                <div>
+                    <label for="image-component-settings-title">Title:</label>
+                    <input type="text" id="image-component-settings-title"/>
+                </div>
+            </div>
+
+            <div class="component-border-dialog">
+                <div class="component-sim" style="margin-right:auto;margin-left:auto;text-align:center;height:135px">
+                    <div data-sim="1001" style="border-width: 3px 0px 0px 3px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>
+                    <div data-sim="1100" style="border-width: 3px 3px 0px 0px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div><br/>
+                    <div data-sim="0011" style="border-width: 0px 0px 3px 3px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>
+                    <div data-sim="0110" style="border-width: 0px 3px 3px 0px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-corner-radius">Corners:</label>
+                    <input type="number" id="component-border-corner-radius" min="0" max="20" style="width:33px;"/> px
+                    <div class="corner-slider"></div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-width">Width:</label>
+                    <input type="number" id="component-border-width" min="0" max="20" style="width:33px;"/> px
+                    <div class="border-width"></div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-color">Color:</label>
+                    <input type="text" id="component-border-color"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-color">Opacity:</label>
+                    <input type="number" min="0" max="100" step="1" id="component-border-opacity"/>%
+                </div>
+            </div>
+
+            <div class="image-component-instance">
+                <img src="" alt="" title=""/>
+                <div class="caption"></div>
+            </div>
+
+            <div class="assets-template" style="float:left;width:100px;height:100px;margin:10px;">
+                <img src="" alt="" title=""/>
+            </div>
+
+            <div class="linkto-dialog">
+                <div>
+                    <div style="display:inline-block;">
+                        <input type="radio" name="link_type" value="external" id="linkto-external">
+                        <label for="linkto-external">External Link</label>
+                    </div>
+                    <div style="display:inline-block;">
+                        http://<input type="text" name="external_link"/>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:inline-block">
+                        <input type="radio" name="link_type" value="email" id="linkto-email">
+                        <label for="linkto-external">Email</label>
+                    </div>
+                    <div style="display:inline-block">
+                        <input type="text" name="email"/>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:inline-block;">
+                        <input type="radio" name="link_type" value="page" id="linkto-page">
+                    <label for="linkto-external">Link to a page</label>
+                    </div>
+                    <div style="display:inline-block;">
+                        <select name="page">
+                            <option value="">Select a page</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="link_type" value="lightbox" id="linkto-lightbox">
+                    <label for="linkto-external">Open in a Lightbox</label>
+                </div>
+            </div>
+            <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,0.5);border-radius:6px;"></div>
+            <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
+            <div class="simple-div" style="height:100px;width:400px;padding:5px;overflow:hidden;z-index:10000;">
+                I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.
+            </div>
+            <div class="strip-component-instance" style="width:900px;height:200px;background-color:rgba(0,0,0,1)"></div>
+            <div class="text-component-instance" style="width:300px;padding:5px;z-index:10000;">
+                <div class="content" style="word-wrap: break-word;">I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.</div>
+            </div>
+            <div class="vline-component-instance" style="height:200px;width:1px;background-color:black;"></div>
         </div>
     </body>
 </html>

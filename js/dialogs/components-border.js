@@ -1,40 +1,8 @@
 (function($){
     
     $(function(){
-        var html = '<div>';
-        
-        html += '<div class="component-sim" style="margin-right:auto;margin-left:auto;text-align:center;height:135px">';
-        html += '<div data-sim="1001" style="border-width: 3px 0px 0px 3px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>';
-        html += '<div data-sim="1100" style="border-width: 3px 3px 0px 0px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div><br/>';
-        html += '<div data-sim="0011" style="border-width: 0px 0px 3px 3px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>';
-        html += '<div data-sim="0110" style="border-width: 0px 3px 3px 0px;border-style: solid;border-color:black;display:inline-block;width:20px;height:20px;margin:10px;"></div>';
-        html += '</div>';
-        
-        html += '<div style="margin-bottom: 10px;">';
-        html += '<label for="component-border-corner-radius">Corners:</label>';
-        html += '<input type="number" id="component-border-corner-radius" min="0" max="20" style="width:33px;"/> px';
-        html += '<div class="corner-slider"></div>';
-        html += '</div>';
-        
-        html += '<div style="margin-bottom: 10px;">'
-        html += '<label for="component-border-width">Width:</label>';
-        html += '<input type="number" id="component-border-width" min="0" max="20" style="width:33px;"/> px';
-        html += '<div class="border-width"></div>';
-        html += '</div>';
-        
-        html += '<div style="margin-bottom: 10px;">';
-        html += '<label for="component-border-color">Color:</label>';
-        html += '<input type="text" id="component-border-color"/>';
-        html += '</div>';
-        
-        html += '<div style="margin-bottom: 10px;">';
-        html += '<label for="component-border-color">Opacity:</label>';
-        html += '<input type="number" min="0" max="100" step="1" id="component-border-opacity"/>%';
-        html += '</div>';
-        
-        html += '</div>';
-        
-        var theDialog = $(html).find(".border-width").slider({
+                
+        var theDialog = mxBuilder.layout.templates.find(".component-border-dialog").remove().find(".border-width").slider({
             min: 0,
             max: 20,
             slide: function slider(event,ui){

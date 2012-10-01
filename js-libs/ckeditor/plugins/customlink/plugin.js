@@ -5,7 +5,19 @@ CKEDITOR.plugins.add('customlink',{
             
         editor.addCommand(pluginName, {
             exec: function(editor){
-                mxBuilder.dialogs.linkto.show("cke",editor);
+                mxBuilder.dialogs.linkto.show({
+                    link: function(url){
+                        editor.focus();
+                        var style = new CKEDITOR.style({
+                            element: 'a',
+                            attributes: {
+                                href: url
+                            }
+                        });
+                        style.type = CKEDITOR.STYLE_INLINE;
+                        style.apply(editor);
+                    }
+                });
             }
         });
             

@@ -2,10 +2,14 @@
     mxBuilder.components = {
         __components: {},
         __zIndex: 1000,
-        addComponent: function addComponent(instance,theClass){
-            var guid = mxBuilder.utils.assignGUID(instance);
-            instance.css("zIndex",this.getNextZIndex());
-            this.__components[guid] = new theClass(instance);
+        addComponent: function addComponent(properties){
+            var component = new mxBuilder[properties.data.type](properties);
+            var guid = mxBuilder.utils.assignGUID(component.element);
+            component.element.css("zIndex",this.getNextZIndex());
+            this.__components[guid] = component;
+            if(typeof properties.data.container != "undefined"){
+                component.setContainer(properties.data.container);
+            }
             return this.__components[guid];
         },
         getComponent: function getComponent(instance){

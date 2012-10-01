@@ -52,7 +52,15 @@
             this.setToMaxHeight(mxBuilder.layout.body);
             this.setToMaxHeight(mxBuilder.layout.footer);
             this.syncContentHeight();
-        }
+        },
+        header: null,
+        body: null,
+        footer: null,
+        layoutBody: null,
+        layoutHeader: null,
+        layoutFooter: null,
+        menu: null,
+        templates: null
     } 
     
     $(function(){
@@ -65,7 +73,8 @@
             layoutBody: $("#body"),
             layoutHeader: $("#header"),
             layoutFooter: $("#footer"),
-            menu: $("#menu")            
+            menu: $("#menu"),
+            templates: $("#templates").remove()
         });
         
         var bodyWidth = mxBuilder.layout.body.width();

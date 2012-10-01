@@ -1,40 +1,39 @@
 (function($){
-    mxBuilder.BoxComponent = function BoxComponent(instance){
-        mxBuilder.Component.apply(this,[{
-            ID: "box-component",
-            title: "Box Component",
-            draggable: {},
-            resizable: {},
-            ctxZIndex: true,
-            ctxEditableBorder: true,
-            ctxEditableBackground: true,
-            selectable: true,
-            instance: instance
-        }]);
-    
-        instance.addClass("box-component-instance").on({
-            selected: function(){
-                mxBuilder.activeStack.push(instance);
-            },
-            dblclick: function(){
-                mxBuilder.components.getComponent(instance).openBackgroundStyleDialog();
-            }
-        });
-    }
-    mxBuilder.BoxComponent.prototype = new mxBuilder.Component();
-    
-    //Adding the whole thing to the menu
     $(function(){
+        mxBuilder.BoxComponent = function BoxComponent(properties){
+            this.init(properties);
+            mxBuilder.Component.apply(this,[{
+                type: "BoxComponent",
+                draggable: {},
+                resizable: {},
+                ctxZIndex: true,
+                ctxEditableBorder: true,
+                ctxEditableBackground: true,
+                selectable: true,
+                element: properties.element
+            }]);
+    
+            properties.element.on({
+                selected: function(){
+                    mxBuilder.activeStack.push(properties.element);
+                },
+                dblclick: function(){
+                    mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
+                }
+            });
+        }
+        $.extend(mxBuilder.BoxComponent.prototype, new mxBuilder.Component(), {
+            template: mxBuilder.layout.templates.find(".box-component-instance").remove()
+        });
+    
         $('<div class="box-component menu-item" style="cursor:move;">Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = $('<div style="width:300px;height:200px;background-color:rgba(0,0,0,0.5);border-radius:6px;"></div>')
-                .data("component",mxBuilder.BoxComponent)
+                var theContent = mxBuilder.BoxComponent.prototype.template.clone()
+                .data("component","BoxComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
             }
         }).appendTo(mxBuilder.layout.menu);
     });
-    
-    
 }(jQuery))

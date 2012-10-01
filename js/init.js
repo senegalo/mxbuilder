@@ -3,15 +3,33 @@
         $("a").attr("href","javascript:void(0);");
         
         mxBuilder.layout.header.find(".an-item").each(function(){
-            mxBuilder.components.addComponent($(this), mxBuilder.SimpleDiv).setContainer("header");
+            mxBuilder.components.addComponent({ 
+                element: $(this), 
+                data: {
+                    type: "SimpleDiv",
+                    container: "header"
+                }
+            });
         }); 
         
         mxBuilder.layout.body.find(".an-item").each(function(){
-            mxBuilder.components.addComponent($(this), mxBuilder.SimpleDiv).setContainer("body");
+            mxBuilder.components.addComponent({ 
+                element: $(this), 
+                data: {
+                    type: "SimpleDiv",
+                    container: "body"
+                }
+            });
         }); 
         
         mxBuilder.layout.footer.find(".an-item").each(function(){
-            mxBuilder.components.addComponent($(this), mxBuilder.SimpleDiv).setContainer("footer");
+            mxBuilder.components.addComponent({ 
+                element: $(this), 
+                data: {
+                    type: "SimpleDiv",
+                    container: "footer"
+                }
+            });
         }); 
         
     });

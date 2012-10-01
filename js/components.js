@@ -4,23 +4,23 @@
             
             //storing the size and position
             this.size = {
-                width: obj.instance.width(),
-                height: obj.instance.height()
+                width: obj.element.width(),
+                height: obj.element.height()
             }
             
-            this.position = obj.instance.position();
+            this.position = obj.element.position();
                 
             //Context Menus
-            obj.instance.on({
+            obj.element.on({
                 mousedown: function mousedown(event){
                     if(mxBuilder.selection.getSelectionCount() < 2){
                         if(event.which == 3){
-                            var theComponent = mxBuilder.components.getComponent(obj.instance);
+                            var theComponent = mxBuilder.components.getComponent(obj.element);
                             if(mxBuilder.selection.getSelectionCount() == 0){
-                                mxBuilder.selection.addToSelection(obj.instance);
-                            } else if(mxBuilder.selection.getSelectionCount() == 1 && !mxBuilder.selection.isSelected(obj.instance)){
+                                mxBuilder.selection.addToSelection(obj.element);
+                            } else if(mxBuilder.selection.getSelectionCount() == 1 && !mxBuilder.selection.isSelected(obj.element)){
                                 mxBuilder.selection.clearSelection();
-                                mxBuilder.selection.addToSelection(obj.instance);
+                                mxBuilder.selection.addToSelection(obj.element);
                             }
                         
                             var ctx = mxBuilder.contextmenu.getMainCtx();
@@ -30,7 +30,7 @@
                                 ctx.addItem({
                                     label: "Background Style...",
                                     callback: function(){
-                                        mxBuilder.dialogs.componentsBackground.show(theComponent.instance);
+                                        mxBuilder.dialogs.componentsBackground.show(theComponent.element);
                                     }
                                 });
                             }
@@ -40,7 +40,7 @@
                                 ctx.addItem({
                                     label: "Border Style...",
                                     callback: function(){
-                                        mxBuilder.dialogs.componentsBorder.show(theComponent.instance);
+                                        mxBuilder.dialogs.componentsBorder.show(theComponent.element);
                                     }
                                 });
                             }
@@ -78,7 +78,7 @@
                                 label: "Delete",
                                 callback: function(){
                                     mxBuilder.dialogs.deleteComponents(function(){
-                                        theComponent.instance.trigger("destroy"); 
+                                        theComponent.element.trigger("destroy"); 
                                     });
                                 }
                             });
@@ -140,7 +140,7 @@
                     },
                     scroll: false
                 });
-                obj.instance.draggable(obj.draggable);
+                obj.element.draggable(obj.draggable);
             }
             
             //Making it resizable
@@ -151,22 +151,22 @@
                 
                 if(orientation.match(/h/i)){
                     $.extend(handles,{
-                        e: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-e"),
-                        w: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-w")
+                        e: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-e"),
+                        w: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-w")
                     });
                 } 
                 if(orientation.match(/v/i)){
                     $.extend(handles,{
-                        s: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-s"), 
-                        n: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-n")
+                        s: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-s"), 
+                        n: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-n")
                     });
                 }
                 if(orientation.match(/(hv|vh)/i)){
                     $.extend(handles,{
-                        ne: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-ne"), 
-                        se: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-se"), 
-                        sw: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-sw"), 
-                        nw: handle.clone().appendTo(obj.instance).addClass("ui-resizable-handle ui-resizable-nw")
+                        ne: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-ne"), 
+                        se: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-se"), 
+                        sw: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-sw"), 
+                        nw: handle.clone().appendTo(obj.element).addClass("ui-resizable-handle ui-resizable-nw")
                     })
                 }
                 
@@ -189,22 +189,22 @@
                         });
                     }
                 });
-                obj.instance.resizable(obj.resizable);
+                obj.element.resizable(obj.resizable);
             }
             
             //Making is selectable
             if(obj.selectable){
-                obj.instance.addClass("mx-selectable-component").on({
+                obj.element.addClass("mx-selectable-component").on({
                     click: function click(event){
                         if(event.which == 1){
                             if(event.ctrlKey){
-                                mxBuilder.selection.toggle(obj.instance);
+                                mxBuilder.selection.toggle(obj.element);
                             } else {
-                                if(!mxBuilder.selection.isSelected(obj.instance)){
+                                if(!mxBuilder.selection.isSelected(obj.element)){
                                     mxBuilder.selection.clearSelection();
-                                    mxBuilder.selection.addToSelection(obj.instance); 
+                                    mxBuilder.selection.addToSelection(obj.element); 
                                 } else if(mxBuilder.selection.getSelectionCount() > 1){
-                                    mxBuilder.selection.clearSelection(obj.instance);
+                                    mxBuilder.selection.clearSelection(obj.element);
                                 }
                             
                             }
@@ -214,15 +214,15 @@
             }
             
             //Making it deletable
-            obj.instance.on({
+            obj.element.on({
                 destroy: function destroy(){
-                    mxBuilder.selection.removeFromSelection(obj.instance);
-                    mxBuilder.components.getComponent(obj.instance).destroy();
+                    mxBuilder.selection.removeFromSelection(obj.element);
+                    mxBuilder.components.getComponent(obj.element).destroy();
                 }
             });
             
             //enforce styles
-            obj.instance.addClass("mx-component").css({
+            obj.element.addClass("mx-component").css({
                 position: "absolute" 
             });
             
@@ -235,34 +235,34 @@
     mxBuilder.Component.prototype = {
         setContainer: function setContainer(container){
             this.container = container;
-            this.instance.appendTo(mxBuilder.layout[container]);
+            this.element.appendTo(mxBuilder.layout[container]);
         },
         getID: function getID(){
-            return mxBuilder.utils.getElementGUID(this.instance);
+            return mxBuilder.utils.getElementGUID(this.element);
         },
         bringToFront: function bringToFront(){
-            this.instance.css("zIndex",this.instance.zIndex()+1);
+            this.element.css("zIndex",this.element.zIndex()+1);
             mxBuilder.selection.revalidateSelectionContainer();
         },
         bringToBack: function bringToBack(){
-            var zIndex = this.instance.zIndex();
+            var zIndex = this.element.zIndex();
             if(zIndex > 1000){
-                this.instance.css("zIndex",zIndex-1);
+                this.element.css("zIndex",zIndex-1);
                 mxBuilder.selection.revalidateSelectionContainer();
             }
         },
         bringToTop: function bringToTop(){
-            this.instance.css("zIndex",mxBuilder.components.getNextZIndex());
+            this.element.css("zIndex",mxBuilder.components.getNextZIndex());
             mxBuilder.selection.revalidateSelectionContainer();
         },
         bringToBottom: function brintToBottom(){
-            this.instance.css("zIndex", 1000);
-            mxBuilder.selection.revalidateSelectionContainer(this.instance);
+            this.element.css("zIndex", 1000);
+            mxBuilder.selection.revalidateSelectionContainer(this.element);
         },
         setPosition: function setPosition(position,applyFlag){
             this.position = position;
             if(applyFlag){
-                this.instance.css({
+                this.element.css({
                     left: position.left,
                     top: position.top
                 });
@@ -273,11 +273,11 @@
         },
         getMetrics: function getMetrics(dontUpdateFlag){
             var size = {
-                width: this.instance.width(),
-                height: this.instance.height(),
+                width: this.element.width(),
+                height: this.element.height(),
                 container: this.container
             };
-            $.extend(size,this.instance.position());
+            $.extend(size,this.element.position());
             if(this.size.width !== size.width || this.size.height !== size.height){
                 $.extend(size,{
                     offsetWidth: size.width-this.size.width,
@@ -293,20 +293,49 @@
             return size;
         },
         openBackgroundStyleDialog: function openBackgroundStyleDialog(){
-            mxBuilder.dialogs.componentsBackground.show(this.instance);
+            mxBuilder.dialogs.componentsBackground.show(this.element);
         },
         openBorderStyleDialog: function openBorderStyleDialog(){
-            mxBuilder.dialogs.componentsBorder.show(this.instance);
+            mxBuilder.dialogs.componentsBorder.show(this.element);
         },
         openDeleteComponentDialog: function openDeleteComponentDialog(){
-            var that = this.instance;
+            var that = this.element;
             mxBuilder.dialogs.deleteComponents(function(){
                 that.trigger("destroy"); 
             });
         },
+        save: function save(){
+            var out = {
+                css: {},
+                data: {}
+            };
+            var position = this.element.position();
+            out.css.left = position.left;
+            out.css.top = position.top;
+            out.css.height = this.element.height();
+            out.css.width = this.element.width();
+            if(this.ctxZIndex){
+                out.css.zIndex = this.element.css("zIndex");
+            }
+            if(this.ctxEditableBorder){
+                out.css.border = this.element.css("border");
+            }
+            if(this.ctxEditableBackground){
+                out.css.background = this.element.css("background");
+            }
+            out.data.container = this.container;
+            out.data.type = this.type;
+            return out;
+        },
+        init: function init(properties){
+            if(typeof properties.element == "undefined"){
+                properties.element = this.template.clone().css(properties.css).appendTo(mxBuilder.layout[properties.data.container]);
+            }
+            $.extend(this,properties.data);
+        },
         destroy: function destroy(){
-            mxBuilder.components.removeComponent(this.instance);
-            this.instance.remove();
+            mxBuilder.components.removeComponent(this.element);
+            this.element.remove();
         }
     }
     
@@ -321,20 +350,24 @@
         }
         var dropOnContainer = function dropOnContainer(container){
             return function(event, ui){
-                var theClass =  ui.helper.data("component");
-                if(theClass){
-                    var instance = ui.helper.clone();
-                    instance.data("extra",ui.helper.data("extra"));
-                    /**
-                     * @todo: check this part elements should be added to their appropriate layout part
-                     */
-                    instance.appendTo(mxBuilder.layout[container]).position(ui.position);
+                var className =  ui.helper.data("component");
+                if(className){
                     
-                    var theComponent = mxBuilder.components.addComponent(instance,theClass);
+                    var theComponent = mxBuilder.components.addComponent({
+                        css: {
+                            left: ui.position.left,
+                            top: ui.position.top
+                        },
+                        data:{ 
+                            container: container,
+                            type: className,
+                            extra: ui.helper.data("extra")
+                        }
+                    });
                     theComponent.setContainer(container);
                     mxBuilder.selection.clearSelection();
-                    mxBuilder.selection.addToSelection(instance);
-                    instance.trigger('componentDropped');
+                    mxBuilder.selection.addToSelection(theComponent.element);
+                    theComponent.element.trigger('componentDropped');
                 } else {
                     mxBuilder.selection.getSelection().each(function(){
                         mxBuilder.components.getComponent($(this)).setContainer(container);

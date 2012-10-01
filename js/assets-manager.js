@@ -1,33 +1,15 @@
 (function($){
     
     $(function(){
-        var theDialog, assetStamp, uploader;
+        var theDialog, assetTemplate, uploader, imageComponentTemplate;
         
         (function init(){
             
-            assetStamp = '<div style="float:left;width:100px;height:100px;margin:10px;">';
-            assetStamp += '<img src="" alt="" title=""/>';
-            assetStamp += '</div>';
-            assetStamp = $(assetStamp);
             
-            var html = '<div>';
+            assetTemplate = mxBuilder.layout.templates.find(".assets-template").removeClass("assets-template").remove();
+            imageComponentTemplate = mxBuilder.layout.templates.find(".image-component-instance").clone();
         
-            html += '<div id="assets-upload-container">';
-            html += '<a href="javascript:void(0);" id="assets-select-files">[select files]</a>';
-            html += '<a href="javascript:void(0);" id="assets-upload-files">[upload files]</a>';
-            html += '</div>';
-        
-            html += '<hr/>';
-            
-            html += '<div id="assets-upload-files-info"></div>';
-        
-            html += '<hr/>';
-            
-            html += '<div id="assets-container"></div><div style="clear:both;"></div>';
-        
-            html += '</div>';
-        
-            theDialog = $(html).dialog({
+            theDialog = mxBuilder.layout.templates.find(".assets-upload-dialog").remove().dialog({
                 autoOpen: false,
                 zIndex: 1000008,
                 title: "Assets Manager",
@@ -110,7 +92,7 @@
             __assets: {},
             add: function(obj){                
                 //preping the stamp
-                var theAsset = assetStamp.clone().find("img").attr("src",obj.location+"/"+obj.thumb)
+                var theAsset = assetTemplate.clone().find("img").attr("src",obj.location+"/"+obj.thumb)
                 .end()
                 .appendTo(theDialog.find("#assets-container"));
                 
@@ -122,19 +104,16 @@
                 //making the assets draggable
                 theAsset.draggable({
                     helper: function(event){
-                        return theAsset.clone().css({
-                            width: "auto",
-                            height: "auto",
-                            "float": "",
-                            margin: 0
-                        }).data("component",mxBuilder.ImageComponent)
-                        .data("extra",{instanceOf: obj.ID})
+                        return imageComponentTemplate.clone()
+                        .find("img").attr("src",obj.location+"/"+obj.thumb).end()
+                        .data("component","ImageComponent")
+                        .data("extra",{originalAssetID: obj.ID})
                         .appendTo(mxBuilder.layout.container);
                     }
                 });
             },
-            getFromContainer: function(container){
-                return this.__assets[container.data("extra").instanceOf];
+            get: function(id){
+                return this.__assets[id];
             }
         }
         
