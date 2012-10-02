@@ -6,6 +6,7 @@
             var component = new mxBuilder[properties.data.type](properties);
             var guid = mxBuilder.utils.assignGUID(component.element);
             component.element.css("zIndex",this.getNextZIndex());
+            mxBuilder.pages.attachComponentToPage(component);
             this.__components[guid] = component;
             if(typeof properties.data.container != "undefined"){
                 component.setContainer(properties.data.container);

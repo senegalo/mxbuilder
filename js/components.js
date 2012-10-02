@@ -325,6 +325,7 @@
             }
             out.data.container = this.container;
             out.data.type = this.type;
+            out.data.page = this.page;
             return out;
         },
         init: function init(properties){

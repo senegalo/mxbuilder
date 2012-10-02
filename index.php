@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="margin-top:28px;">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -94,6 +94,7 @@
         <script type="text/javascript" src="js/layout.js"></script>
         <script type="text/javascript" src="js/activestack.js"></script>
         <script type="text/javascript" src="js/ctx-menu.js"></script>
+        <script type="text/javascript" src="js/page_manager.js"></script>
         <script type="text/javascript" src="js/components-instance-manager.js"></script>
         <script type="text/javascript" src="js/assets-manager.js"></script>
         <script type="text/javascript" src="js/selection.js"></script>
@@ -114,10 +115,15 @@
         <script type="text/javascript" src="js/dialogs/components-border.js"></script>
         <script type="text/javascript" src="js/dialogs/components-background.js"></script>
         <script type="text/javascript" src="js/dialogs/image-component-settings.js"></script>
+        <script type="text/javascript" src="js/dialogs/pages-add-edit-dialog.js"></script>
 
         <script type="text/javascript" src="js/init.js"></script>
     </head>
     <body>
+        
+        <div id="toolbar" style="position:fixed;top:0px;left:0px;width:100%;height:20px;background-color: #c4c4c4;padding:4px;z-index: 100000009;">
+            Pages: <select id="website-pages"></select> <button id="add-pages">Add Pages</button>
+        </div>
 
         <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:100px;height:200px;margin-top:-100px;z-index:10000009"></div>
         <div id="header" style="height: 100px;" ></div>        
@@ -278,6 +284,24 @@
                 <div>
                     <input type="radio" name="link_type" value="lightbox" id="linkto-lightbox">
                     <label for="linkto-external">Open in a Lightbox</label>
+                </div>
+            </div>
+            <div class="pages-add-edit-dialog">
+                <div>
+                    <label for="page-title">Title:</label>
+                    <input type="text" id="page-title"/>
+                </div>
+                <div>
+                    <label for="page-html-title">HTML Title:</label>
+                    <input type="text" id="page-html-title"/>
+                </div>
+                <div>
+                    <label for="page-desc">Description</label>
+                    <input type="text" id="page-desc"/>
+                </div>
+                <div>
+                    <label for="page-keywords">Keywords</label>
+                    <input type="text" id="page-keywords"/>
                 </div>
             </div>
             <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
