@@ -21,24 +21,24 @@
             properties.element.addClass("image-component-element").css({
                 overflow: 'hidden'
             }).on({
-                componentDropped: function(){
+                componentDropped: function componentDropped(){
                     self.setImageSize("thumb");
                     self.element.css({
                         width: self.theImage.width() + 'px', 
                         height: self.theImage.height() + 'px'
                     });
                 },
-                borderWidthChanged: function(){
+                borderWidthChanged: function borderWidthChanged(){
                     properties.element.width(self.theImage.outerWidth());
                     properties.element.height(self.theImage.outerHeight());
                 },
-                selected: function(){
+                selected: function selected(){
                     mxBuilder.activeStack.push(properties.element);
                 },
-                dblclick: function(){
+                dblclick: function dblclick(){
                     mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
                 },
-                resize: function(event,ui){
+                resize: function resize(event,ui){
                     var wDiv = self.element.width();
                     var hDiv = self.element.height();
                 
@@ -108,7 +108,7 @@
                     self.setImageSize(size, wImg, hImg);
                 
                 },
-                mousedown: function(event){
+                mousedown: function mousedown(event){
                     if(event.which === 3){
                         mxBuilder.contextmenu.getMainCtx().addSubgroup({
                             label: "Resize Method"
@@ -198,9 +198,50 @@
             },
             setResizeMethod: function setResizeMethod(method){
                 this.__currentResizeMethod = method;
+            },
+            save: function save(){
+                var out = mxBuilder.Component.prototype.save.call(this);
+                out.data.__currentSize = this.__currentSize;
+                out.data.__currentResizeMethod = this.__currentReiszeMethod;
+                out.data.extra = {
+                    originalAssetID: this.extra.originalAssetID
+                }
+                return out;
+            },
+            init: function init(properties){
+                $.extend(this,properties.data);
+                if(typeof properties.element == "undefined"){
+                    var obj = this.getImageObj();
+                    
+                    $.extend({
+                        height: 100/obj.ratio,
+                        width: 100
+                    },properties.css)
+                    
+                    if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
+                        if(obj.ratio > 1){
+                            properties.css.width = 100;
+                            properties.css.height = 100/obj.ratio;
+                        } else {
+                            properties.height = 100;
+                            properties.css.width = 100/obj.ratio;
+                        }
+                    }
+                    
+                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : "small";
+                    
+                    properties.element = this.template.clone().find("img")
+                    .attr("src",obj.location+"/"+obj[properties.data.__currentSize])
+                    .css({
+                        width: properties.css.width,
+                        height: properties.css.height
+                    })
+                    .end()
+                    .css(properties.css)
+                    .appendTo(mxBuilder.layout[properties.data.container]);
+                }
             }
         });
-    })
-    
+    });
     
 }(jQuery))

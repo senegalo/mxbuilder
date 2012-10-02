@@ -120,13 +120,24 @@
         }
         $.extend(mxBuilder.TextComponent.prototype, new mxBuilder.Component(), {
             destroy: function destroy(){
-                var theComponent = mxBuilder.components.getComponent($(this.instance));
+                var theComponent = mxBuilder.components.getComponent($(this.element));
                 if(theComponent.editor){
                     theComponent.editor.destroy();
                 }
                 mxBuilder.Component.prototype.destroy.call(this);
             },
-            template: mxBuilder.layout.templates.find(".text-component-instance").remove()
+            template: mxBuilder.layout.templates.find(".text-component-instance").remove(),
+            save: function save(){
+                var out = mxBuilder.Component.prototype.save.call(this);
+                out.data.text = this.element.find(".content").html();
+                return out;
+            },
+            init: function init(properties){
+                mxBuilder.Component.prototype.init.call(this,properties);
+                if(properties.data.text){
+                    properties.element.find(".content").html(properties.data.text);
+                }
+            }
         });
         $('<div class="text-component menu-item" style="cursor:move;">Text Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,

@@ -23,7 +23,7 @@ CKEDITOR.editorConfig = function( config ) {
     
     
     config.toolbar = [['Styles'], 
-        ['TextColor'],
+        ['TextColor', 'Font','FontSize'],
         ['Bold', 'Italic', 'Underline','-', 'RemoveFormat'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
         ['NumberedList', 'BulletedList','-' , '-', 'LinkExtra', 'Unlink']]; 

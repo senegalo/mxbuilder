@@ -23,7 +23,7 @@
         },
         pushComponentsBelow: function pushComponentsBelow(metrics){
             for(var c in this.__components){
-                this.__components[c].position = this.__components[c].instance.position();
+                this.__components[c].position = this.__components[c].element.position();
                 if(metrics.container == this.__components[c].container && 
                     metrics.top+metrics.oldHeight < this.__components[c].position.top &&
                     ((this.__components[c].position.left >= metrics.left && this.__components[c].position.left < metrics.left+metrics.width) || 
@@ -34,6 +34,13 @@
                     },true);
                 }
             }
+        },
+        saveAll: function saveAll(){
+            var out = [];
+            for(var c in this.__components){
+                out.push(this.__components[c].save());
+            }
+            return out;
         }
     };
 }(jQuery));

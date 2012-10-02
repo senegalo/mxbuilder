@@ -1,11 +1,6 @@
 (function($){
     
-    mxBuilder.layout = {
-        syncLayoutHeight: function syncLayoutHeight(){
-            this.header.height(this.layoutHeader.height());
-            this.body.height(this.layoutBody.height());
-            this.footer.height(this.layoutFooter.height());
-        },
+    mxBuilder.layout = {     
         syncContentHeight: function syncContentHeight(){
             this.layoutHeader.height(this.header.height());
             this.layoutBody.height(this.body.height());
@@ -28,26 +23,27 @@
         setToMaxHeight: function setToMaxHeight(container){
             var theMax = this.getMaxComponentHeight(container);
             var offsetHeight = theMax-container.height();
-            container.height(theMax);
+            if(offsetHeight > 0){
+                container.height(theMax);
             
-            var selector = $();
-            if(container.get(0) === mxBuilder.layout.header.get(0)){
-                selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
-                selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
-            } else if(container.get(0) === mxBuilder.layout.body.get(0)){
-                selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                var selector = $();
+                if(container.get(0) === mxBuilder.layout.header.get(0)){
+                    selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
+                    selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                } else if(container.get(0) === mxBuilder.layout.body.get(0)){
+                    selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                }
+            
+                selector.each(function(){
+                    var that = $(this);
+                    var thePosition = that.position();
+                    thePosition.top += offsetHeight;
+                    that.css("top",thePosition.top);
+                });
             }
-            
-            selector.each(function(){
-                var that = $(this);
-                var thePosition = that.position();
-                thePosition.top += offsetHeight;
-                that.css("top",thePosition.top);
-            });
             
         },
         revalidateLayout: function revalidateLayout(){
-            this.syncLayoutHeight();
             this.setToMaxHeight(mxBuilder.layout.header);
             this.setToMaxHeight(mxBuilder.layout.body);
             this.setToMaxHeight(mxBuilder.layout.footer);
@@ -79,10 +75,12 @@
         
         var bodyWidth = mxBuilder.layout.body.width();
         var handle = $('<div style="z-index:1000000;background-color:#00dbff;"/>');
-        var makeResizable = function makeResizable(container){
+        var makeResizable = function makeResizable(container,alsoResize){
             container.resizable({
                 minWidth: bodyWidth,
                 maxWidth: bodyWidth,
+                minHeight: 300,
+                alsoResize: alsoResize,
                 handles: {
                     s: handle.clone().appendTo(container).addClass("ui-resizable-handle ui-resizable-s")
                 },
@@ -118,7 +116,7 @@
                     });
                     
                     that.data("lastheight",currentHeight);
-                    mxBuilder.layout.syncLayoutHeight();
+                    //                    mxBuilder.layout.syncLayoutHeight();
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
@@ -127,9 +125,11 @@
             });
         }
         
-        makeResizable(mxBuilder.layout.layoutBody);
-        makeResizable(mxBuilder.layout.layoutHeader);
-        makeResizable(mxBuilder.layout.layoutFooter);
+        makeResizable(mxBuilder.layout.layoutBody,mxBuilder.layout.body);
+        makeResizable(mxBuilder.layout.layoutHeader,mxBuilder.layout.header);
+        makeResizable(mxBuilder.layout.layoutFooter,mxBuilder.layout.footer);
+        
+        mxBuilder.layout.revalidateLayout();
         
     });
 }(jQuery));

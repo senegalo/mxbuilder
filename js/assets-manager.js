@@ -98,17 +98,21 @@
                 
                 
                 //Generating and assining the instance an id
-                obj.ID = mxBuilder.utils.assignGUID(theAsset);
-                this.__assets[obj.ID] = obj;
+                this.__assets[obj.id] = obj;
                 
                 //making the assets draggable
                 theAsset.draggable({
-                    helper: function(event){
+                    helper: function helper(event){
                         return imageComponentTemplate.clone()
                         .find("img").attr("src",obj.location+"/"+obj.thumb).end()
                         .data("component","ImageComponent")
-                        .data("extra",{originalAssetID: obj.ID})
+                        .data("extra",{
+                            originalAssetID: obj.id
+                        })
                         .appendTo(mxBuilder.layout.container);
+                    },
+                    dragstop: function dragstop(event, ui){
+                        ui.helper.remove();
                     }
                 });
             },
@@ -123,7 +127,8 @@
             medium: "1-m.jpg",
             small: "1-s.jpg",
             thumb: "1-t.jpg",
-            ratio: 1.5985
+            ratio: 1.5985,
+            id: 12
         });
         
     });

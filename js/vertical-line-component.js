@@ -1,6 +1,7 @@
 (function($){
     $(function(){
         mxBuilder.VerticalLineComponent = function VerticalLineComponent(properties){
+            this.init(properties);
             var handle = $('<div class="component-resizable-handle"/>');
             mxBuilder.Component.apply(this,[{
                 type: "VerticalLineComponent",
@@ -38,7 +39,5 @@
                 return theContent;
             }
         }).appendTo(mxBuilder.layout.menu);
-    });
-    
-    
+    }); 
 }(jQuery))

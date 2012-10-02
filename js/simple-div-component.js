@@ -40,7 +40,18 @@
             });
         }
         $.extend(mxBuilder.SimpleDiv.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".simple-div").remove()
+            template: mxBuilder.layout.templates.find(".simple-div").remove(),
+            save: function save(){
+                var out = mxBuilder.Component.prototype.save.call(this);
+                out.data.html = this.element.html();
+                return out;
+            },
+            init: function init(properties){
+                mxBuilder.Component.prototype.init.call(this,properties);
+                if(properties.data.html){
+                    properties.element.html(properties.data.html);
+                }
+            }
         });
 
         $('<div class="simple-div-comp menu-item">Simple Div</div>').draggable({

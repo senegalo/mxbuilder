@@ -130,7 +130,7 @@
 
 
             <div id="header-content">
-                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
+<!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
                 <h1 id="site-title" class="an-item site-title">Lawyer & Lawyer</h1>
                 <div class="an-item slogan" id="slogan">attorneys at law</div>
 
@@ -140,7 +140,7 @@
                     <a class="menu-item" href="about.html">About</a>
                     <a class="menu-item" href="contact.html">Contact</a>
 
-                </div>
+                </div>-->
 
             </div>
             <div id="body-content">
@@ -149,7 +149,7 @@
                                 </div>-->
 
 
-                <div class="an-item p" id="p01">
+<!--                <div class="an-item p" id="p01">
                     <span class="p-title">Hello world</span>
                     I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
                     I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
@@ -174,14 +174,14 @@
 
                 <a href="#" id="b01" class="an-item button">
                     MORE
-                </a>
+                </a>-->
 
             </div>
 
             <div id="footer-content">
-                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
+<!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
                 <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
-                <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>
+                <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>-->
             </div>
         </div>
 
@@ -280,7 +280,7 @@
                     <label for="linkto-external">Open in a Lightbox</label>
                 </div>
             </div>
-            <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,0.5);border-radius:6px;"></div>
+            <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
             <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
             <div class="simple-div" style="height:100px;width:400px;padding:5px;overflow:hidden;z-index:10000;">
                 I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.
