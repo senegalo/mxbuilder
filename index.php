@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="margin-top:28px;">
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -116,16 +116,20 @@
         <script type="text/javascript" src="js/dialogs/components-background.js"></script>
         <script type="text/javascript" src="js/dialogs/image-component-settings.js"></script>
         <script type="text/javascript" src="js/dialogs/pages-add-edit-dialog.js"></script>
+        <script type="text/javascript" src="js/dialogs/alert-dialog.js"></script>
 
         <script type="text/javascript" src="js/init.js"></script>
     </head>
     <body>
-        
-        <div id="toolbar" style="position:fixed;top:0px;left:0px;width:100%;height:20px;background-color: #c4c4c4;padding:4px;z-index: 100000009;">
-            Pages: <select id="website-pages"></select> <button id="add-pages">Add Pages</button>
-        </div>
 
-        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:100px;height:200px;margin-top:-100px;z-index:10000009"></div>
+        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:250px;margin-top:-125px;z-index:10000009;background-color:#e4e4e4;">
+            <div class="menu-item">
+                <select id="website-pages" style="width:190px"></select>
+            </div>
+            <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
+            <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
+            <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
+        </div>
         <div id="header" style="height: 100px;" ></div>        
         <div id="body" style="height: 300px;"></div>
         <div id="footer" style="height: 100px;" ></div>
@@ -136,17 +140,17 @@
 
 
             <div id="header-content">
-<!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
-                <h1 id="site-title" class="an-item site-title">Lawyer & Lawyer</h1>
-                <div class="an-item slogan" id="slogan">attorneys at law</div>
-
-                <div class="an-item menu" id="menu01">
-
-                    <a class="menu-item" href="index.html">Home</a>
-                    <a class="menu-item" href="about.html">About</a>
-                    <a class="menu-item" href="contact.html">Contact</a>
-
-                </div>-->
+                <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
+                                <h1 id="site-title" class="an-item site-title">Lawyer & Lawyer</h1>
+                                <div class="an-item slogan" id="slogan">attorneys at law</div>
+                
+                                <div class="an-item menu" id="menu01">
+                
+                                    <a class="menu-item" href="index.html">Home</a>
+                                    <a class="menu-item" href="about.html">About</a>
+                                    <a class="menu-item" href="contact.html">Contact</a>
+                
+                                </div>-->
 
             </div>
             <div id="body-content">
@@ -155,39 +159,39 @@
                                 </div>-->
 
 
-<!--                <div class="an-item p" id="p01">
-                    <span class="p-title">Hello world</span>
-                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-
-                </div>
-
-                <div class="an-item p" id="p02">
-                    <span class="p-title">About ...</span>
-                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-
-                </div>
-
-                <div class="an-item box" id="box01">
-                </div>
-
-                <div class="an-item p" id="p03">
-                    <span style="color:white">
-                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text”.
-                    </span>
-                </div>
-
-                <a href="#" id="b01" class="an-item button">
-                    MORE
-                </a>-->
+                <!--                <div class="an-item p" id="p01">
+                                    <span class="p-title">Hello world</span>
+                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                
+                                </div>
+                
+                                <div class="an-item p" id="p02">
+                                    <span class="p-title">About ...</span>
+                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                
+                                </div>
+                
+                                <div class="an-item box" id="box01">
+                                </div>
+                
+                                <div class="an-item p" id="p03">
+                                    <span style="color:white">
+                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text”.
+                                    </span>
+                                </div>
+                
+                                <a href="#" id="b01" class="an-item button">
+                                    MORE
+                                </a>-->
 
             </div>
 
             <div id="footer-content">
-<!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
-                <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
-                <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>-->
+                <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
+                                <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
+                                <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>-->
             </div>
         </div>
 
@@ -273,7 +277,7 @@
                 <div>
                     <div style="display:inline-block;">
                         <input type="radio" name="link_type" value="page" id="linkto-page">
-                    <label for="linkto-external">Link to a page</label>
+                        <label for="linkto-external">Link to a page</label>
                     </div>
                     <div style="display:inline-block;">
                         <select name="page">
@@ -296,6 +300,20 @@
                     <input type="text" id="page-html-title"/>
                 </div>
                 <div>
+                    <label for="page-parent">Parent Page: </label>
+                    <select id="page-parent">
+                        
+                    </select>
+                </div>
+                <div>
+                    <label for="page-show-in-menu">Show in menu:</label>
+                    <input type="checkbox" id="page-show-in-menu" checked="checked"/>
+                </div>
+                <div>
+                    <label for="page-address">Address:</label>
+                    <input type="text" name="page-address"/>
+                </div>
+                <div>
                     <label for="page-desc">Description</label>
                     <input type="text" id="page-desc"/>
                 </div>
@@ -314,6 +332,7 @@
                 <div class="content" style="word-wrap: break-word;">I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.</div>
             </div>
             <div class="vline-component-instance" style="height:200px;width:1px;background-color:black;"></div>
+            <div class="alert-dialog"></div>
         </div>
     </body>
 </html>

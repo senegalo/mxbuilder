@@ -72,20 +72,38 @@
                                     type: "sep"
                                 });
                             }
+                            
+                            if(obj.pinnable !== false){
+                                ctx.addItem({
+                                    label: "Pin",
+                                    checked: theComponent.isPinned()?true:false,
+                                    callback: function(){
+                                        if(theComponent.isPinned()){
+                                            theComponent.unpin();
+                                        } else {
+                                            theComponent.pin();
+                                        }
+                                    }
+                                })
+                            }
                         
                             //Adding Delete ctx menu
-                            ctx.addItem({
-                                label: "Delete",
-                                callback: function(){
-                                    mxBuilder.dialogs.deleteComponents(function(){
-                                        theComponent.element.trigger("destroy"); 
-                                    });
-                                }
-                            });
+                            if(obj.deletable !== false){
+                                ctx.addItem({
+                                    label: "Delete",
+                                    callback: function(){
+                                        mxBuilder.dialogs.deleteDialog({
+                                            msg: "Are you sure you want to delete the selected component(s) ?",
+                                            callback: function(){
+                                                theComponent.element.trigger("destroy"); 
+                                            }
+                                        });
+                                    }
+                                });
+                            }
                         }
                     }
                 }
-                
             });
                 
             //Making it draggable
@@ -304,6 +322,17 @@
                 that.trigger("destroy"); 
             });
         },
+        pin: function pin(){
+            mxBuilder.pages.pinComponent(this);
+            this.pinned = true;
+        },
+        unpin: function unpin(){
+            mxBuilder.pages.unpinComponent(this);
+            this.pinned = false;
+        },
+        isPinned: function isPinned(){
+            return this.pinned;
+        },
         save: function save(){
             var out = {
                 css: {},
@@ -365,6 +394,10 @@
                             extra: ui.helper.data("extra")
                         }
                     });
+                    if(container == "header" || container == "footer"){
+                        theComponent.pin();
+                    }
+                    
                     theComponent.setContainer(container);
                     mxBuilder.selection.clearSelection();
                     mxBuilder.selection.addToSelection(theComponent.element);
@@ -403,8 +436,11 @@
         $(document).on({
             keyup: function keyup(event){
                 if(event.keyCode == 46){
-                    mxBuilder.dialogs.deleteComponents(function(){
-                        mxBuilder.selection.getSelection().trigger("destroy"); 
+                    mxBuilder.dialogs.deleteDialog({
+                        msg: "Are you sure you want to delete the selected component(s) ?",
+                        callback: function callback(){
+                            mxBuilder.selection.getSelection().trigger("destroy"); 
+                        }
                     });
                 }
             }

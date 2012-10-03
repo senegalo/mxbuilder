@@ -70,6 +70,7 @@
             layoutHeader: $("#header"),
             layoutFooter: $("#footer"),
             menu: $("#menu"),
+            pagesSelect: $("#website-pages"),
             templates: $("#templates").remove()
         });
         

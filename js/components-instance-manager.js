@@ -17,7 +17,8 @@
             return this.__components[mxBuilder.utils.getElementGUID(instance)];
         },
         removeComponent: function removeComponent(instance){
-            delete this.__components[mxBuilder.utils.getElementGUID(instance)];
+            var id = mxBuilder.utils.getElementGUID(instance);
+            delete this.__components[id];
         },
         getNextZIndex: function getNextZIndex(){
             return this.__zIndex++;
@@ -42,6 +43,23 @@
                 out.push(this.__components[c].save());
             }
             return out;
+        },
+        clearAndRestore: function clearAndRestore(components){
+            //clearing unwanted components
+            for(var i in this.__components){
+                if(components[i]){
+                    continue;
+                }
+                this.__components[i].destroy();
+            }
+            
+            //restoring components
+            for(i in components){
+                if(this.__components[i]){
+                    continue;
+                }
+                this.addComponent(components[i]);
+            }
         }
     };
 }(jQuery));
