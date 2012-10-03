@@ -59,12 +59,12 @@
                                         theComponent.bringToBack();
                                     }
                                 }).addItem({
-                                    label: "Bront to top",
+                                    label: "Bring to top",
                                     callback: function(){
                                         theComponent.bringToTop();
                                     }
                                 }).addItem({
-                                    label: "Bront to bottom",
+                                    label: "Bring to bottom",
                                     callback: function(){
                                         theComponent.bringToBottom();
                                     }

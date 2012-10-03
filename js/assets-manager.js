@@ -1,26 +1,28 @@
 (function($){
     
     $(function(){
-        var theDialog, assetTemplate, uploader, imageComponentTemplate;
+        var theDialog, imageAssetTemplate, documentAssetTemplate, uploader, imageComponentTemplate;
         
         (function init(){
             
             
-            assetTemplate = mxBuilder.layout.templates.find(".assets-template").removeClass("assets-template").remove();
+            imageAssetTemplate = mxBuilder.layout.templates.find(".assets-image-template").removeClass("assets-image-stemplate").remove();
+            documentAssetTemplate = mxBuilder.layout.templates.find(".assets-document-template").removeClass("assets-document-template").remove();
             imageComponentTemplate = mxBuilder.layout.templates.find(".image-component-instance").clone();
-        
+            
             theDialog = mxBuilder.layout.templates.find(".assets-upload-dialog").remove().dialog({
                 autoOpen: false,
                 zIndex: 1000008,
                 title: "Assets Manager",
                 resizable: false,
-                width: 300,
+                width: 350,
                 buttons: {
                     Close: function Close(){
                         $(this).dialog("close");
                     }
                 }
-            });
+            }).find(".assets-tabs").tabs().end();
+            
         
             $('<div class="assets-manager menu-item" style="font-weight:bold;cursor:pointer">Assets</div>').appendTo(mxBuilder.layout.menu).on({
                 click: function(){
@@ -91,30 +93,33 @@
         mxBuilder.assets = {
             __assets: {},
             add: function(obj){                
-                //preping the stamp
-                var theAsset = assetTemplate.clone().find("img").attr("src",obj.location+"/"+obj.thumb)
-                .end()
-                .appendTo(theDialog.find("#assets-container"));
+                //preping the template
+                var template;
+                if(obj.type == "image"){
+                    template = imageAssetTemplate.clone().find("img").attr("src",obj.location+"/"+obj.thumb)
+                    .end()
+                    .appendTo(theDialog.find("#assets-images-container")).draggable({
+                        helper: function helper(event){
+                            return imageComponentTemplate.clone()
+                            .find("img").attr("src",obj.location+"/"+obj.thumb).end()
+                            .data("component","ImageComponent")
+                            .data("extra",{
+                                originalAssetID: obj.id
+                            })
+                            .appendTo(mxBuilder.layout.container);
+                        },
+                        dragstop: function dragstop(event, ui){
+                            ui.helper.remove();
+                        }
+                    });
+                } else {
+                    template = documentAssetTemplate.clone().appendTo(theDialog.find("#assets-document-container"));
+                }
                 
+                template.find(".name").text(obj.name);
                 
                 //Generating and assining the instance an id
                 this.__assets[obj.id] = obj;
-                
-                //making the assets draggable
-                theAsset.draggable({
-                    helper: function helper(event){
-                        return imageComponentTemplate.clone()
-                        .find("img").attr("src",obj.location+"/"+obj.thumb).end()
-                        .data("component","ImageComponent")
-                        .data("extra",{
-                            originalAssetID: obj.id
-                        })
-                        .appendTo(mxBuilder.layout.container);
-                    },
-                    dragstop: function dragstop(event, ui){
-                        ui.helper.remove();
-                    }
-                });
             },
             get: function(id){
                 return this.__assets[id];
@@ -122,13 +127,35 @@
         }
         
         mxBuilder.assets.add({
+            type: "image",
             location: "http://dev.2mhost.com/mxbuilder/uploads",
+            name: "MyFirstImage",
             full: "1-f.jpg",
             medium: "1-m.jpg",
             small: "1-s.jpg",
             thumb: "1-t.jpg",
             ratio: 1.5985,
-            id: 12
+            id: 10
+        });
+        
+        mxBuilder.assets.add({
+            type: "image",
+            location: "http://dev.2mhost.com/mxbuilder/uploads",
+            name: "MySecondImage",
+            full: "1-f.jpg",
+            medium: "1-m.jpg",
+            small: "1-s.jpg",
+            thumb: "1-t.jpg",
+            ratio: 1.5985,
+            id: 11
+        });
+        
+        mxBuilder.assets.add({
+            type: "document",
+            location: "http://dev.2mhost.com/mxbuilder/uploads",
+            filename: "test.pdf",
+            name: "important file",
+            id: 50
         });
         
     });

@@ -205,7 +205,16 @@
                 <hr/>
                 <div id="assets-upload-files-info"></div>
                 <hr/>
-                <div id="assets-container"></div><div style="clear:both;"></div>
+
+                <div class="assets-tabs">
+                    <ul>
+                        <li><a href="#assets-images-container">Images</a></li>
+                        <li><a href="#assets-document-container">Documents</a></li>
+                    </ul>
+                    <div id="assets-images-container"></div>
+                    <div id="assets-document-container"></div>
+                    <div style="clear:both;"></div>
+                </div>
             </div>
 
             <div class="image-component-chtitle-dialog">
@@ -246,13 +255,19 @@
                 </div>
             </div>
 
-            <div class="image-component-instance">
+            <div class="image-component-instance" style="z-index:10000000000;">
                 <img src="" alt="" title=""/>
                 <div class="caption"></div>
             </div>
 
-            <div class="assets-template" style="float:left;width:100px;height:100px;margin:10px;">
+            <div class="assets-image-template" style="float:left;width:100px;height:100px;margin:10px;">
                 <img src="" alt="" title=""/>
+                <div class="name"></div>
+            </div>
+
+            <div class="assets-document-template" style="float:left;width:100px;height:100px;margin:10px;">
+                <img src="images/document.png" style="height:80px;width:auto;" alt="" title=""/>
+                <div class="name"></div>
             </div>
 
             <div class="linkto-dialog">
@@ -302,7 +317,7 @@
                 <div>
                     <label for="page-parent">Parent Page: </label>
                     <select id="page-parent">
-                        
+
                     </select>
                 </div>
                 <div>
