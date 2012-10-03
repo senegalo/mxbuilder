@@ -13,6 +13,9 @@
             //Context Menus
             obj.element.on({
                 mousedown: function mousedown(event){
+                    
+                    var ctx = mxBuilder.contextmenu.getMainCtx();
+                    
                     if(mxBuilder.selection.getSelectionCount() < 2){
                         if(event.which == 3){
                             var theComponent = mxBuilder.components.getComponent(obj.element);
@@ -22,8 +25,6 @@
                                 mxBuilder.selection.clearSelection();
                                 mxBuilder.selection.addToSelection(obj.element);
                             }
-                        
-                            var ctx = mxBuilder.contextmenu.getMainCtx();
                             
                             //The Background manipulation context
                             if(obj.ctxEditableBackground){
@@ -102,6 +103,39 @@
                                 });
                             }
                         }
+                    } else {
+                        //Alignment Menu
+                        ctx.addItem({
+                            label: "Align Left",
+                            callback: function(){
+                                mxBuilder.components.alignment.alignLeft();
+                            }
+                        }).addItem({
+                            label: "Align Right",
+                            callback: function(){
+                                mxBuilder.components.alignment.alignRight();
+                            }
+                        }).addItem({
+                            label: "Align Top",
+                            callback: function(){
+                                mxBuilder.components.alignment.alignTop();
+                            }
+                        }).addItem({
+                            label: "Align Bottom",
+                            callback: function(){
+                                mxBuilder.components.alignment.alignBottom();
+                            }
+                        }).addItem({
+                            label: "Center Vertically",
+                            callback: function(){
+                                mxBuilder.components.alignment.centerVertically();
+                            }
+                        }).addItem({
+                            label: "Center Horizontally",
+                            callback: function(){
+                                mxBuilder.components.alignment.centerHorizontally();
+                            }
+                        })
                     }
                 }
             });

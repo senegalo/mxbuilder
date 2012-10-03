@@ -96,6 +96,7 @@
         <script type="text/javascript" src="js/ctx-menu.js"></script>
         <script type="text/javascript" src="js/page_manager.js"></script>
         <script type="text/javascript" src="js/components-instance-manager.js"></script>
+        <script type="text/javascript" src="js/components-alignment.js"></script>
         <script type="text/javascript" src="js/assets-manager.js"></script>
         <script type="text/javascript" src="js/selection.js"></script>
         <script type="text/javascript" src="js/components.js"></script>
