@@ -16,7 +16,7 @@
                     
                     var ctx = mxBuilder.contextmenu.getMainCtx();
                     
-                    if(mxBuilder.selection.getSelectionCount() < 2){
+                    if(mxBuilder.selection.getSelectionCount() < 2 || mxBuilder.selection.isAllSelectedSameType()){
                         if(event.which == 3){
                             var theComponent = mxBuilder.components.getComponent(obj.element);
                             if(mxBuilder.selection.getSelectionCount() == 0){
@@ -31,7 +31,7 @@
                                 ctx.addItem({
                                     label: "Background Style...",
                                     callback: function(){
-                                        mxBuilder.dialogs.componentsBackground.show(theComponent.element);
+                                        mxBuilder.dialogs.componentsBackground.show(mxBuilder.selection.getSelection());
                                     }
                                 });
                             }
@@ -41,12 +41,12 @@
                                 ctx.addItem({
                                     label: "Border Style...",
                                     callback: function(){
-                                        mxBuilder.dialogs.componentsBorder.show(theComponent.element);
+                                        mxBuilder.dialogs.componentsBorder.show(mxBuilder.selection.getSelection());
                                     }
                                 });
                             }
                             //Activating Z-Index Manipulation context
-                            if(obj.ctxZIndex){                       
+                            if(obj.ctxZIndex && mxBuilder.selection.getSelectionCount() < 2){                       
                                 ctx.addSubgroup({ 
                                     label:"Z Position" 
                                 }).addItem({
@@ -75,17 +75,26 @@
                             }
                             
                             if(obj.pinnable !== false){
+                                var pinned = true;
+                                mxBuilder.selection.getSelection().each(function(){
+                                    if(!mxBuilder.components.getComponent($(this)).isPinned()){
+                                        pinned = false;
+                                    }
+                                });
                                 ctx.addItem({
                                     label: "Pin",
-                                    checked: theComponent.isPinned()?true:false,
+                                    checked: pinned,
                                     callback: function(){
-                                        if(theComponent.isPinned()){
-                                            theComponent.unpin();
-                                        } else {
-                                            theComponent.pin();
-                                        }
+                                        mxBuilder.selection.getSelection().each(function(){
+                                            var theComponent = mxBuilder.components.getComponent($(this));
+                                            if(pinned){
+                                                theComponent.unpin();
+                                            } else {
+                                                theComponent.pin();
+                                            }
+                                        });
                                     }
-                                })
+                                });
                             }
                         
                             //Adding Delete ctx menu
@@ -96,16 +105,19 @@
                                         mxBuilder.dialogs.deleteDialog({
                                             msg: "Are you sure you want to delete the selected component(s) ?",
                                             callback: function(){
-                                                theComponent.element.trigger("destroy"); 
+                                                mxBuilder.selection.getSelection().trigger("destroy"); 
                                             }
                                         });
                                     }
                                 });
                             }
                         }
-                    } else {
+                    } 
+                    if(mxBuilder.selection.getSelectionCount() > 1){
                         //Alignment Menu
-                        ctx.addItem({
+                        ctx.addSubgroup({
+                            label: "Alignment"
+                        }).addItem({
                             label: "Align Left",
                             callback: function(){
                                 mxBuilder.components.alignment.alignLeft();
@@ -135,7 +147,8 @@
                             callback: function(){
                                 mxBuilder.components.alignment.centerHorizontally();
                             }
-                        })
+                        });
+                        
                     }
                 }
             });
@@ -268,6 +281,7 @@
             //Making it deletable
             obj.element.on({
                 destroy: function destroy(){
+                    mxBuilder.pages.detachComponentFromPage(mxBuilder.components.getComponent(obj.element));
                     mxBuilder.selection.removeFromSelection(obj.element);
                     mxBuilder.components.getComponent(obj.element).destroy();
                 }

@@ -117,6 +117,18 @@
             },
             getPageCount: function getPageCount(){
                 return Object.keys(this.__pages).length;
+            },
+            removeImgComponentFromPages: function removeImgComponentFromPages(assetID){
+                for(var p in this.__pages){
+                    if(p == this.__currentPage){
+                        continue;
+                    }
+                    for(var c in this.__pages[p].components){
+                        if(this.__pages[p].components[c].data.extra.originalAssetID == assetID){
+                            delete this.__pages[p].components[c];
+                        }
+                    }
+                }
             }
         }
         

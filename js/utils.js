@@ -44,6 +44,24 @@
                 },
                 toHex: function toHex(){
                     return "#" + ((1 << 24) + (parseInt(this.r,10) << 16) + (parseInt(this.g,10) << 8) + parseInt(this.b)).toString(16).slice(1);
+                },
+                equal: function equal(rgba){
+                    var out = {};
+                    var success = true;
+                    for(var p in this){
+                        if(p == "toString" || p == "toHex"  || p == "equal"){
+                            out[p] = this[p];
+                            continue;
+                        }
+                        if(this[p] != rgba[p]){
+                            out[p] = false;
+                            out.dirty = true;
+                            success = false;
+                        } else {
+                            out[p] = this[p];
+                        }
+                    }
+                    return out;
                 }
             };
         }

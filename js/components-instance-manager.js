@@ -13,8 +13,18 @@
             }
             return this.__components[guid];
         },
-        getComponent: function getComponent(instance){
-            return this.__components[mxBuilder.utils.getElementGUID(instance)];
+        getComponent: function getComponent(element){
+            element = $(element);
+            return this.__components[mxBuilder.utils.getElementGUID(element)];
+        },
+        getComponentsByAssetID: function getComponentsByAssetID(assetID){
+            var out = {};
+            for(var c in this.__components){
+                if(this.__components[c].type == "ImageComponent" && this.__components[c].extra.originalAssetID == assetID){
+                    out[c] =  this.__components[c];
+                }
+            }
+            return out;
         },
         removeComponent: function removeComponent(instance){
             var id = mxBuilder.utils.getElementGUID(instance);

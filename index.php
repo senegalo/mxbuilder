@@ -217,6 +217,23 @@
                     <div style="clear:both;"></div>
                 </div>
             </div>
+            
+            <div class="image-component-instance" style="z-index:10000000000;">
+                <img src="" alt="" title=""/>
+                <div class="caption"></div>
+            </div>
+
+            <div class="assets-image-template" style="float:left;width:100px;height:100px;margin:10px;">
+                <img src="" alt="" title=""/>
+                <div class="name"></div>
+                <button class="delete-asset">Delete</button>
+            </div>
+
+            <div class="assets-document-template" style="float:left;width:100px;height:100px;margin:10px;">
+                <img src="images/document.png" style="height:60px;width:auto;" alt="" title=""/>
+                <div class="name"></div>
+                <button class="delete-asset">Delete</button>
+            </div>
 
             <div class="image-component-chtitle-dialog">
                 <div>
@@ -254,21 +271,6 @@
                     <label for="component-border-color">Opacity:</label>
                     <input type="number" min="0" max="100" step="1" id="component-border-opacity"/>%
                 </div>
-            </div>
-
-            <div class="image-component-instance" style="z-index:10000000000;">
-                <img src="" alt="" title=""/>
-                <div class="caption"></div>
-            </div>
-
-            <div class="assets-image-template" style="float:left;width:100px;height:100px;margin:10px;">
-                <img src="" alt="" title=""/>
-                <div class="name"></div>
-            </div>
-
-            <div class="assets-document-template" style="float:left;width:100px;height:100px;margin:10px;">
-                <img src="images/document.png" style="height:80px;width:auto;" alt="" title=""/>
-                <div class="name"></div>
             </div>
 
             <div class="linkto-dialog">

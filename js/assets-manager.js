@@ -96,7 +96,26 @@
                 //preping the template
                 var template;
                 if(obj.type == "image"){
-                    template = imageAssetTemplate.clone().find("img").attr("src",obj.location+"/"+obj.thumb)
+                    template = imageAssetTemplate.clone().data("id",obj.id).addClass("asset-"+obj.id)
+                    .find("img")
+                    .attr("src",obj.location+"/"+obj.thumb)
+                    .end()
+                    .find(".delete-asset").on({
+                        click: function(){
+                            var msg;
+                            if(obj.type == "image"){
+                                msg = "Are you sure you want to delete the selected image ?<br/> doing so will remove every instance of them in all the pages."
+                            } else {
+                                msg = "Are you sure you want remove the selected document ?<br/> if it is linked anywhere the links will no longer work.";
+                            }
+                            mxBuilder.dialogs.deleteDialog({
+                                msg: msg,
+                                callback: function(){
+                                    mxBuilder.assets.remove(obj.id);
+                                }
+                            });
+                        }
+                    })
                     .end()
                     .appendTo(theDialog.find("#assets-images-container")).draggable({
                         helper: function helper(event){
@@ -123,6 +142,23 @@
             },
             get: function(id){
                 return this.__assets[id];
+            },
+            remove: function(id){
+                if(this.__assets[id].type == "image"){
+                    //remove the image from any active component
+                    var components = mxBuilder.components.getComponentsByAssetID(id);
+                    for(var c in components){
+                            mxBuilder.pages.detachComponentFromPage(components[c]);
+                            mxBuilder.selection.removeFromSelection(components[c].element);
+                            components[c].destroy();
+                    }
+                
+                    //remove from other pages
+                    mxBuilder.pages.removeImgComponentFromPages(id);
+                }
+                //removing the image from the assets manager
+                theDialog.find(".asset-"+id).remove();
+                delete this.__assets[id];
             }
         }
         
@@ -148,6 +184,28 @@
             thumb: "1-t.jpg",
             ratio: 1.5985,
             id: 11
+        });
+        mxBuilder.assets.add({
+            type: "image",
+            location: "http://dev.2mhost.com/mxbuilder/uploads",
+            name: "MyThirdImage",
+            full: "1-f.jpg",
+            medium: "1-m.jpg",
+            small: "1-s.jpg",
+            thumb: "1-t.jpg",
+            ratio: 1.5985,
+            id: 12
+        });
+        mxBuilder.assets.add({
+            type: "image",
+            location: "http://dev.2mhost.com/mxbuilder/uploads",
+            name: "MyFourthImage",
+            full: "1-f.jpg",
+            medium: "1-m.jpg",
+            small: "1-s.jpg",
+            thumb: "1-t.jpg",
+            ratio: 1.5985,
+            id: 13
         });
         
         mxBuilder.assets.add({

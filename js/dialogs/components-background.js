@@ -18,8 +18,13 @@
             keydown: mxBuilder.utils.suppressNonDigitKeyEvent,
             input: function input(){
                 var rgba = mxBuilder.dialogs.componentsBackground.getColor();
-                rgba.a = $(this).val()/100;
-                mxBuilder.dialogs.componentsBackground.setColor(rgba);
+                var opacity =  $(this).val()/100;
+                if(rgba.dirty !== true){
+                    rgba.a = opacity;
+                    mxBuilder.dialogs.componentsBackground.setColor(rgba);
+                } else {
+                    mxBuilder.dialogs.componentsBackground.setOpacityIndividually(opacity);
+                }
             }
         })
         .end()
@@ -29,10 +34,17 @@
                 var colors = that.val().match(/^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/);
                 if(colors){
                     var theColor = mxBuilder.dialogs.componentsBackground.getColor();
-                    theColor.r = parseInt(colors[1],16);
-                    theColor.g = parseInt(colors[2],16);
-                    theColor.b = parseInt(colors[3],16);
-                    mxBuilder.dialogs.componentsBackground.setColor(theColor);
+                    var newColor = {
+                        r: parseInt(colors[1],16),
+                        g: parseInt(colors[2],16), 
+                        b: parseInt(colors[3],16)
+                    }
+                    if(theColor.dirty !== true){
+                        $.extend(theColor,newColor);
+                        mxBuilder.dialogs.componentsBackground.setColor(theColor);
+                    } else {
+                        mxBuilder.dialogs.componentsBackground.setBackgroundColorIndividually(newColor);
+                    }
                 }
             }
         })
@@ -56,25 +68,68 @@
     
         mxBuilder.dialogs.componentsBackground = {
             __theDialog: theDialog,
-            __instance: null,
-            show: function show(instance){
-                //cache the instances
-                this.__instance = instance.find(".apply-background");
-                this.__instance = this.__instance.length == 0 ? instance : this.__instance;
+            __elements: null,
+            show: function show(elements){
+                //cache the elements
+                this.__elements = elements.find(".apply-background");
+                this.__elements = this.__elements.length == 0 ? elements : this.__elements;
                 
-                this.setColor(this.getColor());
+                var selectedColor = this.getColor();
+                
+                this.setColor(selectedColor);
                 this.__theDialog.dialog("open");
                 mxBuilder.activeStack.push(this.__theDialog);
             },
             getColor: function getColor(){
-                var color = this.__instance.css("backgroundColor");
-                return mxBuilder.utils.getColorObj(color);
+                var selectedColor = null;
+                this.__elements.each(function(){
+                    
+                    var that = $(this);
+                    var color = that.css("backgroundColor");
+                    
+                    color = mxBuilder.utils.getColorObj(color);
+                    if(selectedColor === null){
+                        selectedColor = color;
+                    } else {
+                        selectedColor = selectedColor.equal(color)
+                    }
+                });
+                return selectedColor;
             },
             setColor: function setColor(rgba){
-                this.__instance.css("backgroundColor",rgba.toString());
-                this.__theDialog.find("#component-background-color").val(rgba.toHex())
-                .end()
-                .find("#component-background-opacity").val(rgba.a*100);
+                if(rgba.dirty !== true){
+                    this.__elements.css("backgroundColor",rgba.toString());
+                    this.__theDialog.find("#component-background-color").val(rgba.toHex())
+                    .end()
+                    .find("#component-background-opacity").val(rgba.a*100);
+                } else {
+                    if(!rgba.r || !rgba.b || !rgba.g){
+                        this.__theDialog.find("#component-background-color").val('')
+                    } else {
+                         this.__theDialog.find("#component-background-color").val(rgba.toHex());
+                    }
+                    if(!rgba.a){
+                        this.__theDialog.find("#component-background-opacity").val('');
+                    } else {
+                        this.__theDialog.find("#component-background-opacity").val(rgba.a*100);
+                    }
+                }
+            },
+            setOpacityIndividually: function setOpacityIndividually(opacity){
+                this.__elements.each(function(){
+                    var that = $(this);
+                    var parsedElementColor = mxBuilder.utils.getColorObj(that.css("backgroundColor"));
+                    parsedElementColor.a = opacity;
+                    that.css("backgroundColor", parsedElementColor.toString());
+                });
+            },
+            setBackgroundColorIndividually: function setBackgroundColorIndividually(color){
+                this.__elements.each(function(){
+                    var that = $(this);
+                    var parsedElementColor = mxBuilder.utils.getColorObj(that.css("backgroundColor"));
+                    $.extend(parsedElementColor,color);
+                    that.css("backgroundColor", parsedElementColor.toString());
+                });
             }
         }
     });

@@ -2,13 +2,13 @@
     $(function(){
         
         mxBuilder.pages.addPage({
-            title: "This is a temp page"
+            title: "Home Page"
         });
         
-//        var websiteComponents = JSON.parse(localStorage.ws2);
-//        for(var i in websiteComponents){
-//            mxBuilder.components.addComponent(websiteComponents[i]);
-//        }
+        var websiteComponents = JSON.parse(localStorage.ws1);
+        for(var i in websiteComponents){
+            mxBuilder.components.addComponent(websiteComponents[i]);
+        }
         
     });
     

@@ -119,6 +119,18 @@
             }
             return out.not(exclude);
         },
+        isAllSelectedSameType: function isAllSelectedSameType(){
+            var oldType = false;
+            var currentType;
+            for(var item in this.__selected){
+                currentType = mxBuilder.components.getComponent(this.__selected[item]).type;
+                if(currentType != oldType && oldType !== false){
+                    return false;
+                }
+                oldType = currentType;
+            }
+            return true;
+        },
         isSelected: function isSelected(instance){
             instance = $(instance);
             return this.__selected[mxBuilder.components.getComponent(instance).getID()]?true:false;

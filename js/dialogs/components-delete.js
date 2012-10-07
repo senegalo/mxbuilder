@@ -19,9 +19,9 @@
             }
         });
     });
-    mxBuilder.dialogs.deleteDialog = function deleteDialog(obj){
+    mxBuilder.dialogs.deleteDialog = function(obj){
         obj.msg = obj.msg ? obj.msg : "Please confirm the delete operation.";
-        theDialog.text(obj.msg);
+        theDialog.html(obj.msg);
         currentCallback = obj.callback;
         theDialog.dialog("open");
     }

@@ -109,26 +109,33 @@
                 
                 },
                 mousedown: function mousedown(event){
-                    if(event.which === 3){
+                    if(event.which === 3 && mxBuilder.selection.isAllSelectedSameType()){
+                        var resizeMethod = {};
+                        mxBuilder.selection.getSelection().each(function(){
+                            resizeMethod[mxBuilder.components.getComponent(this).getResizeMethod()] = true;
+                        });
+                        resizeMethod = Object.keys(resizeMethod);
+                        resizeMethod = resizeMethod.length == 1 ? resizeMethod[0] : false;
+                        
                         mxBuilder.contextmenu.getMainCtx().addSubgroup({
                             label: "Resize Method"
                         }).addItem({
                             label: "Stretch",
-                            checked: self.getResizeMethod() == "stretch",
+                            checked: resizeMethod == "stretch",
                             callback: function(){
                                 self.setResizeMethod("stretch");
                                 self.element.resizable("option","aspectRatio",false).trigger("resize");
                             }
                         }).addItem({
                             label: "Center",
-                            checked: self.getResizeMethod() == "center",
+                            checked: resizeMethod == "center",
                             callback: function(){
                                 self.setResizeMethod("center");
                                 self.element.resizable("option","aspectRatio",false).trigger("resize");
                             }
                         }).addItem({
                             label: "Lock Ratio",
-                            checked: self.getResizeMethod() == "ratio",
+                            checked: resizeMethod == "ratio",
                             callback: function(){
                                 self.setResizeMethod("ratio");
                                 var imageRatio = self.getImageObj().ratio;
@@ -144,7 +151,7 @@
                             }
                         }).addItem({
                             label: "Crop",
-                            checked: self.getResizeMethod() == "crop",
+                            checked: resizeMethod == "crop",
                             callback: function(){
                                 self.setResizeMethod("crop");
                                 self.element.resizable("option","aspectRatio",false).trigger("resize");
