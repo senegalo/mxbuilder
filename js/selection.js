@@ -33,6 +33,17 @@
                 $(this).data("lastOffset",false);
             }
         });
+        
+        //Clearing selection on click
+        $(document.body).on({
+            click: function(event){
+                var theSrcElement = $(event.srcElement);
+                if(!theSrcElement.hasClass("mx-component") && theSrcElement.parents(".mx-component").length == 0){
+                    mxBuilder.selection.clearSelection();
+                }
+            }
+        });
+        
     });
     
     mxBuilder.selection = {
