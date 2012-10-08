@@ -48,16 +48,6 @@
                         mxBuilder.selection.enableMultiComponentSelect(false);
                         mxBuilder.activeStack.push(properties.element);
                 
-                        //                $(document.body).on({
-                        //                    "mousedown.text-component": function(event){
-                        //                        var component = $(event.srcElement).parents(".mx-component, .cke, .prevents-editor-close");
-                        //                        if(component.length == 0 && !$(event.srcElement).hasClass("mx-component")){
-                        //                            console.log("clearing the selection...");
-                        //                            mxBuilder.selection.clearSelection();
-                        //                        }
-                        //                    }
-                        //                });
-                
                         var height = properties.element.height();
                 
                         properties.element.css({
@@ -79,6 +69,8 @@
                             theComponent.editor.focus();
                         }
                     });
+                    
+                    theComponent.editMode = true;
                 
                 },
                 deselected: function deselected(){
@@ -114,6 +106,12 @@
                             minHeight: "",
                             height: height
                         }).off(".focus-editor").off(".editor-consume").find(".content").removeAttr("contenteditable");
+                        
+                        theComponent.editMode = false;
+                        
+                        if(content.text().replace(/(\s\n|\n\s|\s\n\r|\n\r\s)/,"") == ""){
+                            theComponent.destroy();
+                        }
                     }
                 }
             });
@@ -137,6 +135,9 @@
                 if(properties.data.text){
                     properties.element.find(".content").html(properties.data.text);
                 }
+            },
+            isEditMode: function isEditMode(){
+                return this.editMode ? true : false;
             }
         });
         $('<div class="text-component menu-item" style="cursor:move;">Text Box</div>').draggable({
