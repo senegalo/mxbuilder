@@ -2,7 +2,8 @@
     $(function(){
         
         mxBuilder.pages.addPage({
-            title: "Home Page"
+            title: "Home Page",
+            address: "home"
         });
         
         var websiteComponents = JSON.parse(localStorage.ws1);

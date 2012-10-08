@@ -1,6 +1,6 @@
 (function($){
     $(function(){
-        var linkCallback,unlinkCallback;
+        var linkCallback,unlinkCallback,cancelCallback,closeCallback;
         
         var theDialog = mxBuilder.layout.templates.find(".linkto-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             title: "Link To",
@@ -14,14 +14,13 @@
             },
             buttons: {
                 Link: function Link(){
-                    $(this).trigger("link").dialog("close");
+                    $(this).trigger("unlink").trigger("link").dialog("close");
                 },
-                "Remove Link": function (){
-                    alert("Sorry Brother... Not Implemented yet... \ntry again soo... Heeeiii2.. sorry hickup .. soon");
+                Unlink: function Unlink(){
                     $(this).trigger("unlink").dialog("close");
                 },
                 Cancel: function Cancel(){
-                    $(this).dialog("close");
+                    $(this).trigger("cancel").dialog("close");
                 }
             }
         }).on({
@@ -37,6 +36,16 @@
                 if(unlinkCallback){
                     unlinkCallback();
                 }
+            }, 
+            cancel: function(){
+                if(cancelCallback){
+                    cancelCallback();
+                }
+            },
+            dialogclose: function(){
+                if(closeCallback){
+                    closeCallback();
+                }
             }
         });
         
@@ -45,29 +54,41 @@
             show: function show(obj){
                 linkCallback = obj && obj.link ? obj.link : null;
                 unlinkCallback = obj && obj.unlink ? obj.unlink : null;
+                cancelCallback = obj && obj.cancel ? obj.cancel : null;
+                closeCallback = obj && obj.close ? obj.close : null;
                 
-                if(obj.currentLinkObj){
-                    this.setLinkObj(obj.currentLinkObj);
-                }
+                theDialog.find('select[name="page"]').empty().append(mxBuilder.layout.pagesSelect.children().clone());
+                
+                this.setLinkObj(obj.urlObj);
                 
                 theDialog.dialog("open");
             },
-            setLinkObj: function(obj){
-                theDialog.find('input[value="'+obj.type+'"]').attr("checked","checked");
-                switch(obj.type){
-                    case "external":
-                        theDialog.find('input[name="external_link"]').val(obj.url);
-                        break;
-                    case "email":
-                        theDialog.find('input[name="email"]').val();
-                        break;
-                    case "page":
-                        break;
-                    case "lightbox":
-                        break;
+            setLinkObj: function setLinkObj(obj){
+                if(obj){
+                    theDialog.find('.link-input').val('');
+                    theDialog.find('input[value="'+obj.type+'"]').attr("checked","checked");
+                    switch(obj.type){
+                        case "external":
+                            theDialog.find('input[name="external_link"]').val(obj.url);
+                            break;
+                        case "email":
+                            theDialog.find('input[name="email"]').val(obj.url);
+                            break;
+                        case "page":
+                            var address = mxBuilder.pages.getPageByAddress(obj.url.replace(/\.html$/,""));
+                            if(address){
+                                theDialog.find('select[name="page"]').val(address.id);
+                            }
+                            break;
+                    }
+                } else {
+                    theDialog.find('input[name="external_link"]').val('');
+                    theDialog.find('input[name="email"]').val('');
+                    theDialog.find('input[name=""]').val('');
+                    theDialog.find('input[name=""]').val('');
                 }
             },
-            getLinkObj: function(){
+            getLinkObj: function getLinkObj(){
                 var theUrl = {
                     type: theDialog.find('input[name="link_type"]').filter(":checked").val()
                 };
@@ -79,8 +100,8 @@
                         theUrl.url = "mailto:"+theDialog.find('input[name="email"]').val();
                         break;
                     case "page":
-                        break;
-                    case "lightbox":
+                        var thePage = mxBuilder.pages.getPageObj(theDialog.find('select[name="page"]').val());
+                        theUrl.url = thePage.address+".html";
                         break;
                 }
                 return theUrl;

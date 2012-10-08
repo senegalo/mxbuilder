@@ -21,6 +21,7 @@ CKEDITOR.editorConfig = function( config ) {
     
     config.extraPlugins = "customlink";
     
+    config.removePlugins = "link";
     
     config.toolbar = [['Styles'], 
         ['TextColor', 'Font','FontSize'],

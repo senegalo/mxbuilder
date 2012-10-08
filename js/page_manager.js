@@ -66,6 +66,14 @@
                 $.extend(out,this.__pages);
                 return out;
             },
+            getPageByAddress: function getPageByAddress(addr){
+                for(var p in this.__pages){
+                    if(this.__pages[p].address == addr){
+                        return this.__pages[p];
+                    }
+                }
+                return null;
+            },
             getCurrentPageID: function getCurrentPageID(){
                 return this.__currentPage;
             },

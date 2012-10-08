@@ -71,6 +71,9 @@
             .cke {
                 z-index: 100000;
             }
+            .cke_dialog_background_cover { 
+                display:none !important;
+            }
 
             #header,#body,#footer {
                 outline: 1px dashed #00dbff;
@@ -100,6 +103,7 @@
         <script type="text/javascript" src="js/assets-manager.js"></script>
         <script type="text/javascript" src="js/selection.js"></script>
         <script type="text/javascript" src="js/components.js"></script>
+        <script type="text/javascript" src="js/save.js"></script>
 
         <!--Loading Components-->
         <script type="text/javascript" src="js/simple-div-component.js"></script>
@@ -130,6 +134,7 @@
             <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
             <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
             <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
+            <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
@@ -282,32 +287,28 @@
                         <label for="linkto-external">External Link</label>
                     </div>
                     <div style="display:inline-block;">
-                        http://<input type="text" name="external_link"/>
+                        http://<input type="text" name="external_link" class="link-input"/>
                     </div>
                 </div>
                 <div>
                     <div style="display:inline-block">
                         <input type="radio" name="link_type" value="email" id="linkto-email">
-                        <label for="linkto-external">Email</label>
+                        <label for="linkto-email">Email</label>
                     </div>
                     <div style="display:inline-block">
-                        <input type="text" name="email"/>
+                        <input type="text" name="email" class="link-input"/>
                     </div>
                 </div>
                 <div>
                     <div style="display:inline-block;">
                         <input type="radio" name="link_type" value="page" id="linkto-page">
-                        <label for="linkto-external">Link to a page</label>
+                        <label for="linkto-page">Link to a page</label>
                     </div>
                     <div style="display:inline-block;">
-                        <select name="page">
+                        <select name="page" class="link-input">
                             <option value="">Select a page</option>
                         </select>
                     </div>
-                </div>
-                <div>
-                    <input type="radio" name="link_type" value="lightbox" id="linkto-lightbox">
-                    <label for="linkto-external">Open in a Lightbox</label>
                 </div>
             </div>
             <div class="pages-add-edit-dialog">
@@ -331,7 +332,7 @@
                 </div>
                 <div>
                     <label for="page-address">Address:</label>
-                    <input type="text" name="page-address"/>
+                    <input type="text" id="page-address"/>
                 </div>
                 <div>
                     <label for="page-desc">Description</label>
