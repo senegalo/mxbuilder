@@ -123,44 +123,53 @@
                             label: "Stretch",
                             checked: resizeMethod == "stretch",
                             callback: function(){
-                                self.setResizeMethod("stretch");
-                                self.element.resizable("option","aspectRatio",false).trigger("resize");
+                                mxBuilder.selection.each(function(element){
+                                    this.setResizeMethod("stretch");
+                                    this.element.resizable("option","aspectRatio",false).trigger("resize"); 
+                                });
                             }
                         }).addItem({
                             label: "Center",
                             checked: resizeMethod == "center",
                             callback: function(){
-                                self.setResizeMethod("center");
-                                self.element.resizable("option","aspectRatio",false).trigger("resize");
+                                mxBuilder.selection.each(function(){ 
+                                    this.setResizeMethod("center");
+                                    this.element.resizable("option","aspectRatio",false).trigger("resize");
+                                });
+                                
                             }
                         }).addItem({
                             label: "Lock Ratio",
                             checked: resizeMethod == "ratio",
                             callback: function(){
-                                self.setResizeMethod("ratio");
-                                var imageRatio = self.getImageObj().ratio;
-                                if(imageRatio > 1){
-                                    self.theImage.height(self.theImage.width()/imageRatio);
-                                    self.element.height(self.theImage.outerHeight());
-                                } else {
-                                    self.theImage.width(self.theImage.height()*imageRatio);
-                                    self.element.width(self.theImage.outerWidth());
-                                }
-                                mxBuilder.selection.revalidateSelectionContainer();
-                                self.element.resizable("option","aspectRatio",imageRatio).trigger("resize");
+                                mxBuilder.selection.each(function(){
+                                    this.setResizeMethod("ratio");
+                                    var imageRatio = this.getImageObj().ratio;
+                                    if(imageRatio > 1){
+                                        this.theImage.height(this.theImage.width()/imageRatio);
+                                        this.element.height(this.theImage.outerHeight());
+                                    } else {
+                                        this.theImage.width(this.theImage.height()*imageRatio);
+                                        this.element.width(this.theImage.outerWidth());
+                                    }
+                                    mxBuilder.selection.revalidateSelectionContainer();
+                                    this.element.resizable("option","aspectRatio",imageRatio).trigger("resize");
+                                });
                             }
                         }).addItem({
                             label: "Crop",
                             checked: resizeMethod == "crop",
                             callback: function(){
-                                self.setResizeMethod("crop");
-                                self.element.resizable("option","aspectRatio",false).trigger("resize");
+                                mxBuilder.selection.each(function(){
+                                    this.setResizeMethod("crop");
+                                    this.element.resizable("option","aspectRatio",false).trigger("resize");
+                                })
                             }
                         }).end()
                         .addItem({
                             label: "Change image title...",
                             callback: function(){
-                                mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
+                                mxBuilder.dialogs.imageComponentChangeTitle.show(mxBuilder.selection.getSelection());
                             }
                         }).addItem({
                             label: "Link To...",
@@ -174,7 +183,7 @@
                                     }
                                 });
                             }
-                        })
+                        });
                     }
                 }
             });

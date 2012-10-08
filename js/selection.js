@@ -234,6 +234,11 @@
             } else {
                 $(document.body).selectable("destroy");
             }
+        },
+        each: function each(callback){
+            this.getSelection().each(function(){
+                callback.call(mxBuilder.components.getComponent($(this)), $(this));
+            });
         }
     }
 }(jQuery));
