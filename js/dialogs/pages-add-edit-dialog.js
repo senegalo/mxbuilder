@@ -3,7 +3,7 @@
     $(function(){
         var isEdit = false;
         var pageID = null;
-        var theDialog = mxBuilder.layout.templates.find(".pages-add-edit-dialog").remove().dialog({
+        var theDialog = mxBuilder.layout.templates.find(".pages-add-edit-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             zIndex: 10000008,
             resizable: false,
             autoOpen: false,

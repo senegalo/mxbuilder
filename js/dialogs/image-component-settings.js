@@ -3,7 +3,7 @@
     var theDialog;
     
     $(function(){
-        theDialog = mxBuilder.layout.templates.find(".image-component-chtitle-dialog").remove().dialog({
+        theDialog = mxBuilder.layout.templates.find(".image-component-chtitle-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             title: "Image Settings",
             autoOpen: false,
             zIndex: 10000008,

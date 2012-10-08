@@ -35,7 +35,7 @@
         });
         
         //Clearing selection on click
-        $(document.body).on({
+        $(mxBuilder.layout.editorArea).on({
             click: function(event){
                 var theSrcElement = $(event.srcElement);
                 if(!theSrcElement.hasClass("mx-component") && theSrcElement.parents(".mx-component").length == 0){
@@ -108,6 +108,11 @@
                 instance.data("selectableItem",selectedObj);
             }
             delete this.__selected[mxBuilder.components.getComponent(instance).getID()];
+            
+            if(this.__selectionCount == 1){
+                this.getSelection().find(".component-resizable-handle").show();
+            }
+            
             if(skipSelContainerValidation !== true){
                 this.revalidateSelectionContainer();
             }

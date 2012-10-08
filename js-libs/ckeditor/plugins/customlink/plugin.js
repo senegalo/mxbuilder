@@ -5,7 +5,7 @@ CKEDITOR.plugins.add('customlink',{
             
         editor.addCommand(pluginName, {
             exec: function(editor){
-                mxBuilder.dialogs.linkto.show({
+                mxBuilder.dialogs.linkTo.show({
                     link: function(url){
                         editor.focus();
                         var style = new CKEDITOR.style({
@@ -16,6 +16,9 @@ CKEDITOR.plugins.add('customlink',{
                         });
                         style.type = CKEDITOR.STYLE_INLINE;
                         style.apply(editor);
+                    },
+                    unlink: function(){
+                        
                     }
                 });
             }

@@ -1,7 +1,7 @@
 (function($){
     
     $(function(){
-        var theDialog = mxBuilder.layout.templates.find(".alert-dialog").remove().dialog({
+        var theDialog = mxBuilder.layout.templates.find(".alert-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             zIndex: 10000008,
             resizable: false,
             autoOpen: false,

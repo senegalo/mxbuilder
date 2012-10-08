@@ -2,7 +2,8 @@
     
     $(function(){
                 
-        var theDialog = mxBuilder.layout.templates.find(".component-border-dialog").remove().find(".border-width").slider({
+        var theDialog = mxBuilder.layout.templates.find(".component-border-dialog").appendTo(mxBuilder.layout.selectionSafe)
+        .find(".border-width").slider({
             min: 0,
             max: 20,
             slide: function slide(event,ui){

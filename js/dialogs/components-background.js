@@ -1,20 +1,9 @@
 (function($){
     
     $(function(){
-        var html = '<div>';
-        html += '<div style="margin-bottom: 10px;">';
-        html += '<label for="component-border-color">Color:</label>';
-        html += '<input type="text" id="component-background-color"/>';
-        html += '</div>';
         
-        html += '<div style="margin-bottom: 10px;">';
-        html += '<label for="component-border-color">Opacity:</label>';
-        html += '<input type="number" min="0" max="100" step="1" id="component-background-opacity"/>%';
-        html += '</div>';
-        
-        html += '</div>';
-        
-        var theDialog = $(html).find("#component-background-opacity").on({
+        var theDialog =mxBuilder.layout.templates.find(".component-background-dialog").appendTo(mxBuilder.layout.selectionSafe)
+        .find("#component-background-opacity").on({
             keydown: mxBuilder.utils.suppressNonDigitKeyEvent,
             input: function input(){
                 var rgba = mxBuilder.dialogs.componentsBackground.getColor();

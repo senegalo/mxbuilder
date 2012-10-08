@@ -71,7 +71,9 @@
             layoutFooter: $("#footer"),
             menu: $("#menu"),
             pagesSelect: $("#website-pages"),
-            templates: $("#templates").remove()
+            templates: $("#templates").remove(),
+            selectionSafe: $("#selection-safe"),
+            editorArea: $("#editor-area")
         });
         
         var bodyWidth = mxBuilder.layout.body.width();

@@ -2,7 +2,7 @@
     $(function(){
         var linkCallback,unlinkCallback;
         
-        var theDialog = mxBuilder.layout.templates.find(".linkto-dialog").remove().dialog({
+        var theDialog = mxBuilder.layout.templates.find(".linkto-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             title: "Link To",
             zIndex: 10000008,
             resizable: false,

@@ -131,69 +131,71 @@
             <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
             <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
         </div>
-        <div id="header" style="height: 100px;" ></div>        
-        <div id="body" style="height: 300px;"></div>
-        <div id="footer" style="height: 100px;" ></div>
+
+        <div id="editor-area" style="width: 100%;height:100%;">
+            <div id="header" style="height: 100px;" ></div>        
+            <div id="body" style="height: 300px;"></div>
+            <div id="footer" style="height: 100px;" ></div>
+            <div id="container">
+                <div id="header-content">
+                    <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
+                                    <h1 id="site-title" class="an-item site-title">Lawyer & Lawyer</h1>
+                                    <div class="an-item slogan" id="slogan">attorneys at law</div>
+                    
+                                    <div class="an-item menu" id="menu01">
+                    
+                                        <a class="menu-item" href="index.html">Home</a>
+                                        <a class="menu-item" href="about.html">About</a>
+                                        <a class="menu-item" href="contact.html">Contact</a>
+                    
+                                    </div>-->
+
+                </div>
+                <div id="body-content">
+                    <!--                <div class="an-item" style="height:384px;width:980px;">
+                                        <img id="img01" src="images/img01l.jpg"  />
+                                    </div>-->
 
 
-        <div id="container">
+                    <!--                <div class="an-item p" id="p01">
+                                        <span class="p-title">Hello world</span>
+                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                    
+                                    </div>
+                    
+                                    <div class="an-item p" id="p02">
+                                        <span class="p-title">About ...</span>
+                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
+                    
+                                    </div>
+                    
+                                    <div class="an-item box" id="box01">
+                                    </div>
+                    
+                                    <div class="an-item p" id="p03">
+                                        <span style="color:white">
+                                            I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text”.
+                                        </span>
+                                    </div>
+                    
+                                    <a href="#" id="b01" class="an-item button">
+                                        MORE
+                                    </a>-->
 
+                </div>
 
-
-            <div id="header-content">
-                <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;"></div>
-                                <h1 id="site-title" class="an-item site-title">Lawyer & Lawyer</h1>
-                                <div class="an-item slogan" id="slogan">attorneys at law</div>
-                
-                                <div class="an-item menu" id="menu01">
-                
-                                    <a class="menu-item" href="index.html">Home</a>
-                                    <a class="menu-item" href="about.html">About</a>
-                                    <a class="menu-item" href="contact.html">Contact</a>
-                
-                                </div>-->
-
+                <div id="footer-content">
+                    <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
+                                    <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
+                                    <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>-->
+                </div>
             </div>
-            <div id="body-content">
-                <!--                <div class="an-item" style="height:384px;width:980px;">
-                                    <img id="img01" src="images/img01l.jpg"  />
-                                </div>-->
+        </div>
 
+        <div id="selection-safe">
 
-                <!--                <div class="an-item p" id="p01">
-                                    <span class="p-title">Hello world</span>
-                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                
-                                </div>
-                
-                                <div class="an-item p" id="p02">
-                                    <span class="p-title">About ...</span>
-                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                                    I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text” or double click me and you can start adding your own content and make changes to the font.
-                
-                                </div>
-                
-                                <div class="an-item box" id="box01">
-                                </div>
-                
-                                <div class="an-item p" id="p03">
-                                    <span style="color:white">
-                                        I'm a paragraph. Click here to add your own text and edit me. It’s easy. Just click “Edit Text”.
-                                    </span>
-                                </div>
-                
-                                <a href="#" id="b01" class="an-item button">
-                                    MORE
-                                </a>-->
-
-            </div>
-
-            <div id="footer-content">
-                <!--                <div class="an-item strip" style="background-color:#333;width:100%;height:100px;top:768px;"></div>
-                                <div class="an-item footer-text" id="footer1">© 2012 by Lawyer & Lawyer.</div>
-                                <div class="an-item footer-text" id="footer2"><a href="#"> Contact US</div>-->
-            </div>
         </div>
 
         <div id="templates" style="display:none;">
@@ -217,7 +219,7 @@
                     <div style="clear:both;"></div>
                 </div>
             </div>
-            
+
             <div class="image-component-instance" style="z-index:10000000000;">
                 <img src="" alt="" title=""/>
                 <div class="caption"></div>
@@ -351,6 +353,19 @@
             </div>
             <div class="vline-component-instance" style="height:200px;width:1px;background-color:black;"></div>
             <div class="alert-dialog"></div>
+            <div class="component-background-dialog">
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-color">Color:</label>
+                    <input type="text" id="component-background-color"/>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label for="component-border-color">Opacity:</label>
+                    <input type="number" min="0" max="100" step="1" id="component-background-opacity"/>%
+                </div>
+
+            </div>
         </div>
+
     </body>
 </html>

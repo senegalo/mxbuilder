@@ -1,7 +1,7 @@
 (function($){    
     var currentCallback, theDialog;
     $(function(){
-        theDialog = $("<div></div>").dialog({
+        theDialog = $("<div></div>").appendTo(mxBuilder.layout.selectionSafe).dialog({
             modal: true,
             draggable: false,
             resizable: false,
