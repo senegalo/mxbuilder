@@ -174,13 +174,16 @@
                         }).addItem({
                             label: "Link To...",
                             callback: function(){
+                                var currentLinkObj = self.getLinkObj();
                                 mxBuilder.dialogs.linkTo.show({
                                     link: function(urlObj){
-                                        self.link = urlObj;
+                                        self.setLinkObj(urlObj);
                                     },
                                     unlink: function(){
-                                        self.link = null;
-                                    }
+                                        self.setLinkObj(null);
+                                    },
+                                    lightbox: true,
+                                    urlObj: currentLinkObj
                                 });
                             }
                         });
@@ -214,6 +217,12 @@
             },
             setResizeMethod: function setResizeMethod(method){
                 this.__currentResizeMethod = method;
+            },
+            setLinkObj: function setLinkObj(obj){
+                this.linkObj = obj;
+            }, 
+            getLinkObj: function getLinkObj(){
+                return this.linkObj;
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);

@@ -287,7 +287,7 @@
                         <label for="linkto-external">External Link</label>
                     </div>
                     <div style="display:inline-block;">
-                        http://<input type="text" name="external_link" class="link-input"/>
+                        <input type="text" name="external_link" class="link-input"/>
                     </div>
                 </div>
                 <div>
@@ -310,7 +310,13 @@
                         </select>
                     </div>
                 </div>
+                
+                <div class="lightbox">
+                    <input type="radio" name="link_type" value="lightbox" id="linkto-lightbox">
+                    <label for="linkto-external">Open in a Lightbox</label>
+                </div>
             </div>
+            
             <div class="pages-add-edit-dialog">
                 <div>
                     <label for="page-title">Title:</label>

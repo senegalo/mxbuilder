@@ -59,6 +59,12 @@
                 
                 theDialog.find('select[name="page"]').empty().append(mxBuilder.layout.pagesSelect.children().clone());
                 
+                if(obj.lightbox){
+                    theDialog.find(".lightbox").show();
+                } else {
+                    theDialog.find(".lightbox").hide();
+                }
+                
                 this.setLinkObj(obj.urlObj);
                 
                 theDialog.dialog("open");
@@ -66,7 +72,7 @@
             setLinkObj: function setLinkObj(obj){
                 if(obj){
                     theDialog.find('.link-input').val('');
-                    theDialog.find('input[value="'+obj.type+'"]').attr("checked","checked");
+                    theDialog.find('.link_type').removeAttr("checked");
                     switch(obj.type){
                         case "external":
                             theDialog.find('input[name="external_link"]').val(obj.url);
@@ -79,6 +85,9 @@
                             if(address){
                                 theDialog.find('select[name="page"]').val(address.id);
                             }
+                            break;
+                        case "lightbox":
+                            
                             break;
                     }
                 } else {
@@ -94,14 +103,16 @@
                 };
                 switch(theUrl.type){
                     case "external":
-                        theUrl.url = "http://"+theDialog.find('input[name="external_link"]').val();
+                        theUrl.url = theDialog.find('input[name="external_link"]').val();
                         break;
                     case "email":
-                        theUrl.url = "mailto:"+theDialog.find('input[name="email"]').val();
+                        theUrl.url = theDialog.find('input[name="email"]').val();
                         break;
                     case "page":
                         var thePage = mxBuilder.pages.getPageObj(theDialog.find('select[name="page"]').val());
                         theUrl.url = thePage.address+".html";
+                        break;
+                    case "lightbox":
                         break;
                 }
                 return theUrl;
