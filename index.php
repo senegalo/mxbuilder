@@ -3,7 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>
+        <!--<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>-->
+        <link rel="stylesheet" href="css/blitzer/jquery-ui-1.9.0.custom.css" type="text/css"/>
         <link rel="stylesheet/less" href="css/reset.css" type="text/css" />
         <link rel="stylesheet/less" href="css/layout.css" type="text/css" />
         <link rel="stylesheet/less" href="css/theme-01.css" type="text/css" />
@@ -84,7 +85,8 @@
         <!-- Loading Libs -->
         <script type="text/javascript" src="js-libs/less.js"></script>
         <script type="text/javascript" src="js-libs/jquery-1.8.1.min.js"></script>
-        <script type="text/javascript" src="js-libs/jquery-ui-1.8.23.custom.min.js"></script>
+        <!--<script type="text/javascript" src="js-libs/jquery-ui-1.8.23.custom.min.js"></script>-->
+        <script type="text/javascript" src="js-libs/jquery-ui-1.9.0.custom.min.js"></script>
         <script type="text/javascript" src="js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;
@@ -104,6 +106,7 @@
         <script type="text/javascript" src="js/selection.js"></script>
         <script type="text/javascript" src="js/components.js"></script>
         <script type="text/javascript" src="js/save.js"></script>
+        <script type="text/javascript" src="js/publish.js"></script>
 
         <!--Loading Components-->
         <script type="text/javascript" src="js/simple-div-component.js"></script>
@@ -135,6 +138,7 @@
             <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
             <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
             <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
+            <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">

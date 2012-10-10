@@ -85,6 +85,14 @@
             getCurrentPageID: function getCurrentPageID(){
                 return this.__currentPage;
             },
+            getPageComponents: function getPageComponents(id){
+                var theComponentsToRestore = {};
+                for(var i in this.__pinned){
+                    theComponentsToRestore[i] = this.__pinned[i];
+                }
+                $.extend(theComponentsToRestore,this.__pages[id].components);
+                return theComponentsToRestore;
+            },
             loadPage: function loadPage(id){
                 if(this.__pages[id]){
                     //caching the current page
@@ -107,11 +115,11 @@
                     this.__currentPage = id;
                     
                     mxBuilder.components.clearAndRestore(theComponentsToRestore);
-//                    if(this.__pages[this.__currentPage].layoutHeights){
-//                        mxBuilder.layout.setLayout(this.__pages[this.__currentPage].layoutHeights)
-//                    } else {
-                        mxBuilder.layout.revalidateLayout();
-//                    }
+                    //                    if(this.__pages[this.__currentPage].layoutHeights){
+                    //                        mxBuilder.layout.setLayout(this.__pages[this.__currentPage].layoutHeights)
+                    //                    } else {
+                    mxBuilder.layout.revalidateLayout();
+                    //                    }
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
                 }
@@ -168,6 +176,25 @@
                 for(var c in this.__pinned){
                     out.pinned.push(this.__pinned[c].save());
                 }
+                return out;
+            },
+            publishAll: function publishAll(){
+                var out = [];
+                var currentPage = this.__currentPage;
+                for(var p in this.__pages){
+                    if(p != this.__currentPage) {
+                        this.loadPage(p);
+                    }
+                    var components = this.getPageComponents(p);
+                    var pageTitle = this.__pages[p].htmlTitle ? this.__pages[p].htmlTitle : "Untitled Page";
+                    var publishedPage = '<html><head><title>'+pageTitle+'</title></head><body><div id="container">';
+                    for(var c in components){
+                        publishedPage += components[c].publish().get(0).outerHTML;
+                    }
+                    publishedPage += "</div></body></html>";
+                    out.push(publishedPage);
+                }
+                this.loadPage(currentPage);
                 return out;
             },
             restorePages: function restorePages(restore){

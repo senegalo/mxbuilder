@@ -405,6 +405,12 @@
             out.data.page = this.page;
             return out;
         },
+        publish: function publish(){
+            return this.element.clone().find(".component-resizable-handle")
+            .remove()
+            .end()
+            .removeClass("ui-draggable ui-resizable mx-selectable-component");
+        },
         init: function init(properties){
             if(typeof properties.element == "undefined"){
                 properties.element = this.template.clone().css(properties.css).appendTo(mxBuilder.layout[properties.data.container]);
