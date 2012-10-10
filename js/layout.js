@@ -2,9 +2,14 @@
     
     mxBuilder.layout = {     
         syncContentHeight: function syncContentHeight(){
-            this.layoutHeader.height(this.header.height());
-            this.layoutBody.height(this.body.height());
-            this.layoutFooter.height(this.footer.height());
+            var heights = {
+                header: this.header.height(),
+                body: this.body.height(),
+                footer: this.footer.height()
+            }
+            this.layoutHeader.height(heights.header);
+            this.layoutBody.height(heights.body);
+            this.layoutFooter.height(heights.footer);
         },
         getMaxComponentHeight: function getMaxComponentHeight(container){
             var max = 0;
@@ -20,33 +25,41 @@
             });
             return max-containerPosition.top;
         },
-        setToMaxHeight: function setToMaxHeight(container){
+        setToMaxHeight: function setToMaxHeight(container,keepComponentsFlag){
             var theMax = this.getMaxComponentHeight(container);
             var offsetHeight = theMax-container.height();
             if(offsetHeight > 0){
                 container.height(theMax);
+                if(keepComponentsFlag !== true){
+                    var selector = $();
+                    if(container.get(0) === mxBuilder.layout.header.get(0)){
+                        selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
+                        selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                    } else if(container.get(0) === mxBuilder.layout.body.get(0)){
+                        selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                    }
             
-                var selector = $();
-                if(container.get(0) === mxBuilder.layout.header.get(0)){
-                    selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
-                    selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
-                } else if(container.get(0) === mxBuilder.layout.body.get(0)){
-                    selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                    selector.each(function(){
+                        var that = $(this);
+                        var thePosition = that.position();
+                        thePosition.top += offsetHeight;
+                        that.css("top",thePosition.top);
+                    });
                 }
-            
-                selector.each(function(){
-                    var that = $(this);
-                    var thePosition = that.position();
-                    thePosition.top += offsetHeight;
-                    that.css("top",thePosition.top);
-                });
             }
             
         },
-        revalidateLayout: function revalidateLayout(){
-            this.setToMaxHeight(mxBuilder.layout.header);
-            this.setToMaxHeight(mxBuilder.layout.body);
-            this.setToMaxHeight(mxBuilder.layout.footer);
+        revalidateLayout: function revalidateLayout(keepComponentsFlag){
+            this.setToMaxHeight(mxBuilder.layout.header,keepComponentsFlag);
+            this.setToMaxHeight(mxBuilder.layout.body,keepComponentsFlag);
+            this.setToMaxHeight(mxBuilder.layout.footer,keepComponentsFlag);
+            mxBuilder.pages.updateLayoutHeights();
+            this.syncContentHeight();
+        },
+        setLayout: function setLayout(heights){
+            this.header.height(heights.header);
+            this.body.height(heights.body);
+            this.footer.height(heights.footer);
             this.syncContentHeight();
         },
         header: null,
@@ -123,7 +136,7 @@
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
-                    
+                    mxBuilder.pages.updateLayoutHeights();
                 }
             });
         }
@@ -132,7 +145,7 @@
         makeResizable(mxBuilder.layout.layoutHeader,mxBuilder.layout.header);
         makeResizable(mxBuilder.layout.layoutFooter,mxBuilder.layout.footer);
         
-        mxBuilder.layout.revalidateLayout();
+        //mxBuilder.layout.revalidateLayout();
         
     });
 }(jQuery));

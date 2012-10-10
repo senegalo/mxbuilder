@@ -295,7 +295,7 @@
             //Storring the settings internally
             $.extend(this,obj);
             
-            mxBuilder.layout.revalidateLayout();
+            //mxBuilder.layout.revalidateLayout();
         }
     }
     mxBuilder.Component.prototype = {

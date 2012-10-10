@@ -1,6 +1,6 @@
 (function($){
     mxBuilder.save = function(){
-        localStorage.ws1 = JSON.stringify(mxBuilder.components.saveAll());
+        localStorage.setItem("stored-website", JSON.stringify(mxBuilder.pages.saveAll()));
     }
     $(function(){
         mxBuilder.layout.menu.find("#save").on({

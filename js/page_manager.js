@@ -22,6 +22,7 @@
                 this.__pages[properties.id].components = {};
                 theWebsiteSelect.append('<option value="'+properties.id+'">'+properties.title+'</option>');
                 this.loadPage(properties.id);
+                return this.__pages[properties.id];
             },
             editPage: function editPage(newObj){
                 var thePage = mxBuilder.pages.getPageObj(newObj.id);
@@ -29,6 +30,13 @@
                 
                 theWebsiteSelect.find('option[value="'+newObj.id+'"]').text(newObj.title);
                 $('title').text(newObj.title);
+            },
+            updateLayoutHeights: function updateLayoutHeights(){
+                this.__pages[this.__currentPage].layoutHeights  = {
+                    header: mxBuilder.layout.header.height(),
+                    body: mxBuilder.layout.body.height(),
+                    footer: mxBuilder.layout.footer.height()                   
+                };
             },
             deletePage: function deletePage(id){
                 id = id ? id : this.__currentPage;
@@ -99,7 +107,11 @@
                     this.__currentPage = id;
                     
                     mxBuilder.components.clearAndRestore(theComponentsToRestore);
-                    mxBuilder.layout.revalidateLayout();
+//                    if(this.__pages[this.__currentPage].layoutHeights){
+//                        mxBuilder.layout.setLayout(this.__pages[this.__currentPage].layoutHeights)
+//                    } else {
+                        mxBuilder.layout.revalidateLayout();
+//                    }
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
                 }
@@ -137,6 +149,43 @@
                         }
                     }
                 }
+            },
+            saveAll: function saveAll(){
+                var out = {
+                    pages: [],
+                    pinned: []
+                };
+                for(var p in this.__pages){
+                    var copy = {};
+                    $.extend(copy,this.__pages[p]);
+                    delete copy.id;
+                    copy.components = [];
+                    for(var c in this.__pages[p].components){
+                        copy.components.push(p == this.__currentPage ? this.__pages[p].components[c].save() : this.__pages[p].components[c]);
+                    }
+                    out.pages.push(copy);
+                }
+                for(var c in this.__pinned){
+                    out.pinned.push(this.__pinned[c].save());
+                }
+                return out;
+            },
+            restorePages: function restorePages(restore){
+                var firstPage = null;
+                for(var p in restore.pages){
+                    var components = restore.pages[p].components;
+                    var newPage  = this.addPage(restore.pages[p]);
+                    if(firstPage === null){
+                        firstPage = newPage;
+                    }
+                    for(var c in components){
+                        mxBuilder.components.addComponent(components[c]);
+                    }
+                }
+                for(var c in restore.pinned){
+                    mxBuilder.components.addComponent(restore.pinned[c]).pin();
+                }
+                this.loadPage(firstPage.id);
             }
         }
         
