@@ -107,6 +107,7 @@
         <script type="text/javascript" src="js/components.js"></script>
         <script type="text/javascript" src="js/save.js"></script>
         <script type="text/javascript" src="js/publish.js"></script>
+        <script type="text/javascript" src="js/z-index-manager.js"></script>
 
         <!--Loading Components-->
         <script type="text/javascript" src="js/simple-div-component.js"></script>

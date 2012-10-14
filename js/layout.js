@@ -53,7 +53,6 @@
             this.setToMaxHeight(mxBuilder.layout.header,keepComponentsFlag);
             this.setToMaxHeight(mxBuilder.layout.body,keepComponentsFlag);
             this.setToMaxHeight(mxBuilder.layout.footer,keepComponentsFlag);
-            mxBuilder.pages.updateLayoutHeights();
             this.syncContentHeight();
         },
         setLayout: function setLayout(heights){
@@ -136,7 +135,7 @@
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
-                    mxBuilder.pages.updateLayoutHeights();
+                    
                 }
             });
         }

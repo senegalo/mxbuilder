@@ -37,7 +37,7 @@
         $('<div class="strip-component menu-item" style="cursor:move;">Strip</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.StripComponent.prototype.template.clone()
+                var theContent = mxBuilder.StripComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
                 .data("component","StripComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;

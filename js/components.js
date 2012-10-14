@@ -307,22 +307,19 @@
             return mxBuilder.utils.getElementGUID(this.element);
         },
         bringToFront: function bringToFront(){
-            this.element.css("zIndex",this.element.zIndex()+1);
+            mxBuilder.zIndexManager.moveUp(this);
             mxBuilder.selection.revalidateSelectionContainer();
         },
         bringToBack: function bringToBack(){
-            var zIndex = this.element.zIndex();
-            if(zIndex > 1000){
-                this.element.css("zIndex",zIndex-1);
-                mxBuilder.selection.revalidateSelectionContainer();
-            }
-        },
-        bringToTop: function bringToTop(){
-            this.element.css("zIndex",mxBuilder.components.getNextZIndex());
+            mxBuilder.zIndexManager.moveDown(this);
             mxBuilder.selection.revalidateSelectionContainer();
         },
-        bringToBottom: function brintToBottom(){
-            this.element.css("zIndex", 1000);
+        bringToTop: function bringToTop(){
+            mxBuilder.zIndexManager.moveToTop(this);
+            mxBuilder.selection.revalidateSelectionContainer();
+        },
+        bringToBottom: function bringToBottom(){
+            mxBuilder.zIndexManager.moveToBottom(this);
             mxBuilder.selection.revalidateSelectionContainer(this.element);
         },
         setPosition: function setPosition(position,applyFlag){

@@ -7,6 +7,7 @@
             zIndex: 10000008,
             resizable: false,
             autoOpen: false,
+            title: "Page Settings",
             buttons: {
                 Save: function(){
                     if(isEdit){

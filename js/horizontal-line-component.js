@@ -33,7 +33,7 @@
         $('<div class="hline-component menu-item" style="cursor:move;">Horizontal line</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.HorizontalLineComponent.prototype.template.clone()
+                var theContent = mxBuilder.HorizontalLineComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
                 .data("component","HorizontalLineComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;

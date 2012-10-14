@@ -1,11 +1,12 @@
 (function($){
     mxBuilder.components = {
         __components: {},
-        __zIndex: 1000,
         addComponent: function addComponent(properties){
             var component = new mxBuilder[properties.data.type](properties);
             var guid = mxBuilder.utils.assignGUID(component.element);
-            component.element.css("zIndex",this.getNextZIndex());
+            
+            mxBuilder.zIndexManager.addComponent(component);
+            
             mxBuilder.pages.attachComponentToPage(component);
             this.__components[guid] = component;
             if(typeof properties.data.container != "undefined"){
@@ -13,9 +14,14 @@
             }
             return this.__components[guid];
         },
-        getComponent: function getComponent(element){
-            element = $(element);
-            return this.__components[mxBuilder.utils.getElementGUID(element)];
+        getComponent: function getComponent(obj){
+            if(typeof obj == "string"){
+                return this.__components[obj];
+            } else if (typeof obj == "object"){
+                obj = $(obj);
+                return this.__components[mxBuilder.utils.getElementGUID(obj)];
+            }
+            return;
         },
         getComponentsByAssetID: function getComponentsByAssetID(assetID){
             var out = {};
@@ -28,10 +34,34 @@
         },
         removeComponent: function removeComponent(instance){
             var id = mxBuilder.utils.getElementGUID(instance);
+            mxBuilder.zIndexManager.removeComponent(this.__components[id]);
             delete this.__components[id];
         },
         getNextZIndex: function getNextZIndex(){
             return this.__zIndex++;
+        },
+        swapZIndexs: function swapComponentZIndex(cp1,cp2){
+            var zIndex1 = cp1.element.css("zIndex");
+            var zIndex2 = cp2.element.css("zIndex");
+            cp1.element.css("zIndex",zIndex2);
+            cp2.element.css("zIndex",zIndex1);
+        },
+        moveZ: function decrementZIndex(id,moveUpFlag){
+            var component = this.__components[id];
+            var currentZIndex = component.element.css("zIndex");
+            var factor = moveUpFlag?1:-1;
+            var adjacentComponent = this.getComponentAtZIndex(currentZIndex+factor);
+            if(adjacentComponent){
+                this.swapComponentZIndex(adjacentComponent, component);
+            } else {
+                component.element.css("zIndex",currentZIndex+factor);
+            }
+        },
+        moveZTop: function moveZTop(id){
+            this.__components[id].element.css("zIndex",this.getNextZIndex());
+        },
+        moveZBottom: function moveZBottom(id){
+            this.__components[id].element.css("zIndex", --this.__lowestZIndex);
         },
         pushComponentsBelow: function pushComponentsBelow(metrics){
             for(var c in this.__components){

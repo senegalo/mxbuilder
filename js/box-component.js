@@ -29,7 +29,7 @@
         $('<div class="box-component menu-item" style="cursor:move;">Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.BoxComponent.prototype.template.clone()
+                var theContent = mxBuilder.BoxComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
                 .data("component","BoxComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;

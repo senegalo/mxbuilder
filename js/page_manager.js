@@ -31,13 +31,6 @@
                 theWebsiteSelect.find('option[value="'+newObj.id+'"]').text(newObj.title);
                 $('title').text(newObj.title);
             },
-            updateLayoutHeights: function updateLayoutHeights(){
-                this.__pages[this.__currentPage].layoutHeights  = {
-                    header: mxBuilder.layout.header.height(),
-                    body: mxBuilder.layout.body.height(),
-                    footer: mxBuilder.layout.footer.height()                   
-                };
-            },
             deletePage: function deletePage(id){
                 id = id ? id : this.__currentPage;
                 var theParent;
@@ -115,11 +108,7 @@
                     this.__currentPage = id;
                     
                     mxBuilder.components.clearAndRestore(theComponentsToRestore);
-                    //                    if(this.__pages[this.__currentPage].layoutHeights){
-                    //                        mxBuilder.layout.setLayout(this.__pages[this.__currentPage].layoutHeights)
-                    //                    } else {
                     mxBuilder.layout.revalidateLayout();
-                    //                    }
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
                 }
@@ -176,6 +165,11 @@
                 for(var c in this.__pinned){
                     out.pinned.push(this.__pinned[c].save());
                 }
+                out.layoutHeights = {
+                    header: mxBuilder.layout.header.height(),
+                    body: mxBuilder.layout.body.height(),
+                    footer: mxBuilder.layout.footer.height()                   
+                };
                 return out;
             },
             publishAll: function publishAll(){
@@ -212,6 +206,12 @@
                 for(var c in restore.pinned){
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
+                if(firstPage.layoutHeights){
+                    mxBuilder.layout.setLayout(firstPage.layoutHeights);
+                } else {
+                    mxBuilder.layout.revalidateLayout(true);
+                }
+                mxBuilder.layout.setLayout(restore.layoutHeights);
                 this.loadPage(firstPage.id);
             }
         }

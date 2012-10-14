@@ -143,7 +143,8 @@
         $('<div class="text-component menu-item" style="cursor:move;">Text Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.TextComponent.prototype.template.clone().data("component","TextComponent");
+                var theContent = mxBuilder.TextComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
+                .data("component","TextComponent");
                 theContent.appendTo(mxBuilder.layout.container);
                 return theContent;
             }
