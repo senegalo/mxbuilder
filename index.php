@@ -230,7 +230,7 @@
                 </div>
             </div>
 
-            <div class="image-component-instance" style="z-index:10000000000;">
+            <div class="image-component-instance">
                 <img src="" alt="" title=""/>
                 <div class="caption"></div>
             </div>
@@ -288,7 +288,7 @@
             <div class="linkto-dialog">
                 <div>
                     <div style="display:inline-block;">
-                        <input type="radio" name="link_type" value="external" id="linkto-external">
+                        <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
                         <label for="linkto-external">External Link</label>
                     </div>
                     <div style="display:inline-block;">
@@ -297,7 +297,7 @@
                 </div>
                 <div>
                     <div style="display:inline-block">
-                        <input type="radio" name="link_type" value="email" id="linkto-email">
+                        <input type="radio" name="link_type" class="link-type" value="email" id="linkto-email">
                         <label for="linkto-email">Email</label>
                     </div>
                     <div style="display:inline-block">
@@ -306,7 +306,7 @@
                 </div>
                 <div>
                     <div style="display:inline-block;">
-                        <input type="radio" name="link_type" value="page" id="linkto-page">
+                        <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
                         <label for="linkto-page">Link to a page</label>
                     </div>
                     <div style="display:inline-block;">
@@ -317,7 +317,7 @@
                 </div>
                 
                 <div class="lightbox">
-                    <input type="radio" name="link_type" value="lightbox" id="linkto-lightbox">
+                    <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
                     <label for="linkto-external">Open in a Lightbox</label>
                 </div>
             </div>

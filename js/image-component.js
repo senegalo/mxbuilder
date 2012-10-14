@@ -125,7 +125,6 @@
                             callback: function(){
                                 mxBuilder.selection.each(function(element){
                                     this.setResizeMethod("stretch");
-                                    this.element.resizable("option","aspectRatio",false).trigger("resize"); 
                                 });
                             }
                         }).addItem({
@@ -134,9 +133,7 @@
                             callback: function(){
                                 mxBuilder.selection.each(function(){ 
                                     this.setResizeMethod("center");
-                                    this.element.resizable("option","aspectRatio",false).trigger("resize");
                                 });
-                                
                             }
                         }).addItem({
                             label: "Lock Ratio",
@@ -144,16 +141,6 @@
                             callback: function(){
                                 mxBuilder.selection.each(function(){
                                     this.setResizeMethod("ratio");
-                                    var imageRatio = this.getImageObj().ratio;
-                                    if(imageRatio > 1){
-                                        this.theImage.height(this.theImage.width()/imageRatio);
-                                        this.element.height(this.theImage.outerHeight());
-                                    } else {
-                                        this.theImage.width(this.theImage.height()*imageRatio);
-                                        this.element.width(this.theImage.outerWidth());
-                                    }
-                                    mxBuilder.selection.revalidateSelectionContainer();
-                                    this.element.resizable("option","aspectRatio",imageRatio).trigger("resize");
                                 });
                             }
                         }).addItem({
@@ -162,8 +149,7 @@
                             callback: function(){
                                 mxBuilder.selection.each(function(){
                                     this.setResizeMethod("crop");
-                                    this.element.resizable("option","aspectRatio",false).trigger("resize");
-                                })
+                                });
                             }
                         }).end()
                         .addItem({
@@ -190,10 +176,13 @@
                     }
                 }
             });
+            
+            this.setResizeMethod("ratio");
+            
         }
         $.extend(mxBuilder.ImageComponent.prototype,new mxBuilder.Component(),{
             __currentSize: "small",
-            __currentResizeMethod: "stretch",
+            __currentResizeMethod: "ratio",
             template: mxBuilder.layout.templates.find(".image-component-instance").remove(),
             theImage:  null,
             getImageObj: function getImageObj(){
@@ -217,6 +206,29 @@
             },
             setResizeMethod: function setResizeMethod(method){
                 this.__currentResizeMethod = method;
+                switch(method){
+                    case "stretch":
+                        this.element.resizable("option","aspectRatio",false).trigger("resize"); 
+                        break;
+                    case "center":
+                        this.element.resizable("option","aspectRatio",false).trigger("resize");
+                        break;
+                    case "ratio":
+                        var imageRatio = this.getImageObj().ratio;
+                        if(imageRatio > 1){
+                            this.theImage.height(this.theImage.width()/imageRatio);
+                            this.element.height(this.theImage.outerHeight());
+                        } else {
+                            this.theImage.width(this.theImage.height()*imageRatio);
+                            this.element.width(this.theImage.outerWidth());
+                        }
+                        mxBuilder.selection.revalidateSelectionContainer();
+                        this.element.resizable("option","aspectRatio",imageRatio).trigger("resize");
+                        break;
+                    case "crop":
+                        this.element.resizable("option","aspectRatio",false).trigger("resize");
+                        break;
+                }
             },
             setLinkObj: function setLinkObj(obj){
                 this.linkObj = obj;

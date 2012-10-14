@@ -72,7 +72,7 @@
             setLinkObj: function setLinkObj(obj){
                 if(obj){
                     theDialog.find('.link-input').val('');
-                    theDialog.find('.link_type').removeAttr("checked");
+                    theDialog.find('.link-type').filter('input[value="'+obj.type+'"]').attr("checked","checked");
                     switch(obj.type){
                         case "external":
                             theDialog.find('input[name="external_link"]').val(obj.url);

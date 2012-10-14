@@ -119,7 +119,7 @@
                     .end()
                     .appendTo(theDialog.find("#assets-images-container")).draggable({
                         helper: function helper(event){
-                            return imageComponentTemplate.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
+                            return imageComponentTemplate.clone().css("zIndex","2000009")
                             .find("img").attr("src",obj.location+"/"+obj.thumb).end()
                             .data("component","ImageComponent")
                             .data("extra",{
