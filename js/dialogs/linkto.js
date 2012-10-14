@@ -95,6 +95,7 @@
                     theDialog.find('input[name="email"]').val('');
                     theDialog.find('input[name=""]').val('');
                     theDialog.find('input[name=""]').val('');
+                    theDialog.find('.link-type').filter('input:checked').removeAttr("checked");
                 }
             },
             getLinkObj: function getLinkObj(){

@@ -318,7 +318,7 @@
                 
                 <div class="lightbox">
                     <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
-                    <label for="linkto-external">Open in a Lightbox</label>
+                    <label for="linkto-lightbox">Open in a Lightbox</label>
                 </div>
             </div>
             
