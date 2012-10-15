@@ -128,14 +128,6 @@
                                 });
                             }
                         }).addItem({
-                            label: "Center",
-                            checked: resizeMethod == "center",
-                            callback: function(){
-                                mxBuilder.selection.each(function(){ 
-                                    this.setResizeMethod("center");
-                                });
-                            }
-                        }).addItem({
                             label: "Lock Ratio",
                             checked: resizeMethod == "ratio",
                             callback: function(){
@@ -163,10 +155,14 @@
                                 var currentLinkObj = self.getLinkObj();
                                 mxBuilder.dialogs.linkTo.show({
                                     link: function(urlObj){
-                                        self.setLinkObj(urlObj);
+                                        mxBuilder.selection.each(function(){
+                                            this.setLinkObj(urlObj);
+                                        });
                                     },
                                     unlink: function(){
-                                        self.setLinkObj(null);
+                                        mxBuilder.selection.each(function(){
+                                            this.setLinkObj(null);
+                                        });
                                     },
                                     lightbox: true,
                                     urlObj: currentLinkObj
@@ -177,7 +173,7 @@
                 }
             });
             
-            this.setResizeMethod("ratio");
+            this.setResizeMethod(this.__currentResizeMethod);
             
         }
         $.extend(mxBuilder.ImageComponent.prototype,new mxBuilder.Component(),{
@@ -217,10 +213,16 @@
                         var imageRatio = this.getImageObj().ratio;
                         if(imageRatio > 1){
                             this.theImage.height(this.theImage.width()/imageRatio);
-                            this.element.height(this.theImage.outerHeight());
+                            this.element.css({
+                                height: this.theImage.outerHeight(),
+                                width: this.theImage.outerWidth()
+                            });
                         } else {
                             this.theImage.width(this.theImage.height()*imageRatio);
-                            this.element.width(this.theImage.outerWidth());
+                            this.element.css({
+                                height: this.theImage.outerHeight(),
+                                width: this.theImage.outerWidth()
+                            });
                         }
                         mxBuilder.selection.revalidateSelectionContainer();
                         this.element.resizable("option","aspectRatio",imageRatio).trigger("resize");
@@ -239,7 +241,8 @@
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.__currentSize = this.__currentSize;
-                out.data.__currentResizeMethod = this.__currentReiszeMethod;
+                out.data.__currentResizeMethod = this.__currentResizeMethod;
+                out.data.linkObj = this.linkObj;
                 out.data.extra = {
                     originalAssetID: this.extra.originalAssetID
                 }

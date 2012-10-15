@@ -68,6 +68,8 @@
                 this.setLinkObj(obj.urlObj);
                 
                 theDialog.dialog("open");
+                
+                mxBuilder.activeStack.push(theDialog);
             },
             setLinkObj: function setLinkObj(obj){
                 if(obj){

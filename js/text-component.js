@@ -74,11 +74,6 @@
                 
                 },
                 deselected: function deselected(){
-                    console.log("Editor: deselected...");
-                    var component = mxBuilder.components.getComponent($(this));
-                //                if(component.editor){
-                //                    mxBuilder.activeStack.popTo(this);
-                //                }
                 },
                 poppedFromActiveStack: function poppedFromActiveStack(){
                     var theComponent = mxBuilder.components.getComponent(properties.element);

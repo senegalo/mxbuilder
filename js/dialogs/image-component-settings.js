@@ -18,7 +18,11 @@
                 mxBuilder.dialogs.imageComponentChangeTitle.setTitle($(this).val());
             }
         })
-        .end();
+        .end().on({
+            poppedFromActiveStack: function poppedFromActiveStack(){
+                $(this).dialog("close");
+            }
+        });
         
         mxBuilder.dialogs.imageComponentChangeTitle = {
             __theDialog: theDialog,
@@ -30,6 +34,7 @@
                 this.__theDialog.find("#image-component-settings-title").val(this.getTitle())
                 .end()
                 .dialog("open");
+                mxBuilder.activeStack.push(this.__theDialog);
             },
             setTitle: function(title){
                 this.__theImage.attr("title",title);
