@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <!--<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>-->
+        <!--<link rel="stylesheet" href="public/css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>-->
         <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.0.custom.css" type="text/css"/>
         <link rel="stylesheet/less" href="public/css/reset.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/layout.css" type="text/css" />
@@ -197,7 +197,7 @@
             </div>
 
             <div class="assets-document-template" style="float:left;width:100px;height:100px;margin:10px;">
-                <img src="images/document.png" style="height:60px;width:auto;" alt="" title=""/>
+                <img src="public/images/document.png" style="height:60px;width:auto;" alt="" title=""/>
                 <div class="name"></div>
                 <button class="delete-asset">Delete</button>
             </div>
