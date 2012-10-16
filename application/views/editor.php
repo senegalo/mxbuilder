@@ -95,6 +95,7 @@
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
+        <script type="text/javascript" src="public/js/config.js"></script>
         <script type="text/javascript" src="public/js/utils.js"></script>
         <script type="text/javascript" src="public/js/layout.js"></script>
         <script type="text/javascript" src="public/js/activestack.js"></script>
@@ -108,6 +109,7 @@
         <script type="text/javascript" src="public/js/save.js"></script>
         <script type="text/javascript" src="public/js/publish.js"></script>
         <script type="text/javascript" src="public/js/z-index-manager.js"></script>
+        <script type="text/javascript" src="public/js/api.js"></script>
 
         <!--Loading Components-->
         <script type="text/javascript" src="public/js/simple-div-component.js"></script>
@@ -126,6 +128,7 @@
         <script type="text/javascript" src="public/js/dialogs/image-component-settings.js"></script>
         <script type="text/javascript" src="public/js/dialogs/pages-add-edit-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/alert-dialog.js"></script>
+        <script type="text/javascript" src="public/js/dialogs/progress-dialog.js"></script>
 
         <script type="text/javascript" src="public/js/init.js"></script>
     </head>
@@ -331,6 +334,9 @@
                     <input type="number" min="0" max="100" step="1" id="component-background-opacity"/>%
                 </div>
 
+            </div>
+            <div class="progress-dialog">
+                
             </div>
         </div>
 

@@ -35,7 +35,7 @@
                 browse_button : 'assets-select-files',
                 container : 'assets-upload-container',
                 max_file_size : '10mb',
-                url : 'upload.php',
+                url : mxBuilder.config.baseURL+'/assets/upload',
                 flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
                 silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
                 filters : [{
@@ -85,8 +85,9 @@
                 up.refresh(); // Reposition Flash/Silverlight
             });
 
-            uploader.bind('FileUploaded', function(up, file) {
+            uploader.bind('FileUploaded', function(up, file, response) {
                 $('#' + file.id).remove();
+                console.log(response);
             });
         }());
         

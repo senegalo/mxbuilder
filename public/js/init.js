@@ -1,13 +1,12 @@
 (function($){
     $(function(){
-        var savedWebsite = localStorage.getItem("stored-website");
-        if(savedWebsite){
-            mxBuilder.pages.restorePages(JSON.parse(savedWebsite));
-        } else {
-            mxBuilder.pages.addPage({
-                title: "Home Page",
-                address: "home"
-            });
-        }
+        
+        mxBuilder.dialogs.progressDialog.show("Loading website please wait...")
+        mxBuilder.api.website.get({
+            success: function(data){
+                mxBuilder.pages.restorePages(JSON.parse(data.content));
+                mxBuilder.dialogs.progressDialog.hide();
+            }
+        });
     });
 }(jQuery));

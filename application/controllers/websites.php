@@ -10,33 +10,34 @@
  *
  * @author senegalo
  */
-class websites extends CI_Controller{
-    
-    private $user;
+class websites extends MX_Controller{
 
 
     public function __construct() {
         parent::__construct();
-        
-        $this->load->model("users_model");
-        
-        $token = $this->input->post("token");
-        
-        if($token === false){
-            error(Constance::INVALID_PARAMETERS,"This is a secure endpoint. user token must be sent with request");
-        }
-        
-        $this->user = $this->users_model->authenticate($token);
-        if($this->user == Users_Model::USER_NOT_FOUND){
-            error(Users_Model::USER_NOT_FOUND,"The token didn't match any registred/guest users");
-        }
-        
+        $this->authenticate();
     }
     
     public function save(){
+        $this->load->model("websites_model");
         
+        $website_content = $this->input->post("website_content");
+        
+        if($website_content == false){
+            error(Constance::INVALID_PARAMETERS,"Missing website_content variable.");
+        } else {
+            $this->websites_model->update($this->user,$website_content);
+            success();
+        }
     }
     
+    public function get(){
+        $this->load->model("websites_model");
+        $websiteData = $this->websites_model->get($this->user);
+        if($websiteData != Websites_Model::WEBSITE_NOT_FOUND){
+            success($websiteData);
+        }
+        error($websiteData,"User has not created a website yet");
+    }
 }
-
 ?>
