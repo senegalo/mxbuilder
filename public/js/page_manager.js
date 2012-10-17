@@ -141,7 +141,7 @@
                         continue;
                     }
                     for(var c in this.__pages[p].components){
-                        if(this.__pages[p].components[c].data.extra.originalAssetID == assetID){
+                        if(this.__pages[p].components[c].data.extra && this.__pages[p].components[c].data.extra.originalAssetID == assetID){
                             delete this.__pages[p].components[c];
                         }
                     }

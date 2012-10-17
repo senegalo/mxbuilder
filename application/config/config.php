@@ -17,7 +17,7 @@ if (!defined('BASEPATH'))
   | path to your installation.
   |
  */
-$config['base_url'] = 'dev.2mhost.com/mxbuilder-dev';
+$config['base_url'] = 'http://dev.2mhost.com/mxbuilder-dev';
 
 /*
   |--------------------------------------------------------------------------

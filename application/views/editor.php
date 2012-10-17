@@ -182,8 +182,12 @@
                         <li><a href="#assets-images-container">Images</a></li>
                         <li><a href="#assets-document-container">Documents</a></li>
                     </ul>
-                    <div id="assets-images-container"></div>
-                    <div id="assets-document-container"></div>
+                    <div id="assets-images-container">
+                        <div id="assets-images-insertion-marker" style="clear:both;"></div>
+                    </div>
+                    <div id="assets-document-container">
+                        <div style="clear:both;"></div>
+                    </div>
                     <div style="clear:both;"></div>
                 </div>
             </div>
@@ -193,16 +197,18 @@
                 <div class="caption"></div>
             </div>
 
-            <div class="assets-image-template" style="float:left;width:100px;height:100px;margin:10px;">
+            <div class="assets-image-template" style="float:left;width:120px;height:120px;outline: 1px solid black;margin:10px;">
                 <img src="" alt="" title=""/>
                 <div class="name"></div>
-                <button class="delete-asset">Delete</button>
+                <button class="delete-asset">Del.</button>
+                <button class="edit-name">E.N</button>
             </div>
 
-            <div class="assets-document-template" style="float:left;width:100px;height:100px;margin:10px;">
+            <div class="assets-document-template" style="float:left;width:120px;height:120px;outline: 1px solid black;margin:10px;">
                 <img src="public/images/document.png" style="height:60px;width:auto;" alt="" title=""/>
                 <div class="name"></div>
-                <button class="delete-asset">Delete</button>
+                <button class="delete-asset">Del.</button>
+                <button class="edit-name">E.N</button>
             </div>
 
             <div class="image-component-chtitle-dialog">
@@ -273,13 +279,13 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="lightbox">
                     <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
                     <label for="linkto-lightbox">Open in a Lightbox</label>
                 </div>
             </div>
-            
+
             <div class="pages-add-edit-dialog">
                 <div>
                     <label for="page-title">Title:</label>
@@ -336,7 +342,7 @@
 
             </div>
             <div class="progress-dialog">
-                
+
             </div>
         </div>
 

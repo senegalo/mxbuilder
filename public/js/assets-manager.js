@@ -15,14 +15,13 @@
                 zIndex: 1000008,
                 title: "Assets Manager",
                 resizable: false,
-                width: 350,
+                width: 400,
                 buttons: {
                     Close: function Close(){
                         $(this).dialog("close");
                     }
                 }
             }).find(".assets-tabs").tabs().end();
-            
         
             $('<div class="assets-manager menu-item" style="font-weight:bold;cursor:pointer">Assets</div>').appendTo(mxBuilder.layout.menu).on({
                 click: function(){
@@ -45,12 +44,7 @@
                 {
                     title : "Zip files", 
                     extensions : "zip"
-                }],
-                resize : {
-                    width : 320, 
-                    height : 240, 
-                    quality : 90
-                }
+                }]
             });
 
             $('#assets-upload-files').click(function(event) {
@@ -87,7 +81,7 @@
 
             uploader.bind('FileUploaded', function(up, file, response) {
                 $('#' + file.id).remove();
-                console.log(response);
+                mxBuilder.assets.add(JSON.parse(response.response));
             });
         }());
         
@@ -112,13 +106,28 @@
                             mxBuilder.dialogs.deleteDialog({
                                 msg: msg,
                                 callback: function(){
-                                    mxBuilder.assets.remove(obj.id);
+                                    mxBuilder.dialogs.progressDialog.show("Deleting asset...");
+                                    mxBuilder.api.assets.remove({
+                                       assetID: obj.id,
+                                        success: function(data){
+                                            mxBuilder.dialogs.progressDialog.msg("Deleted Successfully...");
+                                            mxBuilder.assets.remove(obj.id);
+                                        },
+                                        error: function(data){
+                                            mxBuilder.dialogs.progressDialog.msg("Delete Failed !")
+                                        },
+                                        complete: function(){
+                                            setTimeout(function(){
+                                                mxBuilder.dialogs.progressDialog.hide();
+                                            },1500);
+                                        }
+                                    });
                                 }
                             });
                         }
                     })
                     .end()
-                    .appendTo(theDialog.find("#assets-images-container")).draggable({
+                    .insertBefore(theDialog.find("#assets-images-insertion-marker")).draggable({
                         helper: function helper(event){
                             return imageComponentTemplate.clone().css("zIndex","2000009")
                             .find("img").attr("src",obj.location+"/"+obj.thumb).end()
@@ -136,7 +145,7 @@
                     template = documentAssetTemplate.clone().appendTo(theDialog.find("#assets-document-container"));
                 }
                 
-                template.find(".name").text(obj.name);
+                template.find(".name").text(obj.name.reduceString(10));
                 
                 //Generating and assining the instance an id
                 this.__assets[obj.id] = obj;
@@ -149,9 +158,9 @@
                     //remove the image from any active component
                     var components = mxBuilder.components.getComponentsByAssetID(id);
                     for(var c in components){
-                            mxBuilder.pages.detachComponentFromPage(components[c]);
-                            mxBuilder.selection.removeFromSelection(components[c].element);
-                            components[c].destroy();
+                        mxBuilder.pages.detachComponentFromPage(components[c]);
+                        mxBuilder.selection.removeFromSelection(components[c].element);
+                        components[c].destroy();
                     }
                 
                     //remove from other pages
@@ -162,61 +171,6 @@
                 delete this.__assets[id];
             }
         }
-        
-        mxBuilder.assets.add({
-            type: "image",
-            location: "http://dev.2mhost.com/mxbuilder/uploads",
-            name: "MyFirstImage",
-            full: "1-f.jpg",
-            medium: "1-m.jpg",
-            small: "1-s.jpg",
-            thumb: "1-t.jpg",
-            ratio: 1.5985,
-            id: 10
-        });
-        
-        mxBuilder.assets.add({
-            type: "image",
-            location: "http://dev.2mhost.com/mxbuilder/uploads",
-            name: "MySecondImage",
-            full: "1-f.jpg",
-            medium: "1-m.jpg",
-            small: "1-s.jpg",
-            thumb: "1-t.jpg",
-            ratio: 1.5985,
-            id: 11
-        });
-        mxBuilder.assets.add({
-            type: "image",
-            location: "http://dev.2mhost.com/mxbuilder/uploads",
-            name: "MyThirdImage",
-            full: "1-f.jpg",
-            medium: "1-m.jpg",
-            small: "1-s.jpg",
-            thumb: "1-t.jpg",
-            ratio: 1.5985,
-            id: 12
-        });
-        mxBuilder.assets.add({
-            type: "image",
-            location: "http://dev.2mhost.com/mxbuilder/uploads",
-            name: "MyFourthImage",
-            full: "1-f.jpg",
-            medium: "1-m.jpg",
-            small: "1-s.jpg",
-            thumb: "1-t.jpg",
-            ratio: 1.5985,
-            id: 13
-        });
-        
-        mxBuilder.assets.add({
-            type: "document",
-            location: "http://dev.2mhost.com/mxbuilder/uploads",
-            filename: "test.pdf",
-            name: "important file",
-            id: 50
-        });
-        
     });
     
 }(jQuery))
