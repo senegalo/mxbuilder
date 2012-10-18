@@ -14,21 +14,14 @@
         //load the website
         mxBuilder.api.website.get({
             success: function(data){
-                if(data.success){
-                    mxBuilder.pages.restorePages(JSON.parse(data.content));
-                }
+                mxBuilder.pages.restorePages(JSON.parse(data.content));
+                mxBuilder.dialogs.progressDialog.hide(); 
             },
             error: function(data){
-                /**
-                 * @todo To be removed in the next commit after all is restored...
-                 */
-                var savedWebsite = localStorage.getItem("stored-website");
-                if(savedWebsite){
-                    mxBuilder.pages.restorePages(JSON.parse(savedWebsite));
-                }
-            },
-            complete: function(){
-                mxBuilder.dialogs.progressDialog.hide();
+                mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");
+                setTimeout(function(){
+                    mxBuilder.dialogs.progressDialog.hide(); 
+                },2000);
             }
         });
     });
