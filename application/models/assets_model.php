@@ -51,12 +51,16 @@ class Assets_Model extends CI_Model {
             $generated_sizes = $this->generate_sizes($upload_dir, $asset_filename);
             $out = array_merge($out, $generated_sizes);
             $out['type'] = "image";
-
+            $out['caption'] = "";
+            $out['title'] = "";
+            
             unset($generated_sizes['ratio']);
             $generated_sizes = array_keys($generated_sizes);
             $this->db->set("extra", serialize(array(
                                 "sizes" => $generated_sizes,
-                                "ratio" => $out['ratio']
+                                "ratio" => $out['ratio'],
+                                "caption" => "",
+                                "title" => ""
                             )))
                     ->where("id", $asset_id)
                     ->update("assets");
@@ -165,13 +169,20 @@ class Assets_Model extends CI_Model {
         $this->get_upload_path();
         return base_url('/public/uploads/' . date("Y/m/d"));
     }
+    
+    private function get_asset_by_id($user,$id){
+        $query = $this->db->from("assets")
+                ->where("user_id", $user['id'])->where("id", $id)->get();
+        if($query->num_rows() > 0){
+            return end($query->result());
+        } else {
+            return false;
+        }
+    }
 
     public function delete_asset($user, $asset_id) {
-        $query = $this->db->from("assets")
-                ->where("user_id", $user['id'])->where("id", $asset_id)->get();
-
-        if ($query->num_rows() > 0) {
-            $row = end($query->result());
+        $row = $this->get_asset_by_id($user, $asset_id);
+        if ($row !== false) {
 
             $upload_path = $this->get_upload_path();
             if ($row->type == "image") {
@@ -183,7 +194,7 @@ class Assets_Model extends CI_Model {
                             unlink($upload_path . "/" . $filename . "-" . $str . "." . $extension);
                         }, $image_data['sizes']);
             } else {
-                unlink($this->get_filename($row->id) . "." . $row->extension);
+                unlink($upload_path . "/" .$this->get_filename($row->id) . "." . $row->extension);
             }
 
             $this->db->where("user_id", $user['id'])->where("id", $asset_id)->delete("assets");
@@ -213,6 +224,8 @@ class Assets_Model extends CI_Model {
                 if ($row->type == "image") {
                     $image_data = unserialize($row->extra);
                     $asset["ratio"] = $image_data["ratio"];
+                    $asset["title"] = $image_data["title"];
+                    $asset["caption"] = $image_data["caption"];
 
                     $filename = $this->get_filename($row->id);
                     $extension = $row->extension;
@@ -228,6 +241,28 @@ class Assets_Model extends CI_Model {
         }
         return $out;
     }
+    
+    public function update_image_defaults($user,$image_id,$caption,$title){
+        $row = $this->get_asset_by_id($user, $image_id);
+        if($row !== false){
+            $extra = unserialize($row->extra);
+            $extra["caption"] = $caption;
+            $extra["title"] = $title;
+            $extra = serialize($extra);
+            $this->db->where("id",$image_id)
+                    ->where("user_id",$user['id'])
+                    ->set('extra',$extra)
+                    ->update("assets");
+        }
+    }
+    
+    public function change_asset_name($user,$asset_id,$new_name){
+        $this->db->set("name",$new_name)
+                ->where("user_id",$user['id'])
+                ->where("id",$asset_id)
+                ->update("assets");
+    }
+    
 
 }
 

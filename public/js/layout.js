@@ -61,6 +61,12 @@
             this.footer.height(heights.footer);
             this.syncContentHeight();
         },
+        outline: function outline(container){
+            this[container].css("outline","1px solid "+(container == "body"?"red":"orange"));
+        },
+        clearOutline: function clearOutline(container){
+            this[container].css("outline","");
+        },
         header: null,
         body: null,
         footer: null,

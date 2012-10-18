@@ -28,9 +28,7 @@
             var out = $();
             
             //searching for the element if it exsists
-            if(!this.hasElement(instance)){
-                $.error("Can't find element");
-            } else {
+            if(this.hasElement(instance)) {
                 do {
                     var current = this.pop();
                     out = out.add(current);
@@ -46,6 +44,14 @@
             return this.__stack[this.__stack.legth-1] === instance ? true : false;
         }
     };
+    
+    $(document).on({
+        keydown: function keydown(event){
+            if(event.keyCode == 27){
+                mxBuilder.activeStack.pop();
+            }
+        } 
+    });
     
 //    $(function(){
 //        mxBuilder.layout.container.on({

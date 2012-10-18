@@ -15,12 +15,7 @@
                 zIndex: 1000008,
                 title: "Assets Manager",
                 resizable: false,
-                width: 400,
-                buttons: {
-                    Close: function Close(){
-                        $(this).dialog("close");
-                    }
-                }
+                width: 400
             }).find(".assets-tabs").tabs().end();
         
             $('<div class="assets-manager menu-item" style="font-weight:bold;cursor:pointer">Assets</div>').appendTo(mxBuilder.layout.menu).on({
@@ -42,8 +37,8 @@
                     extensions : "jpg,gif,png"
                 },
                 {
-                    title : "Zip files", 
-                    extensions : "zip"
+                    title : "Document files", 
+                    extensions : "doc,docx,txt,pdf"
                 }]
             });
 
@@ -81,7 +76,12 @@
 
             uploader.bind('FileUploaded', function(up, file, response) {
                 $('#' + file.id).remove();
-                mxBuilder.assets.add(JSON.parse(response.response));
+                response = JSON.parse(response.response);
+                if(response.success){
+                    mxBuilder.assets.add(response);
+                } else {
+                    mxBuilder.dialogs.alertDialog.show("Upload failed for the following reason: <br/>"+response.description);
+                }
             });
         }());
         
@@ -95,33 +95,28 @@
                     .find("img")
                     .attr("src",obj.location+"/"+obj.thumb)
                     .end()
-                    .find(".delete-asset").on({
-                        click: function(){
-                            var msg;
-                            if(obj.type == "image"){
-                                msg = "Are you sure you want to delete the selected image ?<br/> doing so will remove every instance of them in all the pages."
-                            } else {
-                                msg = "Are you sure you want remove the selected document ?<br/> if it is linked anywhere the links will no longer work.";
-                            }
-                            mxBuilder.dialogs.deleteDialog({
-                                msg: msg,
-                                callback: function(){
-                                    mxBuilder.dialogs.progressDialog.show("Deleting asset...");
-                                    mxBuilder.api.assets.remove({
-                                       assetID: obj.id,
-                                        success: function(data){
-                                            mxBuilder.dialogs.progressDialog.msg("Deleted Successfully...");
-                                            mxBuilder.assets.remove(obj.id);
-                                        },
-                                        error: function(data){
-                                            mxBuilder.dialogs.progressDialog.msg("Delete Failed !")
+                    .find(".default-properties").on({
+                        click: function click(){
+                            mxBuilder.dialogs.imageDefaultPropertiesDialog.show({
+                                title: obj.title,
+                                caption: obj.caption,
+                                saveCallback: function(data){
+                                    mxBuilder.dialogs.progressDialog.show("Saving image default settings...");
+                                    mxBuilder.api.assets.changeImageDefaults({
+                                        assetID: obj.id,
+                                        caption: data.caption,
+                                        title:  data.title,
+                                        success: function(){
+                                            obj.caption = data.caption;
+                                            obj.title = data.title;
+                                            mxBuilder.dialogs.progressDialog.msg("Saved successfully...");
                                         },
                                         complete: function(){
                                             setTimeout(function(){
                                                 mxBuilder.dialogs.progressDialog.hide();
                                             },1500);
                                         }
-                                    });
+                                    })
                                 }
                             });
                         }
@@ -130,7 +125,9 @@
                     .insertBefore(theDialog.find("#assets-images-insertion-marker")).draggable({
                         helper: function helper(event){
                             return imageComponentTemplate.clone().css("zIndex","2000009")
-                            .find("img").attr("src",obj.location+"/"+obj.thumb).end()
+                            .find("img").attr({
+                                src: obj.location+"/"+obj.thumb
+                            }).end()
                             .data("component","ImageComponent")
                             .data("extra",{
                                 originalAssetID: obj.id
@@ -142,10 +139,67 @@
                         }
                     });
                 } else {
-                    template = documentAssetTemplate.clone().appendTo(theDialog.find("#assets-document-container"));
+                    template = documentAssetTemplate.clone().addClass("asset-"+obj.id).insertBefore(theDialog.find("#assets-document-insertion-marker"));
                 }
                 
-                template.find(".name").text(obj.name.reduceString(10));
+                template.find(".delete-asset").on({
+                    click: function(){
+                        var msg;
+                        if(obj.type == "image"){
+                            msg = "Are you sure you want to delete the selected image ?<br/> doing so will remove every instance of them in all the pages."
+                        } else {
+                            msg = "Are you sure you want remove the selected document ?<br/> if it is linked anywhere the links will no longer work.";
+                        }
+                        mxBuilder.dialogs.deleteDialog({
+                            msg: msg,
+                            callback: function(){
+                                mxBuilder.dialogs.progressDialog.show("Deleting asset...");
+                                mxBuilder.api.assets.remove({
+                                    assetID: obj.id,
+                                    success: function(data){
+                                        mxBuilder.dialogs.progressDialog.msg("Deleted Successfully...");
+                                        mxBuilder.assets.remove(obj.id);
+                                    },
+                                    error: function(data){
+                                        mxBuilder.dialogs.progressDialog.msg("Delete Failed !")
+                                    },
+                                    complete: function(){
+                                        setTimeout(function(){
+                                            mxBuilder.dialogs.progressDialog.hide();
+                                        },1500);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+                .end()
+                .find(".edit-name").on({
+                    click: function click(){
+                        mxBuilder.dialogs.assetPropertiesDialog.show({
+                            name: obj.name,
+                            saveCallback: function saveCallback(newName){
+                                mxBuilder.dialogs.progressDialog.show("Changing asset name...");
+                                mxBuilder.api.assets.changeAssetName({
+                                    assetID: obj.id,
+                                    newName: newName,
+                                    success: function success(){
+                                        mxBuilder.dialogs.progressDialog.msg("Asset name changed...");
+                                        obj.name = newName;
+                                        template.find(".name").text(obj.name.reduceString(18));
+                                    },
+                                    complete: function complete(){
+                                        setTimeout(function(){
+                                            mxBuilder.dialogs.progressDialog.hide();
+                                        },1500);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+                .end()
+                .find(".name").text(obj.name.reduceString(18));
                 
                 //Generating and assining the instance an id
                 this.__assets[obj.id] = obj;
@@ -166,7 +220,7 @@
                     //remove from other pages
                     mxBuilder.pages.removeImgComponentFromPages(id);
                 }
-                //removing the image from the assets manager
+                //removing the asset from the assets manager
                 theDialog.find(".asset-"+id).remove();
                 delete this.__assets[id];
             }

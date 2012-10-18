@@ -129,6 +129,8 @@
         <script type="text/javascript" src="public/js/dialogs/pages-add-edit-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/alert-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/progress-dialog.js"></script>
+        <script type="text/javascript" src="public/js/dialogs/asset-properties-dialog.js"></script>
+        <script type="text/javascript" src="public/js/dialogs/image-default-properties-dialog.js"></script>
 
         <script type="text/javascript" src="public/js/init.js"></script>
     </head>
@@ -167,6 +169,11 @@
         </div>
 
         <div id="templates" style="display:none;">
+            
+            <div class="assets-properties-dialog">
+                <label for="asset-name-input">Name:</label>
+                <input type="text" id="asset-name-input"/>
+            </div>
 
             <div class="assets-upload-dialog">
                 <div id="assets-upload-container">
@@ -186,9 +193,8 @@
                         <div id="assets-images-insertion-marker" style="clear:both;"></div>
                     </div>
                     <div id="assets-document-container">
-                        <div style="clear:both;"></div>
+                        <div id="assets-document-insertion-marker" style="clear:both;"></div>
                     </div>
-                    <div style="clear:both;"></div>
                 </div>
             </div>
 
@@ -197,18 +203,30 @@
                 <div class="caption"></div>
             </div>
 
-            <div class="assets-image-template" style="float:left;width:120px;height:120px;outline: 1px solid black;margin:10px;">
-                <img src="" alt="" title=""/>
+            <div class="assets-image-template" style="float:left;width:140px;height:120px;outline: 1px solid black;margin:10px;">
+                <img src="" alt="" title="" style="margin-right:auto;margin-left:auto;display:block;margin-top:5px;"/>
+                <div class="name"></div>
+                <button class="delete-asset">Del.</button>
+                <button class="edit-name">E.N</button>
+                <button class="default-properties">Def.</button>
+            </div>
+
+            <div class="assets-document-template" style="float:left;width:120px;height:120px;outline: 1px solid black;margin:10px;">
+                <img src="public/images/document.png" style="height:60px;width:auto;margin-right:auto;margin-left:auto;display:block;margin-top:5px;" alt="" title=""/>
                 <div class="name"></div>
                 <button class="delete-asset">Del.</button>
                 <button class="edit-name">E.N</button>
             </div>
-
-            <div class="assets-document-template" style="float:left;width:120px;height:120px;outline: 1px solid black;margin:10px;">
-                <img src="public/images/document.png" style="height:60px;width:auto;" alt="" title=""/>
-                <div class="name"></div>
-                <button class="delete-asset">Del.</button>
-                <button class="edit-name">E.N</button>
+            
+            <div class="image-default-properties-dialog">
+                <div>
+                    <label for="image-default-title">Default Title:</label>
+                    <input type="text" id="image-default-title"/>
+                </div>
+                <div>
+                    <label for="image-default-caption">Caption:</label>
+                    <textarea id="image-default-caption" rows="8" cols="40"></textarea>
+                </div>
             </div>
 
             <div class="image-component-chtitle-dialog">

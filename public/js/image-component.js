@@ -271,7 +271,10 @@
                     properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : "small";
                     
                     properties.element = this.template.clone().find("img")
-                    .attr("src",obj.location+"/"+obj[properties.data.__currentSize])
+                    .attr({
+                        src: obj.location+"/"+obj[properties.data.__currentSize],
+                        title: obj.title
+                    })
                     .css({
                         width: properties.css.width,
                         height: properties.css.height

@@ -5,7 +5,9 @@
             mxBuilder.Component.apply(this,[{
                 type: "TextComponent",
                 draggable: {},
-                resizable: {},
+                resizable: {
+                    orientation: "h"
+                },
                 ctxZIndex: true,
                 selectable: true,
                 element: properties.element
@@ -17,10 +19,10 @@
                     var height = content.height();
                     var instHeight = properties.element.height();
                     var out = true;
-                    if(height > instHeight){
+                    //if(height > instHeight){
                         properties.element.height(height);
-                        out = false;
-                    }
+                        //out = false;
+                    //}
                     properties.element.resizable("option","minHeight",height).data("minheight",instHeight);
                     return out;
                 },
@@ -99,7 +101,7 @@
 
                         properties.element.draggable("enable").css({
                             minHeight: "",
-                            height: height
+                            height: theComponent.element.find(".content").height()
                         }).off(".focus-editor").off(".editor-consume").find(".content").removeAttr("contenteditable");
                         
                         theComponent.editMode = false;

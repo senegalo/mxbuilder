@@ -17,7 +17,7 @@
     
         mxBuilder.dialogs.alertDialog = {
             show: function show(msg){
-                theDialog.text(msg);
+                theDialog.html(msg);
                 theDialog.dialog("open");
             }
         } 

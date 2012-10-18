@@ -148,7 +148,6 @@
                                 mxBuilder.components.alignment.centerHorizontally();
                             }
                         });
-                        
                     }
                 }
             });
@@ -240,13 +239,15 @@
                     handles: handles,
                     start: function start(event,ui){
                         mxBuilder.selection.clearSelection($(this));
+                        mxBuilder.layout.outline(mxBuilder.components.getComponent($(this)).container);
                     },
                     resize: function resize(event,ui){
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     stop: function(){
                         var that = $(this);
-                        var theComponent = mxBuilder.components.getComponent(that)
+                        var theComponent = mxBuilder.components.getComponent(that);
+                        mxBuilder.layout.clearOutline(theComponent.container);
                         theComponent.setPosition(that.position());
                         theComponent.setSize({
                             width: that.width(),
@@ -295,7 +296,7 @@
             //Storring the settings internally
             $.extend(this,obj);
             
-            //mxBuilder.layout.revalidateLayout();
+        //mxBuilder.layout.revalidateLayout();
         }
     }
     mxBuilder.Component.prototype = {
@@ -421,14 +422,6 @@
     }
     
     $(function(){
-        var clearOutline = function clearOutline(){
-            $(this).css("outline","");
-        }
-        var setOutline = function setOutline(color){
-            return function(){
-                $(this).css("outline","1px solid "+color);
-            }
-        }
         var dropOnContainer = function dropOnContainer(container){
             return function(event, ui){
                 var className =  ui.helper.data("component");
@@ -458,7 +451,7 @@
                         mxBuilder.components.getComponent($(this)).setContainer(container);
                     });
                 }
-                clearOutline.apply(this);
+                mxBuilder.layout.clearOutline(container);
             }
         }
         
@@ -466,21 +459,34 @@
          * @todo guess all 3 layouts are similar could be a lot more shorter... double check
          */
         mxBuilder.layout.header.droppable({
-            over: setOutline("orange"),
             drop: dropOnContainer("header"),
-            out: clearOutline
-        })//.disableSelection();
+            over: function over(){
+                mxBuilder.layout.outline("header")
+            },
+            out: function out(){
+                mxBuilder.layout.clearOutline("header")
+            }
+        });
         
         mxBuilder.layout.body.droppable({
             drop: dropOnContainer("body"),
-            over: setOutline("red"),
-            out: clearOutline
-        })//.disableSelection();
+            over: function over(){
+                mxBuilder.layout.outline("body")
+                },
+            out: function out(){
+                mxBuilder.layout.clearOutline("body")
+                }
+        });
+        
         mxBuilder.layout.footer.droppable({
             drop: dropOnContainer("footer"),
-            over: setOutline("orange"),
-            out: clearOutline
-        })//.disableSelection();
+            over: function over(){
+                mxBuilder.layout.outline("footer")
+                },
+            out: function out(){
+                mxBuilder.layout.clearOutline("footer")
+                }
+        });
         
         mxBuilder.selection.enableMultiComponentSelect(true);
         
