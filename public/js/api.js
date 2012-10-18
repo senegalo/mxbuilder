@@ -32,7 +32,8 @@
             get: function get(args){
                 $.ajax({
                     url: mxBuilder.config.baseURL+"/websites/get",
-                    success: mxBuilder.api.__genericSuccess(args)
+                    success: mxBuilder.api.__genericSuccess(args),
+                    complete: args.complete
                 });
             }
         },

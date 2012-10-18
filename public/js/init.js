@@ -16,15 +16,18 @@
             success: function(data){
                 if(data.success){
                     mxBuilder.pages.restorePages(JSON.parse(data.content));
-                } else {
-                    /**
-                     * @todo To be removed in the next commit after all is restored...
-                     */
-                    var savedWebsite = localStorage.getItem("stored-website");
-                    if(savedWebsite){
-                        mxBuilder.pages.restorePages(JSON.parse(savedWebsite));
-                    }
                 }
+            },
+            error: function(data){
+                /**
+                 * @todo To be removed in the next commit after all is restored...
+                 */
+                var savedWebsite = localStorage.getItem("stored-website");
+                if(savedWebsite){
+                    mxBuilder.pages.restorePages(JSON.parse(savedWebsite));
+                }
+            },
+            complete: function(){
                 mxBuilder.dialogs.progressDialog.hide();
             }
         });
