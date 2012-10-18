@@ -154,7 +154,7 @@ class Assets_Model extends CI_Model {
 
     public function get_upload_path() {
         $paths = explode("-", date("Y-m-d"));
-        $current_lookup = "/var/www/mxbuilder-dev/public/uploads";
+        $current_lookup = str_replace("/application/models","/public/uploads",__DIR__);
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
             if (!is_dir($current_lookup)) {
