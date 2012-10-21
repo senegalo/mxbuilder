@@ -124,7 +124,7 @@
                     .end()
                     .insertBefore(theDialog.find("#assets-images-insertion-marker")).draggable({
                         helper: function helper(event){
-                            return imageComponentTemplate.clone().css("zIndex","2000009")
+                            return imageComponentTemplate.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                             .find("img").attr({
                                 src: obj.location+"/"+obj.thumb
                             }).end()

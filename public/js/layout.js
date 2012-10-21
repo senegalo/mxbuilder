@@ -27,6 +27,7 @@
         },
         setToMaxHeight: function setToMaxHeight(container,keepComponentsFlag){
             var theMax = this.getMaxComponentHeight(container);
+            theMax = theMax < mxBuilder.config.minContainerHeight ? mxBuilder.config.minContainerHeight : theMax;
             var offsetHeight = theMax-container.height();
             if(offsetHeight > 0){
                 container.height(theMax);
@@ -62,10 +63,10 @@
             this.syncContentHeight();
         },
         outline: function outline(container){
-            this[container].css("outline","1px solid "+(container == "body"?"red":"orange"));
+            this[container].find("."+container+"-outline").show();
         },
         clearOutline: function clearOutline(container){
-            this[container].css("outline","");
+            this[container].find("."+container+"-outline").hide();
         },
         header: null,
         body: null,
@@ -100,7 +101,6 @@
             container.resizable({
                 minWidth: bodyWidth,
                 maxWidth: bodyWidth,
-                minHeight: 300,
                 alsoResize: alsoResize,
                 handles: {
                     s: handle.clone().appendTo(container).addClass("ui-resizable-handle ui-resizable-s")
@@ -121,8 +121,14 @@
                     that.data("elements",selector);
                     that.data("lastheight",that.height());
                 },
-                resize: function(event,ui) {    
+                resize: function(event,ui) {
                     var that = $(ui.element);
+                    
+                    if(that.height() < mxBuilder.config.minContainerHeight){
+                        that.height(mxBuilder.config.minContainerHeight);
+                        return false;
+                    }
+                    
                     var lastHeight = that.data("lastheight");
                     var currentHeight = that.height();
                     var elements = that.data("elements");
@@ -137,11 +143,21 @@
                     });
                     
                     that.data("lastheight",currentHeight);
-                    //                    mxBuilder.layout.syncLayoutHeight();
+                    
+                    //footer only
+                    if(that.get(0) === mxBuilder.layout.layoutFooter.get(0)){
+                        
+                        var docHeight = $(document.body).height();
+                        if(event.offsetY+10 >= docHeight){
+                            var newHeight = $(document.body).height()+10;
+                            $(document.body).height(newHeight).scrollTop(newHeight);
+                        }
+                    }
+                    
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
-                    
+                    $(document.body).css("height","");
                 }
             });
         }
@@ -150,7 +166,7 @@
         makeResizable(mxBuilder.layout.layoutHeader,mxBuilder.layout.header);
         makeResizable(mxBuilder.layout.layoutFooter,mxBuilder.layout.footer);
         
-        //mxBuilder.layout.revalidateLayout();
+    //mxBuilder.layout.revalidateLayout();
         
     });
 }(jQuery));

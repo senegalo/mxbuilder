@@ -5,14 +5,14 @@
 
         <!--<link rel="stylesheet" href="public/css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>-->
         <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.0.custom.css" type="text/css"/>
-        <link rel="stylesheet/less" href="public/css/reset.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/reset.css" type="text/css" /><!--
         <link rel="stylesheet/less" href="public/css/layout.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/theme-01.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/font-set-01.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/menu-set-01.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/website.css" type="text/css" />
         <link rel="stylesheet/less" href="public/css/webpage-01.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/context-menu.css" type="text/css"/>
+        -->        <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
 
 
 
@@ -22,6 +22,8 @@
             html {
                 font-size: 12px;
                 overflow-x: hidden;
+                font-family:Arial,Verdana,Sans-serif;
+                overflow-y: scroll;
             }
             .mx-component, .mx-component .content {
                 outline: 0px solid transparent;
@@ -52,11 +54,11 @@
                 top: -20px;
             }
 
-            .ui-resizable-n { cursor: n-resize; height: 7px; width: 7px; top: -6px; left: 50%; }
-            .ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; }
-            .ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 49%; height: 7px; }
-            .ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 49%; height: 7px; }
-            .ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: 0px; bottom: 0px; }
+            .ui-resizable-n { cursor: n-resize; height: 7px; width: 7px; top: -6px; left: 50%; margin-left: -3px; }
+            .ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; margin-left: -3px; }
+            .ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 50%; height: 7px; margin-top: -3px }
+            .ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 50%; height: 7px; margin-top: -3px}
+            .ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: -6px; bottom: -6px; }
             .ui-resizable-sw { cursor: sw-resize; width: 7px; height: 7px; left: -6px; bottom: -6px; }
             .ui-resizable-nw { cursor: nw-resize; width: 7px; height: 7px; left: -6px; top: -6px; }
             .ui-resizable-ne { cursor: ne-resize; width: 7px; height: 7px; right: -6px; top: -6px;}
@@ -70,20 +72,28 @@
             }
 
             .cke {
-                z-index: 100000;
+                z-index: 10000000;
             }
             .cke_dialog_background_cover { 
                 display:none !important;
             }
 
             #header,#body,#footer {
-                outline: 1px dashed #00dbff;
+                /*outline: 1px dashed #00dbff;*/
             }
 
+            #container {
+                width:980px;
+                height: 100%;
+                position:absolute;
+                top:0;
+                left:50%;
+                margin-left: -490px;
+            }
 
         </style>
         <!-- Loading Libs -->
-        <script type="text/javascript" src="public/js-libs/less.js"></script>
+        <!--<script type="text/javascript" src="public/js-libs/less.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
         <!--<script type="text/javascript" src="public/js-libs/jquery-ui-1.8.23.custom.min.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.0.custom.min.js"></script>
@@ -112,7 +122,7 @@
         <script type="text/javascript" src="public/js/api.js"></script>
 
         <!--Loading Components-->
-        <script type="text/javascript" src="public/js/simple-div-component.js"></script>
+        <!--<script type="text/javascript" src="public/js/simple-div-component.js"></script>-->
         <script type="text/javascript" src="public/js/text-component.js"></script>
         <script type="text/javascript" src="public/js/box-component.js"></script>
         <script type="text/javascript" src="public/js/horizontal-line-component.js"></script>
@@ -136,7 +146,7 @@
     </head>
     <body>
 
-        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:250px;margin-top:-125px;z-index:10000009;background-color:#e4e4e4;">
+        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:250px;margin-top:-125px;z-index:30000009;background-color:#e4e4e4;">
             <div class="menu-item">
                 <select id="website-pages" style="width:190px"></select>
             </div>
@@ -148,18 +158,25 @@
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
-            <div id="header" style="height: 100px;" ></div>        
-            <div id="body" style="height: 300px;"></div>
-            <div id="footer" style="height: 100px;" ></div>
+            <div id="header" style="height: 200px;">
+
+            </div>
+            <div id="body" style="height: 300px;">
+
+            </div>
+            <div id="footer" style="height: 200px;">
+
+            </div>
             <div id="container">
                 <div id="header-content">
-
+                    <div class="header-outline" style="position:relative;border:6px solid orange;height:100%;overflow: hidden;display:none;z-index:2000000;"></div>
                 </div>
                 <div id="body-content">
-
+                    <div class="body-outline" style="position:relative;border:6px solid red;height:100%;overflow: hidden;display:none;z-index:2000000;"></div>
                 </div>
 
                 <div id="footer-content">
+                    <div class="footer-outline" style="position:relative;border:6px solid orange;height:100%;overflow: hidden;display:none;z-index:2000000;"></div>
                 </div>
             </div>
         </div>
@@ -169,7 +186,7 @@
         </div>
 
         <div id="templates" style="display:none;">
-            
+
             <div class="assets-properties-dialog">
                 <label for="asset-name-input">Name:</label>
                 <input type="text" id="asset-name-input"/>
@@ -199,8 +216,7 @@
             </div>
 
             <div class="image-component-instance">
-                <img src="" alt="" title=""/>
-                <div class="caption"></div>
+                <div class="image"><img src="" alt="" title=""/></div>
             </div>
 
             <div class="assets-image-template" style="float:left;width:140px;height:120px;outline: 1px solid black;margin:10px;">
@@ -217,7 +233,7 @@
                 <button class="delete-asset">Del.</button>
                 <button class="edit-name">E.N</button>
             </div>
-            
+
             <div class="image-default-properties-dialog">
                 <div>
                     <label for="image-default-title">Default Title:</label>
@@ -277,7 +293,7 @@
                         <input type="text" name="external_link" class="link-input"/>
                     </div>
                 </div>
-                <div>
+<!--                <div>
                     <div style="display:inline-block">
                         <input type="radio" name="link_type" class="link-type" value="email" id="linkto-email">
                         <label for="linkto-email">Email</label>
@@ -285,7 +301,7 @@
                     <div style="display:inline-block">
                         <input type="text" name="email" class="link-input"/>
                     </div>
-                </div>
+                </div>-->
                 <div>
                     <div style="display:inline-block;">
                         <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">

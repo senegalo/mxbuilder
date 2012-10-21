@@ -18,9 +18,12 @@
             self.theImage = properties.element.find("img").css({
                 position: 'absolute'
             });
-            properties.element.addClass("image-component-element").css({
-                overflow: 'hidden'
-            }).on({
+            properties.element.addClass("image-component-element").find(".image").css({
+                overflow: 'hidden',
+                position:"relative",
+                width:"100%",
+                height:"100%"
+            }).end().on({
                 componentDropped: function componentDropped(){
                     self.setImageSize("thumb");
                     self.element.css({
@@ -29,8 +32,8 @@
                     });
                 },
                 borderWidthChanged: function borderWidthChanged(){
-                    properties.element.width(self.theImage.outerWidth());
-                    properties.element.height(self.theImage.outerHeight());
+                    properties.element.width(properties.element.find(".image").outerWidth());
+                    properties.element.height(properties.element.find(".image").outerHeight());
                 },
                 selected: function selected(){
                     mxBuilder.activeStack.push(properties.element);

@@ -31,4 +31,10 @@ CKEDITOR.editorConfig = function( config ) {
     
     config.stylesSet = "mx_styles";
     
+    config.baseFloatZIndex = 10000001;
+    
+    config.floatSpaceDockedOffsetX = 10;
+    
+    config.floatSpaceDockedOffsetY = 10;
+    
 };

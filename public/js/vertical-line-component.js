@@ -33,7 +33,7 @@
         $('<div class="vline-component menu-item" style="cursor:move;">Vertical line</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.VerticalLineComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
+                var theContent = mxBuilder.VerticalLineComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                 .data("component","VerticalLineComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;

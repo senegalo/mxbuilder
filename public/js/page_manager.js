@@ -128,9 +128,11 @@
                 this.__pinned[componentID] = component;
             },
             unpinComponent: function unpinComponent(component){
-                delete this.__pinned[component.getID()];
-                //assigning it to this page
-                this.attachComponentToPage(component);
+                if(this.__pinned[component.getID()]){
+                    delete this.__pinned[component.getID()];
+                    //assigning it to this page
+                    this.attachComponentToPage(component);
+                }
             },
             getPageCount: function getPageCount(){
                 return Object.keys(this.__pages).length;

@@ -20,8 +20,8 @@
                     var instHeight = properties.element.height();
                     var out = true;
                     //if(height > instHeight){
-                        properties.element.height(height);
-                        //out = false;
+                    properties.element.height(height);
+                    //out = false;
                     //}
                     properties.element.resizable("option","minHeight",height).data("minheight",instHeight);
                     return out;
@@ -57,13 +57,31 @@
                             height: "auto"
                         }).data("refreshinterval",refreshInterval).data("minheight",height);
                 
-                        theComponent.editor = CKEDITOR.inline(theContent, {  
+                        
+                        var position = properties.element.position();
+                        var initConfig = {
                             on :{
                                 instanceReady : function ( evt ){
                                     $(theContent).focus();
+//                                    var position = $(".cke").position();
+//                                    if(position){
+//                                        var multiplier = initConfig.toolbarLocation == "bottom" ? 10 : -10;
+//                                        $(".cke").css({
+//                                            top: position.top+multiplier+"px",
+//                                            left: position.left+multiplier+"px",
+//                                            right: "",
+//                                            bottom: ""
+//                                        });
+//                                    }
                                 }
                             }
-                        });
+                        };
+                        
+                        if(position.top-60 < 0){
+                            initConfig.toolbarLocation = 'bottom';
+                        }
+                
+                        theComponent.editor = CKEDITOR.inline(theContent, initConfig);
                     }
                 
                     properties.element.on({
@@ -140,7 +158,7 @@
         $('<div class="text-component menu-item" style="cursor:move;">Text Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.TextComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
+                var theContent = mxBuilder.TextComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                 .data("component","TextComponent");
                 theContent.appendTo(mxBuilder.layout.container);
                 return theContent;

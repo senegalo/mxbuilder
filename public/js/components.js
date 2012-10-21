@@ -253,6 +253,7 @@
                             width: that.width(),
                             height: that.height()
                         });
+                        mxBuilder.layout.revalidateLayout();
                     }
                 });
                 obj.element.resizable(obj.resizable);
@@ -416,6 +417,7 @@
             $.extend(this,properties.data);
         },
         destroy: function destroy(){
+            this.unpin();
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
         }
@@ -451,6 +453,7 @@
                         mxBuilder.components.getComponent($(this)).setContainer(container);
                     });
                 }
+                mxBuilder.layout.revalidateLayout();
                 mxBuilder.layout.clearOutline(container);
             }
         }
@@ -458,35 +461,21 @@
         /**
          * @todo guess all 3 layouts are similar could be a lot more shorter... double check
          */
-        mxBuilder.layout.header.droppable({
-            drop: dropOnContainer("header"),
-            over: function over(){
-                mxBuilder.layout.outline("header")
-            },
-            out: function out(){
-                mxBuilder.layout.clearOutline("header")
-            }
-        });
+        var layoutSections = ["header","body","footer"];
         
-        mxBuilder.layout.body.droppable({
-            drop: dropOnContainer("body"),
-            over: function over(){
-                mxBuilder.layout.outline("body")
-                },
-            out: function out(){
-                mxBuilder.layout.clearOutline("body")
-                }
-        });
-        
-        mxBuilder.layout.footer.droppable({
-            drop: dropOnContainer("footer"),
-            over: function over(){
-                mxBuilder.layout.outline("footer")
-                },
-            out: function out(){
-                mxBuilder.layout.clearOutline("footer")
-                }
-        });
+        for(var i in layoutSections){
+            (function(section){
+                mxBuilder.layout["layout"+section.uppercaseFirst()].droppable({
+                    drop: dropOnContainer(section),
+                    over: function over(){
+                        mxBuilder.layout.outline(section)
+                    },
+                    out: function out(){
+                        mxBuilder.layout.clearOutline(section)
+                    }
+                });
+            }(layoutSections[i]));
+        }
         
         mxBuilder.selection.enableMultiComponentSelect(true);
         

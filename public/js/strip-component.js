@@ -25,8 +25,8 @@
                     mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
                 }
             }).css({
-                width: $(document).width()+50,
-                left: (mxBuilder.layout.container.offset().left*-1)-25
+                width: $(document.body).width(),
+                left: -1*mxBuilder.layout.container.offset().left
             });
         }
         $.extend(mxBuilder.StripComponent.prototype, new mxBuilder.Component(), {
@@ -37,7 +37,7 @@
         $('<div class="strip-component menu-item" style="cursor:move;">Strip</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.StripComponent.prototype.template.clone().css("zIndex",mxBuilder.zIndexManager.getNextZIndex())
+                var theContent = mxBuilder.StripComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                 .data("component","StripComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
