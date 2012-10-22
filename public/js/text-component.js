@@ -48,7 +48,7 @@
                         },100);
                 
                         mxBuilder.selection.enableMultiComponentSelect(false);
-                        mxBuilder.activeStack.push(properties.element);
+                        //mxBuilder.activeStack.push(properties.element);
                 
                         var height = properties.element.height();
                 
