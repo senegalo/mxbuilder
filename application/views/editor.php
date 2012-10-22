@@ -120,6 +120,7 @@
         <script type="text/javascript" src="public/js/publish.js"></script>
         <script type="text/javascript" src="public/js/z-index-manager.js"></script>
         <script type="text/javascript" src="public/js/api.js"></script>
+        <script type="text/javascript" src="public/js/layout-background.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/simple-div-component.js"></script>-->
@@ -146,7 +147,7 @@
     </head>
     <body>
 
-        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:250px;margin-top:-125px;z-index:30000009;background-color:#e4e4e4;">
+        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:300px;margin-top:-150px;z-index:30000009;background-color:#e4e4e4;">
             <div class="menu-item">
                 <select id="website-pages" style="width:190px"></select>
             </div>
@@ -155,6 +156,9 @@
             <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
             <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
             <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
+            <div id="header-background" class="menu-item" style="font-weight:bold;cursor:pointer">Header Background</div>
+            <div id="body-background" class="menu-item" style="font-weight:bold;cursor:pointer">Body Background</div>
+            <div id="footer-background" class="menu-item" style="font-weight:bold;cursor:pointer">Footer Background</div>
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">

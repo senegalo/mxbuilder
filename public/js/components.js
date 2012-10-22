@@ -73,44 +73,6 @@
                                     type: "sep"
                                 });
                             }
-                            
-                            if(obj.pinnable !== false){
-                                var pinned = true;
-                                mxBuilder.selection.getSelection().each(function(){
-                                    if(!mxBuilder.components.getComponent($(this)).isPinned()){
-                                        pinned = false;
-                                    }
-                                });
-                                ctx.addItem({
-                                    label: "Pin",
-                                    checked: pinned,
-                                    callback: function(){
-                                        mxBuilder.selection.getSelection().each(function(){
-                                            var theComponent = mxBuilder.components.getComponent($(this));
-                                            if(pinned){
-                                                theComponent.unpin();
-                                            } else {
-                                                theComponent.pin();
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        
-                            //Adding Delete ctx menu
-                            if(obj.deletable !== false){
-                                ctx.addItem({
-                                    label: "Delete",
-                                    callback: function(){
-                                        mxBuilder.dialogs.deleteDialog({
-                                            msg: "Are you sure you want to delete the selected component(s) ?",
-                                            callback: function(){
-                                                mxBuilder.selection.getSelection().trigger("destroy"); 
-                                            }
-                                        });
-                                    }
-                                });
-                            }
                         }
                     } 
                     if(mxBuilder.selection.getSelectionCount() > 1){
@@ -146,6 +108,44 @@
                             label: "Center Horizontally",
                             callback: function(){
                                 mxBuilder.components.alignment.centerHorizontally();
+                            }
+                        });
+                    }
+                    
+                    if(obj.pinnable !== false){
+                        var pinned = true;
+                        mxBuilder.selection.getSelection().each(function(){
+                            if(!mxBuilder.components.getComponent($(this)).isPinned()){
+                                pinned = false;
+                            }
+                        });
+                        ctx.addItem({
+                            label: "Pin",
+                            checked: pinned,
+                            callback: function(){
+                                mxBuilder.selection.getSelection().each(function(){
+                                    var theComponent = mxBuilder.components.getComponent($(this));
+                                    if(pinned){
+                                        theComponent.unpin();
+                                    } else {
+                                        theComponent.pin();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    
+                    //Adding Delete ctx menu
+                    if(obj.deletable !== false){
+                        ctx.addItem({
+                            label: "Delete",
+                            callback: function(){
+                                mxBuilder.dialogs.deleteDialog({
+                                    msg: "Are you sure you want to delete the selected component(s) ?",
+                                    callback: function(){
+                                        mxBuilder.selection.getSelection().trigger("destroy"); 
+                                    }
+                                });
                             }
                         });
                     }

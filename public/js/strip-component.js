@@ -24,13 +24,29 @@
                 dblclick: function(){
                     mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
                 }
-            }).css({
-                width: $(document.body).width(),
-                left: -1*mxBuilder.layout.container.offset().left
             });
+            
+            this.resetSize();
+            
         }
         $.extend(mxBuilder.StripComponent.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".strip-component-instance").remove()
+            template: mxBuilder.layout.templates.find(".strip-component-instance").remove(),
+            resetSize: function resetSize(){
+                this.element.css({
+                    width: $(document.body).width(),
+                    left: -1*mxBuilder.layout.container.offset().left
+                });
+            }
+        });
+        
+        //if the window is resized ... revalidate all stip components
+        $(window).on({
+            resize: function resize(){
+                var stripCmps = mxBuilder.components.getComponentsByType("StripComponent");
+                for(var c in stripCmps){
+                    stripCmps[c].resetSize();
+                }
+            }
         });
     
         //Adding the whole thing to the menu

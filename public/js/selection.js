@@ -91,11 +91,24 @@
             //adding the instance in the selection hash
             this.__selected[mxBuilder.components.getComponent(instance).getID()] = instance;
             
+            //adding the instance to the active stack
+            mxBuilder.activeStack.push(instance);
+            instance.on({
+                poppedFromActiveStack: function(){
+                    mxBuilder.selection.removeFromSelection(instance);
+                }
+            })
+            
             //triggering the selected event
             instance.trigger("selected");
             
         },
         removeFromSelection: function removeFromSelection(instance,skipSelContainerValidation){
+            
+            if(!this.isSelected(instance)){
+                return;
+            }
+            
             instance = $(instance).removeClass("ui-selected");
             
             instance.find(".component-resizable-handle").hide();

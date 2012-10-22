@@ -10,25 +10,41 @@
             title: "Page Settings",
             buttons: {
                 Save: function(){
-                    if(isEdit){
-                        var pageObj = mxBuilder.dialogs.pagesAddEditDialog.getData();
-                        pageObj.id = pageID;
-                        mxBuilder.pages.editPage(pageObj);
-                    } else {
-                        mxBuilder.pages.addPage(mxBuilder.dialogs.pagesAddEditDialog.getData());
+                    var data = mxBuilder.dialogs.pagesAddEditDialog.validateData();
+                    if(data){
+                        if(isEdit){
+                            var pageObj = data;
+                            pageObj.id = pageID;
+                            mxBuilder.pages.editPage(pageObj);
+                        } else {
+                            mxBuilder.pages.addPage(mxBuilder.dialogs.pagesAddEditDialog.getData());
+                        }
+                        $(this).dialog("close");
                     }
-                    $(this).dialog("close");
                 },
                 Cancel: function(){
                     $(this).dialog("close");
                 }
             }
+        });
+        
+        theDialog.find("#page-title").on({
+            input: function input(){
+                var that = $(this);
+                theDialog.find("#page-address").val(that.val().replace(/[^a-zA-Z0-9\s]/g,"").replace(/\s+/g,"_"));
+            }
         })
+        .end()
+        .find("#page-address").on({
+            input: function input(){
+                var that = $(this);
+                that.val(that.val().replace(/[^a-zA-Z0-9_]/g,""));
+            }
+        });
    
     
         mxBuilder.dialogs.pagesAddEditDialog = {
             show: function show(data){
-                
                 mxBuilder.layout.pagesSelect.children().clone()
                 .appendTo(theDialog.find("#page-parent").empty().append('<option value="root">Root</option>'));
                 if(data){
@@ -70,6 +86,18 @@
                     desc: theDialog.find("#page-desc").val(),
                     keywords: theDialog.find("#page-keywords").val()
                 }
+            },
+            validateData: function validateData(){
+                var theData = this.getData();
+                theData.address = theData.address.replace(/[^a-zA-Z0-9_]/g,"");
+                if(theData.title == ""){
+                    mxBuilder.dialogs.alertDialog.show("Title cannot be left blank");
+                    return false;
+                } else if(theData.address == ""){
+                    mxBuilder.dialogs.alertDialog.show("Address field cannot be left blank");
+                    return false;
+                }
+                return theData;
             }
         } 
     });

@@ -32,6 +32,15 @@
             }
             return out;
         },
+        getComponentsByType: function getComponentsByType(type){
+            var out = {};
+            for(var c in this.__components){
+                if(this.__components[c].type == type){
+                    out[c] = this.__components[c];
+                }
+            }
+            return out;
+        },
         removeComponent: function removeComponent(instance){
             var id = mxBuilder.utils.getElementGUID(instance);
             mxBuilder.zIndexManager.removeComponent(this.__components[id]);

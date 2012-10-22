@@ -59,29 +59,17 @@
                 
                         
                         var position = properties.element.position();
-                        var initConfig = {
+                
+                        theComponent.editor = CKEDITOR.inline(theContent, {
                             on :{
                                 instanceReady : function ( evt ){
                                     $(theContent).focus();
-//                                    var position = $(".cke").position();
-//                                    if(position){
-//                                        var multiplier = initConfig.toolbarLocation == "bottom" ? 10 : -10;
-//                                        $(".cke").css({
-//                                            top: position.top+multiplier+"px",
-//                                            left: position.left+multiplier+"px",
-//                                            right: "",
-//                                            bottom: ""
-//                                        });
-//                                    }
+                                    if(position.top-60 < 0){
+                                        $(".cke").css("top",position.top+properties.element.outerHeight());
+                                    }
                                 }
                             }
-                        };
-                        
-                        if(position.top-60 < 0){
-                            initConfig.toolbarLocation = 'bottom';
-                        }
-                
-                        theComponent.editor = CKEDITOR.inline(theContent, initConfig);
+                        });
                     }
                 
                     properties.element.on({

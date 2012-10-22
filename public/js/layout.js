@@ -7,9 +7,16 @@
                 body: this.body.height(),
                 footer: this.footer.height()
             }
+            
+            //the Layout sections
             this.layoutHeader.height(heights.header);
             this.layoutBody.height(heights.body);
             this.layoutFooter.height(heights.footer);
+            
+            //the Ouline Divs
+            this.headerOutline.outerHeight(heights.header);
+            this.bodyOutline.outerHeight(heights.body);
+            this.footerOutline.outerHeight(heights.footer);
         },
         getMaxComponentHeight: function getMaxComponentHeight(container){
             var max = 0;
@@ -71,6 +78,9 @@
         header: null,
         body: null,
         footer: null,
+        headerOutline: null,
+        bodyOutline: null,
+        footerOutline: null,
         layoutBody: null,
         layoutHeader: null,
         layoutFooter: null,
@@ -93,6 +103,12 @@
             templates: $("#templates").remove(),
             selectionSafe: $("#selection-safe"),
             editorArea: $("#editor-area")
+        });
+        
+        $.extend(mxBuilder.layout,{
+            headerOutline: mxBuilder.layout.header.find(".header-outline"),
+            bodyOutline: mxBuilder.layout.body.find(".body-outline"),
+            footerOutline: mxBuilder.layout.footer.find(".footer-outline")
         });
         
         var bodyWidth = mxBuilder.layout.body.width();
@@ -157,6 +173,7 @@
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
+                    mxBuilder.layout.syncContentHeight();
                     $(document.body).css("height","");
                 }
             });

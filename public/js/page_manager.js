@@ -152,7 +152,17 @@
             saveAll: function saveAll(){
                 var out = {
                     pages: [],
-                    pinned: []
+                    pinned: [],
+                    layoutHeights: {
+                        header: mxBuilder.layout.header.height(),
+                        body: mxBuilder.layout.body.height(),
+                        footer: mxBuilder.layout.footer.height()                   
+                    },
+                    layoutBackground: {
+                        header: mxBuilder.layout.layoutHeader.css("background"),
+                        body: $(document.body).css("background"),
+                        footer: mxBuilder.layout.layoutFooter.css("background")
+                    }
                 };
                 for(var p in this.__pages){
                     var copy = {};
@@ -167,11 +177,6 @@
                 for(var c in this.__pinned){
                     out.pinned.push(this.__pinned[c].save());
                 }
-                out.layoutHeights = {
-                    header: mxBuilder.layout.header.height(),
-                    body: mxBuilder.layout.body.height(),
-                    footer: mxBuilder.layout.footer.height()                   
-                };
                 return out;
             },
             publishAll: function publishAll(){
@@ -212,6 +217,11 @@
                     mxBuilder.layout.setLayout(firstPage.layoutHeights);
                 } else {
                     mxBuilder.layout.revalidateLayout(true);
+                }
+                if(restore.layoutBackground){
+                    mxBuilder.layout.layoutHeader.css("background",restore.layoutBackground.header);
+                    $(document.body).css("background",restore.layoutBackground.body);
+                    mxBuilder.layout.layoutFooter.css("background",restore.layoutBackground.footer);
                 }
                 mxBuilder.layout.setLayout(restore.layoutHeights);
                 this.loadPage(firstPage.id);
