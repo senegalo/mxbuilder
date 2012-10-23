@@ -15,7 +15,7 @@
                 zIndex: 1000008,
                 title: "Assets Manager",
                 resizable: false,
-                width: 400
+                width: 410
             }).find(".assets-tabs").tabs().end();
         
             $('<div class="assets-manager menu-item" style="font-weight:bold;cursor:pointer">Assets</div>').appendTo(mxBuilder.layout.menu).on({
@@ -34,7 +34,7 @@
                 silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
                 filters : [{
                     title : "Image files", 
-                    extensions : "jpg,gif,png"
+                    extensions : "jpg,jpeg,gif,png"
                 },
                 {
                     title : "Document files", 
@@ -91,7 +91,7 @@
                 //preping the template
                 var template;
                 if(obj.type == "image"){
-                    template = imageAssetTemplate.clone().data("id",obj.id).addClass("asset-"+obj.id)
+                    template = imageAssetTemplate.clone().data("id",obj.id).addClass("asset-"+obj.id+" mx-helper")
                     .find("img")
                     .attr("src",obj.location+"/"+obj.thumb)
                     .end()
@@ -124,7 +124,8 @@
                     .end()
                     .insertBefore(theDialog.find("#assets-images-insertion-marker")).draggable({
                         helper: function helper(event){
-                            return imageComponentTemplate.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                            return imageComponentTemplate.clone()
+                            .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                             .find("img").attr({
                                 src: obj.location+"/"+obj.thumb
                             }).end()

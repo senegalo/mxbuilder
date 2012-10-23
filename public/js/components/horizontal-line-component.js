@@ -1,13 +1,15 @@
 (function($){
     $(function(){
-        mxBuilder.BoxComponent = function BoxComponent(properties){
+        mxBuilder.HorizontalLineComponent = function HorizontalLineComponent(properties){
             this.init(properties);
+            var handle = $('<div class="component-resizable-handle"/>');
             mxBuilder.Component.apply(this,[{
-                type: "BoxComponent",
+                type: "HorizontalLineComponent",
                 draggable: {},
-                resizable: {},
+                resizable: {
+                    orientation: "h"
+                },
                 ctxZIndex: true,
-                ctxEditableBorder: true,
                 ctxEditableBackground: true,
                 selectable: true,
                 element: properties.element
@@ -22,18 +24,23 @@
                 }
             });
         }
-        $.extend(mxBuilder.BoxComponent.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".box-component-instance").remove()
+        $.extend(mxBuilder.HorizontalLineComponent.prototype, new mxBuilder.Component(), {
+            template: mxBuilder.layout.templates.find(".hline-component-instance").remove()
         });
     
-        $('<div class="box-component menu-item" style="cursor:move;">Box</div>').draggable({
+        //Adding the whole thing to the menu
+    
+        $('<div class="hline-component menu-item mx-helper" style="cursor:move;">Horizontal line</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.BoxComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
-                .data("component","BoxComponent")
+                var theContent = mxBuilder.HorizontalLineComponent.prototype.template.clone()
+                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                .data("component","HorizontalLineComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
             }
         }).appendTo(mxBuilder.layout.menu);
     });
+    
+    
 }(jQuery))

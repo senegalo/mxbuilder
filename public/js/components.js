@@ -466,6 +466,7 @@
         for(var i in layoutSections){
             (function(section){
                 mxBuilder.layout["layout"+section.uppercaseFirst()].droppable({
+                    accept: ".mx-helper,.mx-component",
                     drop: dropOnContainer(section),
                     over: function over(){
                         mxBuilder.layout.outline(section)

@@ -143,10 +143,11 @@
                 return this.editMode ? true : false;
             }
         });
-        $('<div class="text-component menu-item" style="cursor:move;">Text Box</div>').draggable({
+        $('<div class="text-component menu-item mx-helper" style="cursor:move;">Text Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.TextComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                var theContent = mxBuilder.TextComponent.prototype.template.clone()
+                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                 .data("component","TextComponent");
                 theContent.appendTo(mxBuilder.layout.container);
                 return theContent;

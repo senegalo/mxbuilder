@@ -123,13 +123,13 @@
         <script type="text/javascript" src="public/js/layout-background.js"></script>
 
         <!--Loading Components-->
-        <!--<script type="text/javascript" src="public/js/simple-div-component.js"></script>-->
-        <script type="text/javascript" src="public/js/text-component.js"></script>
-        <script type="text/javascript" src="public/js/box-component.js"></script>
-        <script type="text/javascript" src="public/js/horizontal-line-component.js"></script>
-        <script type="text/javascript" src="public/js/vertical-line-component.js"></script>
-        <script type="text/javascript" src="public/js/strip-component.js"></script>
-        <script type="text/javascript" src="public/js/image-component.js"></script>
+        <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
+        <script type="text/javascript" src="public/js/components/text-component.js"></script>
+        <script type="text/javascript" src="public/js/components/box-component.js"></script>
+        <script type="text/javascript" src="public/js/components/horizontal-line-component.js"></script>
+        <script type="text/javascript" src="public/js/components/vertical-line-component.js"></script>
+        <script type="text/javascript" src="public/js/components/strip-component.js"></script>
+        <script type="text/javascript" src="public/js/components/image-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -154,7 +154,7 @@
             <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
             <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
             <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
-            <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
+            <!--<div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>-->
             <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
             <div id="header-background" class="menu-item" style="font-weight:bold;cursor:pointer">Header Background</div>
             <div id="body-background" class="menu-item" style="font-weight:bold;cursor:pointer">Body Background</div>
@@ -190,6 +190,8 @@
         </div>
 
         <div id="templates" style="display:none;">
+            
+            <div class="save-tooltip" style="position:fixed;top:5px;left:5px;z-index:20000009;background-color:green;display:none;color:#ffffff;padding:10px;"></div>
 
             <div class="assets-properties-dialog">
                 <label for="asset-name-input">Name:</label>
@@ -210,10 +212,10 @@
                         <li><a href="#assets-images-container">Images</a></li>
                         <li><a href="#assets-document-container">Documents</a></li>
                     </ul>
-                    <div id="assets-images-container">
+                    <div id="assets-images-container" style="height: 300px;overflow:auto;">
                         <div id="assets-images-insertion-marker" style="clear:both;"></div>
                     </div>
-                    <div id="assets-document-container">
+                    <div id="assets-document-container" style="height: 300px;overflow:auto;">
                         <div id="assets-document-insertion-marker" style="clear:both;"></div>
                     </div>
                 </div>

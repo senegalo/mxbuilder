@@ -4,9 +4,13 @@
         syncContentHeight: function syncContentHeight(){
             var heights = {
                 header: this.header.height(),
-                body: this.body.height(),
-                footer: this.footer.height()
+                body: this.body.height()
             }
+            
+            
+            var documentHeight = $(document).height();
+            heights.footer = documentHeight-heights.header-heights.body;
+            this.footer.height(heights.footer);
             
             //the Layout sections
             this.layoutHeader.height(heights.header);

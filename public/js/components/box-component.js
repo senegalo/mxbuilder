@@ -1,21 +1,19 @@
 (function($){
     $(function(){
-        mxBuilder.VerticalLineComponent = function VerticalLineComponent(properties){
+        mxBuilder.BoxComponent = function BoxComponent(properties){
             this.init(properties);
-            var handle = $('<div class="component-resizable-handle"/>');
             mxBuilder.Component.apply(this,[{
-                type: "VerticalLineComponent",
+                type: "BoxComponent",
                 draggable: {},
-                resizable: {
-                    orientation: "v"
-                },
+                resizable: {},
                 ctxZIndex: true,
+                ctxEditableBorder: true,
                 ctxEditableBackground: true,
                 selectable: true,
                 element: properties.element
             }]);
     
-            properties.element.addClass("").on({
+            properties.element.on({
                 selected: function(){
                     mxBuilder.activeStack.push(properties.element);
                 },
@@ -24,20 +22,19 @@
                 }
             });
         }
-        $.extend(mxBuilder.VerticalLineComponent.prototype,new mxBuilder.Component(),{
-            template: mxBuilder.layout.templates.find(".vline-component-instance").remove() 
+        $.extend(mxBuilder.BoxComponent.prototype, new mxBuilder.Component(), {
+            template: mxBuilder.layout.templates.find(".box-component-instance").remove()
         });
     
-        //Adding the whole thing to the menu
-
-        $('<div class="vline-component menu-item" style="cursor:move;">Vertical line</div>').draggable({
+        $('<div class="box-component menu-item mx-helper" style="cursor:move;">Box</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.VerticalLineComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
-                .data("component","VerticalLineComponent")
+                var theContent = mxBuilder.BoxComponent.prototype.template.clone()
+                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                .data("component","BoxComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
             }
         }).appendTo(mxBuilder.layout.menu);
-    }); 
+    });
 }(jQuery))

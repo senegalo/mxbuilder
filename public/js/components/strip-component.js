@@ -50,10 +50,11 @@
         });
     
         //Adding the whole thing to the menu
-        $('<div class="strip-component menu-item" style="cursor:move;">Strip</div>').draggable({
+        $('<div class="strip-component menu-item mx-helper" style="cursor:move;">Strip</div>').draggable({
             grid: mxBuilder.properties.gridSize,
             helper: function(event){
-                var theContent = mxBuilder.StripComponent.prototype.template.clone().css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                var theContent = mxBuilder.StripComponent.prototype.template.clone()
+                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
                 .data("component","StripComponent")
                 .appendTo(mxBuilder.layout.container);
                 return theContent;
