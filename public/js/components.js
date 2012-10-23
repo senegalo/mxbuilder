@@ -492,7 +492,10 @@
                     mxBuilder.dialogs.deleteDialog({
                         msg: "Are you sure you want to delete the selected component(s) ?",
                         callback: function callback(){
-                            mxBuilder.selection.getSelection().trigger("destroy"); 
+                            mxBuilder.selection.each(function(){  
+                                mxBuilder.pages.detachComponentFromPage(this);
+                                this.element.trigger("destroy");
+                            }); 
                         }
                     });
                 }

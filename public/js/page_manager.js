@@ -120,7 +120,9 @@
                 this.__pages[pageID].components[component.getID()] = component;
             },
             detachComponentFromPage: function detachComponentFromPage(component){
-                delete this.__pages[component.page].components[component.getID()];
+                if(this.__pages[component.page]){
+                    delete this.__pages[component.page].components[component.getID()];
+                }
             },
             pinComponent: function pinComponent(component){
                 var componentID = component.getID();

@@ -37,10 +37,13 @@
                         .attr("contenteditable","true")
                         .focus()
                         .get(0);
-                
+                        
                         var refreshInterval = setInterval(function(){
                             var metrics = theComponent.getMetrics();
                             if(typeof metrics.offsetWidth != "undefined"){
+                                if(theComponent.editor){
+                                    (new CKEDITOR.dom.window(window)).fire("resize");
+                                }
                                 mxBuilder.components.pushComponentsBelow(metrics);
                                 mxBuilder.selection.revalidateSelectionContainer();
                                 mxBuilder.layout.revalidateLayout();
@@ -53,7 +56,7 @@
                         var height = properties.element.height();
                 
                         properties.element.css({
-                            minHeight: height+"px",
+                            //minHeight: height+"px",
                             height: "auto"
                         }).data("refreshinterval",refreshInterval).data("minheight",height);
                 
@@ -64,9 +67,6 @@
                             on :{
                                 instanceReady : function ( evt ){
                                     $(theContent).focus();
-                                    if(position.top-60 < 0){
-                                        $(".cke").css("top",position.top+properties.element.outerHeight());
-                                    }
                                 }
                             }
                         });

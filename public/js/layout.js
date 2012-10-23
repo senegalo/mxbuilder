@@ -7,8 +7,8 @@
                 body: this.body.height()
             }
             
-            
-            var documentHeight = $(document).height();
+            //the -6 to compensate for the resize handler
+            var documentHeight = $(document).height()-6;
             heights.footer = documentHeight-heights.header-heights.body;
             this.footer.height(heights.footer);
             
