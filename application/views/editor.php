@@ -97,7 +97,7 @@
         <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
         <!--<script type="text/javascript" src="public/js-libs/jquery-ui-1.8.23.custom.min.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.0.custom.min.js"></script>
-        <script type="text/javascript" src="public/js-libs/ckeditor-dev/ckeditor.js"></script>
+        <script type="text/javascript" src="public/js-libs/ckeditor-unpacked/ckeditor.js"></script>
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;
         </script>
