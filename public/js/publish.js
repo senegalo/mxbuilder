@@ -1,12 +1,15 @@
 (function($){
     $(function(){
-       mxBuilder.layout.menu.find("#publish").on({
-           click: function(){
-               var out = mxBuilder.pages.publishAll();
-               for(var i in out){
-                   console.log(out[i]);
-               }
-           }
-       });
+        mxBuilder.layout.menu.find("#publish").on({
+            click: function(){
+                var args = mxBuilder.pages.publishAll();
+                $.extend(args,{
+                    success: function(data){
+                        alert(data.website);
+                    }
+                });
+                mxBuilder.api.website.publish(args);
+            }
+        });
     });
 }(jQuery))

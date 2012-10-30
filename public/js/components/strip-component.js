@@ -11,7 +11,6 @@
                     orientation: "v"
                 },
                 ctxZIndex: true,
-                ctxEditableBorder: true,
                 ctxEditableBackground: true,
                 selectable: true,
                 element: properties.element

@@ -395,6 +395,7 @@
             }
             if(this.ctxEditableBorder){
                 out.css.border = this.element.css("border");
+                out.css.borderRadius = this.element.css("borderRadius");
             }
             if(this.ctxEditableBackground){
                 out.css.background = this.element.css("background");
@@ -408,7 +409,7 @@
             return this.element.clone().find(".component-resizable-handle")
             .remove()
             .end()
-            .removeClass("ui-draggable ui-resizable mx-selectable-component");
+            .removeClass("ui-draggable ui-resizable ui-selected mx-selectable-component");
         },
         init: function init(properties){
             if(typeof properties.element == "undefined"){

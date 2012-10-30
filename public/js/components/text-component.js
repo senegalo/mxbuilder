@@ -28,60 +28,62 @@
                 },
                 dblclick: function dblclick(){
                     var theComponent = mxBuilder.components.getComponent(properties.element);
-                    if(theComponent.editor === null || typeof theComponent.editor == "undefined"){
-                        var theContent = properties.element.draggable("disable").on({
-                            "click.editor-consume": function(event){
-                                return false;
-                            }
-                        }).find(".content")
-                        .attr("contenteditable","true")
-                        .focus()
-                        .get(0);
-                        
-                        var refreshInterval = setInterval(function(){
-                            var metrics = theComponent.getMetrics();
-                            if(typeof metrics.offsetWidth != "undefined"){
-                                if(theComponent.editor){
-                                    (new CKEDITOR.dom.window(window)).fire("resize");
+                    if(theComponent.editMode !== true){
+                        if(theComponent.editor === null || typeof theComponent.editor == "undefined"){
+                            var theContent = properties.element.draggable("disable").on({
+                                "click.editor-consume": function(event){
+                                    return false;
                                 }
-                                mxBuilder.components.pushComponentsBelow(metrics);
-                                mxBuilder.selection.revalidateSelectionContainer();
-                                mxBuilder.layout.revalidateLayout();
-                            }
-                        },100);
+                            }).find(".content")
+                            .attr("contenteditable","true")
+                            .focus()
+                            .get(0);
+                        
+                            var refreshInterval = setInterval(function(){
+                                var metrics = theComponent.getMetrics();
+                                if(typeof metrics.offsetWidth != "undefined"){
+                                    if(theComponent.editor){
+                                        (new CKEDITOR.dom.window(window)).fire("resize");
+                                    }
+                                    mxBuilder.components.pushComponentsBelow(metrics);
+                                    mxBuilder.selection.revalidateSelectionContainer();
+                                    mxBuilder.layout.revalidateLayout();
+                                }
+                            },100);
                 
-                        mxBuilder.selection.enableMultiComponentSelect(false);
-                        //mxBuilder.activeStack.push(properties.element);
+                            mxBuilder.selection.enableMultiComponentSelect(false);
+                            //mxBuilder.activeStack.push(properties.element);
                 
-                        var height = properties.element.height();
+                            var height = properties.element.height();
                 
-                        properties.element.css({
-                            //minHeight: height+"px",
-                            height: "auto"
-                        }).data("refreshinterval",refreshInterval).data("minheight",height);
+                            properties.element.css({
+                                //minHeight: height+"px",
+                                height: "auto"
+                            }).data("refreshinterval",refreshInterval).data("minheight",height);
                 
                         
-                        var position = properties.element.position();
+                            var position = properties.element.position();
                 
-                        theComponent.editor = CKEDITOR.inline(theContent, {
-                            on :{
-                                instanceReady : function ( evt ){
-                                    $(theContent).focus();
+                            theComponent.editor = CKEDITOR.inline(theContent, {
+                                on :{
+                                    instanceReady : function ( evt ){
+                                        $(theContent).focus();
+                                    }
                                 }
+                            });
+                        }
+                
+                        properties.element.on({
+                            "click.focus-editor": function click(){
+                                theComponent.editor.focus();
                             }
                         });
-                    }
-                
-                    properties.element.on({
-                        "click.focus-editor": function click(){
-                            theComponent.editor.focus();
-                        }
-                    });
                     
-                    theComponent.editMode = true;
-                
+                        theComponent.editMode = true;
+                    }
                 },
                 deselected: function deselected(){
+                    mxBuilder.activeStack.popTo(properties.element);
                 },
                 poppedFromActiveStack: function poppedFromActiveStack(){
                     var theComponent = mxBuilder.components.getComponent(properties.element);

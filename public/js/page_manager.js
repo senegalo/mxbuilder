@@ -169,7 +169,7 @@
                 for(var p in this.__pages){
                     var copy = {};
                     $.extend(copy,this.__pages[p]);
-                    delete copy.id;
+                    //delete copy.id;
                     copy.components = [];
                     for(var c in this.__pages[p].components){
                         copy.components.push(p == this.__currentPage ? this.__pages[p].components[c].save() : this.__pages[p].components[c]);
@@ -182,21 +182,50 @@
                 return out;
             },
             publishAll: function publishAll(){
-                var out = [];
+                var out = {
+                    pages: [],
+                    assets: {},
+                    layout: {
+                        height: {
+                            header: mxBuilder.layout.header.height(),
+                            body: mxBuilder.layout.body.height(),
+                            footer: mxBuilder.layout.footer.height()
+                        },
+                        background: {
+                            header: mxBuilder.layout.layoutHeader.css("background"),
+                            body: $(document.body).css("background"),
+                            footer: mxBuilder.layout.layoutFooter.css("background")
+                        }
+                    }
+                };
                 var currentPage = this.__currentPage;
                 for(var p in this.__pages){
+                    var page = {};
                     if(p != this.__currentPage) {
                         this.loadPage(p);
                     }
                     var components = this.getPageComponents(p);
-                    var pageTitle = this.__pages[p].htmlTitle ? this.__pages[p].htmlTitle : "Untitled Page";
-                    var publishedPage = '<html><head><title>'+pageTitle+'</title></head><body><div id="container">';
+                    page.title = this.__pages[p].htmlTitle ? this.__pages[p].htmlTitle : "Untitled Page";
+                    page.components = {
+                        header: [],
+                        body: [],
+                        footer: []
+                    };
                     for(var c in components){
-                        publishedPage += components[c].publish().get(0).outerHTML;
+                        if(components[c].type == "ImageComponent"){
+                            var assetID = components[c].getAssetID();
+                            out.assets[assetID] = [components[c].getImageSize()];
+                            var linkObj = components[c].getLinkObj();
+                            if(linkObj && linkObj.type == "lightbox"){
+                                out.assets[assetID].push("full");
+                            }
+                        }
+                        page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
                     }
-                    publishedPage += "</div></body></html>";
-                    out.push(publishedPage);
+                    page.address = this.__pages[p].address;
+                    out.pages.push(page);
                 }
+                
                 this.loadPage(currentPage);
                 return out;
             },

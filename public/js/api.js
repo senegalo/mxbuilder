@@ -35,6 +35,18 @@
                     success: mxBuilder.api.__genericSuccess(args),
                     complete: args.complete
                 });
+            },
+            publish: function publish(args){
+                $.ajax({
+                    url: mxBuilder.config.baseURL+"/websites/publish",
+                    success: mxBuilder.api.__genericSuccess(args),
+                    complete: args.complete,
+                    data:  {
+                        pages: args.pages,
+                        layout: args.layout,
+                        assets: args.assets
+                    }
+                });
             }
         },
         assets: {

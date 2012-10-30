@@ -53,7 +53,7 @@ class Assets_Model extends CI_Model {
             $out['type'] = "image";
             $out['caption'] = "";
             $out['title'] = "";
-            
+
             unset($generated_sizes['ratio']);
             $generated_sizes = array_keys($generated_sizes);
             $this->db->set("extra", serialize(array(
@@ -152,9 +152,9 @@ class Assets_Model extends CI_Model {
         return md5(Assets_Model::SALT . $asset_id);
     }
 
-    public function get_upload_path() {
-        $paths = explode("-", date("Y-m-d"));
-        $current_lookup = str_replace("/application/models","/public/uploads",__DIR__);
+    public function get_upload_path($upload_date = NULL) {
+        $paths = explode("-", date("Y-m-d", strtotime($upload_date)));
+        $current_lookup = str_replace("/application/models", "/public/uploads", __DIR__);
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
             if (!is_dir($current_lookup)) {
@@ -169,11 +169,11 @@ class Assets_Model extends CI_Model {
         $this->get_upload_path();
         return base_url('/public/uploads/' . date("Y/m/d"));
     }
-    
-    private function get_asset_by_id($user,$id){
+
+    private function get_asset_by_id($user, $id) {
         $query = $this->db->from("assets")
-                ->where("user_id", $user['id'])->where("id", $id)->get();
-        if($query->num_rows() > 0){
+                        ->where("user_id", $user['id'])->where("id", $id)->get();
+        if ($query->num_rows() > 0) {
             return end($query->result());
         } else {
             return false;
@@ -189,18 +189,22 @@ class Assets_Model extends CI_Model {
                 $image_data = unserialize($row->extra);
                 $filename = $this->get_filename($row->id);
                 $extension = $row->extension;
-                
+
                 array_map(function($str) use ($filename, $extension, $upload_path) {
                             unlink($upload_path . "/" . $filename . "-" . $str . "." . $extension);
                         }, $image_data['sizes']);
             } else {
-                unlink($upload_path . "/" .$this->get_filename($row->id) . "." . $row->extension);
+                unlink($upload_path . "/" . $this->get_filename($row->id) . "." . $row->extension);
             }
 
             $this->db->where("user_id", $user['id'])->where("id", $asset_id)->delete("assets");
             return true;
         }
         return Assets_Model::ASSET_NOT_FOUND;
+    }
+
+    public function get_asset_upload_folder($upload_date) {
+        return str_replace("-", "/", array_shift(explode(" ", $upload_date)));
     }
 
     public function get_assets($user) {
@@ -214,12 +218,11 @@ class Assets_Model extends CI_Model {
 
         if ($query->num_rows() > 0) {
             $this->load->helper("url");
-            $upload_base_dir = base_url('/public/uploads');
             foreach ($query->result() as $row) {
                 $asset = array();
                 $asset["id"] = $row->id;
                 $asset["type"] = $row->type;
-                $asset["location"] = $upload_base_dir . "/" . str_replace("-", "/", array_shift(explode(" ", $row->upload_date)));
+                $asset["location"] = base_url('/public/uploads') . "/" . $this->get_asset_upload_folder($row->upload_date);
                 $asset["name"] = $row->name;
                 if ($row->type == "image") {
                     $image_data = unserialize($row->extra);
@@ -241,28 +244,41 @@ class Assets_Model extends CI_Model {
         }
         return $out;
     }
-    
-    public function update_image_defaults($user,$image_id,$caption,$title){
+
+    public function update_image_defaults($user, $image_id, $caption, $title) {
         $row = $this->get_asset_by_id($user, $image_id);
-        if($row !== false){
+        if ($row !== false) {
             $extra = unserialize($row->extra);
             $extra["caption"] = $caption;
             $extra["title"] = $title;
             $extra = serialize($extra);
-            $this->db->where("id",$image_id)
-                    ->where("user_id",$user['id'])
-                    ->set('extra',$extra)
+            $this->db->where("id", $image_id)
+                    ->where("user_id", $user['id'])
+                    ->set('extra', $extra)
                     ->update("assets");
         }
     }
-    
-    public function change_asset_name($user,$asset_id,$new_name){
-        $this->db->set("name",$new_name)
-                ->where("user_id",$user['id'])
-                ->where("id",$asset_id)
+
+    public function change_asset_name($user, $asset_id, $new_name) {
+        $this->db->set("name", $new_name)
+                ->where("user_id", $user['id'])
+                ->where("id", $asset_id)
                 ->update("assets");
     }
-    
+
+    public function move_assets_to_publish_dir($user, $assets, $destination) {
+        $query = $this->db->from("assets")
+                ->where_in("id", array_keys($assets))
+                ->where("user_id", $user['id'])
+                ->get();
+        foreach ($query->result() as $row) {
+            $upload_path = $this->get_upload_path($row->upload_date);
+            foreach ($assets[$row->id] as $size) {
+                $filename = $this->get_filename($row->id) . "-" . $size . "." . $row->extension;
+                copy($upload_path . "/" . $filename, $destination . "/" . $filename);
+            }
+        }
+    }
 
 }
 

@@ -187,6 +187,21 @@
             getImageObj: function getImageObj(){
                 return mxBuilder.assets.get(this.extra.originalAssetID);
             },
+            getBiggestSize: function getBiggestSize(){
+                var imgObj = this.getImageObj();
+                if(imgObj.full)
+                    return "full";
+                else if (imgObj.medium)
+                    return "medium";
+                else if (imgObj.small)
+                    return "small";
+                else {
+                    return "thumb";
+                }
+            },
+            getAssetID: function getAssetID(){
+                return this.extra.originalAssetID;
+            },
             setImageSize: function setImageSize(newSize) {
                 var imageObj = this.getImageObj();
                 if(imageObj[newSize] && this.__currentSize != newSize){
@@ -286,6 +301,32 @@
                     .css(properties.css)
                     .appendTo(mxBuilder.layout[properties.data.container]);
                 }
+            },
+            publish: function publish(){
+                var out = mxBuilder.Component.prototype.publish.call(this)
+                var obj = this.getImageObj();
+                var img = out.find("img").attr("src","images/"+obj[this.getImageSize()]);
+                
+                var linkObj = this.getLinkObj();
+                if(linkObj){
+                    var url = "";
+                    if(linkObj.type !== "lightbox"){
+                        switch(linkObj.type){
+                            case "external":
+                                url = linkObj.url;
+                                break;
+                            case "page":
+                                var pageObj = mxBuilder.pages.getPageObj(linkObj.pageID);
+                                url = pageObj.address+".html";
+                                break;
+                        }
+                        img.wrap('<a href="'+url+'"/>');
+                    } else {
+                        img.wrap('<a href="images/'+obj[this.getBiggestSize()]+'" class="lightbox"/>');
+                    }
+                }
+                
+                return out;
             }
         });
     });

@@ -77,13 +77,10 @@
                         case "external":
                             theDialog.find('input[name="external_link"]').val(obj.url);
                             break;
-//                        case "email":
-//                            theDialog.find('input[name="email"]').val(obj.url);
-//                            break;
                         case "page":
-                            var address = mxBuilder.pages.getPageByAddress(obj.url.replace(/\.html$/,""));
-                            if(address){
-                                theDialog.find('select[name="page"]').val(address.id);
+                            var page = mxBuilder.pages.getPageObj(obj.pageID);
+                            if(page){
+                                theDialog.find('select[name="page"]').val(page.id);
                             }
                             break;
                         case "lightbox":
@@ -92,7 +89,7 @@
                     }
                 } else {
                     theDialog.find('input[name="external_link"]').val('');
-//                    theDialog.find('input[name="email"]').val('');
+                    //                    theDialog.find('input[name="email"]').val('');
                     theDialog.find('input[name=""]').val('');
                     theDialog.find('input[name=""]').val('');
                     theDialog.find('.link-type').filter('input:checked').removeAttr("checked");
@@ -106,12 +103,12 @@
                     case "external":
                         theUrl.url = theDialog.find('input[name="external_link"]').val();
                         break;
-//                    case "email":
-//                        theUrl.url = theDialog.find('input[name="email"]').val();
-//                        break;
+                    //                    case "email":
+                    //                        theUrl.url = theDialog.find('input[name="email"]').val();
+                    //                        break;
                     case "page":
                         var thePage = mxBuilder.pages.getPageObj(theDialog.find('select[name="page"]').val());
-                        theUrl.url = thePage.address+".html";
+                        theUrl.pageID = thePage.id;
                         break;
                     case "lightbox":
                         break;
