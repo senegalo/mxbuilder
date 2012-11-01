@@ -14,7 +14,7 @@
             },
             buttons: {
                 Link: function Link(){
-                    $(this).trigger("unlink").trigger("link").dialog("close");
+                    $(this).trigger("link").dialog("close");
                 },
                 Unlink: function Unlink(){
                     $(this).trigger("unlink").dialog("close");
@@ -47,7 +47,18 @@
                     closeCallback();
                 }
             }
-        });
+        }).find('input[name="external_link"]').on({
+            input: function(){
+                theDialog.find('.link-type').filter('input[value="external"]').attr("checked","checked");
+            }
+        })
+        .end()
+        .find('select[name="page"]').on({
+            change: function(){
+                theDialog.find('.link-type').filter('input[value="page"]').attr("checked","checked");
+            }
+        })
+        .end();
         
         
         mxBuilder.dialogs.linkTo = {

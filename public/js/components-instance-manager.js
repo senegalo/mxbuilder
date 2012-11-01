@@ -72,18 +72,63 @@
         moveZBottom: function moveZBottom(id){
             this.__components[id].element.css("zIndex", --this.__lowestZIndex);
         },
-        pushComponentsBelow: function pushComponentsBelow(metrics){
-            for(var c in this.__components){
-                this.__components[c].position = this.__components[c].element.position();
-                if(metrics.container == this.__components[c].container && 
-                    metrics.top+metrics.oldHeight < this.__components[c].position.top &&
-                    ((this.__components[c].position.left >= metrics.left && this.__components[c].position.left < metrics.left+metrics.width) || 
-                        (this.__components[c].position.left < metrics.left && this.__components[c].position.left+this.__components[c].size.width >= metrics.left))){
-                    this.__components[c].setPosition({
-                        left: this.__components[c].position.left,
-                        top: this.__components[c].position.top+metrics.offsetHeight
-                    },true);
+        detectCollision: function detectCollision(components,collisionMargin, list){
+            //preping the list if we do not have it already
+            if(!list){
+                list = {};
+                $.extend(list,this.__components);
+                for(var c in components){
+                    delete list[components[c].getID()];
                 }
+            }
+            
+            var out = {};
+            //looping through the components
+            var foundOne = false;
+            for(c in components){
+                //checking for collisions
+                var metrics = components[c].getMetrics();
+                for(var i in list){
+                    var listMetrics = list[i].getMetrics();
+                    
+                    //Calculating collisions
+                    //checking same container
+                    var sameContainer = metrics.container == listMetrics.container;
+                    //checking vertical collision
+                    var verticalCollision = metrics.bottom+collisionMargin >= listMetrics.top;
+                    //collides from the left only
+                    //      ____ metrics
+                    //    ____   listMetrics
+                    var horizontalCollision = metrics.left <= listMetrics.right && metrics.left > listMetrics.left;
+                    //collides from the right only
+                    //    _____    metrics
+                    //       _____ listMetrics
+                    horizontalCollision = horizontalCollision || (metrics.right >= listMetrics.left && metrics.right < listMetrics.right);
+                    //metrics contains the list
+                    //    ________ metrics
+                    //      ____   listMetrics
+                    horizontalCollision = horizontalCollision || (metrics.right >= listMetrics.right && metrics.left <= listMetrics.left);
+                    //list contains the metrics
+                    //    ________ listMetrics
+                    //      ____   metrics
+                    horizontalCollision = horizontalCollision || (metrics.right <= listMetrics.right && metrics.left >= listMetrics.left);
+                    
+                    if( sameContainer && verticalCollision && horizontalCollision) {
+                        out[i] = list[i];
+                        delete list[i];
+                        foundOne = true;
+                    }
+                }
+            }
+            //if we found a single other collision we recurse !            
+            if(foundOne){
+                var detected = this.detectCollision(out,20, list);
+                if(detected){
+                    $.extend(out,detected);
+                }
+                return out;
+            } else {
+                return false;
             }
         },
         saveAll: function saveAll(){

@@ -320,7 +320,7 @@
                                 url = pageObj.address+".html";
                                 break;
                         }
-                        img.wrap('<a href="'+url+'"/>');
+                        img.wrap('<a href="'+url+'" target="_blank"/>');
                     } else {
                         img.wrap('<a href="images/'+obj[this.getBiggestSize()]+'" class="lightbox"/>');
                     }

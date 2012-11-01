@@ -103,24 +103,24 @@
             instance.trigger("selected");
             
         },
-        removeFromSelection: function removeFromSelection(instance,skipSelContainerValidation){
+        removeFromSelection: function removeFromSelection(element,skipSelContainerValidation){
             
-            if(!this.isSelected(instance)){
+            if(!this.isSelected(element)){
                 return;
             }
             
-            instance = $(instance).removeClass("ui-selected");
+            element = $(element).removeClass("ui-selected");
             
-            instance.find(".component-resizable-handle").hide();
+            element.find(".component-resizable-handle").hide();
             
             this.__selectionCount--;
-            var selectedObj = instance.data("selectableItem");
+            var selectedObj = element.data("selectableItem");
             if(selectedObj){
                 selectedObj.selected = false;
                 selectedObj.startselected = false;
-                instance.data("selectableItem",selectedObj);
+                element.data("selectableItem",selectedObj);
             }
-            delete this.__selected[mxBuilder.components.getComponent(instance).getID()];
+            delete this.__selected[mxBuilder.components.getComponent(element).getID()];
             
             if(this.__selectionCount == 1){
                 this.getSelection().find(".component-resizable-handle").show();
@@ -129,7 +129,7 @@
             if(skipSelContainerValidation !== true){
                 this.revalidateSelectionContainer();
             }
-            instance.trigger("deselected").trigger("blur");
+            element.trigger("deselected").trigger("blur");
         },
         clearSelection: function clearSelection(exclude){
             var selection = this.getSelection();

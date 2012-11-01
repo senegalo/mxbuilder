@@ -11,11 +11,23 @@
             }
         });
         
+        //testing Remove on production
+        $('<button style="position:fixed;top:10px;right: 50px;">Get Collision on Selected</button>').on({
+            click: function(){
+                mxBuilder.selection.each(function(){
+                    console.log(mxBuilder.components.detectCollision([this],20));
+                });
+            }
+        }).appendTo(document.body);
+        
         //load the website
         mxBuilder.api.website.get({
             success: function(data){
                 mxBuilder.pages.restorePages(JSON.parse(data.content));
                 mxBuilder.dialogs.progressDialog.hide(); 
+                setInterval(function(){
+                    mxBuilder.save.saveInterval();
+                },5000);
             },
             error: function(data){
                 mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");

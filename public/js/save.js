@@ -22,10 +22,6 @@
         }
     }
     
-    setInterval(function(){
-        mxBuilder.save.saveInterval();
-    },5000);
-    
     $(function(){
         mxBuilder.save.tooltip = mxBuilder.layout.templates.find(".save-tooltip").remove().appendTo(mxBuilder.layout.selectionSafe); 
     });

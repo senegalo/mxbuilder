@@ -90,6 +90,10 @@
                 left:50%;
                 margin-left: -490px;
             }
+            
+            .cke_button__linkextra_icon {
+                background-image: url('<?php print base_url('/public/js-libs/ckeditor-unpacked/skins/moono/icons/link.png'); ?>') !important;
+            }
 
         </style>
         <!-- Loading Libs -->

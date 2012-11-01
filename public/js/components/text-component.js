@@ -19,10 +19,7 @@
                     var height = content.height();
                     var instHeight = properties.element.height();
                     var out = true;
-                    //if(height > instHeight){
                     properties.element.height(height);
-                    //out = false;
-                    //}
                     properties.element.resizable("option","minHeight",height).data("minheight",instHeight);
                     return out;
                 },
@@ -39,27 +36,39 @@
                             .focus()
                             .get(0);
                         
+                            var originalHeight = properties.element.height();
+                            var cachedHeight = originalHeight;
                             var refreshInterval = setInterval(function(){
                                 var metrics = theComponent.getMetrics();
-                                if(typeof metrics.offsetWidth != "undefined"){
+                                if(metrics.height != cachedHeight){
                                     if(theComponent.editor){
                                         (new CKEDITOR.dom.window(window)).fire("resize");
                                     }
-                                    mxBuilder.components.pushComponentsBelow(metrics);
+                                    if(metrics.height >= originalHeight){
+                                        var displacment = metrics.height - cachedHeight;
+                                        var components = mxBuilder.components.detectCollision([theComponent],displacment<0?-1*displacment+40:20);
+                                        for(var c in components){
+                                            var element = components[c].element
+                                            var position = element.position();
+                                            element.css({
+                                                top: position.top + displacment + "px",
+                                                left: position.left
+                                            });
+                                        }
+                                    }
                                     mxBuilder.selection.revalidateSelectionContainer();
                                     mxBuilder.layout.revalidateLayout();
+                                    cachedHeight = metrics.height;
                                 }
                             },100);
                 
                             mxBuilder.selection.enableMultiComponentSelect(false);
                             //mxBuilder.activeStack.push(properties.element);
                 
-                            var height = properties.element.height();
-                
                             properties.element.css({
                                 //minHeight: height+"px",
                                 height: "auto"
-                            }).data("refreshinterval",refreshInterval).data("minheight",height);
+                            }).data("refreshinterval",refreshInterval).data("minheight",originalHeight);
                 
                         
                             var position = properties.element.position();
@@ -143,6 +152,26 @@
             },
             isEditMode: function isEditMode(){
                 return this.editMode ? true : false;
+            },
+            publish: function publish(){
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                out.find(".inline-links").each(function(){
+                    var that = $(this), url;
+                    switch(that.data("type")){
+                        case "external":
+                            url = that.data("url");
+                            break;
+                        case "page":
+                            var pageObj = mxBuilder.pages.getPageObj(that.data("url"));
+                            url = pageObj.address+".html";
+                            break;
+                    }
+                    that.attr({
+                        href: url,
+                        target: "_blank"
+                    });
+                });
+                return out;
             }
         });
         $('<div class="text-component menu-item mx-helper" style="cursor:move;">Text Box</div>').draggable({

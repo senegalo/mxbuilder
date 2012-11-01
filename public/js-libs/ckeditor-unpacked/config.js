@@ -85,7 +85,7 @@ CKEDITOR.editorConfig = function( config ) {
         ['TextColor', 'Font','FontSize'],
         ['Bold', 'Italic', 'Underline','-', 'RemoveFormat'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl'],
-        ['NumberedList', 'BulletedList','-' , '-', 'LinkExtra', 'Unlink']]; 
+        ['NumberedList', 'BulletedList','-' , '-', 'LinkExtra']]; 
     
     config.stylesSet = "mx_styles";
     

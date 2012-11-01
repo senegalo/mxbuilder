@@ -200,7 +200,6 @@
                         var that = $(this);
                         mxBuilder.selection.revalidateSelectionContainer();
                         that.data("lastOffset",false).css("cursor","default");
-                        mxBuilder.components.getComponent(that).setPosition(that.position());
                     },
                     scroll: false
                 });
@@ -248,11 +247,6 @@
                         var that = $(this);
                         var theComponent = mxBuilder.components.getComponent(that);
                         mxBuilder.layout.clearOutline(theComponent.container);
-                        theComponent.setPosition(that.position());
-                        theComponent.setSize({
-                            width: that.width(),
-                            height: that.height()
-                        });
                         mxBuilder.layout.revalidateLayout();
                     }
                 });
@@ -324,37 +318,15 @@
             mxBuilder.zIndexManager.moveToBottom(this);
             mxBuilder.selection.revalidateSelectionContainer(this.element);
         },
-        setPosition: function setPosition(position,applyFlag){
-            this.position = position;
-            if(applyFlag){
-                this.element.css({
-                    left: position.left,
-                    top: position.top
-                });
-            }
-        },
-        setSize: function setSize(size){
-            this.size = size;
-        },
-        getMetrics: function getMetrics(dontUpdateFlag){
+        getMetrics: function getMetrics(){
             var size = {
                 width: this.element.width(),
                 height: this.element.height(),
                 container: this.container
             };
             $.extend(size,this.element.position());
-            if(this.size.width !== size.width || this.size.height !== size.height){
-                $.extend(size,{
-                    offsetWidth: size.width-this.size.width,
-                    offsetHeight: size.height-this.size.height,
-                    oldWidth: this.size.width,
-                    oldHeight: this.size.height
-                });
-                
-                if(dontUpdateFlag !== true){
-                    this.size = size;
-                }
-            }
+            size.bottom = size.height+size.top;
+            size.right = size.width+size.left;
             return size;
         },
         openBackgroundStyleDialog: function openBackgroundStyleDialog(){
