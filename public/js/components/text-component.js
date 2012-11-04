@@ -23,6 +23,9 @@
                     properties.element.resizable("option","minHeight",height).data("minheight",instHeight);
                     return out;
                 },
+                resizestop: function resizestop(){
+                    properties.element.css("height","auto");
+                },
                 dblclick: function dblclick(){
                     var theComponent = mxBuilder.components.getComponent(properties.element);
                     if(theComponent.editMode !== true){
