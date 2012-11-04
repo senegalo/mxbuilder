@@ -95,7 +95,7 @@
                     //checking same container
                     var sameContainer = metrics.container == listMetrics.container;
                     //checking vertical collision
-                    var verticalCollision = metrics.bottom+collisionMargin >= listMetrics.top;
+                    var verticalCollision = metrics.bottom+collisionMargin >= listMetrics.top && metrics.bottom < listMetrics.top;
                     //collides from the left only
                     //      ____ metrics
                     //    ____   listMetrics
