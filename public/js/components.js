@@ -277,7 +277,9 @@
             //Making it deletable
             obj.element.on({
                 destroy: function destroy(){
-                    mxBuilder.pages.detachComponentFromPage(mxBuilder.components.getComponent(obj.element));
+                    var theComponent = mxBuilder.components.getComponent(obj.element);
+                    theComponent.unpin();
+                    mxBuilder.pages.detachComponentFromPage(theComponent);
                     mxBuilder.selection.removeFromSelection(obj.element);
                     mxBuilder.components.getComponent(obj.element).destroy();
                 }
@@ -390,7 +392,6 @@
             $.extend(this,properties.data);
         },
         destroy: function destroy(){
-            this.unpin();
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
         }

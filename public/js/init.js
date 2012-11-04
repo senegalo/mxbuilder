@@ -23,7 +23,9 @@
         //load the website
         mxBuilder.api.website.get({
             success: function(data){
-                mxBuilder.pages.restorePages(JSON.parse(data.content));
+                var theWebsite = JSON.parse(data.content);
+                console.log("restoring "+(theWebsite.pinned.length+theWebsite.pages[0].components.length)+" component", theWebsite);
+                mxBuilder.pages.restorePages(theWebsite);
                 mxBuilder.dialogs.progressDialog.hide(); 
                 setInterval(function(){
                     mxBuilder.save.saveInterval();

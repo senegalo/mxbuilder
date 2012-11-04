@@ -87,7 +87,7 @@
                 return theComponentsToRestore;
             },
             loadPage: function loadPage(id){
-                if(this.__pages[id]){
+                if(this.__pages[id] && id != this.__currentPage){
                     //caching the current page
                     var thisPage = this.__pages[this.__currentPage] ? this.__pages[this.__currentPage] : this.__pages[id];
                     for(var c in thisPage.components){
@@ -176,7 +176,7 @@
                     }
                     out.pages.push(copy);
                 }
-                for(var c in this.__pinned){
+                for(c in this.__pinned){
                     out.pinned.push(this.__pinned[c].save());
                 }
                 return out;
