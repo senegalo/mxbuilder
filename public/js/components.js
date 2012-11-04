@@ -270,6 +270,12 @@
                             
                             }
                         }
+                    },
+                    selected: function selected(){
+                        $(this).css("cursor","move");
+                    },
+                    deselected: function deselected(){
+                        $(this).css("cursor","auto");
                     }
                 });
             }

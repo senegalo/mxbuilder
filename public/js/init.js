@@ -12,13 +12,13 @@
         });
         
         //testing Remove on production
-        $('<button style="position:fixed;top:10px;right: 50px;">Get Collision on Selected</button>').on({
-            click: function(){
-                mxBuilder.selection.each(function(){
-                    console.log(mxBuilder.components.detectCollision([this],20));
-                });
-            }
-        }).appendTo(document.body);
+//        $('<button style="position:fixed;top:10px;right: 50px;">Get Collision on Selected</button>').on({
+//            click: function(){
+//                mxBuilder.selection.each(function(){
+//                    console.log(mxBuilder.components.detectCollision([this],20));
+//                });
+//            }
+//        }).appendTo(document.body);
         
         //load the website
         mxBuilder.api.website.get({
