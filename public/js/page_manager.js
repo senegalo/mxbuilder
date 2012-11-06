@@ -9,7 +9,7 @@
             __pages: {},
             __pinned: {},
             __currentPage: null,
-            addPage: function addPage(properties){
+            addPage: function addPage(properties, noLoadFlag){
                 if(typeof properties.id == "undefined"){
                     var id = mxBuilder.utils.GUID();
                     properties.id = id;
@@ -21,7 +21,9 @@
                 this.__pages[properties.id] = properties;
                 this.__pages[properties.id].components = {};
                 theWebsiteSelect.append('<option value="'+properties.id+'">'+properties.title+'</option>');
-                this.loadPage(properties.id);
+                if(noLoadFlag !== true){
+                    this.loadPage(properties.id);
+                }
                 return this.__pages[properties.id];
             },
             editPage: function editPage(newObj){
@@ -89,9 +91,11 @@
             loadPage: function loadPage(id){
                 if(this.__pages[id] && id != this.__currentPage){
                     //caching the current page
-                    var thisPage = this.__pages[this.__currentPage] ? this.__pages[this.__currentPage] : this.__pages[id];
-                    for(var c in thisPage.components){
-                        thisPage.components[c] = thisPage.components[c].save();
+                    if(this.__currentPage){
+                        var thisPage = this.__pages[this.__currentPage] ? this.__pages[this.__currentPage] : this.__pages[id];
+                        for(var c in thisPage.components){
+                            thisPage.components[c] = thisPage.components[c].save();
+                        }
                     }
                     
                     //restoring the desired page
@@ -108,6 +112,11 @@
                     this.__currentPage = id;
                     
                     mxBuilder.components.clearAndRestore(theComponentsToRestore);
+                    
+                    mxBuilder.layout.setLayout({
+                        body: mxBuilder.pages.getContentHeight()
+                    });
+                    
                     mxBuilder.layout.revalidateLayout();
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
@@ -206,6 +215,7 @@
                     }
                     var components = this.getPageComponents(p);
                     page.title = this.__pages[p].htmlTitle ? this.__pages[p].htmlTitle : "Untitled Page";
+                    page.content_height = this.__pages[p].contentHeight;
                     page.components = {
                         header: [],
                         body: [],
@@ -230,32 +240,46 @@
                 return out;
             },
             restorePages: function restorePages(restore){
+                
+                
+                //mxBuilder.layout.setLayout(restore.layoutHeights,true);
+                
                 var firstPage = null;
                 for(var p in restore.pages){
                     var components = restore.pages[p].components;
-                    var newPage  = this.addPage(restore.pages[p]);
+                    var newPage  = this.addPage(restore.pages[p],true);
+                    
+                    this.__currentPage = newPage.id;
+                    
                     if(firstPage === null){
                         firstPage = newPage;
                     }
-                    for(var c in components){
-                        mxBuilder.components.addComponent(components[c]);
-                    }
+                    this.__pages[this.__currentPage].components = components;
+                    
                 }
+                
                 for(var c in restore.pinned){
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
-                if(firstPage.layoutHeights){
-                    mxBuilder.layout.setLayout(firstPage.layoutHeights);
-                } else {
-                    mxBuilder.layout.revalidateLayout(true);
-                }
+                
+                $.extend(restore.layoutHeights,firstPage.contentHeight);
+                mxBuilder.layout.setLayout(restore.layoutHeights,true);
+                
                 if(restore.layoutBackground){
                     mxBuilder.layout.layoutHeader.css("background",restore.layoutBackground.header);
                     $(document.body).css("background",restore.layoutBackground.body);
                     mxBuilder.layout.layoutFooter.css("background",restore.layoutBackground.footer);
                 }
-                mxBuilder.layout.setLayout(restore.layoutHeights);
+                this.__currentPage = null;
                 this.loadPage(firstPage.id);
+            },
+            getContentHeight: function getContentHeight(pageID){
+                pageID = pageID ? pageID : this.__currentPage;
+                return this.__pages[pageID].contentHeight;
+            },
+            setContentHeight: function setContentHeight(height,pageID){
+                pageID = pageID ? pageID : this.__currentPage;
+                this.__pages[pageID].contentHeight = height;
             }
         }
         

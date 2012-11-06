@@ -57,7 +57,7 @@
             <div id="header" style="background:<?php print $background['header']; ?>;height:<?php print $height['header']; ?>px">
 
             </div>
-            <div id="body" style="background:<?php print $background['body']; ?>;height:<?php print $height['body']; ?>px">
+            <div id="body" style="background:<?php print $background['body']; ?>;height:<?php print $content_height; ?>px">
 
             </div>
             <div id="footer"  style="background:<?php print $background['footer']; ?>;height:<?php print $height['footer']; ?>px">
@@ -69,7 +69,7 @@
                 $containers = array("header", "body", "footer");
                 foreach ($containers as $container):
                     ?>
-                    <div id="<?php print $container; ?>-content" style="height:<?php print $height[$container]; ?>px">
+                    <div id="<?php print $container; ?>-content" style="height:<?php print $container == "body" ? $content_height : $height[$container]; ?>px">
                         <?php
                         if (isset($components[$container])) {
                             foreach ($components[$container] as $component) {
