@@ -229,7 +229,7 @@
                             out.assets[assetID] = [components[c].getImageSize()];
                             var linkObj = components[c].getLinkObj();
                             if(linkObj && linkObj.type == "lightbox"){
-                                out.assets[assetID].push("full");
+                                out.assets[assetID].push(components[c].getClosestSize("full"));
                             }
                         }
                         page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
