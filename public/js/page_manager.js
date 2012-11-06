@@ -31,7 +31,7 @@
                 $.extend(thePage,newObj);
                 
                 theWebsiteSelect.find('option[value="'+newObj.id+'"]').text(newObj.title);
-                $('title').text(newObj.title);
+                $('title').text(newObj.htmlTitle);
             },
             deletePage: function deletePage(id){
                 id = id ? id : this.__currentPage;

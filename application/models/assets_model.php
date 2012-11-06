@@ -153,7 +153,7 @@ class Assets_Model extends CI_Model {
     }
 
     public function get_upload_path($upload_date = NULL) {
-        $paths = explode("-", date("Y-m-d", strtotime($upload_date)));
+        $paths = explode("-", date("Y-m-d", $upload_date !== null?strtotime($upload_date):time()));
         $current_lookup = str_replace("/application/models", "/public/uploads", __DIR__);
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
