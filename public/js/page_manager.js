@@ -19,11 +19,13 @@
                 properties.parent = typeof properties.parent == "undefined" ? "root" : properties.parent;
                 
                 this.__pages[properties.id] = properties;
+                this.__pages[properties.id].contentHeight = this.__pages[properties.id].contentHeight ? this.__pages[properties.id].contentHeight : 500;
                 this.__pages[properties.id].components = {};
                 theWebsiteSelect.append('<option value="'+properties.id+'">'+properties.title+'</option>');
                 if(noLoadFlag !== true){
                     this.loadPage(properties.id);
                 }
+                mxBuilder.save.forceSave();
                 return this.__pages[properties.id];
             },
             editPage: function editPage(newObj){
@@ -120,6 +122,7 @@
                     mxBuilder.layout.revalidateLayout();
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
+                    mxBuilder.save.setLastState(this.saveAll());
                 }
             },
             attachComponentToPage: function attachComponentToPage(component){
@@ -166,7 +169,6 @@
                     pinned: [],
                     layoutHeights: {
                         header: mxBuilder.layout.header.height(),
-                        body: mxBuilder.layout.body.height(),
                         footer: mxBuilder.layout.footer.height()                   
                     },
                     layoutBackground: {
@@ -261,8 +263,7 @@
                 for(var c in restore.pinned){
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
-                
-                $.extend(restore.layoutHeights,firstPage.contentHeight);
+                restore.layoutHeights.body = firstPage.contentHeight;
                 mxBuilder.layout.setLayout(restore.layoutHeights,true);
                 
                 if(restore.layoutBackground){

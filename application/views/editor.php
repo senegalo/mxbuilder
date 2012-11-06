@@ -92,7 +92,7 @@
             }
             
             .cke_button__linkextra_icon {
-                background-image: url('<?php print base_url('/public/js-libs/ckeditor-unpacked/skins/moono/icons/link.png'); ?>') !important;
+                background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -351px !important;
             }
 
         </style>
@@ -101,11 +101,12 @@
         <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
         <!--<script type="text/javascript" src="public/js-libs/jquery-ui-1.8.23.custom.min.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.0.custom.min.js"></script>
-        <script type="text/javascript" src="public/js-libs/ckeditor-unpacked/ckeditor.js"></script>
+        <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;
         </script>
         <script type="text/javascript" src="public/js-libs/plupload/plupload.full.js"></script>
+        <script type="text/javascript" src="public/js-libs/jsdiff.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>

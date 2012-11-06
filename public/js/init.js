@@ -36,6 +36,9 @@
                 setTimeout(function(){
                     mxBuilder.dialogs.progressDialog.hide(); 
                 },2000);
+                setInterval(function(){
+                    mxBuilder.save.saveInterval();
+                },5000);
             }
         });
     });
