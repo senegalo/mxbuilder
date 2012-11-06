@@ -24,23 +24,20 @@ class MX_Controller extends CI_Controller {
         if ($token === false) {
             $token = $this->input->cookie("token");
         }
-        if ($token === false) {
-            $out = $this->users_model->create_guest_session();
-            $this->input->set_cookie(array(
-                "name" => "token",
-                "value" => $out['token'],
-                "expire" => 31536000
-                ));
-        } else {
-            $out = $this->users_model->authenticate($token);
-            if ($out == Users_Model::USER_NOT_FOUND) {
-                error($out, "The token supplied didn't match any users.");
-            }
-        }
+//        if ($token === false) {
+        $out = $this->users_model->create_guest_session();
+        $this->input->set_cookie(array(
+            "name" => "token",
+            "value" => $out['token'],
+            "expire" => 31536000
+        ));
+//        } else {
+//            $out = $this->users_model->authenticate($token);
+//            if ($out == Users_Model::USER_NOT_FOUND) {
+//                error($out, "The token supplied didn't match any users.");
+//            }
+//        }
         $this->user = $out;
-
-        
-
     }
 
 }
