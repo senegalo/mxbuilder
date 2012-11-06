@@ -64,6 +64,7 @@ class Users_Model extends CI_Model {
         $out['token'] = $this->generate_token();
         
         $this->db->set($out)->insert("users");
+        $out['id'] = $this->db->insert_id();
         
         return $out;
     }
