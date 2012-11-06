@@ -199,6 +199,24 @@
                     return "thumb";
                 }
             },
+            getClosestSize: function getClosestSize(size,directionUp){
+                var imgObj = this.getImageObj();
+                var sizes = ["full","medium","small","thumb"];
+                
+                if(directionUp){
+                    sizes.reverse();
+                }
+                var start = false;
+                for(var s in sizes){
+                    if(sizes[s] == size){
+                        start = true;
+                    }
+                    if(start && imgObj[sizes[s]]){
+                       return sizes[s]; 
+                    }
+                }
+                return false;
+            },
             getAssetID: function getAssetID(){
                 return this.extra.originalAssetID;
             },
@@ -286,7 +304,7 @@
                         }
                     }
                     
-                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : "small";
+                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
                     
                     properties.element = this.template.clone().find("img")
                     .attr({
