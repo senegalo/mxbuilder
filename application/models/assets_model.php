@@ -153,7 +153,7 @@ class Assets_Model extends CI_Model {
     }
 
     public function get_upload_path($upload_date = NULL) {
-        $paths = explode("-", date("Y-m-d", $upload_date !== null?strtotime($upload_date):time()));
+        $paths = explode("-", date("Y-m-d", $upload_date !== null ? strtotime($upload_date) : time()));
         $current_lookup = str_replace("/application/models", "/public/uploads", __DIR__);
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
@@ -208,6 +208,8 @@ class Assets_Model extends CI_Model {
     }
 
     public function get_assets($user) {
+        $this->load->helper("url");
+        
         $query = $this->db->select("*")
                 ->from("assets")
                 ->where("user_id", $user['id'])
@@ -217,7 +219,6 @@ class Assets_Model extends CI_Model {
         $out = array();
 
         if ($query->num_rows() > 0) {
-            $this->load->helper("url");
             foreach ($query->result() as $row) {
                 $asset = array();
                 $asset["id"] = $row->id;
@@ -242,6 +243,16 @@ class Assets_Model extends CI_Model {
                 $out[] = $asset;
             }
         }
+        $out[] = array("id" => 0,
+            "type" => "image",
+            "location" => base_url('/public/images'),
+            "name" => "error",
+            "ratio" => 1.09,
+            "title" => "Couldn't load the image",
+            "caption" => "",
+            "medium" => "error-medium.png",
+            "small" => "error-small.png",
+            "thumb" => "error-thumb.png");
         return $out;
     }
 

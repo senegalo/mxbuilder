@@ -185,7 +185,8 @@
             template: mxBuilder.layout.templates.find(".image-component-instance").remove(),
             theImage:  null,
             getImageObj: function getImageObj(){
-                return mxBuilder.assets.get(this.extra.originalAssetID);
+                var obj = mxBuilder.assets.get(this.extra.originalAssetID);
+                return obj?obj:mxBuilder.assets.get(0);
             },
             getBiggestSize: function getBiggestSize(){
                 var imgObj = this.getImageObj();
@@ -212,7 +213,7 @@
                         start = true;
                     }
                     if(start && imgObj[sizes[s]]){
-                       return sizes[s]; 
+                        return sizes[s]; 
                     }
                 }
                 return false;
@@ -289,36 +290,36 @@
                 if(typeof properties.element == "undefined"){
                     var obj = this.getImageObj();
                     
-                    $.extend({
-                        height: 100/obj.ratio,
-                        width: 100
-                    },properties.css)
+                        $.extend({
+                            height: 100/obj.ratio,
+                            width: 100
+                        },properties.css)
                     
-                    if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
-                        if(obj.ratio > 1){
-                            properties.css.width = 100;
-                            properties.css.height = 100/obj.ratio;
-                        } else {
-                            properties.height = 100;
-                            properties.css.width = 100/obj.ratio;
+                        if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
+                            if(obj.ratio > 1){
+                                properties.css.width = 100;
+                                properties.css.height = 100/obj.ratio;
+                            } else {
+                                properties.height = 100;
+                                properties.css.width = 100/obj.ratio;
+                            }
                         }
+                    
+                        properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
+                    
+                        properties.element = this.template.clone().find("img")
+                        .attr({
+                            src: obj.location+"/"+obj[properties.data.__currentSize],
+                            title: obj.title
+                        })
+                        .css({
+                            width: properties.css.width,
+                            height: properties.css.height
+                        })
+                        .end()
+                        .css(properties.css)
+                        .appendTo(mxBuilder.layout[properties.data.container]);
                     }
-                    
-                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
-                    
-                    properties.element = this.template.clone().find("img")
-                    .attr({
-                        src: obj.location+"/"+obj[properties.data.__currentSize],
-                        title: obj.title
-                    })
-                    .css({
-                        width: properties.css.width,
-                        height: properties.css.height
-                    })
-                    .end()
-                    .css(properties.css)
-                    .appendTo(mxBuilder.layout[properties.data.container]);
-                }
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this)
