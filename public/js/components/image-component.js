@@ -300,7 +300,7 @@
                                 properties.css.width = 100;
                                 properties.css.height = 100/obj.ratio;
                             } else {
-                                properties.height = 100;
+                                properties.css.height = 100;
                                 properties.css.width = 100/obj.ratio;
                             }
                         }
