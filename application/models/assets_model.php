@@ -184,7 +184,7 @@ class Assets_Model extends CI_Model {
         $row = $this->get_asset_by_id($user, $asset_id);
         if ($row !== false) {
 
-            $upload_path = $this->get_upload_path();
+            $upload_path = $this->get_upload_path($row->upload_date);
             if ($row->type == "image") {
                 $image_data = unserialize($row->extra);
                 $filename = $this->get_filename($row->id);
