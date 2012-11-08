@@ -26,7 +26,8 @@
                     data: {
                         "website_content": args.websiteData
                     },
-                    success: mxBuilder.api.__genericSuccess(args)
+                    success: mxBuilder.api.__genericSuccess(args),
+                    complete: args.complete
                 });
             },
             get: function get(args){
