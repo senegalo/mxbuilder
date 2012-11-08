@@ -234,7 +234,7 @@
         },
         enableMultiComponentSelect: function enableMultiComponentSelect(enableFlag){
             if(enableFlag){
-                $(document.body).selectable({
+                $("#editor-area").selectable({
                     distance: 2,
                     filter: ".mx-selectable-component",
                     selected: function(event,ui){
@@ -245,7 +245,7 @@
                     }
                 });
             } else {
-                $(document.body).selectable("destroy");
+                $("#editor-area").selectable("destroy");
             }
         },
         each: function each(callback){
