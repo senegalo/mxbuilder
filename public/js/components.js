@@ -463,21 +463,24 @@
         $(document).on({
             keyup: function keyup(event){
                 if(event.keyCode == 46){
-                    if(mxBuilder.selection.getSelectionCount() == 1){
+                    var selectionCount = mxBuilder.selection.getSelectionCount();
+                    if(selectionCount == 1){
                         var theSelectedComponent =  mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
                         if(theSelectedComponent.type == "TextComponent" && theSelectedComponent.isEditMode()){
                             return;
                         }
                     }
-                    mxBuilder.dialogs.deleteDialog({
-                        msg: "Are you sure you want to delete the selected component(s) ?",
-                        callback: function callback(){
-                            mxBuilder.selection.each(function(){  
-                                mxBuilder.pages.detachComponentFromPage(this);
-                                this.element.trigger("destroy");
-                            }); 
-                        }
-                    });
+                    if(selectionCount > 0){
+                        mxBuilder.dialogs.deleteDialog({
+                            msg: "Are you sure you want to delete the selected component(s) ?",
+                            callback: function callback(){
+                                mxBuilder.selection.each(function(){  
+                                    mxBuilder.pages.detachComponentFromPage(this);
+                                    this.element.trigger("destroy");
+                                }); 
+                            }
+                        });
+                    }
                 }
             }
         });
