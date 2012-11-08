@@ -2,6 +2,7 @@
     $(function(){
         var theWebsiteSelect = mxBuilder.layout.pagesSelect.on({
             change: function(){
+                mxBuilder.dialogs.pagesAddEditDialog.close();
                 mxBuilder.pages.loadPage($(this).val());
             }
         });
@@ -9,31 +10,58 @@
             __pages: {},
             __pinned: {},
             __currentPage: null,
+            __addressesHash: {},
+            __homepage: null,
             addPage: function addPage(properties, noLoadFlag){
                 if(typeof properties.id == "undefined"){
                     var id = mxBuilder.utils.GUID();
                     properties.id = id;
                 }
-                
                 properties.showInMenu = typeof properties.showInMenu == "undefined" ? true : properties.showInMenu;
                 properties.parent = typeof properties.parent == "undefined" ? "root" : properties.parent;
                 
+                var pageAddress = properties.address;
+                delete properties.address;
+                
                 this.__pages[properties.id] = properties;
+                this.setPageAddress(properties.id, pageAddress);
                 this.__pages[properties.id].contentHeight = this.__pages[properties.id].contentHeight ? this.__pages[properties.id].contentHeight : 500;
                 this.__pages[properties.id].components = {};
+                
                 theWebsiteSelect.append('<option value="'+properties.id+'">'+properties.title+'</option>');
+                
                 if(noLoadFlag !== true){
                     this.loadPage(properties.id);
+                }
+                if(properties.homepage){
+                    this.setHomepage(properties.id);
                 }
                 mxBuilder.save.forceSave();
                 return this.__pages[properties.id];
             },
+            setHomepage: function setHomepage(id){
+                var oldHomepage = this.__pages[this.__homepage];
+                if(oldHomepage){
+                    delete oldHomepage.homepage;
+                }
+                this.__homepage = id;
+                this.__pages[id].homepage = true;
+            },
             editPage: function editPage(newObj){
                 var thePage = mxBuilder.pages.getPageObj(newObj.id);
+                
+                var address = newObj.address;
+                delete newObj.address;
+                
                 $.extend(thePage,newObj);
+                
+                this.setPageAddress(newObj.id, address);
                 
                 theWebsiteSelect.find('option[value="'+newObj.id+'"]').text(newObj.title);
                 $('title').text(newObj.htmlTitle);
+                if(newObj.homepage){
+                    this.setHomepage(newObj.id);
+                }
             },
             deletePage: function deletePage(id){
                 id = id ? id : this.__currentPage;
@@ -234,7 +262,7 @@
                         }
                         page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
                     }
-                    page.address = this.__pages[p].address;
+                    page.address = this.__pages[p].homepage ? "index" : this.__pages[p].address;
                     out.pages.push(page);
                 }
                 
@@ -281,18 +309,50 @@
             setContentHeight: function setContentHeight(height,pageID){
                 pageID = pageID ? pageID : this.__currentPage;
                 this.__pages[pageID].contentHeight = height;
+            },
+            setPageAddress: function setPageAddress(id,address){
+                if(this.__pages[id].address != address && address != "index"){
+                    if(this.__pages[id].address){
+                        delete this.__addressesHash[this.__pages[id].address];
+                    }
+                    console.log("Before:"+this.__pages[id].address+" After:"+address);
+                    this.__pages[id].address = this.validateAddress(address);
+                    this.__addressesHash[address] = true;
+                }
+            },
+            validateAddress: function validateAddress(address){
+                address = address.replace(/[^a-zA-Z0-9_]/g,"").toLowerCase();
+                var validAddress = address;
+                var index = 0;
+                while(!this.isValidAddress(validAddress)){
+                    validAddress = address+"_"+(++index);
+                }
+                return validAddress;
+            },
+            isValidAddress: function isValidAddress(address,id){
+                id = id ? id : this.__currentPage;
+                return (address == "index" || (this.__addressesHash[address] && id && this.__pages[id].address != address)) ? false : true;
             }
         }
         
         $("#add-page").on({
             click: function(){
-                mxBuilder.dialogs.pagesAddEditDialog.show();
+                mxBuilder.dialogs.pagesAddEditDialog.show({
+                    callback: function(data){
+                        mxBuilder.pages.addPage(data);
+                    }
+                });
             }
         });
         
         $("#edit-page").on({
             click: function(){
-                mxBuilder.dialogs.pagesAddEditDialog.show(mxBuilder.pages.getPageObj());
+                mxBuilder.dialogs.pagesAddEditDialog.show({
+                    data: mxBuilder.pages.getPageObj(),
+                    callback: function(data){
+                        mxBuilder.pages.editPage(data);
+                    }
+                });
             }
         });
         

@@ -13,7 +13,6 @@
                 mxBuilder.api.website.get({
                     success: function(data){
                         var theWebsite = JSON.parse(data.content);
-                        console.log("restoring "+(theWebsite.pinned.length+theWebsite.pages[0].components.length)+" component", theWebsite);
                         mxBuilder.pages.restorePages(theWebsite);
                         mxBuilder.dialogs.progressDialog.hide(); 
                         setInterval(function(){
@@ -22,6 +21,16 @@
                     },
                     error: function(data){
                         mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");
+                        mxBuilder.pages.addPage({
+                            title: "Home Page",
+                            htmlTitle: "Home Page",
+                            parent: 0,
+                            showInMenu: true,
+                            homepage: true,
+                            address: "home_page",
+                            desc: "",
+                            keywords: ""
+                        })
                         setTimeout(function(){
                             mxBuilder.dialogs.progressDialog.hide(); 
                         },2000);

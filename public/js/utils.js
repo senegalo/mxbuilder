@@ -64,6 +64,9 @@
                     return out;
                 }
             };
+        },
+        strToAddress: function(str){
+            return str.replace(/((\s+|[^a-zA-Z0-9]+)(?=$)|[^a-zA-Z0-9\s])/g,"").replace(/\s+/g,"_").toLowerCase();
         }
     }
 }(jQuery));

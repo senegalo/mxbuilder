@@ -90,7 +90,7 @@
                 left:50%;
                 margin-left: -490px;
             }
-            
+
             .cke_button__linkextra_icon {
                 background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -351px !important;
             }
@@ -195,7 +195,7 @@
         </div>
 
         <div id="templates" style="display:none;">
-            
+
             <div class="save-tooltip" style="position:fixed;top:5px;left:5px;z-index:20000009;background-color:green;display:none;color:#ffffff;padding:10px;"></div>
 
             <div class="assets-properties-dialog">
@@ -304,15 +304,15 @@
                         <input type="text" name="external_link" class="link-input"/>
                     </div>
                 </div>
-<!--                <div>
-                    <div style="display:inline-block">
-                        <input type="radio" name="link_type" class="link-type" value="email" id="linkto-email">
-                        <label for="linkto-email">Email</label>
-                    </div>
-                    <div style="display:inline-block">
-                        <input type="text" name="email" class="link-input"/>
-                    </div>
-                </div>-->
+                <!--                <div>
+                                    <div style="display:inline-block">
+                                        <input type="radio" name="link_type" class="link-type" value="email" id="linkto-email">
+                                        <label for="linkto-email">Email</label>
+                                    </div>
+                                    <div style="display:inline-block">
+                                        <input type="text" name="email" class="link-input"/>
+                                    </div>
+                                </div>-->
                 <div>
                     <div style="display:inline-block;">
                         <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
@@ -350,9 +350,17 @@
                     <label for="page-show-in-menu">Show in menu:</label>
                     <input type="checkbox" id="page-show-in-menu" checked="checked"/>
                 </div>
+                <div class="page-as-homepage">
+                    <label for="page-as-homepage">Set as homepage:</label>
+                    <input type="checkbox" id="page-as-homepage" checked="checked"/>
+                </div>
+
+                <div class="page-is-homepage" style="margin:6px 0 6px 0;">
+                    <i>Current homepage</i>
+                </div>
                 <div>
                     <label for="page-address">Address:</label>
-                    <input type="text" id="page-address"/>
+                    <input type="text" id="page-address"/>.html
                 </div>
                 <div>
                     <label for="page-desc">Description</label>
