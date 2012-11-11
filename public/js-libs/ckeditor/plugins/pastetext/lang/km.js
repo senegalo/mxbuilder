@@ -1,1 +1,0 @@
-﻿CKEDITOR.plugins.setLang("pastetext","km",{button:"ចំលងដាក់អត្ថបទធម្មតា",title:"ចំលងដាក់អត្ថបទធម្មតា"});

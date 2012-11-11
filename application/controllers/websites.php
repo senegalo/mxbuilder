@@ -60,7 +60,12 @@ class websites extends MX_Controller {
 
         foreach ($pages as $page) {
             touch($user_dir . "/" . $page['address'] . ".html");
-            $content = $this->load->view('publish_template', array_merge($layout, $page), true);
+            if(!isset($page['components'])){
+                $page['components'] = array();
+            }
+            $page['components'] = array_merge(array("header"=>array(),"body"=>array(),"footer"=>array()),$page['components']);
+            $merge = array_merge($layout, $page);
+            $content = $this->load->view('publish_template', $merge, true);
             file_put_contents($user_dir . "/" . $page['address'] . ".html", $content);
         }
         success(array("website" => base_url('/public/websites/' . $this->user['username'])));

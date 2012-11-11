@@ -80,6 +80,7 @@
                     </div>
                     <?php
                 endforeach;
+                unset($components);
                 ?>
             </div>
         </div>

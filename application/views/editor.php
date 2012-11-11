@@ -94,6 +94,10 @@
             .cke_button__linkextra_icon {
                 background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -351px !important;
             }
+            
+            .cke_button__unlinkextra_icon {
+                background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -287px !important;
+            }
 
         </style>
         <!-- Loading Libs -->
@@ -301,18 +305,13 @@
                         <label for="linkto-external">External Link</label>
                     </div>
                     <div style="display:inline-block;">
+                        <select id="linkto-protocol">
+                            <option value="http://">http://</option>
+                            <option value="https://">https://</option>
+                        </select>
                         <input type="text" name="external_link" class="link-input"/>
                     </div>
                 </div>
-                <!--                <div>
-                                    <div style="display:inline-block">
-                                        <input type="radio" name="link_type" class="link-type" value="email" id="linkto-email">
-                                        <label for="linkto-email">Email</label>
-                                    </div>
-                                    <div style="display:inline-block">
-                                        <input type="text" name="email" class="link-input"/>
-                                    </div>
-                                </div>-->
                 <div>
                     <div style="display:inline-block;">
                         <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
@@ -328,6 +327,11 @@
                 <div class="lightbox">
                     <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
                     <label for="linkto-lightbox">Open in a Lightbox</label>
+                </div>
+                
+                <div style="margin-top:6px;">
+                    <input type="checkbox" id="linkto-new-window"/>
+                    <label for="linkto-new-window">Open in a new window</label>
                 </div>
             </div>
 

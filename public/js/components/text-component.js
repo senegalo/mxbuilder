@@ -171,7 +171,7 @@
                     }
                     that.attr({
                         href: url,
-                        target: "_blank"
+                        target: "_"+that.data("target")
                     });
                 });
                 return out;

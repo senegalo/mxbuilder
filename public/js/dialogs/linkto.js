@@ -11,17 +11,6 @@
             autoOpen: false,
             open: function open(){
                 mxBuilder.activeStack.push(this);
-            },
-            buttons: {
-                Link: function Link(){
-                    $(this).trigger("link").dialog("close");
-                },
-                Unlink: function Unlink(){
-                    $(this).trigger("unlink").dialog("close");
-                },
-                Cancel: function Cancel(){
-                    $(this).trigger("cancel").dialog("close");
-                }
             }
         }).on({
             poppedFromActiveStack: function poppedFromActiveStack(){
@@ -58,6 +47,23 @@
                 theDialog.find('.link-type').filter('input[value="page"]').attr("checked","checked");
             }
         })
+        .end()
+        .find(".link-type").on({
+            change: function(){
+                var theNewWin = theDialog.find("#linkto-new-window");
+                switch($(this).val()){
+                    case "external":
+                        theNewWin.removeAttr("disabled").attr("checked","checked");
+                        break;
+                    case "page":
+                        theNewWin.removeAttr("disabled").removeAttr("checked");
+                        break;
+                    case "lightbox":
+                        theNewWin.removeAttr("checked").attr("disabled","disabled");
+                        break;
+                }
+            }
+        })
         .end();
         
         
@@ -70,10 +76,31 @@
                 
                 theDialog.find('select[name="page"]').empty().append(mxBuilder.layout.pagesSelect.children().clone());
                 
-                if(obj.lightbox){
-                    theDialog.find(".lightbox").show();
+                if(obj.imageBox){
+                    theDialog.find(".lightbox").show()
+                    .end()
+                    .dialog("option","buttons",{
+                        Link: function Link(){
+                            $(this).trigger("link").dialog("close");
+                        },
+                        Unlink: function Unlink(){
+                            $(this).trigger("unlink").dialog("close");
+                        },
+                        Cancel: function Cancel(){
+                            $(this).trigger("cancel").dialog("close");
+                        }
+                    });
                 } else {
-                    theDialog.find(".lightbox").hide();
+                    theDialog.find(".lightbox").hide()
+                    .end()
+                    .dialog("option","buttons",{
+                        Link: function Link(){
+                            $(this).trigger("link").dialog("close");
+                        },
+                        Cancel: function Cancel(){
+                            $(this).trigger("cancel").dialog("close");
+                        }
+                    });
                 }
                 
                 this.setLinkObj(obj.urlObj);
@@ -82,10 +109,22 @@
             },
             setLinkObj: function setLinkObj(obj){
                 if(obj){
+                    var theProtocolSelect = theDialog.find("#linkto-protocol");
                     theDialog.find('.link-input').val('');
                     theDialog.find('.link-type').filter('input[value="'+obj.type+'"]').attr("checked","checked");
+                    theProtocolSelect.val("http://");
+                    if(obj.newWindow){
+                        theDialog.find("#linkto-new-window").attr("checked","checked");
+                    } else {
+                        theDialog.find("#linkto-new-window").removeAttr("checked");
+                    }
                     switch(obj.type){
                         case "external":
+                            var protocol = obj.url.match(/^(https:\/\/|http:\/\/)/ig);
+                            if(protocol){
+                                theProtocolSelect.val(protocol[0].toLowerCase());
+                                obj.url = obj.url.replace(protocol[0],"");
+                            } 
                             theDialog.find('input[name="external_link"]').val(obj.url);
                             break;
                         case "page":
@@ -100,7 +139,6 @@
                     }
                 } else {
                     theDialog.find('input[name="external_link"]').val('');
-                    //                    theDialog.find('input[name="email"]').val('');
                     theDialog.find('input[name=""]').val('');
                     theDialog.find('input[name=""]').val('');
                     theDialog.find('.link-type').filter('input:checked').removeAttr("checked");
@@ -112,17 +150,20 @@
                 };
                 switch(theUrl.type){
                     case "external":
-                        theUrl.url = theDialog.find('input[name="external_link"]').val();
+                        theUrl.url = theDialog.find("#linkto-protocol").val()+theDialog.find('input[name="external_link"]').val();
                         break;
-                    //                    case "email":
-                    //                        theUrl.url = theDialog.find('input[name="email"]').val();
-                    //                        break;
                     case "page":
                         var thePage = mxBuilder.pages.getPageObj(theDialog.find('select[name="page"]').val());
                         theUrl.pageID = thePage.id;
                         break;
                     case "lightbox":
                         break;
+                }
+                var newWindow = theDialog.find("#linkto-new-window");
+                if(newWindow.is(":disabled")){
+                    theUrl.newWindow = false;
+                } else {
+                    theUrl.newWindow = newWindow.is(":checked");
                 }
                 return theUrl;
             }

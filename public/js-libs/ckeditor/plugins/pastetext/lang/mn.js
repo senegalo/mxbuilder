@@ -1,1 +1,0 @@
-﻿CKEDITOR.plugins.setLang("pastetext","mn",{button:"Plain Text-ээс буулгах",title:"Plain Text-ээс буулгах"});

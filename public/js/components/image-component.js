@@ -167,7 +167,7 @@
                                             this.setLinkObj(null);
                                         });
                                     },
-                                    lightbox: true,
+                                    imageBox: true,
                                     urlObj: currentLinkObj
                                 });
                             }
@@ -339,7 +339,7 @@
                                 url = pageObj.address+".html";
                                 break;
                         }
-                        img.wrap('<a href="'+url+'" target="_blank"/>');
+                        img.wrap('<a href="'+url+'" '+(linkObj.newWindow?'target="_blank"':'')+'/>');
                     } else {
                         img.wrap('<a href="images/'+obj[this.getBiggestSize()]+'" class="lightbox"/>');
                     }
