@@ -203,14 +203,20 @@
                     that.data("lastheight",currentHeight);
                     
                     //footer only
+                    var body = $(document.body);
+                    var docHeight;
                     if(that.get(0) === mxBuilder.layout.layoutFooter.get(0)){
-                        
-                        var docHeight = $(document.body).height();
+                        docHeight = body.height();
                         if(event.offsetY+10 >= docHeight){
-                            var newHeight = $(document.body).height()+10;
-                            $(document.body).height(newHeight).scrollTop(newHeight);
+                            var newHeight = body.height()+10;
+                            body.height(newHeight).scrollTop(newHeight);
                         }
-                    } 
+                    } else {
+                        docHeight = $(window).height();
+                        if(event.clientY >= docHeight-10){
+                            body.scrollTop(body.scrollTop()+10);
+                        }
+                    }
                     
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
