@@ -377,12 +377,14 @@
             </div>
             <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
             <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
-            <div class="simple-div" style="height:100px;width:400px;padding:5px;overflow:hidden;z-index:10000;">
-                I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.
-            </div>
             <div class="strip-component-instance" style="width:900px;height:200px;background-color:rgba(0,0,0,1)"></div>
             <div class="text-component-instance" style="width:300px;padding:5px;z-index:10000;">
-                <div class="content" style="word-wrap: break-word;">I’ve had to work with jQuery UI’s Resizable plugin on a recent project.  I wanted to use custom handles to drag the element for resize, but the documentation page is a bit sparse when it comes to specifying a DOM Element to use for your custom handle.  For the sanity of others, here is the correct syntax to use when trying to add a custom handle to the jQuery UI Resize plugin.</div>
+                <div class="content" style="word-wrap: break-word;">
+                    <h2>Paragraph title</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin congue nisi at turpis elementum convallis. Aenean congue mauris ac dolor rutrum bibendum. Fusce ornare euismod dignissim. Vestibulum posuere ultrices mi, id volutpat velit aliquet ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend condimentum adipiscing. Sed gravida, tellus id molestie tincidunt, odio velit facilisis metus, eu accumsan eros sapien vehicula enim.
+                    </p>
+                </div>
             </div>
             <div class="vline-component-instance" style="height:200px;width:1px;background-color:black;"></div>
             <div class="alert-dialog"></div>
