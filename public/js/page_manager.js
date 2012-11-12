@@ -315,7 +315,6 @@
                     if(this.__pages[id].address){
                         delete this.__addressesHash[this.__pages[id].address];
                     }
-                    console.log("Before:"+this.__pages[id].address+" After:"+address);
                     this.__pages[id].address = this.validateAddress(address);
                     this.__addressesHash[address] = true;
                 }
