@@ -46,7 +46,7 @@
                                 });
                             }
                             //Activating Z-Index Manipulation context
-                            if(obj.ctxZIndex && mxBuilder.selection.getSelectionCount() < 2){                       
+                            if(obj.ctxZIndex && mxBuilder.selection.getSelectionCount() < 2){              
                                 ctx.addSubgroup({ 
                                     label:"Z Position" 
                                 }).addItem({
@@ -482,6 +482,37 @@
                         });
                     }
                 }
+            },
+            keydown: function(event){
+                if(event.keyCode >= 37 && event.keyCode <=40){
+                    mxBuilder.selection.each(function(){
+                        var that = this.element;
+                        var step = event.shiftKey ? 10 : 2;
+                        var position = that.position();
+                        var headerThreshold = mxBuilder.layout.header.height();
+                        var bodyThreshold = headerThreshold+mxBuilder.layout.body.height();
+                        
+                        var direction = event.keyCode%2 !=0 ?"left":"top";
+                        position[direction] = position[direction] + (event.keyCode-38 > 0 ?1:-1)*step; 
+                            
+                        var threshold = that.height()/2 + position.top;
+                        
+                        that.css(position);
+                        
+                        if(this.container == "header" && headerThreshold < threshold){
+                            this.setContainer("body");
+                        } else if (this.container == "body"){
+                            if(bodyThreshold < threshold){
+                                this.setContainer("footer");
+                            } else if(headerThreshold > threshold){
+                                this.setContainer("header");
+                            }
+                        }
+                        
+                    });
+                    mxBuilder.selection.revalidateSelectionContainer();
+                }
+                event.preventDefault();
             }
         });
         
