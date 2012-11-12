@@ -485,6 +485,13 @@
             },
             keydown: function(event){
                 if(event.keyCode >= 37 && event.keyCode <=40){
+                    var selectionCount = mxBuilder.selection.getSelectionCount();
+                    if(selectionCount == 1){
+                        var theSelectedComponent =  mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
+                        if(theSelectedComponent.type == "TextComponent" && theSelectedComponent.isEditMode()){
+                            return;
+                        }
+                    }
                     mxBuilder.selection.each(function(){
                         var that = this.element;
                         var step = event.shiftKey ? 10 : 2;
