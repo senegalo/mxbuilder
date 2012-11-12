@@ -75,7 +75,7 @@
             
         },
         revalidateLayout: function revalidateLayout(keepComponentsFlag){
-            var containers = ["body","footer"];
+            var containers = ["header","body","footer"];
             for(var c in containers){
                 this.revalidateContainer(containers[c],keepComponentsFlag);
             }
@@ -169,7 +169,7 @@
                     if(that.get(0) === mxBuilder.layout.layoutHeader.get(0)){
                         selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
                         selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
-                        //that.resizable("option","minHeight",mxBuilder.layout.getMaxComponentHeight("header"));
+                        that.resizable("option","minHeight",mxBuilder.layout.getMaxComponentHeight("header"));
                     } else if(that.get(0) === mxBuilder.layout.layoutBody.get(0)){
                         selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
                         that.resizable("option","minHeight",mxBuilder.layout.getMaxComponentHeight("body"));
