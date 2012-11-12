@@ -37,4 +37,8 @@ CKEDITOR.editorConfig = function( config ) {
     
     config.floatSpaceDockedOffsetY = 10;
     
+    config.forcePasteAsPlainText = true;
+    
+    config.clipboard_defaultContentType = 'text';
+    
 };
