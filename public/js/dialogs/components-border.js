@@ -50,7 +50,7 @@
         .find("#component-border-color").on({
             input: function input(){
                 var that = $(this);
-                var colors = that.val().match(/^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/);
+                var colors = that.val().toLowerCase().match(/^#([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})/);
                 if(colors){
                     var theColor = mxBuilder.dialogs.componentsBorder.getColor();
                     var newColor = {
