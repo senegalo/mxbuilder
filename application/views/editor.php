@@ -34,7 +34,7 @@
 
             #selection-container{
                 outline: 1px solid orange;
-                cursor: move;
+                cursor: move !important;
             }
 
             .component-resizable-handle {

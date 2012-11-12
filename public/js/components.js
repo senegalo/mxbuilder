@@ -154,55 +154,7 @@
                 
             //Making it draggable
             if(typeof obj.draggable != "undefined"){
-                $.extend(obj.draggable,{
-                    start: function start(){
-                        var that = $(this);
-                        if(mxBuilder.selection.getSelectionCount() == 0){
-                            mxBuilder.selection.addToSelection(that);
-                        } else {
-                            if(!mxBuilder.selection.isSelected(that)){
-                                mxBuilder.selection.clearSelection();
-                                mxBuilder.selection.addToSelection(that);
-                            }
-                        }
-                        that.css("cursor","move").data("lastOffset",that.position());
-                    },
-                    drag: function drag(){
-                        var that = $(this);
-                        var currentOffset = that.position();
-                        
-                        if(!mxBuilder.selection.isSelected(that)){
-                            mxBuilder.selection.clearSelection();
-                        }
-                        
-                        var lastOffset = that.data("lastOffset");
-                        
-                        var theOffset = {
-                            left: lastOffset.left-currentOffset.left,
-                            top: lastOffset.top-currentOffset.top
-                        }
-                        
-                        var selection = mxBuilder.selection.getSelection(that);
-                        selection = selection.add(mxBuilder.selection.getSelectionContainer());
-                        
-                        
-                        
-                        selection.each(function(){
-                            var that = $(this);
-                            var offset = that.position();
-                            offset.left = offset.left - theOffset.left;
-                            offset.top =  offset.top - theOffset.top;
-                            that.css(offset);
-                        });
-                        that.data("lastOffset",currentOffset);
-                    },
-                    stop: function stop(){
-                        var that = $(this);
-                        mxBuilder.selection.revalidateSelectionContainer();
-                        that.data("lastOffset",false).css("cursor","default");
-                    },
-                    scroll: false
-                });
+                $.extend(obj.draggable,mxBuilder.Component.prototype.defaultDraggableSettings);
                 obj.element.draggable(obj.draggable);
             }
             
@@ -400,6 +352,50 @@
         destroy: function destroy(){
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
+        },
+        defaultDraggableSettings: {
+            start: function start(){
+                var that = $(this);
+                
+                //if this is the selection container skip this part
+                if(mxBuilder.selection.getSelectionContainer().get(0) !== this){
+                    if(mxBuilder.selection.getSelectionCount() == 0){
+                        mxBuilder.selection.addToSelection(that);
+                    } else {
+                        if(!mxBuilder.selection.isSelected(that)){
+                            mxBuilder.selection.clearSelection();
+                            mxBuilder.selection.addToSelection(that);
+                        }
+                    }
+                }
+                mxBuilder.selection.each(function(that){
+                    that.data("initial-position",that.position());
+                },true);
+                that.css("cursor","move");
+            },
+            drag: function drag(event,ui){
+                var that = $(this);
+                var currentPosition = ui.position;           
+                        
+                var initialPosition = that.data("initial-position");
+                        
+                var theOffset = {
+                    left: initialPosition.left-currentPosition.left,
+                    top: initialPosition.top-currentPosition.top
+                }
+                        
+                mxBuilder.selection.each(function(that){
+                    var initialPosition = that.data("initial-position");
+                    var newPosition = {};
+                    newPosition.left = initialPosition.left - theOffset.left;
+                    newPosition.top =  initialPosition.top - theOffset.top;
+                    that.css(newPosition);
+                },true);
+            },
+            stop: function stop(){
+                $(this).css("cursor","default");
+            },
+            scroll: false
         }
     }
     

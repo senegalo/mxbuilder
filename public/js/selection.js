@@ -2,37 +2,40 @@
     
     //when ready
     $(function(){
-        mxBuilder.selection.__selectionContainer = $('<div id="selection-container"/>').appendTo(mxBuilder.layout.container).hide().draggable({
-            grid: mxBuilder.properties.gridSize,
-            start: function start(){
-                var that = $(this);
-                that.data("lastOffset",that.position());
-            },
-            drag: function drag(){
-                var that = $(this);
-                var currentOffset = that.position();        
-                
-                var lastOffset = that.data("lastOffset");
-                var selection = mxBuilder.selection.getSelection();
-                var theOffset = {
-                    left: lastOffset.left-currentOffset.left,
-                    top: lastOffset.top-currentOffset.top
-                }
-                        
-                selection.each(function(){
-                    var that = $(this);
-                    var offset = that.position();
-                    offset.left = offset.left - theOffset.left;
-                    offset.top =  offset.top - theOffset.top;
-                    that.css(offset);
-                });
-                that.data("lastOffset",currentOffset);
-            },
-            stop: function stop(){
-                mxBuilder.selection.revalidateSelectionContainer();
-                $(this).data("lastOffset",false);
-            }
-        });
+        mxBuilder.selection.__selectionContainer = $('<div id="selection-container"/>').appendTo(mxBuilder.layout.container)
+        .hide().draggable(mxBuilder.Component.prototype.defaultDraggableSettings);
+//        .draggable({
+//            start: function start(){
+//                $(this).css("cursor","move");
+//                mxBuilder.selection.each(function(){
+//                    this.element.data("initial-position",this.element.position());
+//                });
+//            },
+//            drag: function drag(event, ui){
+//                var that = $(this);
+//                var currentPosition = ui.position;           
+//                        
+//                var initialPosition = that.data("initial-position");
+//                        
+//                var theOffset = {
+//                    left: initialPosition.left-currentPosition.left,
+//                    top: initialPosition.top-currentPosition.top
+//                }
+//                        
+//                mxBuilder.selection.each(function(){
+//                    var that = this.element;
+//                    var initialPosition = that.data("initial-position");
+//                    var newPosition = {};
+//                    newPosition.left = initialPosition.left - theOffset.left;
+//                    newPosition.top =  initialPosition.top - theOffset.top;
+//                    that.css(newPosition);
+//                });
+//                mxBuilder.selection.revalidateSelectionContainer();
+//            },
+//            stop: function stop(){
+//                $(this).css("cursor","default");
+//            }
+//        });
         
         //Clearing selection on click
         $(mxBuilder.layout.editorArea).on({
@@ -137,7 +140,7 @@
                 selection = selection.not(exclude);
             }
             selection.each(function(){
-               mxBuilder.selection.removeFromSelection($(this),true); 
+                mxBuilder.selection.removeFromSelection($(this),true); 
             });
             this.revalidateSelectionContainer();
         },
@@ -248,8 +251,12 @@
                 $("#editor-area").selectable("destroy");
             }
         },
-        each: function each(callback){
-            this.getSelection().each(function(){
+        each: function each(callback,includeSelectionContainerFlag){
+            var selection = this.getSelection();
+            if(includeSelectionContainerFlag){
+                selection = selection.add(this.getSelectionContainer());
+            }
+            selection.each(function(){
                 callback.call(mxBuilder.components.getComponent($(this)), $(this));
             });
         }
