@@ -94,7 +94,7 @@
             .cke_button__linkextra_icon {
                 background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -351px !important;
             }
-            
+
             .cke_button__unlinkextra_icon {
                 background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -287px !important;
             }
@@ -122,6 +122,25 @@
         <script type="text/javascript" src="public/js/page_manager.js"></script>
         <script type="text/javascript" src="public/js/components-instance-manager.js"></script>
         <script type="text/javascript" src="public/js/components-alignment.js"></script>
+        <script type="text/javascript">
+                mxBuilder.uploaderSettings = {
+                    runtimes : 'gears,html5,flash,silverlight,browserplus',
+                    browse_button : 'assets-select-files',
+                    container : 'assets-upload-container',
+                    max_file_size : '<?php print $upload_mb; ?>mb',
+                    url : mxBuilder.config.baseURL+'/assets/upload',
+                    flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
+                    silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
+                    filters : [{
+                            title : "Image files", 
+                            extensions : "jpg,jpeg,gif,png"
+                        },
+                        {
+                            title : "Document files", 
+                            extensions : "doc,docx,txt,pdf"
+                        }]
+                };
+        </script>
         <script type="text/javascript" src="public/js/assets-manager.js"></script>
         <script type="text/javascript" src="public/js/selection.js"></script>
         <script type="text/javascript" src="public/js/components.js"></script>
@@ -328,7 +347,7 @@
                     <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
                     <label for="linkto-lightbox">Open in a Lightbox</label>
                 </div>
-                
+
                 <div style="margin-top:6px;">
                     <input type="checkbox" id="linkto-new-window"/>
                     <label for="linkto-new-window">Open in a new window</label>

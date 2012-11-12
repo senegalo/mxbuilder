@@ -24,23 +24,7 @@
                 }
             });
         
-            uploader = new plupload.Uploader({
-                runtimes : 'gears,html5,flash,silverlight,browserplus',
-                browse_button : 'assets-select-files',
-                container : 'assets-upload-container',
-                max_file_size : '10mb',
-                url : mxBuilder.config.baseURL+'/assets/upload',
-                flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
-                silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
-                filters : [{
-                    title : "Image files", 
-                    extensions : "jpg,jpeg,gif,png"
-                },
-                {
-                    title : "Document files", 
-                    extensions : "doc,docx,txt,pdf"
-                }]
-            });
+            uploader = new plupload.Uploader(mxBuilder.uploaderSettings);
 
             $('#assets-upload-files').click(function(event) {
                 uploader.start();
@@ -65,12 +49,9 @@
             });
 
             uploader.bind('Error', function(up, err) {
-                $('#assets-upload-files-info').append("<div>Error: " + err.code +
-                    ", Message: " + err.message +
-                    (err.file ? ", File: " + err.file.name : "") +
-                    "</div>"
-                    );
-
+                
+                mxBuilder.dialogs.alertDialog.show("Can't upload "+(err.file ? "the file '" + err.file.name +"' " : "")+"for the following reason: <br/>"+err.message);
+                
                 up.refresh(); // Reposition Flash/Silverlight
             });
 

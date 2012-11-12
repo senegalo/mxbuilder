@@ -494,7 +494,7 @@
                     }
                     mxBuilder.selection.each(function(){
                         var that = this.element;
-                        var step = event.shiftKey ? 10 : 2;
+                        var step = event.shiftKey ? 10 : 1;
                         var position = that.position();
                         var headerThreshold = mxBuilder.layout.header.height();
                         var bodyThreshold = headerThreshold+mxBuilder.layout.body.height();

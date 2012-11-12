@@ -21,7 +21,7 @@ class Assets extends MX_Controller {
         $this->load->model("assets_model");
         foreach ($_FILES as $file) {
             $file_info = new finfo(FILEINFO_MIME);
-            $the_info = $file_info->file($file['tmp_name']);
+            $the_info = @$file_info->file($file['tmp_name']);
             $mime_info = substr($the_info, 0, strpos($the_info, ';'));
             switch ($mime_info) {
                 case "image/jpeg":
