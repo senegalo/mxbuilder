@@ -512,8 +512,8 @@
                     });
                     mxBuilder.layout.revalidateLayout();
                     mxBuilder.selection.revalidateSelectionContainer();
+                    event.preventDefault();
                 }
-                event.preventDefault();
             }
         });
         

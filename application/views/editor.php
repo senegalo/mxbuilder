@@ -21,7 +21,7 @@
         <style>
             html {
                 font-size: 12px;
-                overflow-x: hidden;
+                overflow-x: auto;
                 font-family:Arial,Verdana,Sans-serif;
                 overflow-y: scroll;
             }
