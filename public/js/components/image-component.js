@@ -273,6 +273,9 @@
                 this.linkObj = obj;
             }, 
             getLinkObj: function getLinkObj(){
+                if(this.linkObj && this.linkObj.type == "page" && !mxBuilder.pages.getPageObj(this.linkObj.pageID)){
+                    this.linkObj = null;
+                }
                 return this.linkObj;
             },
             save: function save(){
