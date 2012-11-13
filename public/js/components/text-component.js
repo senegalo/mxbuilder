@@ -166,7 +166,7 @@
                             break;
                         case "page":
                             var pageObj = mxBuilder.pages.getPageObj(that.data("url"));
-                            url = pageObj.address+".html";
+                            url = pageObj.homepage ? "index.html" : pageObj.address+".html";
                             break;
                     }
                     that.attr({
