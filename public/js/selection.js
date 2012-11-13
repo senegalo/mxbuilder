@@ -4,38 +4,6 @@
     $(function(){
         mxBuilder.selection.__selectionContainer = $('<div id="selection-container"/>').appendTo(mxBuilder.layout.container)
         .hide().draggable(mxBuilder.Component.prototype.defaultDraggableSettings);
-//        .draggable({
-//            start: function start(){
-//                $(this).css("cursor","move");
-//                mxBuilder.selection.each(function(){
-//                    this.element.data("initial-position",this.element.position());
-//                });
-//            },
-//            drag: function drag(event, ui){
-//                var that = $(this);
-//                var currentPosition = ui.position;           
-//                        
-//                var initialPosition = that.data("initial-position");
-//                        
-//                var theOffset = {
-//                    left: initialPosition.left-currentPosition.left,
-//                    top: initialPosition.top-currentPosition.top
-//                }
-//                        
-//                mxBuilder.selection.each(function(){
-//                    var that = this.element;
-//                    var initialPosition = that.data("initial-position");
-//                    var newPosition = {};
-//                    newPosition.left = initialPosition.left - theOffset.left;
-//                    newPosition.top =  initialPosition.top - theOffset.top;
-//                    that.css(newPosition);
-//                });
-//                mxBuilder.selection.revalidateSelectionContainer();
-//            },
-//            stop: function stop(){
-//                $(this).css("cursor","default");
-//            }
-//        });
         
         //Clearing selection on click
         $(mxBuilder.layout.editorArea).on({
@@ -69,6 +37,8 @@
             }
             
             instance = $(instance).addClass("ui-selected");
+            
+            console.log(instance.data("GUID"), instance.css("zIndex"));
             
             //incrementing selection count
             this.__selectionCount++;

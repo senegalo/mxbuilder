@@ -10,8 +10,8 @@
                 component.element.css("zIndex",theZIndex);
             }
             theZIndex = parseInt(theZIndex,10);
-            if(this.__nextZIndex < theZIndex){
-                this.__nextZIndex = theZIndex;
+            if(this.__nextZIndex <= theZIndex){
+                this.__nextZIndex = theZIndex+1;
             }
             this.insertionSort({
                 id: component.getID(),
