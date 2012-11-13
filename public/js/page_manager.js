@@ -86,15 +86,45 @@
                 //if this is the homepage revert the home page to the parent of the homepage
                 if(this.__pages[id].homepage){
                     this.setHomepage(theParent);
-                }
+                }                
                 
                 theWebsiteSelect.find('option[value="'+id+'"]').remove();
+                
+                //check if the page is linked in any image or textbox in the pinned/current page components and remove the link
+                var loopThroughActiveComponents = function loopThroughActiveComponents(components){
+                    for(c in components){
+                        if(components[c].type == "ImageComponent"){
+                            var theLink = components[c].getLinkObj();
+                            if(theLink && theLink.type == "page" && theLink.pageID == id){
+                                components[c].setLinkObj(null);
+                            }
+                        } else if(components[c].type == "TextComponent"){
+                            components[c].cleanDeadLinks(id);
+                        }
+                    }
+                }
                 
                 for(p in this.__pages){
                     if(this.__pages[p].parent == id){
                         this.__pages[p].parent = theParent;
                     }
+                    //check if the page is linked in any image or textbox in the pages components and remove the link
+                    if(this.__pages[p].id != id){
+                        if(this.__pages[p].id != this.__currentPage){
+                            for(var c in this.__pages[p].components){
+                                var currentComponent = this.__pages[p].components[c];
+                                if(currentComponent.data.type == "ImageComponent" || currentComponent.type == "TextComponent"){
+                                    mxBuilder[currentComponent.data.type].prototype.cleanDeadLinksFromSaveObj(currentComponent,id);
+                                }
+                            }
+                        } else {
+                            loopThroughActiveComponents(this.__pages[p].components);
+                        }
+                    }
                 }
+                
+                loopThroughActiveComponents(this.__pinned);
+                
                 delete this.__pages[id];
             },
             getPageObj: function getPageObj(id){

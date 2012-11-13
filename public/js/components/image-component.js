@@ -278,6 +278,12 @@
                 }
                 return this.linkObj;
             },
+            cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
+                if(saveObj.data.linkObj && saveObj.data.linkObj.type == "page" && saveObj.data.linkobj.pageID == pageID){
+                    delete saveObj.data.linkObj;
+                }
+                return saveObj;
+            },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.__currentSize = this.__currentSize;

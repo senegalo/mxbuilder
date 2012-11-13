@@ -166,7 +166,11 @@
                             break;
                         case "page":
                             var pageObj = mxBuilder.pages.getPageObj(that.data("url"));
-                            url = pageObj.homepage ? "index.html" : pageObj.address+".html";
+                            if(pageObj){
+                                url = pageObj.homepage ? "index.html" : pageObj.address+".html";
+                            } else {
+                                that.replaceWith(that.contents());
+                            }
                             break;
                     }
                     that.attr({
@@ -175,6 +179,23 @@
                     });
                 });
                 return out;
+            },
+            cleanDeadLinks: function cleanDeadLinks(pageID){
+                this.element.find(".inline-links").each(function(){
+                    var that = $(this);
+                    if(that.data("type") == "page" && that.data("url") == pageID){
+                        that.replaceWith(that.contents());
+                    }
+                });
+            },
+            cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
+                saveObj.data.text = $(saveObj.data.text).find(".inline-links").each(function(){
+                    var that = $(this);
+                    if(that.data("type") == "page" && that.data("url") == pageID){
+                        that.replaceWith(that.contents());
+                    }
+                }).get(0).outerHTML;
+                return saveObj;
             }
         });
         $('<div class="text-component menu-item mx-helper" style="cursor:move;">Text Box</div>').draggable({
