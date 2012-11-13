@@ -1,10 +1,10 @@
 (function($){
-    mxBuilder.save = {
+    mxBuilder.recorder = {
         __lastState: null,
         __forceSave: false,
         __saving: false,
         __queue: [],
-        saveInterval: function(){
+        saveIfRequired: function(){
             var savedObj = mxBuilder.pages.saveAll();
             var currentState = JSON.stringify(savedObj);
             if(this.__forceSave || (this.__lastState !== null && this.__lastState != currentState)){
@@ -21,15 +21,14 @@
                 mxBuilder.api.website.save({
                     websiteData: str,
                     success: function(data){
-                        mxBuilder.save.tooltip.text("Saved Successfully...");
+                        mxBuilder.recorder.tooltip.text("Saved Successfully...");
                         setTimeout(function(){
-                            mxBuilder.save.tooltip.hide();
+                            mxBuilder.recorder.tooltip.hide();
                         },2000);
                     },
                     complete: function(){
                         that.__saving = false;
                         if(that.__queue.length > 0){
-                            console.log(that.__queue,that.__queue.splice(0,1)[0]);
                             that.save(that.__queue.splice(0,1)[0]);
                         }
                     }
@@ -47,7 +46,6 @@
     }
     
     $(function(){
-        mxBuilder.save.tooltip = mxBuilder.layout.templates.find(".save-tooltip").remove().appendTo(mxBuilder.layout.selectionSafe); 
+        mxBuilder.recorder.tooltip = mxBuilder.layout.templates.find(".save-tooltip").remove().appendTo(mxBuilder.layout.selectionSafe); 
     });
-//    })
 }(jQuery));

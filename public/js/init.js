@@ -16,7 +16,7 @@
                         mxBuilder.pages.restorePages(theWebsite);
                         mxBuilder.dialogs.progressDialog.hide(); 
                         setInterval(function(){
-                            mxBuilder.save.saveInterval();
+                            mxBuilder.recorder.saveIfRequired();
                         },5000);
                     },
                     error: function(data){
@@ -35,7 +35,7 @@
                             mxBuilder.dialogs.progressDialog.hide(); 
                         },2000);
                         setInterval(function(){
-                            mxBuilder.save.saveInterval();
+                            mxBuilder.recorder.saveIfRequired();
                         },5000);
                     }
                 });

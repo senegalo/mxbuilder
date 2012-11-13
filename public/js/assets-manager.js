@@ -142,7 +142,7 @@
                                         success: function(data){
                                             mxBuilder.dialogs.progressDialog.msg("Deleted Successfully...");
                                             mxBuilder.assets.remove(obj.id);
-                                            mxBuilder.save.save(JSON.stringify(mxBuilder.pages.saveAll()));
+                                            mxBuilder.recorder.save(JSON.stringify(mxBuilder.pages.saveAll()));
                                         },
                                         error: function(data){
                                             mxBuilder.dialogs.progressDialog.msg("Delete Failed !")

@@ -36,7 +36,7 @@
                 if(properties.homepage){
                     this.setHomepage(properties.id);
                 }
-                mxBuilder.save.forceSave();
+                mxBuilder.recorder.forceSave();
                 return this.__pages[properties.id];
             },
             setHomepage: function setHomepage(id){
@@ -120,6 +120,9 @@
             },
             loadPage: function loadPage(id){
                 if(this.__pages[id] && id != this.__currentPage){
+                    //Saving if necaissairy
+                    mxBuilder.recorder.saveIfRequired();
+                    
                     //caching the current page
                     if(this.__currentPage){
                         var thisPage = this.__pages[this.__currentPage] ? this.__pages[this.__currentPage] : this.__pages[id];
@@ -150,7 +153,7 @@
                     mxBuilder.layout.revalidateLayout();
                     theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
-                    mxBuilder.save.setLastState(this.saveAll());
+                    mxBuilder.recorder.setLastState(this.saveAll());
                 }
             },
             attachComponentToPage: function attachComponentToPage(component){
