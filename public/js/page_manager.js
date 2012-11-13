@@ -78,9 +78,16 @@
                     }
                 }
                 
+                //if this is the current page load the parent of the first page
                 if(id == this.__currentPage){
                     this.loadPage(theParent);
                 }
+                
+                //if this is the homepage revert the home page to the parent of the homepage
+                if(this.__pages[id].homepage){
+                    this.setHomepage(theParent);
+                }
+                
                 theWebsiteSelect.find('option[value="'+id+'"]').remove();
                 
                 for(p in this.__pages){
