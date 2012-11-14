@@ -396,7 +396,7 @@
             </div>
             <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
             <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
-            <div class="strip-component-instance" style="width:900px;height:200px;background-color:rgba(0,0,0,1)"></div>
+            <div class="strip-component-instance" style="width:900px;height:100px;background-color:rgba(0,0,0,1)"></div>
             <div class="text-component-instance" style="width:300px;padding:5px;z-index:10000;">
                 <div class="content" style="word-wrap: break-word;">
                     <h2>Paragraph title</h2>

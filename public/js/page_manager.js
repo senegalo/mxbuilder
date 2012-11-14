@@ -328,11 +328,12 @@
                     
                 }
                 
+                restore.layoutHeights.body = firstPage.contentHeight;
+                mxBuilder.layout.setLayout(restore.layoutHeights,true);
+                
                 for(var c in restore.pinned){
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
-                restore.layoutHeights.body = firstPage.contentHeight;
-                mxBuilder.layout.setLayout(restore.layoutHeights,true);
                 
                 if(restore.layoutBackground){
                     mxBuilder.layout.layoutHeader.css("background",restore.layoutBackground.header);

@@ -318,8 +318,9 @@
                 data: {}
             };
             var position = this.element.position();
+            
+            out.css.top = this.container == "footer" ? position.top - mxBuilder.layout.footer.position().top : position.top;
             out.css.left = position.left;
-            out.css.top = position.top;
             out.css.height = this.element.height();
             out.css.width = this.element.width();
             if(this.ctxZIndex){
@@ -345,6 +346,10 @@
         },
         init: function init(properties){
             if(typeof properties.element == "undefined"){
+                if(properties.data.container == "footer"){
+                    properties.css.top = mxBuilder.layout.footer.position().top+properties.css.top;
+                    delete properties.css.relativeTop;
+                }
                 properties.element = this.template.clone().css(properties.css).appendTo(mxBuilder.layout[properties.data.container]);
             }
             $.extend(this,properties.data);
@@ -355,23 +360,35 @@
         },
         defaultDraggableSettings: {
             start: function start(){
-                var that = $(this);
+                var instance = $(this);
                 
                 //if this is the selection container skip this part
                 if(mxBuilder.selection.getSelectionContainer().get(0) !== this){
                     if(mxBuilder.selection.getSelectionCount() == 0){
-                        mxBuilder.selection.addToSelection(that);
+                        mxBuilder.selection.addToSelection(instance);
                     } else {
-                        if(!mxBuilder.selection.isSelected(that)){
+                        if(!mxBuilder.selection.isSelected(instance)){
                             mxBuilder.selection.clearSelection();
-                            mxBuilder.selection.addToSelection(that);
+                            mxBuilder.selection.addToSelection(instance);
                         }
                     }
                 }
+                var hasStripComponent = false;
                 mxBuilder.selection.each(function(that){
                     that.data("initial-position",that.position());
+                    var theComponent = mxBuilder.components.getComponent(that);
+                    if(theComponent && theComponent.type == "StripComponent"){
+                        hasStripComponent =  true;
+                    } 
                 },true);
-                that.css("cursor","move");
+                
+                if(hasStripComponent){
+                    instance.data("movement-axis","y").draggable("option","axis","y");
+                } else {
+                    instance.data("movement-axis",false).draggable("option","axis",false);
+                }
+                
+                instance.css("cursor","move");
             },
             drag: function drag(event,ui){
                 var that = $(this);
@@ -383,13 +400,22 @@
                     left: initialPosition.left-currentPosition.left,
                     top: initialPosition.top-currentPosition.top
                 }
+                
+                if(that.data("movement-axis") == "y"){
+                    that.css("left",ui.originalPosition.left);
+                }
                         
-                mxBuilder.selection.each(function(that){
-                    var initialPosition = that.data("initial-position");
+                mxBuilder.selection.each(function(currentSelectionComponent){
+                    if(that.get(0) === currentSelectionComponent.get(0)){
+                        return;
+                    }
+                    var initialPosition = currentSelectionComponent.data("initial-position");
                     var newPosition = {};
-                    newPosition.left = initialPosition.left - theOffset.left;
+                    if(that.data("movement-axis") != "y"){
+                        newPosition.left = initialPosition.left - theOffset.left;
+                    }
                     newPosition.top =  initialPosition.top - theOffset.top;
-                    that.css(newPosition);
+                    currentSelectionComponent.css(newPosition);
                 },true);
             },
             stop: function stop(){

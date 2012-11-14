@@ -1,11 +1,14 @@
 (function($){
     $(function(){
         mxBuilder.StripComponent = function StripComponent(properties){
+            var instance = this;
+            
             this.init(properties);
             mxBuilder.Component.apply(this,[{
                 type: "StripComponent",
                 draggable: {
-                    axis: "y"
+                    axis: "y",
+                    scroll: false
                 },
                 resizable: {
                     orientation: "v"
@@ -19,6 +22,25 @@
             properties.element.on({
                 selected: function(){
                     mxBuilder.activeStack.push(properties.element);
+                    //instance.resetSize();
+                    var before = instance.element.width();
+                    //instance.element.width(before-12);
+                    instance.element.css({
+                        width: before-10,
+                        left: instance.element.position().left + 4
+                    }).data("original-width",before);
+                    console.log("Before",before,"position",instance.element.position())
+                    mxBuilder.selection.revalidateSelectionContainer();
+                },
+                deselected: function(){
+                    //instance.resetSize();
+                    instance.element.css({
+                        width: instance.element.data("original-width")-1,
+                        left: instance.element.position().left - 4
+                    })
+                    instance.element.width(instance.element.data("original-width")-1);
+                    console.log("Cur.Width",instance.element.width(),"position",instance.element.position())
+                    mxBuilder.selection.revalidateSelectionContainer();
                 },
                 dblclick: function(){
                     mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
@@ -26,13 +48,12 @@
             });
             
             this.resetSize();
-            
         }
         $.extend(mxBuilder.StripComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".strip-component-instance").remove(),
             resetSize: function resetSize(){
                 this.element.css({
-                    width: $(document.body).width(),
+                    width: $(document.body).outerWidth(),
                     left: -1*mxBuilder.layout.container.offset().left
                 });
             }
