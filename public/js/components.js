@@ -360,19 +360,20 @@
         },
         defaultDraggableSettings: {
             start: function start(){
-                var instance = $(this);
+                var element = $(this);
                 
                 //if this is the selection container skip this part
                 if(mxBuilder.selection.getSelectionContainer().get(0) !== this){
                     if(mxBuilder.selection.getSelectionCount() == 0){
-                        mxBuilder.selection.addToSelection(instance);
+                        mxBuilder.selection.addToSelection(element);
                     } else {
-                        if(!mxBuilder.selection.isSelected(instance)){
+                        if(!mxBuilder.selection.isSelected(element)){
                             mxBuilder.selection.clearSelection();
-                            mxBuilder.selection.addToSelection(instance);
+                            mxBuilder.selection.addToSelection(element);
                         }
                     }
                 }
+                
                 var hasStripComponent = false;
                 mxBuilder.selection.each(function(that){
                     that.data("initial-position",that.position());
@@ -383,35 +384,36 @@
                 },true);
                 
                 if(hasStripComponent){
-                    instance.data("movement-axis","y").draggable("option","axis","y");
+                    element.data("movement-axis","y").draggable("option","axis","y");
                 } else {
-                    instance.data("movement-axis",false).draggable("option","axis",false);
+                    element.data("movement-axis",false).draggable("option","axis",false);
                 }
                 
-                instance.css("cursor","move");
+                element.css("cursor","move");
             },
             drag: function drag(event,ui){
-                var that = $(this);
+                var element = $(this);
                 var currentPosition = ui.position;           
                         
-                var initialPosition = that.data("initial-position");
+                var initialPosition = element.data("initial-position");
                         
                 var theOffset = {
                     left: initialPosition.left-currentPosition.left,
                     top: initialPosition.top-currentPosition.top
                 }
                 
-                if(that.data("movement-axis") == "y"){
-                    that.css("left",ui.originalPosition.left);
+                if(element.data("movement-axis") == "y"){
+                    element.css("left",initialPosition.left);
+                    mxBuilder.selection.revalidateSelectionContainer();
                 }
                         
                 mxBuilder.selection.each(function(currentSelectionComponent){
-                    if(that.get(0) === currentSelectionComponent.get(0)){
+                    if(element.get(0) === currentSelectionComponent.get(0)){
                         return;
                     }
                     var initialPosition = currentSelectionComponent.data("initial-position");
                     var newPosition = {};
-                    if(that.data("movement-axis") != "y"){
+                    if(element.data("movement-axis") != "y"){ 
                         newPosition.left = initialPosition.left - theOffset.left;
                     }
                     newPosition.top =  initialPosition.top - theOffset.top;
