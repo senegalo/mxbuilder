@@ -147,6 +147,9 @@
             getCurrentPageID: function getCurrentPageID(){
                 return this.__currentPage;
             },
+            isCurrentPage: function isCurrentPage(id){
+                return this.__currentPage == id;
+            },
             getPageComponents: function getPageComponents(id){
                 var theComponentsToRestore = {};
                 for(var i in this.__pinned){

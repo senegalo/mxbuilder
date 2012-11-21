@@ -3,16 +3,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <!--<link rel="stylesheet" href="public/css/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css"/>-->
         <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.0.custom.css" type="text/css"/>
-        <link rel="stylesheet" href="public/css/reset.css" type="text/css" /><!--
-        <link rel="stylesheet/less" href="public/css/layout.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/theme-01.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/font-set-01.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/menu-set-01.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/website.css" type="text/css" />
-        <link rel="stylesheet/less" href="public/css/webpage-01.css" type="text/css" />
-        -->        <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/flexly.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
 
 
 
@@ -101,9 +97,7 @@
 
         </style>
         <!-- Loading Libs -->
-        <!--<script type="text/javascript" src="public/js-libs/less.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
-        <!--<script type="text/javascript" src="public/js-libs/jquery-ui-1.8.23.custom.min.js"></script>-->
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.0.custom.min.js"></script>
         <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
@@ -111,6 +105,8 @@
         </script>
         <script type="text/javascript" src="public/js-libs/plupload/plupload.full.js"></script>
         <script type="text/javascript" src="public/js-libs/jsdiff.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -123,23 +119,23 @@
         <script type="text/javascript" src="public/js/components-instance-manager.js"></script>
         <script type="text/javascript" src="public/js/components-alignment.js"></script>
         <script type="text/javascript">
-                mxBuilder.uploaderSettings = {
-                    runtimes : 'gears,html5,flash,silverlight,browserplus',
-                    browse_button : 'assets-select-files',
-                    container : 'assets-upload-container',
-                    max_file_size : '<?php print $upload_mb; ?>mb',
-                    url : mxBuilder.config.baseURL+'/assets/upload',
-                    flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
-                    silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
-                    filters : [{
-                            title : "Image files", 
-                            extensions : "jpg,jpeg,gif,png"
-                        },
-                        {
-                            title : "Document files", 
-                            extensions : "doc,docx,txt,pdf"
-                        }]
-                };
+            mxBuilder.uploaderSettings = {
+                runtimes : 'gears,html5,flash,silverlight,browserplus',
+                browse_button : 'assets-select-files',
+                container : 'assets-upload-container',
+                max_file_size : '<?php print $upload_mb; ?>mb',
+                url : mxBuilder.config.baseURL+'/assets/upload',
+                flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
+                silverlight_xap_url : 'js-libs/plupload/plupload.silverlight.xap',
+                filters : [{
+                        title : "Image files", 
+                        extensions : "jpg,jpeg,gif,png"
+                    },
+                    {
+                        title : "Document files", 
+                        extensions : "doc,docx,txt,pdf"
+                    }]
+            };
         </script>
         <script type="text/javascript" src="public/js/assets-manager.js"></script>
         <script type="text/javascript" src="public/js/selection.js"></script>
@@ -149,6 +145,8 @@
         <script type="text/javascript" src="public/js/z-index-manager.js"></script>
         <script type="text/javascript" src="public/js/api.js"></script>
         <script type="text/javascript" src="public/js/layout-background.js"></script>
+        <script type="text/javascript" src="public/js/menu-manager.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -175,28 +173,153 @@
     </head>
     <body>
 
-        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:300px;margin-top:-150px;z-index:30000009;background-color:#e4e4e4;">
-            <div class="menu-item">
-                <select id="website-pages" style="width:190px"></select>
+        <!--        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:300px;margin-top:-150px;z-index:30000009;background-color:#e4e4e4;">
+                    <div class="menu-item">
+                        <select id="website-pages" style="width:190px"></select>
+                    </div>
+                    <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
+                    <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
+                    <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
+                    <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
+                    <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
+                    <div id="header-background" class="menu-item" style="font-weight:bold;cursor:pointer">Header Background</div>
+                    <div id="body-background" class="menu-item" style="font-weight:bold;cursor:pointer">Body Background</div>
+                    <div id="footer-background" class="menu-item" style="font-weight:bold;cursor:pointer">Footer Background</div>
+                </div>-->
+
+        <div class="flexly-main-bar">
+            <div class="flexly-buttons">
+                <div class="flexly-icon flexly-logo">
+                </div>	
+
+
+                <div class="flexly-sub-bar " style="margin-top:0px;">
+
+                    <div class="flexly-icon flexly-icon-page flexly-button flexly-active-icon">
+                    </div>
+
+                    <div class="flexly-icon flexly-icon-wizard flexly-button flexly-active-icon">
+                    </div>
+
+                </div>
+
+                <div class="flexly-sub-bar">
+
+                    <div class="flexly-icon flexly-icon-photos flexly-button flexly-active-icon">
+                    </div>
+
+                    <div class="flexly-icon flexly-icon-clipart flexly-button flexly-active-icon">
+                    </div>   
+
+                    <div class="flexly-icon flexly-icon-docs flexly-button flexly-active-icon">
+                    </div>       
+
+                    <div class="flexly-icon flexly-icon-widgets flexly-button flexly-active-icon">
+                    </div>                       
+
+                </div>
+
+                <div class="flexly-sub-bar">
+
+                    <div class="flexly-icon flexly-icon-preview flexly-button flexly-active-icon">
+                    </div>
+
+                </div>
+
+                <div class="flexly-sub-bar">
+
+                    <div class="flexly-icon flexly-icon-settings flexly-button flexly-active-icon">
+                    </div>    
+
+                    <div class="flexly-icon flexly-icon-publish flexly-button flexly-active-icon">
+                    </div>                      
+
+                </div>   
+
+            </div>     
+
+            
+            <div class="flexly-tab" style="display:none;">
+                
+            <div class="flexly-tab-content-border"></div>
+                <div class="flexly-tab-header">
+                    <div class="flexly-tab-title"></div>
+                    <div class="flexly-icon flexly-icon-close-black flexly-tab-close"></div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="flexly-tab-content" style="text-align: justify;">
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdf jlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd f lkajsd flkjas dflkjas dlkfj salkdf jlaskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flkajsd flkjas dflkjas dlk df jlaskdj flkasjd f</p>
+                    <p>als dkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flka jsd flkjas dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flk ajsd flkjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj  salkdfjlaskdj flkasjd f</p>
+                    <p>alsdk fj lkasjd flkaj s d flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasj d flkajsd flkja  s dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>als dkfj lkasjd  flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj sal  kdfj laskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flkajsd flk jas dflkjas dlkfj salkdfjlaskdj f lkasjd f</p>
+                    <p>alsdkf j lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd f lkjas dflkjas dlkfj salk dfjlaskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flk ajsd flkjas  as dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj  lka sjd flkajsd flkjas  dflkjas dlkfj sa lkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd  f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj  lka sjd  flkajsd flkjas dflkjas dl kfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj l kasjd flka  jsd flkja dflkjas dlkfj salkdfj kdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd fl kajs d flkjas dflkjas dlkfj salkd  fjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dl fj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dl kfj  salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas  dflk j as dlkfj sa lkdfjlaskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flkajsd  flkjas dflkj as dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj  lkasjd flkajsd    flkjas dflkjas dlkfj salkdfjlask dj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkd  fjlaskdj flka sjd f</p>
+                    <p>alsdkfj lkasjd flkajs d f lk as dflkjas dlkfj sal kdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj l kasjd flkajsd  flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lka sjd flkajsd  flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsd kfj lkas  jd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flkajsd flkjas d  flkjas dlkfj sa lkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkas jd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasj d flkajsd fl kjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkf j lkasj d flkajsd fl kjas dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
+                    <p>alsdkfj lka sjd f lkajsd flkjas dfl k ja s dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkaj sd flkjas dfl kjas dlkfj  salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasj d flkajsd  flkj as dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
+                    <p>alsdk fj  lkasjd flkajsd flk jas dflkjas dlkfj salkdfjl  askdj flkasjd f</p>
+                    <p>alsdkfj lkasj d flkajs d flkjas dfl jas dlkfj salkdfjl askdj flkasjd f</p>
+                    <p>als dkfj lkasjd flkajsd flkjas dflkj as dlkfj sa lkd fjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd  flkajsd fl kjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
+                    <p>alsdkfj lkas jd flkajsd flk jas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd f  lkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsd kfj lkasjd flkajsd flkjas df kjas dlkfj sa lkdfjla kdj flkasjd f</p>
+                    <p>alsdkfj lk  sjd flkajs d flkjas dflkja s dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas df lkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas d l fj salkdfjlaskdj flkasjd f</p>
+                    <p>al sdkfj lkasjd flkajsd flkjas dflkjas d kfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lkasj d flkaj sd fl  jas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj lka sjd flkaj sd   flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj  lkasjd flkajsd fl kjas dflkjas dlkfj  salkdfjlaskdj flkasjd f</p>
+                    <p>alsdkfj  lkas jd flk s d flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
+                </div>
             </div>
-            <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
-            <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
-            <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
-            <!--<div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>-->
-            <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
-            <div id="header-background" class="menu-item" style="font-weight:bold;cursor:pointer">Header Background</div>
-            <div id="body-background" class="menu-item" style="font-weight:bold;cursor:pointer">Body Background</div>
-            <div id="footer-background" class="menu-item" style="font-weight:bold;cursor:pointer">Footer Background</div>
+            <div style="clear:both;"></div>
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
-            <div id="header" style="height: 200px;">
+            <div id="header" style="height: 200px;width:100%;">
 
             </div>
-            <div id="body" style="height: 300px;">
+            <div id="body" style="height: 300px;width:100%;">
 
             </div>
-            <div id="footer" style="height: 200px;">
+            <div id="footer" style="height: 200px;width:100%;">
 
             </div>
             <div id="container">
@@ -422,6 +545,20 @@
             <div class="progress-dialog">
 
             </div>
+            <ul class="flexly-menu-pages-list">
+                <li>
+                    <div class="flexly-menu-pages-drag-handle">
+                        <div class="flexly-icon flexly-icon-drag"></div>
+                    </div>
+                    <div class="flexly-menu-page-title"></div>
+                    <div class="flexly-menu-page-controls" style="display:none;">
+                        <div class="flexly-icon flexly-icon-close-black" style="display:inline-block;"></div>
+                        <div class="flexly-icon flexly-icon-gear-black" style="display:inline-block;"></div>
+                        <div class="flexly-icon flexly-icon-arrow-e-black flexly-goto-page" style="display:inline-block;"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </li>
+            </ul>
         </div>
 
     </body>

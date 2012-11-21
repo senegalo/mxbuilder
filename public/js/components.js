@@ -422,6 +422,7 @@
             },
             stop: function stop(){
                 $(this).css("cursor","default");
+                mxBuilder.layout.revalidateLayoutWidth();
             },
             scroll: false
         }

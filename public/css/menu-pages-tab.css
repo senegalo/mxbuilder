@@ -1,0 +1,64 @@
+.flexly-menu-pages-list {
+    padding:1px;
+}
+
+.flexly-menu-pages-list li {
+    padding: 9px 8px 9px 5px;
+    min-height: 48px;
+    margin-bottom: 1px;
+    background: rgba(204,204,204,0.9);
+    border-radius: 6px;
+}
+
+.flexly-menu-pages-list li:hover {
+    background: rgba(230,230,230,0.9);
+}
+
+.flexly-menu-pages-list-child {
+    margin-left: 25px;
+}
+
+.flexly-menu-pages-list-child li {
+    border: 1px solid rgba( 77,77,77,0.9);
+}
+
+.flexly-menu-pages-list-current {
+    background: rgb(247,147,30)!important;
+}
+
+.flexly-menu-pages-list-current .flexly-menu-page-title {
+    color: #fff !important;
+}
+.flexly-menu-pages-list-current .flexly-menu-pages-list-child .flexly-menu-page-title {
+    color: #4a4a4a!important;
+}
+/*.flexly-menu-pages-list-current .flexly-icon-drag {
+    background-position:-202px -237px ; 
+    width: 12px;
+    height: 19px;
+}*/
+
+.flexly-menu-pages-list-selected {
+    border: 2px solid rgb(241,90,36) !important;
+}
+
+.flexly-menu-pages-drag-handle {
+    float:left;
+    height: 23px;
+    width: 20px;
+}
+
+.flexly-menu-page-title {
+    color: #4a4a4a;
+    font-size: 12px;
+    position:relative;
+    top: -1px;
+    float:left;
+}
+
+.flexly-menu-page-controls {
+    float: right;
+}
+.flexly-goto-page {
+    cursor: pointer;
+}
