@@ -16,6 +16,7 @@
 
 .flexly-menu-pages-list-child {
     margin-left: 25px;
+    min-height: 23px;
 }
 
 .flexly-menu-pages-list-child li {

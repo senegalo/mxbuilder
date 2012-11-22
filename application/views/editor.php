@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.0.custom.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.1.custom.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="public/css/flexly.css" type="text/css" />
         <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css" />
@@ -238,10 +238,10 @@
 
             </div>     
 
-            
+
             <div class="flexly-tab" style="display:none;">
-                
-            <div class="flexly-tab-content-border"></div>
+
+                <div class="flexly-tab-content-border"></div>
                 <div class="flexly-tab-header">
                     <div class="flexly-tab-title"></div>
                     <div class="flexly-icon flexly-icon-close-black flexly-tab-close"></div>
@@ -552,7 +552,7 @@
                     </div>
                     <div class="flexly-menu-page-title"></div>
                     <div class="flexly-menu-page-controls" style="display:none;">
-                        <div class="flexly-icon flexly-icon-close-black" style="display:inline-block;"></div>
+                        <div class="flexly-icon flexly-icon-close-black flexly-delete-page" style="display:inline-block;"></div>
                         <div class="flexly-icon flexly-icon-gear-black" style="display:inline-block;"></div>
                         <div class="flexly-icon flexly-icon-arrow-e-black flexly-goto-page" style="display:inline-block;"></div>
                     </div>
