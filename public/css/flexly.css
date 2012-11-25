@@ -75,6 +75,10 @@
     position:relative;
 }
 
+.flexly-tab-footer {
+    margin-top: 9px;
+}
+
 .flexly-tab-content-border {
     position:absolute;
     top:59px;

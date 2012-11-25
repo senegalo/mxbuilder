@@ -34,18 +34,13 @@
         }
         
         mxBuilder.menuManager.menus.pages = {
-            __contentTab: null,
-            init: function init(contentTab){
+            init: function init(){
+                mxBuilder.menuManager.tabTitle.text("Pages");
+                
                 var pages = mxBuilder.pages.getOrderedPages();
                 var rendered = {};
                 var theChildLists = $();
                 var theList = listTemplate.clone();
-                
-                if(contentTab){
-                    this.__contentTab = contentTab;
-                } else {
-                    contentTab = this.__contentTab;
-                }
                 
                 for(var p in pages){
                     if(typeof rendered[pages[p].id] == "undefined"){
@@ -76,9 +71,7 @@
                         pageObj.order = iterator++;
                         pageObj.parent = parentUl.hasClass("flexly-menu-pages-list-child") ? parentUl.parents("li:first").data("pageID") : "root";
                     });
-                    mxBuilder.menuManager.menus.pages.__contentTab.empty();
-                    mxBuilder.menuManager.menus.pages.init();
-                    mxBuilder.menuManager.revalidate();
+                    mxBuilder.menuManager.showTab("pages");
                 };
                 
                 theList.sortable({
@@ -99,7 +92,19 @@
                 
                 
                 delete rendered;
-                contentTab.append(theList);
+                mxBuilder.menuManager.contentTab.append(theList);
+                
+                //add the add page button to the footer
+                $('<button>Add Page</button>').button({
+                    icons: {
+                        primary: "ui-icon-circle-plus"
+                    }
+                }).on({
+                    click: function(){
+                        mxBuilder.menuManager.showTab("pagesAddEdit");
+                    }
+                }).appendTo(mxBuilder.menuManager.tabFooter);
+                
             },
             createPageElement: function createPageElement(page,noChildListFlag){
                 var element = listElementTemplate.clone()
@@ -114,6 +119,12 @@
                     }
                 })
                 .end()
+                .find(".flexly-edit-page").on({
+                    click: function(){
+                        mxBuilder.menuManager.showTab("pagesAddEdit",page);
+                    }
+                })
+                .end()
                 .find(".flexly-delete-page").on({
                     click: function(){
                         if(mxBuilder.pages.getPageCount() < 2){
@@ -123,10 +134,8 @@
                                 msg: "Are you sure you want to delete this page !?",
                                 title: "Delete Page",
                                 callback: function callback(){
-                                    mxBuilder.pages.deletePage();
-                                    mxBuilder.menuManager.menus.pages.__contentTab.empty();
-                                    mxBuilder.menuManager.menus.pages.init();
-                                    mxBuilder.menuManager.revalidate();
+                                    mxBuilder.pages.deletePage(page.id);
+                                    mxBuilder.menuManager.showTab("pages");
                                 }
                             });
                         }

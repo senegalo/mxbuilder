@@ -9,96 +9,14 @@
         <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css" />
         <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.css" type="text/css" />
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
 
 
         <title>Builder</title>
-
-        <style>
-            html {
-                font-size: 12px;
-                overflow-x: auto;
-                font-family:Arial,Verdana,Sans-serif;
-                overflow-y: scroll;
-            }
-            .mx-component, .mx-component .content {
-                outline: 0px solid transparent;
-            }
-            .ui-selected,.ui-selected:focus {
-                outline: 1px dashed #444 !important;
-            }
-
-            #selection-container{
-                outline: 1px solid orange;
-                cursor: move !important;
-            }
-
-            .component-resizable-handle {
-                display:none;
-            }
-            .ui-resizable-handle {
-                background-color: #333;
-                outline: 1px solid white;
-            }
-
-            .ui-resizable-handle-resizing, .ui-resizable-handle:hover {
-                background-color: grey;
-            }
-
-            .component-menu-buttons {
-                position: absolute;
-                top: -20px;
-            }
-
-            .ui-resizable-n { cursor: n-resize; height: 7px; width: 7px; top: -6px; left: 50%; margin-left: -3px; }
-            .ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; margin-left: -3px; }
-            .ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 50%; height: 7px; margin-top: -3px }
-            .ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 50%; height: 7px; margin-top: -3px}
-            .ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: -6px; bottom: -6px; }
-            .ui-resizable-sw { cursor: sw-resize; width: 7px; height: 7px; left: -6px; bottom: -6px; }
-            .ui-resizable-nw { cursor: nw-resize; width: 7px; height: 7px; left: -6px; top: -6px; }
-            .ui-resizable-ne { cursor: ne-resize; width: 7px; height: 7px; right: -6px; top: -6px;}
-
-            .ui-selectable-helper {z-index: 10000009; }
-            .ui-state-disabled {opacity: 1; filter:Alpha(Opacity=100);}
-
-            .menu-item {
-                margin:6px;
-                display-type: inline-block;
-            }
-
-            .cke {
-                z-index: 10000000;
-            }
-            .cke_dialog_background_cover { 
-                display:none !important;
-            }
-
-            #header,#body,#footer {
-                /*outline: 1px dashed #00dbff;*/
-            }
-
-            #container {
-                width:980px;
-                height: 100%;
-                position:absolute;
-                top:0;
-                left:50%;
-                margin-left: -490px;
-            }
-
-            .cke_button__linkextra_icon {
-                background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -351px !important;
-            }
-
-            .cke_button__unlinkextra_icon {
-                background: url('<?php print base_url('/public/js-libs/ckeditor/skins/moono/icons.png'); ?>') 0 -287px !important;
-            }
-
-        </style>
         <!-- Loading Libs -->
         <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
-        <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.0.custom.min.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.2.custom.min.js"></script>
         <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;
@@ -146,7 +64,11 @@
         <script type="text/javascript" src="public/js/api.js"></script>
         <script type="text/javascript" src="public/js/layout-background.js"></script>
         <script type="text/javascript" src="public/js/menu-manager.js"></script>
+
+        <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
+
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -163,7 +85,7 @@
         <script type="text/javascript" src="public/js/dialogs/components-border.js"></script>
         <script type="text/javascript" src="public/js/dialogs/components-background.js"></script>
         <script type="text/javascript" src="public/js/dialogs/image-component-settings.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/pages-add-edit-dialog.js"></script>
+        <!--<script type="text/javascript" src="public/js/dialogs/pages-add-edit-dialog.js"></script>-->
         <script type="text/javascript" src="public/js/dialogs/alert-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/progress-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/asset-properties-dialog.js"></script>
@@ -247,67 +169,8 @@
                     <div class="flexly-icon flexly-icon-close-black flexly-tab-close"></div>
                     <div style="clear:both;"></div>
                 </div>
-                <div class="flexly-tab-content" style="text-align: justify;">
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdf jlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd f lkajsd flkjas dflkjas dlkfj salkdf jlaskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flkajsd flkjas dflkjas dlk df jlaskdj flkasjd f</p>
-                    <p>als dkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flka jsd flkjas dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flk ajsd flkjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj  salkdfjlaskdj flkasjd f</p>
-                    <p>alsdk fj lkasjd flkaj s d flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasj d flkajsd flkja  s dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>als dkfj lkasjd  flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj sal  kdfj laskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flkajsd flk jas dflkjas dlkfj salkdfjlaskdj f lkasjd f</p>
-                    <p>alsdkf j lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd f lkjas dflkjas dlkfj salk dfjlaskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flk ajsd flkjas  as dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj  lka sjd flkajsd flkjas  dflkjas dlkfj sa lkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd  f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj  lka sjd  flkajsd flkjas dflkjas dl kfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj l kasjd flka  jsd flkja dflkjas dlkfj salkdfj kdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd fl kajs d flkjas dflkjas dlkfj salkd  fjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dl fj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dl kfj  salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas  dflk j as dlkfj sa lkdfjlaskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flkajsd  flkjas dflkj as dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj  lkasjd flkajsd    flkjas dflkjas dlkfj salkdfjlask dj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkd  fjlaskdj flka sjd f</p>
-                    <p>alsdkfj lkasjd flkajs d f lk as dflkjas dlkfj sal kdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj l kasjd flkajsd  flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lka sjd flkajsd  flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsd kfj lkas  jd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flkajsd flkjas d  flkjas dlkfj sa lkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkas jd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasj d flkajsd fl kjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkf j lkasj d flkajsd fl kjas dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
-                    <p>alsdkfj lka sjd f lkajsd flkjas dfl k ja s dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkaj sd flkjas dfl kjas dlkfj  salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasj d flkajsd  flkj as dflkjas dlkfj salkd fjlaskdj flkasjd f</p>
-                    <p>alsdk fj  lkasjd flkajsd flk jas dflkjas dlkfj salkdfjl  askdj flkasjd f</p>
-                    <p>alsdkfj lkasj d flkajs d flkjas dfl jas dlkfj salkdfjl askdj flkasjd f</p>
-                    <p>als dkfj lkasjd flkajsd flkjas dflkj as dlkfj sa lkd fjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd  flkajsd fl kjas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
-                    <p>alsdkfj lkas jd flkajsd flk jas dflkjas dlkfj salkdfj laskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd f  lkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsd kfj lkasjd flkajsd flkjas df kjas dlkfj sa lkdfjla kdj flkasjd f</p>
-                    <p>alsdkfj lk  sjd flkajs d flkjas dflkja s dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas df lkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasjd flkajsd flkjas dflkjas d l fj salkdfjlaskdj flkasjd f</p>
-                    <p>al sdkfj lkasjd flkajsd flkjas dflkjas d kfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lkasj d flkaj sd fl  jas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj lka sjd flkaj sd   flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj  lkasjd flkajsd fl kjas dflkjas dlkfj  salkdfjlaskdj flkasjd f</p>
-                    <p>alsdkfj  lkas jd flk s d flkjas dflkjas dlkfj salkdfjlaskdj flkasjd f</p>
-                </div>
+                <div class="flexly-tab-content" style="text-align: justify;"></div>
+                <div class="flexly-tab-footer"></div>
             </div>
             <div style="clear:both;"></div>
         </div>
@@ -477,45 +340,41 @@
                 </div>
             </div>
 
-            <div class="pages-add-edit-dialog">
-                <div>
-                    <label for="page-title">Title:</label>
-                    <input type="text" id="page-title"/>
-                </div>
-                <div>
-                    <label for="page-html-title">HTML Title:</label>
-                    <input type="text" id="page-html-title"/>
-                </div>
-                <div>
-                    <label for="page-parent">Parent Page: </label>
-                    <select id="page-parent">
+            <div class="pages-add-edit-tab">
+                <ul class="form menu-form">
+                    <li>
+                        <label for="page-title">Page Title</label>
+                        <input type="text" id="page-title"/>
+                    </li>
+                    <li>
+                        <label for="page-html-title">Title bar Text</label>
+                        <input type="text" id="page-html-title"/>
+                    </li>
+                    <li>
+                        <label for="page-address">Page Address Name</label>
+                        <input type="text" id="page-address"/>
+                    </li>
+                    <li>
+                        <label for="page-desc">Page Description</label>
+                        <textarea cols="20" rows="4" id="page-desc" style="width:244px;height:96px"></textarea>
+                    </li>
+                    <li>
+                        <label for="page-keywords">Page Keywords</label>
+                        <input type="text" id="page-keywords"/>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="page-show-in-menu" checked="checked"/>
+                        <label for="page-show-in-menu" class="checkbox-label">Show in menu</label>
+                    </li>
+                    <li class="page-as-homepage">
+                        <input type="checkbox" id="page-as-homepage" checked="checked"/>
+                        <label for="page-as-homepage" class="checkbox-label">Set as homepage</label>
+                    </li>
+                    <li class="page-is-homepage" style="margin:6px 0 6px 0;">
+                        <i>Current homepage</i>
+                    </li>
+                </ul>
 
-                    </select>
-                </div>
-                <div>
-                    <label for="page-show-in-menu">Show in menu:</label>
-                    <input type="checkbox" id="page-show-in-menu" checked="checked"/>
-                </div>
-                <div class="page-as-homepage">
-                    <label for="page-as-homepage">Set as homepage:</label>
-                    <input type="checkbox" id="page-as-homepage" checked="checked"/>
-                </div>
-
-                <div class="page-is-homepage" style="margin:6px 0 6px 0;">
-                    <i>Current homepage</i>
-                </div>
-                <div>
-                    <label for="page-address">Address:</label>
-                    <input type="text" id="page-address"/>.html
-                </div>
-                <div>
-                    <label for="page-desc">Description</label>
-                    <input type="text" id="page-desc"/>
-                </div>
-                <div>
-                    <label for="page-keywords">Keywords</label>
-                    <input type="text" id="page-keywords"/>
-                </div>
             </div>
             <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
             <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
@@ -553,7 +412,7 @@
                     <div class="flexly-menu-page-title"></div>
                     <div class="flexly-menu-page-controls" style="display:none;">
                         <div class="flexly-icon flexly-icon-close-black flexly-delete-page" style="display:inline-block;"></div>
-                        <div class="flexly-icon flexly-icon-gear-black" style="display:inline-block;"></div>
+                        <div class="flexly-icon flexly-icon-gear-black flexly-edit-page" style="display:inline-block;"></div>
                         <div class="flexly-icon flexly-icon-arrow-e-black flexly-goto-page" style="display:inline-block;"></div>
                     </div>
                     <div style="clear:both;"></div>

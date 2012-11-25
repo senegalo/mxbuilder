@@ -19,6 +19,7 @@
                 }
                 properties.showInMenu = typeof properties.showInMenu == "undefined" ? true : properties.showInMenu;
                 properties.parent = typeof properties.parent == "undefined" ? "root" : properties.parent;
+                properties.order = typeof properties.order == "undefined" ? this.getPageCount() : properties.order;
                 
                 var pageAddress = properties.address;
                 delete properties.address;

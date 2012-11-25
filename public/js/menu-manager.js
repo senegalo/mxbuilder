@@ -2,21 +2,19 @@
     $(function(){
         var theMenuContainer = $(".flexly-main-bar");
         var theMenuTab = theMenuContainer.find(".flexly-tab");
+        var theMenuTabFooter = theMenuContainer.find(".flexly-tab-footer");
         
         //Creating the transparent border
         //theMenuTab.append('<div class="flexly-tab-content-border"/>');
         var theContentTab = theMenuTab.find(".flexly-tab-content").mCustomScrollbar();
         
-//        .find(".mCSB_container")
-//        .wrap('<div class="super-mCSB-container"/>').end();
+        //        .find(".mCSB_container")
+        //        .wrap('<div class="super-mCSB-container"/>').end();
         
         
         theMenuContainer.find(".flexly-button").on({
             click: function click(){
-                mxBuilder.menuManager.showTab({
-                    title: "Pages",
-                    tabID: "pages"
-                });
+                mxBuilder.menuManager.showTab("pages");
             }
         });
         
@@ -29,17 +27,28 @@
         })
         
         mxBuilder.menuManager = {
+            contentTab: theContentTab.find(".mCSB_container"),
+            menuTab: theMenuTab,
+            tabTitle: theMenuTab.find(".flexly-tab-title"),
+            tabFooter: theMenuTabFooter,
             menus: {},
-            showTab: function showTab(settings){
-                theMenuTab.find(".flexly-tab-title").text(settings.title);
-                theMenuContainer.animate({
-                    width: 380
-                },300,"linear",function(){
-                    theMenuTab.fadeIn(300);
-                    var theScrollpan = theContentTab.find(".mCSB_container").empty();
-                    mxBuilder.menuManager.menus[settings.tabID].init(theScrollpan);
-                    mxBuilder.menuManager.revalidate();
-                });
+            showTab: function showTab(tabID,extraData){
+                if(theMenuContainer.width() < 70){
+                    theMenuContainer.animate({
+                        width: 380
+                    },300,"linear",function(){
+                        theMenuTab.fadeIn(300);
+                        mxBuilder.menuManager.displayTabContent(tabID,extraData);
+                    });
+                } else {
+                    mxBuilder.menuManager.displayTabContent(tabID,extraData);
+                }
+            },
+            displayTabContent: function displayTabContent(tabID,extraData){
+                this.contentTab.empty();
+                this.tabFooter.empty();
+                this.menus[tabID].init(extraData);
+                this.revalidate();
             },
             closeTab: function closeTab(){
                 theMenuTab.fadeOut(300,function(){
@@ -49,7 +58,7 @@
                 });
             },
             revalidate: function revalidate(){
-                    theContentTab.mCustomScrollbar("update");
+                theContentTab.mCustomScrollbar("update");
             }
         }
         

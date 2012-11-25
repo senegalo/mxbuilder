@@ -1,0 +1,122 @@
+/* 
+    Document   : main.css
+    Created on : Nov 25, 2012, 2:52:53 PM
+    Author     : senegalo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+html {
+    font-size: 12px;
+    overflow-x: auto;
+    font-family:Arial,Verdana,Sans-serif;
+    overflow-y: scroll;
+}
+.mx-component, .mx-component .content {
+    outline: 0px solid transparent;
+}
+.ui-selected,.ui-selected:focus {
+    outline: 1px dashed #444 !important;
+}
+
+#selection-container{
+    outline: 1px solid orange;
+    cursor: move !important;
+}
+
+.component-resizable-handle {
+    display:none;
+}
+.ui-resizable-handle {
+    background-color: #333;
+    outline: 1px solid white;
+}
+
+.ui-resizable-handle-resizing, .ui-resizable-handle:hover {
+    background-color: grey;
+}
+
+.component-menu-buttons {
+    position: absolute;
+    top: -20px;
+}
+
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 7px; top: -6px; left: 50%; margin-left: -3px; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; margin-left: -3px; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 50%; height: 7px; margin-top: -3px }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 50%; height: 7px; margin-top: -3px}
+.ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: -6px; bottom: -6px; }
+.ui-resizable-sw { cursor: sw-resize; width: 7px; height: 7px; left: -6px; bottom: -6px; }
+.ui-resizable-nw { cursor: nw-resize; width: 7px; height: 7px; left: -6px; top: -6px; }
+.ui-resizable-ne { cursor: ne-resize; width: 7px; height: 7px; right: -6px; top: -6px;}
+
+.ui-selectable-helper {z-index: 10000009; }
+.ui-state-disabled {opacity: 1; filter:Alpha(Opacity=100);}
+
+.menu-item {
+    margin:6px;
+    display: inline-block;
+}
+
+.cke {
+    z-index: 10000000;
+}
+.cke_dialog_background_cover { 
+    display:none !important;
+}
+
+#header,#body,#footer {
+    /*outline: 1px dashed #00dbff;*/
+}
+
+#container {
+    width:980px;
+    height: 100%;
+    position:absolute;
+    top:0;
+    left:50%;
+    margin-left: -490px;
+}
+
+.cke_button__linkextra_icon {
+    background: url('../js-libs/ckeditor/skins/moono/icons.png') 0 -351px !important;
+}
+
+.cke_button__unlinkextra_icon {
+    background: url('../js-libs/ckeditor/skins/moono/icons.png') 0 -287px !important;
+}
+
+ul.form li{
+   padding: 8px;
+}
+
+ul.form label {
+    display:block;
+    color: #f2f2f2;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+ul.form input {
+    border:solid #a39c96;
+    border-width: 0 0 1px 0;
+    outline: 0px;
+    background-color: rgba(242,242,242,0.1);
+}
+
+ul.form textarea {
+    border:1px solid #a39c96;
+    outline: 0px;
+    background-color: rgba(242,242,242,0.1);
+}
+
+ul.form label.checkbox-label {
+    position:relative;
+    top:-3px;
+    display:inline-block;
+}
+
+.menu-form input:not([type="checkbox"]), .menu-form textarea {
+    width: 250px;
+    color: #a39c96;
+}
