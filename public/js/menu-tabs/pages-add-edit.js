@@ -6,28 +6,13 @@
             __cachedTitle: null,
             __pageID: null,
             init: function init(data){
-                
+                mxBuilder.menuManager.tabButtons.hide();
+                mxBuilder.menuManager.tabFooterWrapper.height(66).show();
                 mxBuilder.menuManager.tabTitle.text(data?"Edit Pages":"Add Page");
                 
                 this.__theForm = template.clone();
                 
-                $("<button>Cancel</button>").button({
-                    icons: {
-                        primary: "ui-icon-circle-close"
-                    }
-                })
-                .on({
-                    click: function(){
-                        mxBuilder.menuManager.showTab("pages");
-                    }
-                }).appendTo(mxBuilder.menuManager.tabFooter);
-                
-                $("<button>Save</button>").button({
-                    icons: {
-                        primary: "ui-icon-circle-check"
-                    }
-                })
-                .on({
+                $('<div class="flexly-icon flexly-icon-save-button" style="position:absolute;top:5px;right:20px;"/>').on({
                     click: function(){
                         var namespace = mxBuilder.menuManager.menus.pagesAddEdit;
                         var data = namespace.validateData();
@@ -42,6 +27,14 @@
                         }
                     }
                 }).appendTo(mxBuilder.menuManager.tabFooter);
+                
+                $('<div class="flexly-icon flexly-icon-cancel-button" style="position:absolute;top: 11px;right: 55px;opacity:0.5"/>').on({
+                    click: function(){
+                        mxBuilder.menuManager.showTab("pages");
+                    }
+                }).appendTo(mxBuilder.menuManager.tabFooter);
+                
+                
                 
                 this.__theForm.find("#page-title").on({
                     input: function input(){
@@ -72,7 +65,9 @@
                     change: function(){
                         mxBuilder.menuManager.menus.pagesAddEdit.setHomepage($(this).is(":checked"));
                     }
-                });
+                })
+                .end()
+                .find('input[type="checkbox"]').checkbox();
                 
                 if(data){
                     this.__pageID = data.id;
@@ -104,7 +99,7 @@
                 }
                 if(data.homepage){
                     this.__theForm.find("#page-as-homepage")
-                    .attr("checked","checked")
+                    .attr("checked","checked").checkbox("update")
                     .end()
                     .find(".page-as-homepage").hide()
                     .end()
@@ -116,7 +111,7 @@
                     .end()
                     .find(".page-is-homepage").hide()
                     .end()
-                    .find("#page-as-homepage").removeAttr("checked");
+                    .find("#page-as-homepage").removeAttr("checked").checkbox("update");
                     
                     this.setHomepage(false,data.address);
                 }

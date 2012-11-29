@@ -95,15 +95,11 @@
                 mxBuilder.menuManager.contentTab.append(theList);
                 
                 //add the add page button to the footer
-                $('<button>Add Page</button>').button({
-                    icons: {
-                        primary: "ui-icon-circle-plus"
-                    }
-                }).on({
+                $('<div class="flexly-icon-add-page flexly-icon"/>').on({
                     click: function(){
                         mxBuilder.menuManager.showTab("pagesAddEdit");
                     }
-                }).appendTo(mxBuilder.menuManager.tabFooter);
+                }).appendTo(mxBuilder.menuManager.tabButtonsMain);
                 
             },
             createPageElement: function createPageElement(page,noChildListFlag){

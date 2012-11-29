@@ -25,6 +25,7 @@
         <script type="text/javascript" src="public/js-libs/jsdiff.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.js"></script>
+        <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -48,10 +49,6 @@
                 filters : [{
                         title : "Image files", 
                         extensions : "jpg,jpeg,gif,png"
-                    },
-                    {
-                        title : "Document files", 
-                        extensions : "doc,docx,txt,pdf"
                     }]
             };
         </script>
@@ -68,6 +65,7 @@
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
 
 
         <!--Loading Components-->
@@ -130,8 +128,8 @@
                     <div class="flexly-icon flexly-icon-photos flexly-button flexly-active-icon">
                     </div>
 
-                    <div class="flexly-icon flexly-icon-clipart flexly-button flexly-active-icon">
-                    </div>   
+                    <!--                    <div class="flexly-icon flexly-icon-clipart flexly-button flexly-active-icon">
+                                        </div>   -->
 
                     <div class="flexly-icon flexly-icon-docs flexly-button flexly-active-icon">
                     </div>       
@@ -169,8 +167,20 @@
                     <div class="flexly-icon flexly-icon-close-black flexly-tab-close"></div>
                     <div style="clear:both;"></div>
                 </div>
-                <div class="flexly-tab-content" style="text-align: justify;"></div>
-                <div class="flexly-tab-footer"></div>
+                <div class="flexly-tab-container">
+                    <div class="flexly-tab-buttons">
+                        <div class="flexly-tab-buttons-aux"></div>
+                        <div class="flexly-tab-buttons-main">
+
+                        </div>
+                        <div style="clear:both;"></div>
+                    </div>
+                    <div class="flexly-tab-content" style="text-align: justify;"></div>
+                </div>
+                <div class="flexly-tab-footer">
+                    <hr/>
+                    <div class="flexly-tab-footer-container"></div>
+                </div>
             </div>
             <div style="clear:both;"></div>
         </div>
@@ -418,6 +428,32 @@
                     <div style="clear:both;"></div>
                 </li>
             </ul>
+
+            <div class="flexly-menu-photos">
+                <div class="left-column">
+                    <ul class="flexly-menu-photos-list">
+                        <li>
+                            <div class="asset-image mx-helper">
+
+                            </div>
+                            <div>
+                                <div style="float:left;" class="asset-name"></div>
+                                <div style="float:right;" class="asset-controls">
+                                    <div style="display:inline-block" class="flexly-icon flexly-icon-gear-small-dark"></div>
+                                    <div style="display:inline-block" class="flexly-icon flexly-icon-trash-small-dark"></div>
+                                </div>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="right-column">
+                    <ul class="flexly-menu-photos-list">
+
+                    </ul>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
         </div>
 
     </body>

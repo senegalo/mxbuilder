@@ -508,7 +508,7 @@
                     }
                 }
             },
-            keydown: function(event){
+            keydown: function keydown(event){
                 if(event.keyCode >= 37 && event.keyCode <=40){
                     var selectionCount = mxBuilder.selection.getSelectionCount();
                     if(selectionCount == 1){

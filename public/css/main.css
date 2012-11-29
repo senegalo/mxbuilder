@@ -12,6 +12,12 @@ html {
     font-family:Arial,Verdana,Sans-serif;
     overflow-y: scroll;
 }
+
+hr {
+    margin: 0;
+    padding: 0;
+}
+
 .mx-component, .mx-component .content {
     outline: 0px solid transparent;
 }
@@ -85,6 +91,12 @@ html {
 .cke_button__unlinkextra_icon {
     background: url('../js-libs/ckeditor/skins/moono/icons.png') 0 -287px !important;
 }
+ul.form {
+    background-color: rgba(204,204,204,0.9);
+    margin: 0 1px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
 
 ul.form li{
    padding: 8px;
@@ -92,22 +104,25 @@ ul.form li{
 
 ul.form label {
     display:block;
-    color: #f2f2f2;
+    color: #4a4a4a;
     font-weight: bold;
-    margin-bottom: 2px;
+    margin-bottom: 9px;
 }
 
 ul.form input {
-    border:solid #a39c96;
-    border-width: 0 0 1px 0;
+    border-radius: 6px;
+    border-width: 0;
+    /*padding: 0 5px 0 5px;*/
+    height: 33px;
     outline: 0px;
-    background-color: rgba(242,242,242,0.1);
+    background-color: #e6e6e6;
 }
 
 ul.form textarea {
-    border:1px solid #a39c96;
+    border-radius: 6px;
+    border-width: 0px;
     outline: 0px;
-    background-color: rgba(242,242,242,0.1);
+    background-color: #e6e6e6;
 }
 
 ul.form label.checkbox-label {
@@ -119,4 +134,33 @@ ul.form label.checkbox-label {
 .menu-form input:not([type="checkbox"]), .menu-form textarea {
     width: 250px;
     color: #a39c96;
+}
+
+
+ul.flexly-menu-photos-list li {
+    width: 117px;
+    border-radius: 6px;
+    margin-bottom: 1px;
+    background-color: #babcb9;
+    padding: 10px;
+}
+
+.flexly-menu-photos .left-column li {
+    width: 118px;
+}
+
+.flexly-menu-photos {
+    position: relative;
+}
+
+.flexly-menu-photos .left-column {
+    width: 138px;
+    float:left;
+    margin: 1px;
+}
+
+.flexly-menu-photos .right-column {
+    width: 137px;
+    float:left;
+    margin: 1px 1px 1px 0px;
 }
