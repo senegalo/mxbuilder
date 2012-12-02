@@ -96,7 +96,6 @@
                 theContentTab.height(theMenuContainerHeight-63-totalHeight);
                 
                 //updating scroll postions
-                console.log(this.contentTab.height());
                 theContentTab.mCustomScrollbar("update");
             },
             addButtonTo: function addButtonTo(button,where,css){

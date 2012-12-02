@@ -38,8 +38,6 @@
             
             instance = $(instance).addClass("ui-selected");
             
-            console.log(instance.data("GUID"), instance.css("zIndex"));
-            
             //incrementing selection count
             this.__selectionCount++;
             

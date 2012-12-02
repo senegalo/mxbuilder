@@ -71,6 +71,7 @@
     height: 450px;
     width: 298px;
     border-radius: 6px;
+    margin-top: 1px;
     overflow: auto;
     position:relative;
 }

@@ -439,7 +439,7 @@
                                 <div style="float:left;" class="asset-name"></div>
                                 <div style="float:right;" class="asset-controls">
                                     <div style="display:inline-block" class="flexly-icon flexly-icon-gear-small-dark"></div>
-                                    <div style="display:inline-block" class="flexly-icon flexly-icon-trash-small-dark"></div>
+                                    <div style="display:inline-block" class="flexly-icon flexly-icon-trash-small-dark photo-delete"></div>
                                 </div>
                                 <div style="clear:both;"></div>
                             </div>

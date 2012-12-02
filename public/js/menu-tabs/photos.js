@@ -56,7 +56,39 @@
                 .find(".asset-name")
                 .text(obj.name.reduceString(10))
                 .attr("title",obj.name)
-                .end();
+                .end()
+                .find(".photo-delete")
+                .on({
+                    click: function click(){
+                        var theLi = $(this).parents("li:first");
+                        mxBuilder.dialogs.deleteDialog({
+                            msg: "Are you sure you want to delete the selected image ? <br/>If it's used anywhere it will be automatically removed",
+                            callback: function callback(){
+                                mxBuilder.api.assets.remove({
+                                    assetID: theLi.data("assetid"),
+                                    success: function(){     
+                                        mxBuilder.assets.remove(theLi.data("assetid"));
+                                        theLi.css({
+                                            height: theLi.outerHeight(),
+                                            width: theLi.outerWidth(),
+                                            padding: 0
+                                        })
+                                        .contents()
+                                        .remove()
+                                        .end().animate({
+                                            height: 0
+                                        },300,"linear",function(){
+                                            $(this).remove()
+                                        });
+                                        mxBuilder.menuManager.revalidate();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+                .end()
+                .data("assetid",obj.id);
                 
                 var theSelCol = leftColumn.height() > rightColumn.height() ? rightColumn:leftColumn;
                 if(prependFlag){
@@ -119,7 +151,7 @@
                         uploaderNotification.hide();
                     }
                     if(response.success){
-                        mxBuilder.assets.add(response);
+                        mxBuilder.assets.add(response,true);
                         mxBuilder.menuManager.menus.photos.addItem(response,true);
                         mxBuilder.menuManager.revalidate();
                     } else {

@@ -156,13 +156,13 @@ ul.flexly-menu-photos-list li {
 .flexly-menu-photos .left-column {
     width: 138px;
     float:left;
-    margin: 1px;
+    margin: 0px 1px 1px 1px;
 }
 
 .flexly-menu-photos .right-column {
     width: 137px;
     float:left;
-    margin: 1px 1px 1px 0px;
+    margin: 0px 1px 1px 0px;
 }
 
 .photo-upload-notification {

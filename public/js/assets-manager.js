@@ -2,8 +2,12 @@
     mxBuilder.assets = {
         __assets: {},
         __assetsOrdered: [],
-        add: function(obj){       
-            this.__assetsOrdered.push(obj);
+        add: function(obj,prependFlag){
+            if(prependFlag){
+                this.__assetsOrdered.splice(0,0,obj);
+            } else {
+                this.__assetsOrdered.push(obj);
+            }
             this.__assets[obj.id] = obj;
         },
         get: function(id){
@@ -31,9 +35,22 @@
                 //remove from other pages
                 mxBuilder.pages.removeImgComponentFromPages(id);
             }
-            var theIndex = this.__assetsOrdered.indexOf(id);
-            if(theIndex !== -1){
-                this.__assetsOrdered.splice(theIndex,1);
+            
+            //binnary search: search for the asset in the ordered array and removing it
+            //high and low are reversed as the list is ordered decendingly !
+            var low = 0;
+            var high = this.__assetsOrdered.length - 1;
+            var currentIndex;
+            while(low <= high){
+                currentIndex = Math.floor((low+high)/2);
+                if(id == this.__assetsOrdered[currentIndex].id){
+                    this.__assetsOrdered.splice(currentIndex,1);
+                    break;
+                } else if (id < this.__assetsOrdered[currentIndex].id){
+                    low = currentIndex + 1;
+                } else {
+                    high = currentIndex - 1;
+                }
             }
             delete this.__assets[id];
         }
