@@ -94,7 +94,7 @@
                 delete rendered;
                 mxBuilder.menuManager.contentTab.append(theList);
                 
-                //add the add page button to the footer
+                //add the add page button to the header button
                 $('<div class="flexly-icon-add-page flexly-icon"/>').on({
                     click: function(){
                         mxBuilder.menuManager.showTab("pagesAddEdit");

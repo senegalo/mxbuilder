@@ -9,7 +9,7 @@
             __theList: null,
             init: function init(){
                 var photos = this;
-                mxBuilder.menuManager.tabFooter.hide();
+                mxBuilder.menuManager.hideFooter();
                 mxBuilder.menuManager.tabTitle.text("Photos");
                 
                 //adding the buttons

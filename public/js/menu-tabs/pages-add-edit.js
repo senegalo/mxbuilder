@@ -6,7 +6,7 @@
             __cachedTitle: null,
             __pageID: null,
             init: function init(data){
-                mxBuilder.menuManager.tabButtons.hide();
+                mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
                 mxBuilder.menuManager.tabTitle.text(data?"Edit Pages":"Add Page");
                 

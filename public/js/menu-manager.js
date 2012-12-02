@@ -63,6 +63,12 @@
                 this.menus[tabID].init(extraData);
                 this.revalidate();
             },
+            hideFooter: function hideFooter(){
+                this.tabFooterWrapper.hide();
+            },
+            hideTabButtons: function hideTabButtons(){
+                this.tabButtons.hide();
+            },
             closeTab: function closeTab(){
                 theMenuTab.fadeOut(300,function(){
                     theMenuContainer.animate({
