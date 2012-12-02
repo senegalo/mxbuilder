@@ -40,8 +40,7 @@
         <script type="text/javascript">
             mxBuilder.uploaderSettings = {
                 runtimes : 'gears,html5,flash,silverlight,browserplus',
-                browse_button : 'assets-select-files',
-                container : 'assets-upload-container',
+                browse_button : 'photos-select-files',
                 max_file_size : '<?php print $upload_mb; ?>mb',
                 url : mxBuilder.config.baseURL+'/assets/upload',
                 flash_swf_url : 'js-libs/plupload/plupload.flash.swf',
@@ -454,6 +453,14 @@
                 </div>
                 <div style="clear:both;"></div>
             </div>
+
+            <div class="photo-upload-notification">
+                <div class="progress"></div>
+                <div class="info"></div>
+            </div>
+            
+            <button id="photos-select-files" style="display:none;"></button>
+            
         </div>
 
     </body>

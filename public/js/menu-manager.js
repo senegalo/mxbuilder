@@ -99,7 +99,7 @@
                 console.log(this.contentTab.height());
                 theContentTab.mCustomScrollbar("update");
             },
-            addButtonTo: function(button,where,css){
+            addButtonTo: function addButtonTo(button,where,css){
                 where = where == "main" ? mxBuilder.menuManager.tabButtonsMain : mxBuilder.menuManager.tabButtonsAux;
                 return $('<div class="'+button+' flexly-icon"/>').appendTo(where);
             }

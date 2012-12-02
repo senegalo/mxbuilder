@@ -101,7 +101,7 @@ class Assets_Model extends CI_Model {
             "full" => array(900, 675),
             "medium" => array(500, 375),
             "small" => array(300, 225),
-            "thumb" => array(100, 75)
+            "thumb" => array(114, 85)
         );
 
         $work_with = $out['ratio'] > 1 ? 0 : 1;
