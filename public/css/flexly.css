@@ -30,6 +30,7 @@
 
 .flexly-icon {
     background: transparent url('../images/icons.png') no-repeat;
+    cursor: pointer;
 }
 
 .flexly-logo {

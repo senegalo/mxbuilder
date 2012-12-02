@@ -51,10 +51,11 @@
                         ui.helper.remove();
                     }
                 })
-                .append('<img src="'+obj.location+"/"+obj.thumb+'" style="width:114px;height:'+(114/obj.ratio)+'px;"/>')
+                .append('<img src="'+obj.location+"/"+obj.thumb+'" style="width:114px;height:'+(114/obj.ratio)+'px;" title="'+obj.name+'"/>')
                 .end()
                 .find(".asset-name")
                 .text(obj.name.reduceString(10))
+                .attr("title",obj.name)
                 .end();
                 
                 var theSelCol = leftColumn.height() > rightColumn.height() ? rightColumn:leftColumn;
