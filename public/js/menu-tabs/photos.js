@@ -88,6 +88,13 @@
                     }
                 })
                 .end()
+                .find(".photo-properties")
+                .on({
+                    click: function click(){
+                        mxBuilder.menuManager.showTab("photoProperties",$(this).parents("li:first").data("assetid"));
+                    }
+                })
+                .end()
                 .data("assetid",obj.id);
                 
                 var theSelCol = leftColumn.height() > rightColumn.height() ? rightColumn:leftColumn;

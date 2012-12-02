@@ -12,7 +12,7 @@
                 
                 this.__theForm = template.clone();
                 
-                $('<div class="flexly-icon flexly-icon-save-button" style="position:absolute;top:5px;right:20px;"/>').on({
+                mxBuilder.menuManager.addFooterSaveButton().on({
                     click: function(){
                         var namespace = mxBuilder.menuManager.menus.pagesAddEdit;
                         var data = namespace.validateData();
@@ -28,7 +28,7 @@
                     }
                 }).appendTo(mxBuilder.menuManager.tabFooter);
                 
-                $('<div class="flexly-icon flexly-icon-cancel-button" style="position:absolute;top: 11px;right: 55px;opacity:0.5"/>').on({
+                mxBuilder.menuManager.addFooterCancelButton().on({
                     click: function(){
                         mxBuilder.menuManager.showTab("pages");
                     }

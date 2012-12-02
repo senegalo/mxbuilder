@@ -78,15 +78,16 @@
                    }
                 });
             },
-            changeImageDefaults: function changeImageDefaults(args){
+            updatePhotoProperties: function updatePhotoProperties(args){
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/assets/change_image_defaults",
+                    url: mxBuilder.config.baseURL+"/assets/update_photo_properties",
                     success: mxBuilder.api.__genericSuccess(args),
                     complete: args.complete,
                     data: {
                         "asset_id": args.assetID,
                         "caption": args.caption,
-                        "title": args.title
+                        "title": args.title,
+                        "name": args.name
                     }
                 });
             }

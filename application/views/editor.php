@@ -65,6 +65,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
 
 
         <!--Loading Components-->
@@ -427,7 +428,6 @@
                     <div style="clear:both;"></div>
                 </li>
             </ul>
-
             <div class="flexly-menu-photos">
                 <div class="left-column">
                     <ul class="flexly-menu-photos-list">
@@ -438,7 +438,7 @@
                             <div>
                                 <div style="float:left;" class="asset-name"></div>
                                 <div style="float:right;" class="asset-controls">
-                                    <div style="display:inline-block" class="flexly-icon flexly-icon-gear-small-dark"></div>
+                                    <div style="display:inline-block" class="flexly-icon flexly-icon-gear-small-dark photo-properties"></div>
                                     <div style="display:inline-block" class="flexly-icon flexly-icon-trash-small-dark photo-delete"></div>
                                 </div>
                                 <div style="clear:both;"></div>
@@ -458,9 +458,24 @@
                 <div class="progress"></div>
                 <div class="info"></div>
             </div>
-            
+
             <button id="photos-select-files" style="display:none;"></button>
-            
+
+            <ul class="photos-properties form" style="height:389px;">
+                <li>
+                    <label for="photo-name">Photo Name</label>
+                    <input type="text" id="photo-name" style="width:100%"/>
+                </li>
+                <li>
+                    <label for="photo-title">Title</label>
+                    <input type="text" id="photo-title"  style="width:100%"/>
+                </li>
+                <li>
+                    <label for="photo-caption">Caption</label>
+                    <textarea id="photo-caption" style="width:100%;height:100px;"></textarea>
+                </li>
+            </ul>
+
         </div>
 
     </body>

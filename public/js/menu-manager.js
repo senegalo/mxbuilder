@@ -107,6 +107,14 @@
             addButtonTo: function addButtonTo(button,where,css){
                 where = where == "main" ? mxBuilder.menuManager.tabButtonsMain : mxBuilder.menuManager.tabButtonsAux;
                 return $('<div class="'+button+' flexly-icon"/>').appendTo(where);
+            },
+            addFooterCancelButton : function addFooterCancelButton(){
+                return $('<div class="flexly-icon flexly-icon-cancel-button" style="position:absolute;top: 11px;right: 55px;opacity:0.5"/>')
+                .appendTo(this.tabFooter);
+            },
+            addFooterSaveButton: function addFooterSaveButton(){
+                return $('<div class="flexly-icon flexly-icon-save-button" style="position:absolute;top:5px;right:20px;"/>')
+                .appendTo(this.tabFooter);
             }
         }
         

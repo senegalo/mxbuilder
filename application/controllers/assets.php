@@ -72,28 +72,29 @@ class Assets extends MX_Controller {
         }
     }
 
+    public function update_photo_properties(){
+        $name = $this->input->post("name");
+        $caption = $this->input->post("caption");
+        $title = $this->input->post("title");
+        $asset_id = $this->input->post("asset_id");
+        
+        if ($name === false || $asset_id === false || $caption === false || $title === false) {
+            error(Constance::INVALID_PARAMETERS, "A required parameter is missing");
+        } else {
+            $this->load->model("assets_model");
+            $this->assets_model->update_photo_properties($this->user, $asset_id, array("caption"=>$caption,"title"=>$title,"name"=>$name));
+            success();
+        }
+    }
+    
     public function change_asset_name() {
         $new_name = $this->input->post("new_name");
         $asset_id = $this->input->post("asset_id");
-        if ($new_name === false || $asset_id === false) {
+        if ($new_name === false || $asset_id === false || $caption === false || $title === false) {
             error(Constance::INVALID_PARAMETERS, "A required parameter is missing");
         } else {
             $this->load->model("assets_model");
             $this->assets_model->change_asset_name($this->user, $asset_id, $new_name);
-            success();
-        }
-    }
-
-    public function change_image_defaults() {
-        $asset_id = $this->input->post("asset_id");
-        $caption = $this->input->post("caption");
-        $title = $this->input->post("title");
-
-        if ($asset_id === false || $caption === false || $title === false) {
-            error(Constance::INVALID_PARAMETERS, "A required parameter is missing");
-        } else {
-            $this->load->model("assets_model");
-            $this->assets_model->update_image_defaults($this->user, $asset_id, $caption, $title);
             success();
         }
     }

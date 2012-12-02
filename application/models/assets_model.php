@@ -256,15 +256,16 @@ class Assets_Model extends CI_Model {
         return $out;
     }
 
-    public function update_image_defaults($user, $image_id, $caption, $title) {
+    public function update_photo_properties($user, $image_id, $args) {
         $row = $this->get_asset_by_id($user, $image_id);
         if ($row !== false) {
             $extra = unserialize($row->extra);
-            $extra["caption"] = $caption;
-            $extra["title"] = $title;
+            $extra["caption"] = $args['caption'];
+            $extra["title"] = $args['title'];
             $extra = serialize($extra);
             $this->db->where("id", $image_id)
                     ->where("user_id", $user['id'])
+                    ->set("name", $args['name'])
                     ->set('extra', $extra)
                     ->update("assets");
         }
