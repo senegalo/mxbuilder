@@ -107,6 +107,7 @@
     height: 100%;
     border-radius: 6px;
     background-color: rgba( 242, 242, 242, 0.5);
+    position: relative;
 }
 
 .flexly-tab-buttons-main {

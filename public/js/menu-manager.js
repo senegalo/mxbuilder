@@ -77,7 +77,9 @@
                 });
             },
             revalidate: function revalidate(){
-                
+                //hiding everything
+                var theAuxChilds = this.tabButtonsAux.children().hide();
+                var theMainChilds = this.tabButtonsMain.children().hide();
                 //updating the buttons tab
                 var width = 0;
                 this.tabButtonsMain.children().each(function(){
@@ -85,10 +87,14 @@
                 });
                 this.tabButtonsAux.animate({
                     width:275-16-width
-                },300);
+                },300,"linear",function(){
+                    theAuxChilds.fadeIn(100);
+                });
                 this.tabButtonsMain.animate({
                     width: width+16
-                },300);
+                },300,"linear",function(){
+                    theMainChilds.fadeIn(100);
+                });
                 
                 //updating the containers height
                 var totalHeight = 0;
@@ -101,7 +107,9 @@
                 
                 theContentTab.height(theMenuContainerHeight-63-totalHeight);
                 
-                //updating scroll postions
+                this.revalidateScrollbar();
+            },
+            revalidateScrollbar: function revalidateScrollbar(){
                 theContentTab.mCustomScrollbar("update");
             },
             addButtonTo: function addButtonTo(button,where,css){

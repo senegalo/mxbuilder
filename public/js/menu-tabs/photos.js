@@ -7,6 +7,8 @@
         
         mxBuilder.menuManager.menus.photos = {
             __theList: null,
+            __template: template,
+            __templateImage: templateImage,
             init: function init(){
                 var photos = this;
                 mxBuilder.menuManager.hideFooter();
@@ -14,7 +16,11 @@
                 
                 //adding the buttons
                 var uploadButton = mxBuilder.menuManager.addButtonTo("flexly-icon-upload-light","main");
-                mxBuilder.menuManager.addButtonTo("flexly-icon-search-light","main");
+                mxBuilder.menuManager.addButtonTo("flexly-icon-search-light","main").on({
+                    click: function click(){
+                        mxBuilder.menuManager.showTab("photosSearch");
+                    }
+                });
                 
                 mxBuilder.menuManager.addButtonTo("flexly-icon-photos-light", "aux");
                 mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light", "aux").css({
@@ -24,7 +30,7 @@
                     opacity: 0.5
                 });
                 
-                this.__theList = template.clone().appendTo(mxBuilder.menuManager.contentTab);
+                this.__theList = this.__template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
                 
                 mxBuilder.assets.each(function(){
@@ -33,10 +39,11 @@
                 
                 this.initUploader(uploadButton);
             },
-            addItem: function addItem(obj,prependFlag){
-                var leftColumn = this.__theList.find(".left-column ul");
-                var rightColumn = this.__theList.find(".right-column ul");
-                var theItem = templateImage.clone()
+            addItem: function addItem(obj,prependFlag,list){
+                list = list ? list : this.__theList;
+                var leftColumn = list.find(".left-column ul");
+                var rightColumn = list.find(".right-column ul");
+                var theItem = this.__templateImage.clone()
                 .find(".asset-image").draggable({
                     helper: function helper(event){
                         return theItem.find(".asset-image").clone()
@@ -80,7 +87,7 @@
                                         },300,"linear",function(){
                                             $(this).remove()
                                         });
-                                        mxBuilder.menuManager.revalidate();
+                                        mxBuilder.menuManager.revalidateScrollbar();
                                     }
                                 });
                             }
@@ -160,12 +167,13 @@
                     if(response.success){
                         mxBuilder.assets.add(response,true);
                         mxBuilder.menuManager.menus.photos.addItem(response,true);
-                        mxBuilder.menuManager.revalidate();
+                        mxBuilder.menuManager.revalidateScrollbar();
                     } else {
                         mxBuilder.dialogs.alertDialog.show("Upload failed for the following reason: <br/>"+response.description);
                     }
                 });
             }
         }
+        
     });
 }(jQuery))

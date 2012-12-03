@@ -66,6 +66,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
 
 
         <!--Loading Components-->
