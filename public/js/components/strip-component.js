@@ -70,16 +70,21 @@
         });
     
         //Adding the whole thing to the menu
-        $('<div class="strip-component menu-item mx-helper" style="cursor:move;">Strip</div>').draggable({
-            grid: mxBuilder.properties.gridSize,
-            helper: function(event){
-                var theContent = mxBuilder.StripComponent.prototype.template.clone()
-                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
-                .data("component","StripComponent")
-                .appendTo(mxBuilder.layout.container);
-                return theContent;
+        var widgets = mxBuilder.menuManager.menus.widgets;
+        widgets.addComponent("root",{
+            icon: "flexly-icon-strip-component",
+            title: "Horizontal Strip",
+            draggableSettings: {
+                grid: mxBuilder.properties.gridSize,
+                helper: function(event){
+                    var theContent = mxBuilder.StripComponent.prototype.template.clone()
+                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .data("component","StripComponent")
+                    .appendTo(mxBuilder.layout.container);
+                    return theContent;
+                }
             }
-        }).appendTo(mxBuilder.layout.menu);
+        });
     });
     
     

@@ -1,11 +1,5 @@
 (function($){
     $(function(){
-        var theWebsiteSelect = mxBuilder.layout.pagesSelect.on({
-            change: function(){
-                mxBuilder.dialogs.pagesAddEditDialog.close();
-                mxBuilder.pages.loadPage($(this).val());
-            }
-        });
         mxBuilder.pages = {
             __pages: {},
             __pinned: {},
@@ -28,8 +22,6 @@
                 this.setPageAddress(properties.id, pageAddress);
                 this.__pages[properties.id].contentHeight = this.__pages[properties.id].contentHeight ? this.__pages[properties.id].contentHeight : 500;
                 this.__pages[properties.id].components = {};
-                
-                theWebsiteSelect.append('<option value="'+properties.id+'">'+properties.title+'</option>');
                 
                 if(noLoadFlag !== true){
                     this.loadPage(properties.id);
@@ -58,7 +50,6 @@
                 
                 this.setPageAddress(newObj.id, address);
                 
-                theWebsiteSelect.find('option[value="'+newObj.id+'"]').text(newObj.title);
                 $('title').text(newObj.htmlTitle);
                 if(newObj.homepage){
                     this.setHomepage(newObj.id);
@@ -87,9 +78,7 @@
                 //if this is the homepage revert the home page to the parent of the homepage
                 if(this.__pages[id].homepage){
                     this.setHomepage(theParent);
-                }                
-                
-                theWebsiteSelect.find('option[value="'+id+'"]').remove();
+                }
                 
                 //check if the page is linked in any image or textbox in the pinned/current page components and remove the link
                 var loopThroughActiveComponents = function loopThroughActiveComponents(components){
@@ -214,7 +203,6 @@
                     });
                     
                     mxBuilder.layout.revalidateLayout();
-                    theWebsiteSelect.val(id);
                     $('title').html(this.__pages[id].htmlTitle);
                     mxBuilder.recorder.setLastState(this.saveAll());
                 }
@@ -399,44 +387,6 @@
                 id = id ? id : this.__currentPage;
                 return (address == "index" || (this.__addressesHash[address] && id && this.__pages[id].address != address)) ? false : true;
             }
-        }
-        
-        $("#add-page").on({
-            click: function(){
-                mxBuilder.dialogs.pagesAddEditDialog.show({
-                    callback: function(data){
-                        mxBuilder.pages.addPage(data);
-                    }
-                });
-            }
-        });
-        
-        $("#edit-page").on({
-            click: function(){
-                mxBuilder.dialogs.pagesAddEditDialog.show({
-                    data: mxBuilder.pages.getPageObj(),
-                    callback: function(data){
-                        mxBuilder.pages.editPage(data);
-                    }
-                });
-            }
-        });
-        
-        $("#delete-page").on({
-            click: function(){
-                if(mxBuilder.pages.getPageCount() < 2){
-                    mxBuilder.dialogs.alertDialog.show("You can't delete all the pages of the website. At least one page should remain.");
-                } else { 
-                    mxBuilder.dialogs.deleteDialog({
-                        msg: "Are you sure you want to delete this page !?",
-                        title: "Invalid Operation",
-                        callback: function callback(){
-                            mxBuilder.pages.deletePage();
-                        }
-                    });
-                }
-            } 
-        });
-        
+        }        
     });
 }(jQuery))

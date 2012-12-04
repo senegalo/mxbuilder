@@ -1,0 +1,57 @@
+.flexly-menu-widgets-list {
+    padding:0 1px 1px 1px;
+}
+
+.flexly-menu-widgets-list li {
+    position: relative;
+    padding: 9px 8px 9px 5px;
+    min-height: 48px;
+    margin-bottom: 1px;
+    background: rgba(204,204,204,0.9);
+    border-radius: 6px;
+    cursor: move;
+}
+
+.flexly-menu-widgets-list li:hover {
+    background: rgba(230,230,230,0.9);
+}
+
+.flexly-menu-widgets-list-child {
+    margin-left: 25px;
+    min-height: 23px;
+}
+
+.flexly-menu-widgets-list-child li {
+    border: 1px solid rgba( 77,77,77,0.9);
+}
+
+.flexly-menu-widget-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    margin-top: -15px;
+    height: 31px;
+    width: 31px;
+}
+
+.flexly-menu-widget-title {
+    color: #4a4a4a;
+    font-size: 16px;
+    position:absolute;
+    top: 50%;
+    left: 60px;
+    margin-top: -8px;
+}
+
+.flexly-menu-widget-category > .flexly-menu-widget-title {
+    position: static;
+    margin: 8px;
+    font-size: 14px;
+}
+
+.flexly-menu-widget-category li {
+    border:1px solid #636361;
+}
+.flexly-menu-widget-category ul{
+    margin-left:20px;
+}

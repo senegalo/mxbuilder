@@ -1,0 +1,60 @@
+ul.flexly-menu-photos-list li {
+    width: 117px;
+    border-radius: 6px;
+    margin-bottom: 1px;
+    background-color: #babcb9;
+    padding: 10px;
+}
+
+.flexly-menu-photos .left-column li {
+    width: 118px;
+}
+
+.flexly-menu-photos {
+    position: relative;
+}
+
+.flexly-menu-photos .left-column {
+    width: 138px;
+    float:left;
+    margin: 0px 1px 1px 1px;
+}
+
+.flexly-menu-photos .right-column {
+    width: 137px;
+    float:left;
+    margin: 0px 1px 1px 0px;
+}
+
+.photo-upload-notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    border-radius: 10px;
+    background-color: rgba(204,204,204,0.7);
+    color: #4a4a4a;
+    width: 250px;
+    padding: 10px;
+}
+
+.photo-upload-notification .info {
+    position:absolute;
+    top: 18px;
+    left: 43%;
+}
+
+#photo-search-box {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    padding: 3px;
+    margin-top: -13px;
+    margin-left: -103px;
+    height: 20px;
+    width: 200px;
+    background-color: #e6e6e6;
+    border-width: 0;
+    border-bottom: 1px solid #c4c4c4;
+    outline: 0px;
+    border-radius: 6px;
+}

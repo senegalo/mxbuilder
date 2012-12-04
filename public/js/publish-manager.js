@@ -1,8 +1,8 @@
 (function($){
     $(function(){
-        mxBuilder.layout.menu.find("#publish").on({
-            click: function(){
-                mxBuilder.selection.clearSelection();
+        mxBuilder.publishManager = {
+          publish: function publish(){
+              mxBuilder.selection.clearSelection();
                 var args = mxBuilder.pages.publishAll();
                 $.extend(args,{
                     success: function(data){
@@ -10,7 +10,7 @@
                     }
                 });
                 mxBuilder.api.website.publish(args);
-            }
-        });
+          }  
+        }
     });
 }(jQuery))

@@ -15,10 +15,15 @@
         
         theMenuContainer.find(".flexly-button").on({
             click: function click(){
-                if($(this).hasClass("flexly-icon-page")){
+                var element = $(this);
+                if(element.hasClass("flexly-icon-page")){
                     mxBuilder.menuManager.showTab("pages");
-                } else if($(this).hasClass("flexly-icon-photos")){
+                } else if(element.hasClass("flexly-icon-photos")){
                     mxBuilder.menuManager.showTab("photos");
+                } else if(element.hasClass("flexly-icon-widgets")){
+                    mxBuilder.menuManager.showTab("widgets");
+                } else if(element.hasClass("flexly-icon-publish")){
+                    mxBuilder.publishManager.publish();
                 }
             }
         });

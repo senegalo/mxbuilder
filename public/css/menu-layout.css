@@ -1,0 +1,148 @@
+@charset "utf-8";
+.flexly-main-bar {
+    position:fixed;
+    height: 518px;
+    top: 50%;  
+    left:0px;
+    margin-top: -268px;
+    width:68px; 
+    background: rgba(0,0,0,.8);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    padding-bottom:18px;
+    z-index:30000009;
+}
+
+.flexly-main-bar-opened {
+    width:390px; 
+}
+
+.flexly-buttons {
+    float:left;
+}
+
+.flexly-tab {
+    float:right;
+    width:313px;
+    margin-top: 20px;
+    /*background-color:red;*/
+}
+
+.flexly-icon {
+    background: transparent url('../images/icons.png') no-repeat;
+    cursor: pointer;
+}
+
+.flexly-logo {
+    /*position:absolute;*/
+    background-position: -190px -8px ; 
+    width:46px;
+    height:46px;
+    margin-top:12px; margin-left:10px; margin-bottom:0px;
+}
+
+.flexly-sub-bar {
+    /*position:relative;*/
+    background: rgba(242,242,242,1);
+    width:52px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    left:0px;
+    margin-top:14px;
+    padding-top:8px;
+    padding-bottom:8px;
+    box-shadow: 4px 4px 8px 0px #000;
+}
+
+.flexly-active-icon {
+    cursor:pointer;
+}
+
+
+.flexly-tab-title {
+    color: #fff;
+    margin-top: 7px;
+    font-weight: bold;
+    font-size: 16px;
+    float:left;
+}
+
+.flexly-tab-content {
+    height: 450px;
+    width: 298px;
+    border-radius: 6px;
+    margin-top: 1px;
+    overflow: auto;
+    position:relative;
+}
+
+.flexly-tab-footer {
+    height: 56px;
+    margin: 0 1px;
+    background-color: rgba(204, 204, 204, 0.9);
+    width: 276px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.flexly-tab-footer-container {
+    margin-top: 10px;
+    position: relative;
+}
+
+.flexly-tab-footer hr {
+    border-color: rgba(103,103,103,0.3);
+    width: 233px;
+    margin: 0 auto;
+}
+
+.flexly-tab-buttons {
+    height: 56px;
+    margin-left: 1px;
+}
+
+.flexly-tab-buttons-aux {
+    float:left;
+    width: 190px;
+    height: 100%;
+    border-radius: 6px;
+    background-color: rgba( 242, 242, 242, 0.5);
+    position: relative;
+}
+
+.flexly-tab-buttons-main {
+    float: left;
+    width: 85px;
+    height: 100%;
+    margin-left: 1px;
+    border-radius: 6px;
+    background-color: rgba( 242, 242, 242, 0.5);
+}
+
+.flexly-tab-buttons-aux div, .flexly-tab-buttons-main div {
+    position: relative;
+    bottom: -7px ;
+    margin-left: 16px;
+    display:inline-block;
+}
+
+.flexly-tab-container {
+    margin-top: 19px;
+}
+
+.flexly-tab-content-border {
+    position:absolute;
+    top:59px;
+    left:65px;
+    width: 278px;
+    height: 508px;
+    border: 2px solid rgba(242,242,242,0.3);
+    border-radius: 6px;
+    z-index: 0;
+}
+
+.super-mCSB-container {
+    height: 468px;
+    overflow: auto;
+}
+

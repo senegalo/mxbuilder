@@ -1,0 +1,15 @@
+.cke_button__linkextra_icon {
+    background: url('../js-libs/ckeditor/skins/moono/icons.png') 0 -351px !important;
+}
+
+.cke_button__unlinkextra_icon {
+    background: url('../js-libs/ckeditor/skins/moono/icons.png') 0 -287px !important;
+}
+
+.cke {
+    z-index: 10000000;
+}
+
+.cke_dialog_background_cover { 
+    display:none !important;
+}

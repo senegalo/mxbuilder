@@ -1,0 +1,27 @@
+.ui-resizable-n { cursor: n-resize; height: 7px; width: 7px; top: -6px; left: 50%; margin-left: -3px; }
+.ui-resizable-s { cursor: s-resize; height: 7px; width: 7px; bottom: -6px; left: 50%; margin-left: -3px; }
+.ui-resizable-e { cursor: e-resize; width: 7px; right: -6px; top: 50%; height: 7px; margin-top: -3px }
+.ui-resizable-w { cursor: w-resize; width: 7px; left: -6px; top: 50%; height: 7px; margin-top: -3px}
+.ui-resizable-se { cursor: se-resize; width: 7px; height: 7px; right: -6px; bottom: -6px; }
+.ui-resizable-sw { cursor: sw-resize; width: 7px; height: 7px; left: -6px; bottom: -6px; }
+.ui-resizable-nw { cursor: nw-resize; width: 7px; height: 7px; left: -6px; top: -6px; }
+.ui-resizable-ne { cursor: ne-resize; width: 7px; height: 7px; right: -6px; top: -6px;}
+
+.ui-selectable-helper {z-index: 10000009; }
+.ui-state-disabled {opacity: 1; filter:Alpha(Opacity=100);}
+
+.component-resizable-handle {
+    display:none;
+}
+.ui-resizable-handle {
+    background-color: #333;
+    outline: 1px solid white;
+}
+
+.ui-resizable-handle-resizing, .ui-resizable-handle:hover {
+    background-color: grey;
+}
+
+.ui-selected,.ui-selected:focus {
+    outline: 1px dashed #444 !important;
+}

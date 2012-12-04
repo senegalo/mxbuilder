@@ -33,11 +33,6 @@
 .flexly-menu-pages-list-current .flexly-menu-pages-list-child .flexly-menu-page-title {
     color: #4a4a4a!important;
 }
-/*.flexly-menu-pages-list-current .flexly-icon-drag {
-    background-position:-202px -237px ; 
-    width: 12px;
-    height: 19px;
-}*/
 
 .flexly-menu-pages-list-selected {
     border: 2px solid rgb(241,90,36) !important;

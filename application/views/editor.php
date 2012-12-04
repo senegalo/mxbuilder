@@ -4,11 +4,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.1.custom.css" type="text/css"/>
-        <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
-        <link rel="stylesheet" href="public/css/flexly.css" type="text/css" />
-        <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css" />
         <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/menu-layout.css" type="text/css" />
+        <link rel="stylesheet" href="public/css/icons.css" type="text/css" />
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/cke-styles-override.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/jqueryui-override.css" type="text/css"/>
+        
+        <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/menu-photos-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
+        
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
 
@@ -34,7 +42,7 @@
         <script type="text/javascript" src="public/js/layout.js"></script>
         <script type="text/javascript" src="public/js/activestack.js"></script>
         <script type="text/javascript" src="public/js/ctx-menu.js"></script>
-        <script type="text/javascript" src="public/js/page_manager.js"></script>
+        <script type="text/javascript" src="public/js/page-manager.js"></script>
         <script type="text/javascript" src="public/js/components-instance-manager.js"></script>
         <script type="text/javascript" src="public/js/components-alignment.js"></script>
         <script type="text/javascript">
@@ -55,7 +63,7 @@
         <script type="text/javascript" src="public/js/selection.js"></script>
         <script type="text/javascript" src="public/js/components.js"></script>
         <script type="text/javascript" src="public/js/save.js"></script>
-        <script type="text/javascript" src="public/js/publish.js"></script>
+        <script type="text/javascript" src="public/js/publish-manager.js"></script>
         <script type="text/javascript" src="public/js/z-index-manager.js"></script>
         <script type="text/javascript" src="public/js/api.js"></script>
         <script type="text/javascript" src="public/js/layout-background.js"></script>
@@ -67,6 +75,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
 
 
         <!--Loading Components-->
@@ -474,6 +483,15 @@
                 <li>
                     <label for="photo-caption">Caption</label>
                     <textarea id="photo-caption" style="width:100%;height:100px;"></textarea>
+                </li>
+            </ul>
+            
+            <ul class="flexly-menu-widgets-list">
+                <li class="mx-helper">
+                    <div class="flexly-menu-widget-icon">
+                        <div class="flexly-icon"></div>
+                    </div>
+                    <div class="flexly-menu-widget-title"></div>
                 </li>
             </ul>
 

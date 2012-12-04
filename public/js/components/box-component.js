@@ -25,16 +25,22 @@
         $.extend(mxBuilder.BoxComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".box-component-instance").remove()
         });
-    
-        $('<div class="box-component menu-item mx-helper" style="cursor:move;">Box</div>').draggable({
-            grid: mxBuilder.properties.gridSize,
-            helper: function(event){
-                var theContent = mxBuilder.BoxComponent.prototype.template.clone()
-                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
-                .data("component","BoxComponent")
-                .appendTo(mxBuilder.layout.container);
-                return theContent;
+        
+        var widgets = mxBuilder.menuManager.menus.widgets;
+        widgets.addComponent("root",{
+            icon: "flexly-icon-box-component",
+            title: "Layout Box",
+            draggableSettings: {
+                grid: mxBuilder.properties.gridSize,
+                helper: function(event){
+                    var theContent = mxBuilder.BoxComponent.prototype.template.clone()
+                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .data("component","BoxComponent")
+                    .appendTo(mxBuilder.layout.container);
+                    return theContent;
+                }
             }
-        }).appendTo(mxBuilder.layout.menu);
+        });
+        
     });
 }(jQuery))

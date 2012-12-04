@@ -198,16 +198,38 @@
                 return saveObj;
             }
         });
-        $('<div class="text-component menu-item mx-helper" style="cursor:move;">Text Box</div>').draggable({
-            grid: mxBuilder.properties.gridSize,
-            helper: function(event){
-                var theContent = mxBuilder.TextComponent.prototype.template.clone()
-                .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
-                .data("component","TextComponent");
-                theContent.appendTo(mxBuilder.layout.container);
-                return theContent;
+        
+        var widgets = mxBuilder.menuManager.menus.widgets;
+        widgets.addComponent("Text Widgets",{
+            icon: "flexly-icon-text-paragraph-component",
+            title: "Paragraph",
+            draggableSettings: {
+                grid: mxBuilder.properties.gridSize,
+                helper: function(event){
+                    var theContent = mxBuilder.TextComponent.prototype.template.clone()
+                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .data("component","TextComponent");
+                    theContent.appendTo(mxBuilder.layout.container);
+                    return theContent;
+                }
             }
-        }).appendTo(mxBuilder.layout.menu);
+        });
+        
+        widgets.addComponent("Text Widgets",{
+            icon: "flexly-icon-text-header-component",
+            title: "Header Text",
+            draggableSettings: {
+                grid: mxBuilder.properties.gridSize,
+                helper: function(event){
+                    var theContent = mxBuilder.TextComponent.prototype.template.clone()
+                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .data("component","TextComponent");
+                    theContent.appendTo(mxBuilder.layout.container);
+                    return theContent;
+                }
+            }
+        });
+        
     });
     
 }(jQuery));
