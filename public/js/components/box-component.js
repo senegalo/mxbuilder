@@ -34,7 +34,7 @@
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.BoxComponent.prototype.template.clone()
-                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .addClass("mx-helper")
                     .data("component","BoxComponent")
                     .appendTo(mxBuilder.layout.container);
                     return theContent;

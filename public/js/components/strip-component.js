@@ -78,7 +78,7 @@
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.StripComponent.prototype.template.clone()
-                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .addClass("mx-helper")
                     .data("component","StripComponent")
                     .appendTo(mxBuilder.layout.container);
                     return theContent;

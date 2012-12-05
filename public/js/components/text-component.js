@@ -207,7 +207,7 @@
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.TextComponent.prototype.template.clone()
-                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .addClass("mx-helper")
                     .data("component","TextComponent");
                     theContent.appendTo(mxBuilder.layout.container);
                     return theContent;
@@ -222,7 +222,7 @@
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.TextComponent.prototype.template.clone()
-                    .css("zIndex",mxBuilder.config.newComponentHelperZIndex)
+                    .addClass("mx-helper")
                     .data("component","TextComponent");
                     theContent.appendTo(mxBuilder.layout.container);
                     return theContent;

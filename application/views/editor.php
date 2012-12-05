@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="public/css/menu-photos-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
         
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
