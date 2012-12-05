@@ -110,7 +110,7 @@ class Assets_Model extends CI_Model {
         foreach ($sizes as $size => $metrics) {
             if ($image_dim[$work_with] > $metrics[$work_with]) {
                 $no_resize = false;
-                if ($work_with === 0) {
+                if ($work_with === 0 || $size == "thumb") {
                     $width = $metrics[0];
                     $height = $metrics[0] / $out['ratio'];
                 } else {
