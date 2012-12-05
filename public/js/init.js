@@ -24,7 +24,7 @@
                         mxBuilder.pages.addPage({
                             title: "Home Page",
                             htmlTitle: "Home Page",
-                            parent: 0,
+                            parent: "root",
                             showInMenu: true,
                             homepage: true,
                             address: "home_page",
