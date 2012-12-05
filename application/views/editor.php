@@ -432,7 +432,7 @@
                     </div>
                     <div class="flexly-menu-page-title"></div>
                     <div class="flexly-menu-page-controls" style="display:none;">
-                        <div class="flexly-icon flexly-icon-close-black flexly-delete-page" style="display:inline-block;"></div>
+                        <div class="flexly-icon flexly-icon-close-small-black flexly-delete-page" style="display:inline-block;"></div>
                         <div class="flexly-icon flexly-icon-gear-black flexly-edit-page" style="display:inline-block;"></div>
                         <div class="flexly-icon flexly-icon-arrow-e-black flexly-goto-page" style="display:inline-block;"></div>
                     </div>
