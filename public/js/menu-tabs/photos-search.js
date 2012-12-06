@@ -28,8 +28,7 @@
                         });
                         mxBuilder.menuManager.revalidateScrollbar();
                     }
-                });
-                
+                }).focus();                
             }
         }
     });
