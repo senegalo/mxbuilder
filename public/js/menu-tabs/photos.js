@@ -73,7 +73,7 @@
                             callback: function callback(){
                                 mxBuilder.api.assets.remove({
                                     assetID: theLi.data("assetid"),
-                                    success: function(){     
+                                    success: function success(){     
                                         mxBuilder.assets.remove(theLi.data("assetid"));
                                         theLi.css({
                                             height: theLi.outerHeight(),
@@ -85,9 +85,9 @@
                                         .end().animate({
                                             height: 0
                                         },300,"linear",function(){
-                                            $(this).remove()
+                                            $(this).remove();
+                                            mxBuilder.menuManager.revalidateScrollbar();
                                         });
-                                        mxBuilder.menuManager.revalidateScrollbar();
                                     }
                                 });
                             }
