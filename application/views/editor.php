@@ -24,7 +24,7 @@
 
         <title>Builder</title>
         <!-- Loading Libs -->
-        <script type="text/javascript" src="public/js-libs/jquery-1.8.1.min.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.2.custom.min.js"></script>
         <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">

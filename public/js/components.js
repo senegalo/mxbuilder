@@ -439,7 +439,9 @@
                 
                 var className =  ui.helper.data("component");
                 if(className){
-                    
+                    if(container == "footer"){
+                        ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
+                    }
                     var theComponent = mxBuilder.components.addComponent({
                         css: {
                             left: ui.position.left,
