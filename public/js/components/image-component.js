@@ -25,11 +25,11 @@
                 height:"100%"
             }).end().on({
                 componentDropped: function componentDropped(){
-                    self.setImageSize("thumb");
-                    self.element.css({
-                        width: self.theImage.width() + 'px', 
-                        height: self.theImage.height() + 'px'
-                    });
+                    self.setImageSize("small");
+//                    self.element.css({
+//                        width: self.theImage.width() + 'px', 
+//                        height: self.theImage.height() + 'px'
+//                    });
                 },
                 borderWidthChanged: function borderWidthChanged(){
                     properties.element.width(properties.element.find(".image").outerWidth());
@@ -300,17 +300,17 @@
                     var obj = this.getImageObj();
                     
                         $.extend({
-                            height: 100/obj.ratio,
-                            width: 100
+                            height: 300/obj.ratio,
+                            width: 300
                         },properties.css)
                     
                         if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
                             if(obj.ratio > 1){
-                                properties.css.width = 100;
-                                properties.css.height = 100/obj.ratio;
+                                properties.css.width = 300;
+                                properties.css.height = 300/obj.ratio;
                             } else {
-                                properties.css.height = 100;
-                                properties.css.width = 100/obj.ratio;
+                                properties.css.height = 300;
+                                properties.css.width = 300/obj.ratio;
                             }
                         }
                     
