@@ -10,7 +10,6 @@
             __template: template,
             __templateImage: templateImage,
             init: function init(){
-                var photos = this;
                 mxBuilder.menuManager.hideFooter();
                 mxBuilder.menuManager.tabTitle.text("Photos");
                 
@@ -32,11 +31,7 @@
                 
                 this.__theList = this.__template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
-                
-                mxBuilder.assets.each(function(){
-                    photos.addItem(this);
-                });
-                
+                this.revalidate();
                 this.initUploader(uploadButton);
             },
             addItem: function addItem(obj,prependFlag,list){
@@ -85,8 +80,7 @@
                                         .end().animate({
                                             height: 0
                                         },300,"linear",function(){
-                                            $(this).remove();
-                                            mxBuilder.menuManager.revalidateScrollbar();
+                                            mxBuilder.menuManager.menus.photos.revalidate();
                                         });
                                     }
                                 });
@@ -110,6 +104,14 @@
                 } else {
                     theSelCol.append(theItem);
                 }
+            },
+            revalidate: function revalidate(){
+                var photos = this;
+                photos.__theList.find(".left-column ul, .right-column ul").empty();
+                mxBuilder.assets.each(function(){
+                    photos.addItem(this);
+                });
+                mxBuilder.menuManager.revalidateScrollbar();
             },
             initUploader: function initUploader(uploadButton){
                 var uploader = new plupload.Uploader(mxBuilder.uploaderSettings);
@@ -166,7 +168,7 @@
                     }
                     if(response.success){
                         mxBuilder.assets.add(response,true);
-                        mxBuilder.menuManager.menus.photos.addItem(response,true);
+                        mxBuilder.menuManager.menus.photos.revalidate();
                         mxBuilder.menuManager.revalidateScrollbar();
                     } else {
                         mxBuilder.dialogs.alertDialog.show("Upload failed for the following reason: <br/>"+response.description);
