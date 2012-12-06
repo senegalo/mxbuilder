@@ -21,6 +21,10 @@
             delete this.__refs[mxBuilder.utils.getElementGUID(out)];
             out.trigger("poppedFromActiveStack");
             
+            //if nothing is in the stack close the menu if it's opened
+            if(out.length == 0){
+                mxBuilder.menuManager.closeTab();
+            }
             return $(out);
         },
         popTo: function popTo(instance){
@@ -51,14 +55,5 @@
                 mxBuilder.activeStack.pop();
             }
         } 
-    });
-    
-//    $(function(){
-//        mxBuilder.layout.container.on({
-//            click: function(){
-//                console.log("popped...");
-//            }
-//        });
-//    });
-    
+    });    
 }(jQuery));
