@@ -71,7 +71,7 @@
                         pageObj.order = iterator++;
                         pageObj.parent = parentUl.hasClass("flexly-menu-pages-list-child") ? parentUl.parents("li:first").data("pageID") : "root";
                     });
-                    mxBuilder.menuManager.showTab("pages");
+                    mxBuilder.menuManager.revalidateScrollbar("pages");
                 };
                 
                 theList.sortable({
