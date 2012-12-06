@@ -431,6 +431,12 @@
     $(function(){
         var dropOnContainer = function dropOnContainer(container){
             return function(event, ui){
+                //if we are dropping while on top of the menu cancel
+                if(ui.helper.data("deny-drop") === true){
+                    mxBuilder.layout.clearOutline(container);
+                    return ;
+                }
+                
                 var className =  ui.helper.data("component");
                 if(className){
                     

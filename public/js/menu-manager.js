@@ -26,6 +26,15 @@
                     mxBuilder.publishManager.publish();
                 }
             }
+        })
+        .end()
+        .droppable({
+            over: function(event,ui){
+               ui.helper.data("deny-drop",true);
+            },
+            out: function(event,ui){
+                ui.helper.data("deny-drop",false);
+            }
         });
         
         theMenuTab.find(".flexly-tab-close").on({
