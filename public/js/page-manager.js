@@ -6,6 +6,7 @@
             __currentPage: null,
             __addressesHash: {},
             __homepage: null,
+            __maxOrder: 1,
             addPage: function addPage(properties, noLoadFlag){
                 if(typeof properties.id == "undefined"){
                     var id = mxBuilder.utils.GUID();
@@ -13,7 +14,12 @@
                 }
                 properties.showInMenu = typeof properties.showInMenu == "undefined" ? true : properties.showInMenu;
                 properties.parent = typeof properties.parent == "undefined" ? "root" : properties.parent;
-                properties.order = typeof properties.order == "undefined" ? this.getPageCount() : properties.order;
+                if(typeof properties.order != "undefined" && properties.order > this.__maxOrder){
+                    this.__maxOrder = properties.order+1;
+                } else if(typeof properties.order == "undefined"){
+                    properties.order = this.__maxOrder++;
+                }
+                
                 
                 var pageAddress = properties.address;
                 delete properties.address;
