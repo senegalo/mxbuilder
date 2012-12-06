@@ -54,14 +54,11 @@
 
         <div id="editor-area" style="width:100%;height:100%;">
 
-            <div id="header" style="background:<?php print $background['header']; ?>;height:<?php print $height['header']; ?>px">
-
+            <div id="header" style="<?php foreach( $background['header'] as $p => $v){print $p.":".$v.";";} ?>height:<?php print $height['header']; ?>px">
             </div>
-            <div id="body" style="background:<?php print $background['body']; ?>;height:<?php print $content_height; ?>px">
-
+            <div id="body" style="<?php foreach( $background['body'] as $p => $v){print $p.":".$v.";";} ?>height:<?php print $content_height; ?>px">
             </div>
-            <div id="footer"  style="background:<?php print $background['footer']; ?>;height:<?php print $height['footer']; ?>px">
-
+            <div id="footer"  style="<?php foreach( $background['footer'] as $p => $v){print $p.":".$v.";";} ?>height:<?php print $height['footer']; ?>px">
             </div>
 
             <div id="container">

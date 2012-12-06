@@ -253,11 +253,7 @@
                         header: mxBuilder.layout.header.height(),
                         footer: mxBuilder.layout.footer.height()                   
                     },
-                    layoutBackground: {
-                        header: mxBuilder.layout.layoutHeader.css("background"),
-                        body: $(document.body).css("background"),
-                        footer: mxBuilder.layout.layoutFooter.css("background")
-                    }
+                    layoutBackground: this.getLayoutBackground()
                 };
                 for(var p in this.__pages){
                     var copy = {};
@@ -284,11 +280,7 @@
                             body: mxBuilder.layout.body.height(),
                             footer: mxBuilder.layout.footer.height()
                         },
-                        background: {
-                            header: mxBuilder.layout.layoutHeader.css("background"),
-                            body: $(document.body).css("background"),
-                            footer: mxBuilder.layout.layoutFooter.css("background")
-                        }
+                        background: this.getLayoutBackground()
                     }
                 };
                 var currentPage = this.__currentPage;
@@ -323,9 +315,7 @@
                 this.loadPage(currentPage);
                 return out;
             },
-            restorePages: function restorePages(restore){
-                
-                
+            restorePages: function restorePages(restore){                
                 //mxBuilder.layout.setLayout(restore.layoutHeights,true);
                 
                 var firstPage = null;
@@ -350,9 +340,9 @@
                 }
                 
                 if(restore.layoutBackground){
-                    mxBuilder.layout.layoutHeader.css("background",restore.layoutBackground.header);
-                    $(document.body).css("background",restore.layoutBackground.body);
-                    mxBuilder.layout.layoutFooter.css("background",restore.layoutBackground.footer);
+                    mxBuilder.layout.layoutHeader.css(restore.layoutBackground.header);
+                    $(document.body).css(restore.layoutBackground.body);
+                    mxBuilder.layout.layoutFooter.css(restore.layoutBackground.footer);
                 }
                 this.__currentPage = null;
                 this.loadPage(firstPage.id);
@@ -386,6 +376,13 @@
             isValidAddress: function isValidAddress(address,id){
                 id = id ? id : this.__currentPage;
                 return (address == "index" || (this.__addressesHash[address] && id && this.__pages[id].address != address)) ? false : true;
+            },
+            getLayoutBackground: function getLayoutBackground(){
+                return {
+                    header: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutHeader),
+                    body: mxBuilder.utils.getElementBackgroundObj($(document.body)),
+                    footer: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutFooter)
+                }
             }
         }        
     });

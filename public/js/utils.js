@@ -67,6 +67,15 @@
         },
         strToAddress: function(str){
             return str.replace(/((\s+|[^a-zA-Z0-9]+)(?=$)|[^a-zA-Z0-9\s])/g,"").replace(/\s+/g,"_").toLowerCase();
+        },
+        getElementBackgroundObj: function (element){
+            return {
+                "background-position": element.css("backgroundPosition"),
+                "background-color": element.css("backgroundColor"),
+                "background-image": element.css("backgroundImage"),
+                "background-repeat": element.css("backgroundRepeat"),
+                "background-attachment": element.css("backgroundAttachment")
+            }
         }
     }
 }(jQuery));
