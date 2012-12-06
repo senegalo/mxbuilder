@@ -8,7 +8,13 @@
             init: function init(){
                 var searchBox = $('<input type="text" id="photo-search-box"/>');
                 var photosSearch = mxBuilder.menuManager.menus.photosSearch;
-                mxBuilder.menuManager.addButtonTo("flexly-icon-search-light","main");
+                
+                mxBuilder.menuManager.addButtonTo("flexly-icon-back-light","main").on({
+                    click: function click(){
+                        mxBuilder.menuManager.showTab("photos");
+                    }
+                });
+                
                 mxBuilder.menuManager.tabButtonsAux.append(searchBox);
             
                 this.__theList = this.__template.clone().appendTo(mxBuilder.menuManager.contentTab);
