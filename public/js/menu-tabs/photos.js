@@ -116,15 +116,30 @@
             initUploader: function initUploader(uploadButton){
                 var uploader = new plupload.Uploader(mxBuilder.uploaderSettings);
                 var uploaderBrowserButton = mxBuilder.layout.templates.find("#photos-select-files").appendTo(document.body);
-                var uploaderNotification = mxBuilder.layout.templates.find(".photo-upload-notification")
-                .find('.progress')
-                .progressbar({
-                    max: 100,
-                    varlue: 0
-                })
-                .end()
-                .appendTo(document.body)
-                .hide();
+                
+                //activating the cancel button on the notification canvas
+                $("#flexly-notification-container").on({
+                   click: function(){
+                       uploader.stop();
+                       uploader.splice(0,uploader.files.length);
+                       uploader.refresh();
+                       queueSize = 0;
+                       mxBuilder.notifications.setIdleState();
+                   } 
+                });
+                
+                var queueSize = 0;
+//                var uploaderNotification = mxBuilder.layout.templates.find(".photo-upload-notification")
+//                .find('.progress')
+//                .progressbar({
+//                    max: 100,
+//                    varlue: 0
+//                })
+//                .end()
+//                .appendTo(document.body)
+//                .hide();
+                
+                
                 uploadButton.on({
                     click: function click(){
                         uploaderBrowserButton.trigger("click");
@@ -134,24 +149,27 @@
                 uploader.init();
 
                 uploader.bind('FilesAdded', function(up, files) {
-                    uploaderNotification.find(".progress")
-                    .progressbar('option','value',0)
-                    .end()
-                    .find(".info")
-                    .text("0%")
-                    .end()
-                    .show();
+//                    uploaderNotification.find(".progress")
+//                    .progressbar('option','value',0)
+//                    .end()
+//                    .find(".info")
+//                    .text("0%")
+//                    .end()
+//                    .show();
+                    queueSize += files.length;
+                    mxBuilder.notifications.uploadProgress(0,0,files.length);
                     
                     uploader.start();
                     up.refresh(); // Reposition Flash/Silverlight
                 });
 
                 uploader.bind('UploadProgress', function(up, file) {
-                    uploaderNotification.find(".progress")
-                    .progressbar('option','value', up.total.percent)
-                    .end()
-                    .find(".info")
-                    .text(up.total.percent+"%");
+//                    uploaderNotification.find(".progress")
+//                    .progressbar('option','value', up.total.percent)
+//                    .end()
+//                    .find(".info")
+//                    .text(up.total.percent+"%");
+                    mxBuilder.notifications.uploadProgress(up.total.percent,queueSize-up.total.queued,queueSize);
                 });
 
                 uploader.bind('Error', function(up, err) {
@@ -163,9 +181,6 @@
 
                 uploader.bind('FileUploaded', function(up, file, response) {
                     response = JSON.parse(response.response);
-                    if(up.total.queued == 0){
-                        uploaderNotification.hide();
-                    }
                     if(response.success){
                         mxBuilder.assets.add(response,true);
                         mxBuilder.menuManager.menus.photos.revalidate();
@@ -173,6 +188,11 @@
                     } else {
                         mxBuilder.dialogs.alertDialog.show("Upload failed for the following reason: <br/>"+response.description);
                     }
+                });
+                
+                uploader.bind('UploadComplete',function(uploader, files){
+                    queueSize = 0;
+                    mxBuilder.notifications.setIdleState();
                 });
             }
         }

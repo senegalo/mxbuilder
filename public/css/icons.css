@@ -6,6 +6,14 @@
     cursor: pointer;
 }
 
+.flexly-logo {
+    /*position:absolute;*/
+    background-position: -190px -8px ; 
+    width:46px;
+    height:46px;
+    margin-top:12px; margin-left:10px; margin-bottom:0px;
+}
+
 .flexly-icon-close-black {
     background-position: -201px -74px; 
     width:21px;
@@ -249,4 +257,10 @@
     background-position: -202px -375px;
     width: 18px;
     height: 18px;
+}
+
+.flexly-icon-close-small-light {
+    background-position: -237px -55px;
+    width: 12px;
+    height: 12px;
 }

@@ -11,13 +11,13 @@
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/cke-styles-override.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/jqueryui-override.css" type="text/css"/>
-        
+
         <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-photos-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
-        
+
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
 
@@ -69,6 +69,7 @@
         <script type="text/javascript" src="public/js/api.js"></script>
         <script type="text/javascript" src="public/js/layout-background.js"></script>
         <script type="text/javascript" src="public/js/menu-manager.js"></script>
+        <script type="text/javascript" src="public/js/notification.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -120,9 +121,13 @@
 
         <div class="flexly-main-bar">
             <div class="flexly-buttons">
-                <div class="flexly-icon flexly-logo">
+                <div class="flexly-icon flexly-logo" id="flexly-logo">
                 </div>	
 
+                <div id="flexly-notification-container">
+                    <canvas class="flexly-notification-canvas" height="37" width="37"></canvas>
+                    <div class="flexly-icon flexly-icon-close-small-light flexly-upload-notification-cancel"></div>
+                </div>
 
                 <div class="flexly-sub-bar " style="margin-top:0px;">
 
@@ -486,7 +491,7 @@
                     <textarea id="photo-caption" style="width:100%;height:100px;"></textarea>
                 </li>
             </ul>
-            
+
             <ul class="flexly-menu-widgets-list">
                 <li class="mx-helper">
                     <div class="flexly-menu-widget-icon">

@@ -17,6 +17,17 @@
     width:390px; 
 }
 
+#flexly-notification-container {
+    position:relative;
+    margin: 10px 23px 10px 5px;
+}
+
+.flexly-upload-notification-cancel {
+    position:absolute;
+    top: 0px;
+    right: -14px;
+}
+
 .flexly-buttons {
     float:left;
 }
@@ -31,14 +42,6 @@
 .flexly-icon {
     background: transparent url('../images/icons.png') no-repeat;
     cursor: pointer;
-}
-
-.flexly-logo {
-    /*position:absolute;*/
-    background-position: -190px -8px ; 
-    width:46px;
-    height:46px;
-    margin-top:12px; margin-left:10px; margin-bottom:0px;
 }
 
 .flexly-sub-bar {
