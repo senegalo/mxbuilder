@@ -190,33 +190,11 @@
             },
             getBiggestSize: function getBiggestSize(){
                 var imgObj = this.getImageObj();
-                if(imgObj.full)
-                    return "full";
-                else if (imgObj.medium)
-                    return "medium";
-                else if (imgObj.small)
-                    return "small";
-                else {
-                    return "thumb";
-                }
+                return mxBuilder.assets.getBiggestImageSize(imgObj.id);
             },
             getClosestSize: function getClosestSize(size,directionUp){
                 var imgObj = this.getImageObj();
-                var sizes = ["full","medium","small","thumb"];
-                
-                if(directionUp){
-                    sizes.reverse();
-                }
-                var start = false;
-                for(var s in sizes){
-                    if(sizes[s] == size){
-                        start = true;
-                    }
-                    if(start && imgObj[sizes[s]]){
-                        return sizes[s]; 
-                    }
-                }
-                return false;
+                return mxBuilder.assets.getClosestImageSize(imgObj.id, size, directionUp);
             },
             getAssetID: function getAssetID(){
                 return this.extra.originalAssetID;

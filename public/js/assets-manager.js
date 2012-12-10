@@ -53,6 +53,36 @@
                 }
             }
             delete this.__assets[id];
+        },
+        getBiggestImageSize: function getBiggestImageSize(id){
+            var imgObj = this.__assets[id];
+            if(imgObj.full)
+                return "full";
+            else if (imgObj.medium)
+                return "medium";
+            else if (imgObj.small)
+                return "small";
+            else {
+                return "thumb";
+            }
+        },
+        getClosestImageSize: function getClosestImageSize(id,size,directionUp){
+            var imgObj = this.__assets[id];
+            var sizes = ["full","medium","small","thumb"];
+                
+            if(directionUp){
+                sizes.reverse();
+            }
+            var start = false;
+            for(var s in sizes){
+                if(sizes[s] == size){
+                    start = true;
+                }
+                if(start && imgObj[sizes[s]]){
+                    return sizes[s]; 
+                }
+            }
+            return false;
         }
     }  
 }(jQuery))
