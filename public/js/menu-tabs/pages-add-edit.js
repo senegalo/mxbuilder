@@ -53,7 +53,6 @@
                         mxBuilder.menuManager.menus.pagesAddEdit.__cachedTitle = that.val();
                     }
                 })
-                .removeClass("flexly-icon")
                 .removeClass("page-add-edit-error")
                 .end()
                 .find("#page-address").on({
@@ -62,7 +61,6 @@
                         that.val(mxBuilder.pages.validateAddress(that.val()));
                     }
                 })
-                .removeClass("flexly-icon")
                 .removeClass("page-add-edit-error")
                 .end()
                 .find("#page-as-homepage").on({
@@ -143,16 +141,16 @@
                 
                 if(theData.title == ""){
                     error.push("Title cannot be left blank");
-                    titleInput.addClass("flexly-icon page-add-edit-error");
+                    titleInput.addClass("page-add-edit-error");
                 } else {
-                    titleInput.removeClass("flexly-icon").removeClass("page-add-edit-error");
+                    titleInput.removeClass("page-add-edit-error");
                 }
                 
                 if(theData.address == ""){
                     error.push("Address field cannot be left blank");
-                    addressInput.addClass("flexly-icon page-add-edit-error");
+                    addressInput.addClass("page-add-edit-error");
                 } else {
-                    addressInput.removeClass("flexly-icon").removeClass("page-add-edit-error");
+                    addressInput.removeClass("page-add-edit-error");
                 }
                 
                 if(error.length != 0){
