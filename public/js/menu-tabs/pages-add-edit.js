@@ -53,6 +53,8 @@
                         mxBuilder.menuManager.menus.pagesAddEdit.__cachedTitle = that.val();
                     }
                 })
+                .removeClass("flexly-icon")
+                .removeClass("page-add-edit-error")
                 .end()
                 .find("#page-address").on({
                     input: function input(){
@@ -60,6 +62,8 @@
                         that.val(mxBuilder.pages.validateAddress(that.val()));
                     }
                 })
+                .removeClass("flexly-icon")
+                .removeClass("page-add-edit-error")
                 .end()
                 .find("#page-as-homepage").on({
                     change: function(){
@@ -68,6 +72,7 @@
                 })
                 .end()
                 .find('input[type="checkbox"]').checkbox();
+                
                 
                 if(data){
                     this.__pageID = data.id;
@@ -132,14 +137,30 @@
             validateData: function validateData(){
                 var theData = this.getData();
                 theData.address = theData.address.replace(/[^a-zA-Z0-9_]/g,"");
+                var titleInput = this.__theForm.find("#page-title");
+                var addressInput = this.__theForm.find("#page-address");
+                var error = [];
+                
                 if(theData.title == ""){
-                    mxBuilder.dialogs.alertDialog.show("Title cannot be left blank");
-                    return false;
-                } else if(theData.address == ""){
-                    mxBuilder.dialogs.alertDialog.show("Address field cannot be left blank");
-                    return false;
+                    error.push("Title cannot be left blank");
+                    titleInput.addClass("flexly-icon page-add-edit-error");
+                } else {
+                    titleInput.removeClass("flexly-icon").removeClass("page-add-edit-error");
                 }
-                return theData;
+                
+                if(theData.address == ""){
+                    error.push("Address field cannot be left blank");
+                    addressInput.addClass("flexly-icon page-add-edit-error");
+                } else {
+                    addressInput.removeClass("flexly-icon").removeClass("page-add-edit-error");
+                }
+                
+                if(error.length != 0){
+                    mxBuilder.dialogs.alertDialog.show(error.join("<br/>"));
+                    return false;
+                } else {
+                    return theData;
+                }
             },
             setHomepage: function setHomepage(flag,address){
                 var theAddress = this.__theForm.find("#page-address");
@@ -149,7 +170,7 @@
                     var cachedData = theAddress.data("address-cache");
                     theAddress.removeAttr("disabled").val(address?address:cachedData);
                 }
-            }            
+            }
         }
     });
 }(jQuery));

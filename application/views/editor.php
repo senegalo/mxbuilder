@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/validation.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -480,15 +481,15 @@
             <ul class="photos-properties form" style="height:389px;">
                 <li>
                     <label for="photo-name">Photo Name</label>
-                    <input type="text" id="photo-name" style="width:100%"/>
+                    <input type="text" id="photo-name" style="width:260px"/>
                 </li>
                 <li>
                     <label for="photo-title">Title</label>
-                    <input type="text" id="photo-title"  style="width:100%"/>
+                    <input type="text" id="photo-title"  style="width:260px"/>
                 </li>
                 <li>
                     <label for="photo-caption">Caption</label>
-                    <textarea id="photo-caption" style="width:100%;height:100px;"></textarea>
+                    <textarea id="photo-caption" style="width:260px;height:100px;"></textarea>
                 </li>
             </ul>
 

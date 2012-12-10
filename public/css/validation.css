@@ -1,0 +1,15 @@
+input.page-add-edit-error {
+    background-position: -363px 4px;
+    background-origin: border-box;
+    padding-right: 20px;
+    width: 230px !important;
+    cursor: auto;
+}
+    
+input.image-properties-error {
+    background-position: -363px 4px;
+    background-origin: border-box;
+    padding-right: 20px;
+    width: 230px !important;
+    cursor: auto;
+}

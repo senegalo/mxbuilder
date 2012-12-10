@@ -136,13 +136,13 @@
                 var pages = this.getPages();
                 var out = [];
                 var insertSort = function insertSort(obj){
-                    if(out.length == 0 || obj.order > out[out.length-1].order){
+                    if(out.length == 0 || obj.order >= out[out.length-1].order){
                         out.push(obj);
-                    } else if(obj.order < out[0].order){
+                    } else if(obj.order <= out[0].order){
                         out.splice(0,0,obj);
                     } else {
                         for(var p in out){
-                            if(out[p].order > obj.order){
+                            if(out[p].order >= obj.order){
                                 out.splice(p,0,obj);
                                 return;
                             }

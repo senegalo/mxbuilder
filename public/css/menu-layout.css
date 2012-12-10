@@ -39,8 +39,11 @@
     /*background-color:red;*/
 }
 
-.flexly-icon {
-    background: transparent url('../images/icons.png') no-repeat;
+.flexly-tab-close {
+    float:right;
+    position: relative;
+    top: -15px;
+    left: -7px;
     cursor: pointer;
 }
 
