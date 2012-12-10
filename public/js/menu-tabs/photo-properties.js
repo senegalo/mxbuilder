@@ -33,10 +33,10 @@
                             caption: theTemplate.find("#photo-caption").val()
                         }
                         if(data.name == ""){
-                            photoNameInput.addClass("flexly-icon image-properties-error");
+                            photoNameInput.addClass("image-properties-error");
                             mxBuilder.dialogs.alertDialog.show("Photo must have a name !");
                         } else {
-                            photoNameInput.removeClass("flexly-icon").removeClass("image-properties-error");
+                            photoNameInput.removeClass("image-properties-error");
                             mxBuilder.dialogs.progressDialog.show("Updating image...")
                             mxBuilder.api.assets.updatePhotoProperties({
                                 assetID:assetID,
