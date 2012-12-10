@@ -64,11 +64,6 @@
             
             //adding the instance to the active stack
             mxBuilder.activeStack.push(instance);
-            instance.on({
-                poppedFromActiveStack: function(){
-                    mxBuilder.selection.removeFromSelection(instance);
-                }
-            })
             
             //triggering the selected event
             instance.trigger("selected");

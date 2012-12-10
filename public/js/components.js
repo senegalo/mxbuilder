@@ -9,6 +9,19 @@
             }
             
             this.position = obj.element.position();
+            
+            
+            //applying the popped from the active stack behavior
+            if(!obj.poppedFromActiveStack){
+                obj.poppedFromActiveStack = function(){
+                        mxBuilder.selection.removeFromSelection(obj.element);
+                }
+            }
+            obj.element.on({
+                    poppedFromActiveStack: obj.poppedFromActiveStack
+            });
+            
+            
                 
             //Context Menus
             obj.element.on({

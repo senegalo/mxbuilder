@@ -10,7 +10,15 @@
                 },
                 ctxZIndex: true,
                 selectable: true,
-                element: properties.element
+                element: properties.element,
+                poppedFromActiveStack: function poppedFromActiveStack(){
+                    var theComponent = mxBuilder.components.getComponent($(this));
+                    if(!theComponent.editMode){
+                        mxBuilder.selection.removeFromSelection(theComponent.element);
+                    } else {
+                        mxBuilder.activeStack.push(theComponent.element);
+                    }
+                }
             }]);
     
             properties.element.on({
