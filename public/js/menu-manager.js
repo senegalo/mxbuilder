@@ -5,8 +5,26 @@
         var theMenuTabButtons = theMenuContainer.find(".flexly-tab-buttons");
         var theContentBorder = theMenuContainer.find(".flexly-tab-content-border");
         
-        //Creating the transparent border
-        var theContentTab = theMenuTab.find(".flexly-tab-content").mCustomScrollbar();
+        //Scroll settings
+        var theContentTab = theMenuTab.find(".flexly-tab-content");
+        var maxTop,theContent;
+        
+        theContentTab.mCustomScrollbar({
+            scrollInertia: 550,
+            callbacks: {
+                onScrollStart: function onScrollStart(){
+                    theContent = theContentTab.find(".mCSB_container");
+                    maxTop = -1*(theContent.outerHeight()-theContentTab.height());
+                },
+                whileScrolling: function whileScrolling(){
+                    var theTop = parseInt(theContent.css("top").replace("px",""),10);
+                    if(theTop < maxTop){
+                        theContent.css("top",maxTop);
+                    }
+                },
+                whileScrollingInterval: 20
+            }
+        });
         
         //revalidating the content border...
         var theMenuContainerHeight = theMenuContainer.height();
@@ -30,7 +48,7 @@
         .end()
         .droppable({
             over: function(event,ui){
-               ui.helper.data("deny-drop",true);
+                ui.helper.data("deny-drop",true);
             },
             out: function(event,ui){
                 ui.helper.data("deny-drop",false);

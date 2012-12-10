@@ -34,7 +34,7 @@
         <script type="text/javascript" src="public/js-libs/plupload/plupload.full.js"></script>
         <script type="text/javascript" src="public/js-libs/jsdiff.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
-        <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.min.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
 
         <!--Loading Framework-->
