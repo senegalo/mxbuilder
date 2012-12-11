@@ -13,13 +13,17 @@
             scrollInertia: 550,
             callbacks: {
                 onScrollStart: function onScrollStart(){
-                    theContent = theContentTab.find(".mCSB_container");
-                    maxTop = -1*(theContent.outerHeight()-theContentTab.height());
+                    if(theContent){
+                        theContent = theContentTab.find(".mCSB_container");
+                        maxTop = -1*(theContent.outerHeight()-theContentTab.height());
+                    }
                 },
                 whileScrolling: function whileScrolling(){
-                    var theTop = parseInt(theContent.css("top").replace("px",""),10);
-                    if(theTop < maxTop){
-                        theContent.css("top",maxTop);
+                    if(theContent){
+                        var theTop = parseInt(theContent.css("top").replace("px",""),10);
+                        if(theTop < maxTop){
+                            theContent.css("top",maxTop);
+                        }
                     }
                 },
                 whileScrollingInterval: 20
