@@ -160,11 +160,7 @@
             }
         },
         revalidateSelectionContainer: function revalidateSelectionContainer(instance){
-            if(instance){
-                this.updateSelectionCorners(instance);
-            } else {
-                this.revalidateSelectionCorners();
-            }
+            this.revalidateSelectionCorners();
             if(this.__selectionCount > 0){
                 this.__selectionContainer.show().css({
                     position: "absolute",
