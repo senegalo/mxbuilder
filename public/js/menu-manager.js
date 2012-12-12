@@ -77,7 +77,7 @@
             tabFooterWrapper: theMenuTab.find(".flexly-tab-footer"),
             tabFooter: theMenuTab.find(".flexly-tab-footer-container"),
             menus: {},
-            showTab: function showTab(tabID,extraData){
+            showTab: function(tabID,extraData){
                 if(theMenuContainer.width() < 70){
                     theMenuContainer.animate({
                         width: 380
@@ -89,7 +89,7 @@
                     mxBuilder.menuManager.displayTabContent(tabID,extraData);
                 }
             },
-            displayTabContent: function displayTabContent(tabID,extraData){
+            displayTabContent: function(tabID,extraData){
                 this.contentTab.empty();
                 this.tabButtonsAux.empty();
                 this.tabButtonsMain.empty();
@@ -99,20 +99,20 @@
                 this.menus[tabID].init(extraData);
                 this.revalidate();
             },
-            hideFooter: function hideFooter(){
+            hideFooter: function(){
                 this.tabFooterWrapper.hide();
             },
-            hideTabButtons: function hideTabButtons(){
+            hideTabButtons: function(){
                 this.tabButtons.hide();
             },
-            closeTab: function closeTab(){
+            closeTab: function(){
                 theMenuTab.fadeOut(300,function(){
                     theMenuContainer.animate({
                         width: 68
                     },300,"linear");
                 });
             },
-            revalidate: function revalidate(){
+            revalidate: function(){
                 //hiding everything
                 var theAuxChilds = this.tabButtonsAux.children().hide();
                 var theMainChilds = this.tabButtonsMain.children().hide();
@@ -145,18 +145,18 @@
                 
                 this.revalidateScrollbar();
             },
-            revalidateScrollbar: function revalidateScrollbar(){
+            revalidateScrollbar: function(){
                 theContentTab.mCustomScrollbar("update");
             },
-            addButtonTo: function addButtonTo(button,where,css){
+            addButtonTo: function(button,where,css){
                 where = where == "main" ? mxBuilder.menuManager.tabButtonsMain : mxBuilder.menuManager.tabButtonsAux;
                 return $('<div class="'+button+' flexly-icon"/>').appendTo(where);
             },
-            addFooterCancelButton : function addFooterCancelButton(){
+            addFooterCancelButton : function(){
                 return $('<div class="flexly-icon flexly-icon-cancel-button" style="position:absolute;top: 11px;right: 55px;opacity:0.5"/>')
                 .appendTo(this.tabFooter);
             },
-            addFooterSaveButton: function addFooterSaveButton(){
+            addFooterSaveButton: function(){
                 return $('<div class="flexly-icon flexly-icon-save-button" style="position:absolute;top:5px;right:20px;"/>')
                 .appendTo(this.tabFooter);
             }
