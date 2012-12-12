@@ -25,3 +25,104 @@
 .ui-selected,.ui-selected:focus {
     outline: 1px dashed #444 !important;
 }
+
+
+/** DIALOG THEMING **/
+
+.ui-dialog {
+    background: none;
+    background-color:rgba(0,0,0,.8);
+    border:none;
+    border-radius: 15px;
+    min-width: 512px;
+    padding: 0px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    background: none;
+    border:none;
+    color: #f2f2f2;
+    font-size: 17px;
+    font-weight: normal;
+    padding-bottom: 20px;
+}
+
+.ui-dialog-titlebar .ui-dialog-title {
+    margin-top: 15px;
+    margin-left: 6px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    top: 9px;
+    right: 9px;
+    margin: 0;
+    padding: 0;
+    width: 21px;
+    height: 21px;
+}
+
+.ui-dialog-titlebar-close.ui-state-hover {
+    background: none;
+    border: none;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+    padding: 0px;
+}
+
+.ui-dialog-titlebar-close .ui-icon-closethick {
+    background-image: url("../images/icons.png");
+    background-repeat: no-repeat;
+    background-position: -233px -74px;
+    width: 21px;
+    height: 21px;
+    opacity:.5;
+}
+
+.ui-dialog .ui-dialog-content {
+    background: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    background-color: #dfdcdb;
+    margin: 0 15px;
+    padding-top: 26px;
+    padding-left: 30px;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    background: none;
+    margin-top: 0px;
+    border: none;
+    background-color: #dfdcdb;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    margin: 0 15px 15px 15px;
+    padding: 20px 10px 10px 10px;
+}
+
+.ui-dialog-buttonset {
+    border-top: 1px solid #666666;
+    width: 100%;
+    float:none;
+    text-align: right;
+}
+
+/** Slider Styles **/
+
+.ui-slider.ui-slider-horizontal {
+    height: 2px;
+    background: none;
+    border: none;
+    background-color: #999999;
+}
+
+.ui-slider.ui-slider-horizontal .ui-slider-handle {
+    width: 8px;
+    height: 8px;
+    border-radius: 7px;
+    border: 2px solid #f15a24;
+    top: -5px;
+    background: none;
+    background-color: #f2f2f2;
+    outline: none;
+}

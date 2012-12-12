@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" href="public/css/blitzer/jquery-ui-1.9.1.custom.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/smoothness/jquery-ui-1.9.2.custom.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.css" type="text/css" />
         <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="public/css/menu-layout.css" type="text/css" />
@@ -18,6 +18,7 @@
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/validation.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/dialogs.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -71,6 +72,7 @@
         <script type="text/javascript" src="public/js/layout-background.js"></script>
         <script type="text/javascript" src="public/js/menu-manager.js"></script>
         <script type="text/javascript" src="public/js/notification.js"></script>
+        <script type="text/javascript" src="public/js/flexly-dialog.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -415,7 +417,16 @@
                 </div>
             </div>
             <div class="vline-component-instance" style="height:200px;width:1px;background-color:black;"></div>
-            <div class="alert-dialog"></div>
+            <div class="flexly-dialog">
+                <div class="flexly-icon flexly-icon-alert flexly-dialog-icon"></div>
+                <div class="flexly-dialog-content"></div>
+                <div style="clear:both;"></div>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix flexly-button-pane">
+                    <div class="ui-dialog-buttonset">
+                        
+                    </div>
+                </div>
+            </div>
             <div class="component-background-dialog">
                 <div style="margin-bottom: 10px;">
                     <label for="component-border-color">Color:</label>

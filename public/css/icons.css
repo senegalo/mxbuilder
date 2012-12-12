@@ -261,3 +261,21 @@
     width: 12px;
     height: 12px;
 }
+
+.flexly-icon-alert {
+    background-position: -377px -11px;
+    width: 43px;
+    height: 38px;
+}
+
+.flexly-icon-close-big-black {
+    background-position: -450px -404px;
+    width: 24px;
+    height: 24px;
+}
+
+.flexly-icon-check-big-black {
+    background-position: -488px -404px;
+    width: 24px;
+    height: 24px;
+}

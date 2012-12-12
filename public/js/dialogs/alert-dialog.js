@@ -1,23 +1,25 @@
 (function($){
     
     $(function(){
-        var theDialog = mxBuilder.layout.templates.find(".alert-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
+        var theDialog = mxBuilder.dialogs.flexlyDialog.create({
             zIndex: 10000008,
             resizable: false,
             autoOpen: false,
             modal: true,
             title: "Alert",
-            buttons: {
-                Ok: function(){
+            buttons: [{
+                label: "OK",
+                klass: "flexly-icon-check-big-black",
+                click: function(){
                     $(this).dialog("close");
                 }
-            }
-        })
+            }]
+        });
    
     
         mxBuilder.dialogs.alertDialog = {
             show: function show(msg){
-                theDialog.html(msg);
+                theDialog.find(".flexly-dialog-content").html(msg);
                 theDialog.dialog("open");
             }
         } 
