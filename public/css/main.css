@@ -33,25 +33,25 @@ hr {
     margin-left: -490px;
 }
 
-ul.form {
+.form {
     background-color: rgba(204,204,204,0.9);
     margin: 0 1px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }
 
-ul.form li{
+.form li{
    padding: 8px;
 }
 
-ul.form label {
+.form label {
     display:block;
     color: #4a4a4a;
     font-weight: bold;
     margin-bottom: 9px;
 }
 
-ul.form input {
+.form input {
     border-radius: 6px;
     border-width: 0;
     /*padding: 0 5px 0 5px;*/
@@ -60,14 +60,14 @@ ul.form input {
     background-color: #e6e6e6;
 }
 
-ul.form textarea {
+.form textarea {
     border-radius: 6px;
     border-width: 0px;
     outline: 0px;
     background-color: #e6e6e6;
 }
 
-ul.form label.checkbox-label {
+.form label.checkbox-label {
     position:relative;
     top:-3px;
     display:inline-block;

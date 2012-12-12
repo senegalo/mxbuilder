@@ -15,10 +15,12 @@
         <link rel="stylesheet" href="public/css/menu-pages-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-photos-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/menu-components-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/validation.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/dialogs.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/collapsable-panel.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -73,6 +75,7 @@
         <script type="text/javascript" src="public/js/menu-manager.js"></script>
         <script type="text/javascript" src="public/js/notification.js"></script>
         <script type="text/javascript" src="public/js/flexly-dialog.js"></script>
+        <script type="text/javascript" src="public/js/layout-utils.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -81,6 +84,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
 
 
         <!--Loading Components-->
@@ -423,7 +427,7 @@
                 <div style="clear:both;"></div>
                 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix flexly-button-pane">
                     <div class="ui-dialog-buttonset">
-                        
+
                     </div>
                 </div>
             </div>
@@ -512,6 +516,31 @@
                     <div class="flexly-menu-widget-title"></div>
                 </li>
             </ul>
+
+            <div class="flexly-collapsable-panel">
+                <div class="flexly-collapsable-header">
+                    <div class="flexly-icon flexly-icon-plus-small-grey flexly-collapsable-header-icon"></div>
+                    <div class="flexly-collapsable-title"></div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="flexly-collapsable-content"></div>
+            </div>
+
+            <div class="flexly-menu-component-settings form"></div>
+
+            <div class="test">
+                <p>
+                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+                    suscipit faucibus urna.
+                </p><p>
+                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+                    suscipit faucibus urna.
+                </p>
+            </div>
 
         </div>
 

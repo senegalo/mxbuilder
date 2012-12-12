@@ -146,6 +146,9 @@
                 this.revalidateScrollbar();
             },
             revalidateScrollbar: function(){
+                var theCSB = theContentTab.find(".mCSB_container");
+                theCSB.css("height","");
+                theCSB.height(theCSB.children().height());
                 theContentTab.mCustomScrollbar("update");
             },
             addButtonTo: function(button,where,css){

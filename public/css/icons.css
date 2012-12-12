@@ -279,3 +279,15 @@
     width: 24px;
     height: 24px;
 }
+
+.flexly-icon-plus-small-grey {
+    background-position: -170px -178px;
+    width: 15px;
+    height: 15px;
+}
+
+.flexly-icon-minus-small-grey {
+    background-position: -170px -198px;
+    width: 15px;
+    height: 15px;
+}
