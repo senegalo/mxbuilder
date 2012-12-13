@@ -39,6 +39,7 @@
         <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.min.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
+        <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -85,6 +86,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
+        <script type="text/javascript" src="public/js/settings/border.js"></script>
 
 
         <!--Loading Components-->
@@ -527,6 +529,35 @@
             </div>
 
             <div class="flexly-menu-component-settings form"></div>
+
+            <div class="flexly-component-border-settings">
+                <div class="border-color-title settings-title">Border Color</div>
+                <div>
+                    <input type="text" id="flexly-component-border-color"/>
+                    <canvas class="color-canvas" height="31" width="165"></canvas>
+                    <div style="clear:both;"></div>
+                </div>
+                <div class="border-radius-title settings-title">Border Radius</div>
+                <div style="position:relative;">
+                    <div class="border-radius-value">0 Pixels</div>
+                    <div class="border-radius-slider-l border-radius-slider-t-l"></div>
+                    <div class="border-radius-slider-r border-radius-slider-t-r"></div>
+                    <div class="border-radius-simulator">
+                        <div class="border-radius-sym">
+                            <input type="checkbox" id="flexly-component-border-radius-sym"/>
+                            <label for="flexly-component-border-radius-sym">Symmetric</label>
+                        </div>
+                    </div>
+                    <div class="border-radius-slider-l border-radius-slider-b-l"></div>
+                    <div class="border-radius-slider-r border-radius-slider-b-r"></div>
+                </div>
+                <div class="border-width-title settings-title">Border Width</div>
+                <div>
+                    <div class="border-width-slider"></div>
+                    <div class="border-width-value">0 Pixels</div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
 
             <div class="test">
                 <p>

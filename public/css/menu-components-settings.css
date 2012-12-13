@@ -2,3 +2,105 @@
     position:absolute;
     min-height: 100%;
 }
+
+#flexly-component-border-color, .flexly-component-border-settings .color-canvas {
+    border: 2px solid #999999;
+    border-radius: 6px;
+    float: left;
+}
+
+#flexly-component-border-color {
+    height: 29px;
+    width: 51px;
+    margin-right: 11px;
+}
+
+.settings-title {
+    color:#4b4a4a;
+    margin: 14px 0 7px 0;
+}
+
+.flexly-component-border-settings .border-color-title {
+    margin-top: 0;
+}
+
+
+.flexly-component-border-settings .border-radius-simulator {
+    width: 232px;
+    height: 100px;
+    background-color: #e6e6e6;
+    border: 2px solid #999999;
+    position: relative;
+}
+
+.flexly-component-border-settings .border-radius-sym {
+    margin: 39px auto 0 auto;
+    width: 100px;
+    clear:both;
+}
+
+.flexly-component-border-settings .border-width-value,.flexly-component-border-settings .border-radius-value  {
+    font-size: 10px;
+    color: #4b4a4a;
+}
+
+.flexly-component-border-settings .border-radius-value {
+    position: absolute;
+    right: 6px;
+    top: -16px;
+}
+
+.flexly-component-border-settings .border-radius-slider-t-l {
+    margin-left: 0px;
+    width: 50px;
+    position:relative;
+    top: 2px;
+    left: 1px;
+    background:none;
+}
+
+.flexly-component-border-settings .border-radius-slider-b-l {
+    margin-left: 0px;
+    width: 50px;
+    position:relative;
+    top: -2px;
+    left: 1px;
+    background:none;
+}
+
+.flexly-component-border-settings .border-radius-slider-t-r { 
+    position: absolute;
+    right: 3px;
+    background: none;
+}
+
+.flexly-component-border-settings .border-radius-slider-b-r {
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+    background: none;
+}
+
+.flexly-component-border-settings .border-radius-sym > *{
+    float:left;
+    height: auto;
+    width: auto;
+    margin:0px;
+}
+
+.flexly-component-border-settings .border-radius-sym label {
+    padding: 1px 0 0 4px;
+    font-weight: normal;
+}
+
+.flexly-component-border-settings .border-width-slider {
+    float:left;
+    width: 190px;
+    margin-right: 5px;
+}
+
+.flexly-component-border-settings .border-width-value {
+    float:left;
+    position: relative;
+    top:-5px;
+}

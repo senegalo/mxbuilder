@@ -3,21 +3,16 @@
     $(function(){
         mxBuilder.menuManager.menus.componentSettings = {
             _template: mxBuilder.layout.templates.find(".flexly-menu-component-settings").remove(),
-            init: function(){
+            _settings: {},
+            _display: [],
+            init: function(display){
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
                 mxBuilder.menuManager.tabTitle.text("Settings");
                 
                 var theContent = this._template.clone()
                 
-                var thePanel = mxBuilder.layout.utils.getCollapsablePanel();
-                thePanel.find(".flexly-collapsable-title")
-                .text("Border")
-                .end()
-                .find(".flexly-collapsable-content")
-                .append(mxBuilder.layout.templates.find(".test").clone());
-                
-                theContent.append(thePanel);
+                theContent.append(this._settings.border.getPanel());
                 
                 thePanel = mxBuilder.layout.utils.getCollapsablePanel();
                 thePanel.find(".flexly-collapsable-title")

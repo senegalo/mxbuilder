@@ -29,6 +29,7 @@
                                 element.attr("checked","checked");
                             }
                             methods.update.call(element);
+                            element.trigger("change");
                         }
                     });
                     

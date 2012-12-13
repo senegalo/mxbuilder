@@ -1,1 +1,4 @@
 nbproject
+application/config/config.php
+public/js/config.js
+.htaccess

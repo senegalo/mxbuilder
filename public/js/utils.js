@@ -1,6 +1,45 @@
 (function($){
     mxBuilder.utils = {
         __GUIDS: {},
+        _colorObj:  {
+            r: 0,
+            g: 0,
+            b: 0,
+            a: 1,
+            toString: function toString(){
+                return "rgba("+this.r+", "+this.g+", "+this.b+" , "+this.a+")";
+            },
+            toHex: function toHex(){
+                return "#" + ((1 << 24) + (parseInt(this.r,10) << 16) + (parseInt(this.g,10) << 8) + parseInt(this.b)).toString(16).slice(1);
+            },
+            getInverse: function getInverse(){
+                var out = {};
+                $.extend(out,this,{
+                    r: 255-this.r,
+                    g: 255-this.g,
+                    b: 255-this.b
+                });
+                return out;
+            },
+            equal: function equal(rgba){
+                var out = {};
+                var success = true;
+                for(var p in this){
+                    if(p == "toString" || p == "toHex"  || p == "equal"){
+                        out[p] = this[p];
+                        continue;
+                    }
+                    if(this[p] != rgba[p]){
+                        out[p] = false;
+                        out.dirty = true;
+                        success = false;
+                    } else {
+                        out[p] = this[p];
+                    }
+                }
+                return out;
+            }
+        },
         GUID: function(){
             var randString = mxBuilder.getRandString(12);
             while(typeof this.__GUIDS[randString] != "undefined"){
@@ -34,36 +73,15 @@
             if(rgba[0] != "rgba"){
                 rgba.push(1);
             }
-            return {
+            var out = {};
+            
+            $.extend(out,this._colorObj,{
                 r: rgba[1],
                 g: rgba[2],
                 b: rgba[3],
-                a: rgba[4],
-                toString: function toString(){
-                    return "rgba("+this.r+", "+this.g+", "+this.b+" , "+this.a+")";
-                },
-                toHex: function toHex(){
-                    return "#" + ((1 << 24) + (parseInt(this.r,10) << 16) + (parseInt(this.g,10) << 8) + parseInt(this.b)).toString(16).slice(1);
-                },
-                equal: function equal(rgba){
-                    var out = {};
-                    var success = true;
-                    for(var p in this){
-                        if(p == "toString" || p == "toHex"  || p == "equal"){
-                            out[p] = this[p];
-                            continue;
-                        }
-                        if(this[p] != rgba[p]){
-                            out[p] = false;
-                            out.dirty = true;
-                            success = false;
-                        } else {
-                            out[p] = this[p];
-                        }
-                    }
-                    return out;
-                }
-            };
+                a: rgba[4]
+            });
+            return out;
         },
         strToAddress: function(str){
             return str.replace(/((\s+|[^a-zA-Z0-9]+)(?=$)|[^a-zA-Z0-9\s])/g,"").replace(/\s+/g,"_").toLowerCase();
@@ -76,6 +94,11 @@
                 "background-repeat": element.css("backgroundRepeat"),
                 "background-attachment": element.css("backgroundAttachment")
             }
+        },
+        createColorObj: function(){
+            var out = {};
+            $.extend(out,this._colorObj);
+            return out;
         }
     }
 }(jQuery));

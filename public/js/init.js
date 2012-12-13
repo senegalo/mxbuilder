@@ -18,6 +18,7 @@
                         setInterval(function(){
                             mxBuilder.recorder.saveIfRequired();
                         },5000);
+                        mxBuilder.menuManager.showTab("componentSettings");
                     },
                     error: function(data){
                         mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");

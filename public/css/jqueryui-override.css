@@ -117,12 +117,12 @@
 }
 
 .ui-slider.ui-slider-horizontal .ui-slider-handle {
-    width: 8px;
-    height: 8px;
     border-radius: 7px;
     border: 2px solid #f15a24;
+    display:inline-block;
     top: -5px;
     background: none;
     background-color: #f2f2f2;
     outline: none;
+    margin: 0;
 }

@@ -45,7 +45,7 @@
     if(!String.prototype.uppercaseFirst){
         String.prototype.uppercaseFirst = function(){
             if(this.length > 1){
-                return this.charAt(0).toUpperCase() + this.slice(1).toLowerCase();
+                return this.charAt(0).toUpperCase() + this.slice(1);
             } else { 
                 return this.toUpperCase();
             }
