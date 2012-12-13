@@ -1,7 +1,7 @@
 (function($){
     
     mxBuilder.layout = {     
-        syncContentHeight: function syncContentHeight(){
+        syncContentHeight: function(){
             var heights = {
                 header: this.header.height(),
                 body: this.body.height()
@@ -27,7 +27,7 @@
             this.bodyOutline.outerHeight(heights.body);
             this.footerOutline.outerHeight(heights.footer);
         },
-        getMaxComponentHeight: function getMaxComponentHeight(container){
+        getMaxComponentHeight: function(container){
             var max = 0;
             container = mxBuilder.layout[container];
             var containerPosition = container.position();
@@ -42,7 +42,7 @@
             });
             return max-containerPosition.top;
         },
-        revalidateContainer: function revalidateContainer(container,keepComponentsFlag){
+        revalidateContainer: function(container,keepComponentsFlag){
             //first we get the maximum component height
             var maxHeight = this.getMaxComponentHeight(container);
             
@@ -74,7 +74,7 @@
             }
             
         },
-        revalidateLayout: function revalidateLayout(keepComponentsFlag){
+        revalidateLayout: function(keepComponentsFlag){
             var containers = ["body","footer"];
             for(var c in containers){
                 this.revalidateContainer(containers[c],keepComponentsFlag);
@@ -82,14 +82,14 @@
             
             this.syncContentHeight();
         },
-        revalidateLayoutWidth: function revalidateLayoutWidth(){
+        revalidateLayoutWidth: function(){
             var layoutWidth = this.layoutHeader.outerWidth();
             this.container.children(".mx-component").each(function(){
                 var element = $(this);
                 var position = element.position();
             });
         },
-        setLayout: function setLayout(heights,noOffsetFlag){
+        setLayout: function(heights,noOffsetFlag){
             for(var container in heights){
                 if(noOffsetFlag !== true){
                     this.offsetComponents(container, heights[container]-mxBuilder.layout[container].height());
@@ -100,13 +100,13 @@
                 this.syncContentHeight();
             }
         },
-        outline: function outline(container){
+        outline: function(container){
             this[container].find("."+container+"-outline").show();
         },
-        clearOutline: function clearOutline(container){
+        clearOutline: function(container){
             this[container].find("."+container+"-outline").hide();
         },
-        offsetComponents: function offsetComponents(container, offsetHeight){
+        offsetComponents: function(container, offsetHeight){
             var selector = $();
             //select everything beneath the current container
             if(container == "header"){
