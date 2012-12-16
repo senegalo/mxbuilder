@@ -27,10 +27,10 @@
             y2: 0,
             smallestZIndex: 10000000000000
         },
-        getSelectionContainer: function getSelectionContainer(){
+        getSelectionContainer: function(){
             return this.__selectionContainer;
         },
-        addToSelection: function addToSelection(instance){
+        addToSelection: function(instance){
             
             if(this.isSelected(instance)){
                 return;
@@ -69,7 +69,7 @@
             instance.trigger("selected");
             
         },
-        removeFromSelection: function removeFromSelection(element,skipSelContainerValidation){
+        removeFromSelection: function(element,skipSelContainerValidation){
             
             if(!this.isSelected(element)){
                 return;
@@ -97,7 +97,7 @@
             }
             element.trigger("deselected").trigger("blur");
         },
-        clearSelection: function clearSelection(exclude){
+        clearSelection: function(exclude){
             var selection = this.getSelection();
             if(exclude){
                 selection = selection.not(exclude);
@@ -107,14 +107,14 @@
             });
             this.revalidateSelectionContainer();
         },
-        getSelection: function getSelection(exclude){
+        getSelection: function(exclude){
             var out = $();
             for(var item in this.__selected){
                 out = out.add(this.__selected[item]);
             }
             return out.not(exclude);
         },
-        isAllSelectedSameType: function isAllSelectedSameType(){
+        isAllSelectedSameType: function(){
             var oldType = false;
             var currentType;
             for(var item in this.__selected){
@@ -126,11 +126,11 @@
             }
             return true;
         },
-        isSelected: function isSelected(instance){
+        isSelected: function(instance){
             instance = $(instance);
             return this.__selected[mxBuilder.components.getComponent(instance).getID()]?true:false;
         },
-        toggle: function toggle(instance){
+        toggle: function(instance){
             instance = $(instance);
             if(this.__selected[mxBuilder.components.getComponent(instance).getID()]){
                 this.removeFromSelection(instance);
@@ -138,7 +138,7 @@
                 this.addToSelection(instance);
             }
         },
-        updateSelectionCorners: function updateSelectionCorners(instance){
+        updateSelectionCorners: function(instance){
             var metrics = instance.position();
             $.extend(metrics,{
                 width: instance.outerWidth(),
@@ -147,7 +147,7 @@
             });
             this.updateCornerPoints(metrics);
         },
-        revalidateSelectionCorners: function revalidateSelectionCorners(){
+        revalidateSelectionCorners: function(){
             this.__corners = {
                 x1: 100000,
                 x2: 0,
@@ -159,7 +159,7 @@
                 this.updateSelectionCorners(this.__selected[item]);
             }
         },
-        revalidateSelectionContainer: function revalidateSelectionContainer(instance){
+        revalidateSelectionContainer: function(instance){
             if(instance){
                 this.updateSelectionCorners(instance);
             } else {
@@ -178,7 +178,7 @@
                 this.__selectionContainer.hide();
             }
         },
-        updateCornerPoints: function updateCornerPoints(obj){
+        updateCornerPoints: function(obj){
             if(obj.top < this.__corners.y1 || this.__selectionCount == 1){
                 this.__corners.y1 = obj.top;
             } 
@@ -195,10 +195,10 @@
                 this.__corners.smallestZIndex = obj.zIndex;
             }
         },
-        getSelectionCount: function getSelectionCount(){
+        getSelectionCount: function(){
             return this.__selectionCount;
         },
-        enableMultiComponentSelect: function enableMultiComponentSelect(enableFlag){
+        enableMultiComponentSelect: function(enableFlag){
             if(enableFlag){
                 $("#editor-area").selectable({
                     distance: 2,
@@ -214,7 +214,7 @@
                 $("#editor-area").selectable("destroy");
             }
         },
-        each: function each(callback,includeSelectionContainerFlag){
+        each: function(callback,includeSelectionContainerFlag){
             var selection = this.getSelection();
             if(includeSelectionContainerFlag){
                 selection = selection.add(this.getSelectionContainer());
