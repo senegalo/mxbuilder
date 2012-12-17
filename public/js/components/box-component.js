@@ -6,9 +6,9 @@
                 type: "BoxComponent",
                 draggable: {},
                 resizable: {},
-                ctxZIndex: true,
-                ctxEditableBorder: true,
-                ctxEditableBackground: true,
+                editableZIndex: true,
+                editableBorder: true,
+                editableBackground: true,
                 selectable: true,
                 element: properties.element
             }]);

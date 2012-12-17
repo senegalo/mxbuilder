@@ -9,8 +9,8 @@
                 resizable: {
                     orientation: "h"
                 },
-                ctxZIndex: true,
-                ctxEditableBackground: true,
+                editableZIndex: true,
+                editableBackground: true,
                 selectable: true,
                 element: properties.element
             }]);

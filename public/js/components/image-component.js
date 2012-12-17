@@ -10,8 +10,8 @@
                 type: "ImageComponent",
                 draggable: {},
                 resizable: {},
-                ctxZIndex: true,
-                ctxEditableBorder: true,
+                editableZIndex: true,
+                editableBorder: true,
                 selectable: true,
                 element: properties.element
             }]);

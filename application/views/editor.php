@@ -77,6 +77,7 @@
         <script type="text/javascript" src="public/js/notification.js"></script>
         <script type="text/javascript" src="public/js/flexly-dialog.js"></script>
         <script type="text/javascript" src="public/js/layout-utils.js"></script>
+        <script type="text/javascript" src="public/js/colors-manager.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -534,26 +535,26 @@
                 <div class="border-color-title settings-title">Border Color</div>
                 <div>
                     <input type="text" id="flexly-component-border-color"/>
-                    <canvas class="color-canvas" height="31" width="165"></canvas>
+                    <canvas class="color-canvas" height="35" width="169"></canvas>
                     <div style="clear:both;"></div>
                 </div>
                 <div class="border-radius-title settings-title">Border Radius</div>
                 <div style="position:relative;">
                     <div class="border-radius-value">0 Pixels</div>
-                    <div class="border-radius-slider-l border-radius-slider-t-l"></div>
-                    <div class="border-radius-slider-r border-radius-slider-t-r"></div>
+                    <div class="border-radius-slider-l border-radius-slider-t-l" style="width: 50px;"></div>
+                    <div class="border-radius-slider-r border-radius-slider-t-r" style="width: 50px;"></div>
                     <div class="border-radius-simulator">
                         <div class="border-radius-sym">
                             <input type="checkbox" id="flexly-component-border-radius-sym"/>
                             <label for="flexly-component-border-radius-sym">Symmetric</label>
                         </div>
                     </div>
-                    <div class="border-radius-slider-l border-radius-slider-b-l"></div>
-                    <div class="border-radius-slider-r border-radius-slider-b-r"></div>
+                    <div class="border-radius-slider-l border-radius-slider-b-l" style="width: 50px;"></div>
+                    <div class="border-radius-slider-r border-radius-slider-b-r" style="width: 50px;"></div>
                 </div>
                 <div class="border-width-title settings-title">Border Width</div>
                 <div>
-                    <div class="border-width-slider"></div>
+                    <div class="border-width-slider" style="width:190px;"></div>
                     <div class="border-width-value">0 Pixels</div>
                     <div style="clear:both;"></div>
                 </div>

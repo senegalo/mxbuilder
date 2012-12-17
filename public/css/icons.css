@@ -291,3 +291,27 @@
     width: 15px;
     height: 15px;
 }
+
+.flexly-icon-cancel-big-black {
+    background-position: -447px -404px;
+    width: 30px;
+    height: 37px;
+}
+
+.flexly-icon-save-big-black {
+    background-position: -488px -404px;
+    width: 24px;
+    height: 37px;
+}
+
+.flexly-icon-preview-enabled{
+    background-position: -525px -403px;
+    width: 37px;
+    height: 38px;
+}
+
+.flexly-icon-preview-disabled {
+    background-position: -568px -403px;
+    width: 37px;
+    height: 38px;
+}

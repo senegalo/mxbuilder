@@ -14,11 +14,11 @@
             //applying the popped from the active stack behavior
             if(!obj.poppedFromActiveStack){
                 obj.poppedFromActiveStack = function(){
-                        mxBuilder.selection.removeFromSelection(obj.element);
+                    mxBuilder.selection.removeFromSelection(obj.element);
                 }
             }
             obj.element.on({
-                    poppedFromActiveStack: obj.poppedFromActiveStack
+                poppedFromActiveStack: obj.poppedFromActiveStack
             });
             
             
@@ -39,25 +39,13 @@
                                 mxBuilder.selection.addToSelection(obj.element);
                             }
                             
-                            //The Background manipulation context
-                            if(obj.ctxEditableBackground){
-                                ctx.addItem({
-                                    label: "Background Style...",
-                                    callback: function(){
-                                        mxBuilder.dialogs.componentsBackground.show(mxBuilder.selection.getSelection());
-                                    }
-                                });
-                            }
+                            ctx.addItem({
+                                label: "Settings...",
+                                callback: function(){
+                                    mxBuilder.menuManager.showTab("componentSettings");
+                                }
+                            });
                             
-                            //The Border manipulation context
-                            if(obj.ctxEditableBorder){
-                                ctx.addItem({
-                                    label: "Border Style...",
-                                    callback: function(){
-                                        mxBuilder.dialogs.componentsBorder.show(mxBuilder.selection.getSelection());
-                                    }
-                                });
-                            }
                             //Activating Z-Index Manipulation context
                             if(obj.ctxZIndex && mxBuilder.selection.getSelectionCount() < 2){              
                                 ctx.addSubgroup({ 
@@ -339,11 +327,14 @@
             if(this.ctxZIndex){
                 out.css.zIndex = this.element.css("zIndex");
             }
-            if(this.ctxEditableBorder){
+            if(this.editableBorder){
                 out.css.border = this.element.css("border");
-                out.css.borderRadius = this.element.css("borderRadius");
+                var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
+                for(var c in corners){
+                    out.css['border'+corners[c]+'Radius'] = this.element.css("border"+corners[c]+"Radius");
+                }
             }
-            if(this.ctxEditableBackground){
+            if(this.editableBackground){
                 out.css.background = this.element.css("background");
             }
             out.data.container = this.container;

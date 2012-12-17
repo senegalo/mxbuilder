@@ -3,7 +3,7 @@
     min-height: 100%;
 }
 
-#flexly-component-border-color, .flexly-component-border-settings .color-canvas {
+#flexly-component-border-color {
     border: 2px solid #999999;
     border-radius: 6px;
     float: left;
@@ -52,7 +52,6 @@
 
 .flexly-component-border-settings .border-radius-slider-t-l {
     margin-left: 0px;
-    width: 50px;
     position:relative;
     top: 2px;
     left: 1px;
@@ -61,7 +60,6 @@
 
 .flexly-component-border-settings .border-radius-slider-b-l {
     margin-left: 0px;
-    width: 50px;
     position:relative;
     top: -2px;
     left: 1px;
@@ -103,4 +101,19 @@
     float:left;
     position: relative;
     top:-5px;
+}
+
+.flexly-component-settings-cancel {
+    float:left;
+    margin-left: 21px;
+}
+
+.flexly-component-settings-save {
+    float:left;
+    margin-left: 11px;
+}
+
+.flexly-component-settings-preview {
+    float:right;
+    margin-right: 17px;
 }

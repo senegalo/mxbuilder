@@ -4,17 +4,24 @@
         mxBuilder.menuManager.menus.componentSettings._settings.border = {
             _template: mxBuilder.layout.templates.find(".flexly-component-border-settings").remove(),
             _symmetricRadius: false,
+            _currentInstance: null,
+            _widthSlider: null,
+            _widthValue: null,
+            _simulator: null,
+            _radiusValue: null,
+            _colorCanvas: null,
+            _canvasCtx: null,
+            _colorInput: null,
+            _simulatorSliderTopLeft: null,
+            _simulatorSliderTopRight: null,
+            _simulatorSliderBottomLeft: null,
+            _simulatorSliderBottomRight: null,
+            _originalSettings: null,
             getPanel: function(){
                 
-                var componentSettings = this;
-                var theContent = this._template.clone();
-                var widthSlider = theContent.find(".border-width-slider");
-                var widthValue = theContent.find(".border-width-value");
-                var simulator = theContent.find(".border-radius-simulator");
-                var radiusValue = theContent.find(".border-radius-value");
-                var colorCanvas = theContent.find(".color-canvas");
-                var canvasCtx = colorCanvas.get(0).getContext("2d");
-                var colorInput = theContent.find("#flexly-component-border-color");
+                var borderSettings = this;
+                this._currentInstance = this._template.clone();
+                this.updateInstanceVariables();
                 
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel();
                 thePanel.find(".flexly-collapsable-title")
@@ -24,136 +31,265 @@
                 //Color Canvas
                 var image = $('<img src="public/images/palette.png"/>').on({
                     load: function load(){
-                        canvasCtx.drawImage(image.get(0),0,0);
+                        borderSettings._canvasCtx.drawImage(image.get(0),0,0);
                     }
                 });
-                
-                colorCanvas.on({
+                borderSettings._colorCanvas.on({
                     mousemove: function mousemove(event){
-                        var canvasOffset = colorCanvas.offset();
+                        var canvasOffset = borderSettings._colorCanvas.offset();
                         var canvasX = Math.floor(event.pageX - canvasOffset.left);
                         var canvasY = Math.floor(event.pageY - canvasOffset.top);
 
-                        var imageData = canvasCtx.getImageData(canvasX, canvasY, 1, 1);
+                        var imageData = borderSettings._canvasCtx.getImageData(canvasX, canvasY, 1, 1);
                         
-                        var colorObj = {};
-                        $.extend(colorObj,mxBuilder.utils.createColorObj(),{
-                            r: imageData.data[0],
-                            g: imageData.data[1],
-                            b: imageData.data[2]
-                        });
-                        colorInput.css({
+                        var colorObj = mxBuilder.colorsManager.createColorObjFromRGBA(imageData.data[0], imageData.data[1], imageData.data[2]);
+                        borderSettings._colorInput.css({
                             backgroundColor:colorObj.toHex(),
                             color: colorObj.getInverse().toHex()
                         });
                     },
                     mouseout: function mouseout(){
-                        colorInput.css("backgroundColor",colorInput.val());
+                        var colorObj = mxBuilder.colorsManager.createColorObjFromHEXString(borderSettings._colorInput.val());
+                        borderSettings._colorInput.css({
+                            backgroundColor: colorObj.toString(),
+                            color: colorObj.getInverse().toString()
+                        });
                     },
                     mousedown: function mousedown(event){
-                        var canvasOffset = colorCanvas.offset();
+                        var canvasOffset = borderSettings._colorCanvas.offset();
                         var canvasX = Math.floor(event.pageX - canvasOffset.left);
                         var canvasY = Math.floor(event.pageY - canvasOffset.top);
 
-                        var imageData = canvasCtx.getImageData(canvasX, canvasY, 1, 1);
+                        var imageData = borderSettings._canvasCtx.getImageData(canvasX, canvasY, 1, 1);
                         
-                        var colorObj = {};
-                        $.extend(colorObj,mxBuilder.utils.createColorObj(),{
-                            r: imageData.data[0],
-                            g: imageData.data[1],
-                            b: imageData.data[2]
-                        });
-                        colorInput.val(colorObj.toHex()).css({
+                        var colorObj = mxBuilder.colorsManager.createColorObjFromRGBA(imageData.data[0], imageData.data[1], imageData.data[2]);
+                        borderSettings._colorInput.val(colorObj.toHex()).css({
                             backgroundColor:colorObj.toHex(),
                             color: colorObj.getInverse().toHex()
                         });
+                        
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            mxBuilder.selection.each(function(){
+                                this.element.css({
+                                    borderColor:colorObj.toString(),
+                                    borderStyle: "solid"
+                                });
+                            });
+                        }                        
                         return false;
                     }                        
                 });
                 
                 
                 //Simulator checkbox
-                theContent.find("#flexly-component-border-radius-sym").checkbox().on({
+                this._currentInstance.find("#flexly-component-border-radius-sym").checkbox().on({
                     change: function change(){
-                       componentSettings._symmetricRadius = $(this).is(":checked");
-                       if(componentSettings._symmetricRadius){
-                           console.log(topLeftRadiusSlider.customSlider("value"));
-                           componentSettings.setSimRadius(simulator, "topLeft", topLeftRadiusSlider.customSlider("value"))
-                       }
+                        borderSettings._symmetricRadius = $(this).is(":checked");
+                        if(borderSettings._symmetricRadius){
+                            borderSettings.setSimRadius("topLeft", borderSettings._simulatorSliderTopLeft.customSlider("value"));
+                        }
                     }
                 });
-                
                 //Radius Sliders
                 //top left
-                var topLeftRadiusSlider = theContent.find(".border-radius-slider-t-l").customSlider({
+                this._simulatorSliderTopLeft.customSlider({
                     max: 50,
                     min: 0,
                     slide: function slide(event,ui){
-                        componentSettings.setSimRadius(simulator, "topLeft",ui.value);
-                        radiusValue.text(ui.value+" Pixels");
+                        borderSettings.setSimRadius("topLeft",ui.value);
+                        borderSettings._radiusValue.text(ui.value+" Pixels");
                     }
                 });
                 //bottom left
-                theContent.find(".border-radius-slider-b-l").customSlider({
+                this._simulatorSliderBottomLeft.customSlider({
                     max: 50,
                     min: 0,
                     slide: function slide(event,ui){
-                        componentSettings.setSimRadius(simulator, "bottomLeft",ui.value);
-                        radiusValue.text(ui.value+" Pixels");
+                        borderSettings.setSimRadius("bottomLeft",ui.value);
+                        borderSettings._radiusValue.text(ui.value+" Pixels");
                     }
                 });
                 //top right
-                theContent.find(".border-radius-slider-t-r").width(50).customSlider({
+                this._simulatorSliderTopRight.width(50).customSlider({
                     max: 50,
                     min: 0,
                     value: 50,
                     slide: function slide(event,ui){
                         ui.value = 50-ui.value;
-                        componentSettings.setSimRadius(simulator, "topRight",ui.value);
-                        radiusValue.text(ui.value+" Pixels");
+                        borderSettings.setSimRadius("topRight",ui.value);
+                        borderSettings._radiusValue.text(ui.value+" Pixels");
                     }
                 });
                 //bottom right
-                theContent.find(".border-radius-slider-b-r").width(50).customSlider({
+                this._simulatorSliderBottomRight.width(50).customSlider({
                     max: 50,
                     min: 0,
                     value: 50,
                     slide: function slide(event,ui){
                         ui.value = 50-ui.value;
-                        componentSettings.setSimRadius(simulator, "bottomRight",ui.value);
-                        radiusValue.text(ui.value+" Pixels");
+                        borderSettings.setSimRadius("bottomRight",ui.value);
+                        borderSettings._radiusValue.text(ui.value+" Pixels");
                     }
                 });
-                
                 
                 
                 //Width Slider
-                widthSlider.customSlider({
+                this._widthSlider.customSlider({
                     max: 50,
                     min: 0,
                     slide: function slide(event,ui){
-                        widthValue.text(ui.value+" Pixels");
+                        borderSettings._widthValue.text(ui.value+" Pixels");
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            mxBuilder.selection.each(function(){
+                                this.element.css({
+                                    borderWidth:ui.value+"px",
+                                    borderStyle: "solid"
+                                });
+                            });
+                            mxBuilder.selection.revalidateSelectionContainer();
+                        }
                     }
                 });
                 
-                
+                thePanel.on({
+                    previewEnabled: function(){
+                        borderSettings.applyValuesToSelection();
+                    },
+                    save: function(){
+                        borderSettings.applyValuesToSelection();
+                        mxBuilder.menuManager.closeTab();
+                    },
+                    previewDisabled: function(){
+                        mxBuilder.selection.each(function(){
+                            this.element.css(borderSettings._originalSettings);
+                        });
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    },
+                    cancel: function(){
+                        mxBuilder.selection.each(function(){
+                            this.element.css(borderSettings._originalSettings);
+                        });
+                        mxBuilder.selection.revalidateSelectionContainer();
+                        mxBuilder.menuManager.closeTab();
+                    }
+                })
                 
                 thePanel.find(".flexly-collapsable-content")
-                .append(theContent);
+                .append(borderSettings._currentInstance);
+                
+                //Read the selection values and preset it 
+                this._originalSettings = this.readSelectionSettings();
+                this.setValues(this._originalSettings);
                 
                 return thePanel;
             },
-            setSimRadius: function(sim,pos,val){
+            setSimRadius: function(pos,val){
+                var cssRule;
                 if(this._symmetricRadius){
-                    sim.css("border-radius",val);
-                    sim.parent().find(".border-radius-slider-l")
+                    this._simulator.css("border-radius",val);
+                    this._simulator.parent().find(".border-radius-slider-l")
                     .customSlider("value",val)
                     .end()
                     .find(".border-radius-slider-r")
                     .customSlider("value",50-val);
+                    if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                        cssRule = {
+                            borderRadius:val+"px",
+                            borderStyle: "solid"
+                        }
+                    }
                 } else {
-                    sim.css('border'+pos.uppercaseFirst()+'Radius',val);
+                    this._simulator.css('border'+pos.uppercaseFirst()+'Radius',val);
+                    cssRule = {
+                        borderStyle: "solid"
+                    }
+                    cssRule['border'+pos.uppercaseFirst()+'Radius'] = val;
                 }
+                if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                    mxBuilder.selection.each(function(){
+                        this.element.css(cssRule);
+                    });
+                }
+            },
+            readSelectionSettings: function(){
+                var settings = {};
+                var firstRun = true;
+                mxBuilder.selection.each(function(){
+                    var styles = ["borderWidth","borderColor","borderTopLeftRadius","borderTopRightRadius","borderBottomLeftRadius","borderBottomRightRadius"];
+                    for(var s in styles){
+                        var style = this.element.css(styles[s]);
+                        if(firstRun){
+                            settings[styles[s]] = style;
+                        } else if(settings[styles[s]] !== style){
+                            settings[styles[s]] = false;
+                        }
+                    }
+                    firstRun = false;
+                });
+                return settings;
+            },
+            applyValuesToSelection: function(){
+                
+                var borderSettings = this;
+                
+                mxBuilder.selection.each(function(){
+                    var cssRules = {
+                        borderColor: borderSettings._colorInput.val(),
+                        borderWidth: borderSettings._widthSlider.customSlider("value")
+                    }
+                    if(borderSettings._symmetricRadius){
+                        cssRules.borderRadius = borderSettings._simulatorSliderTopLeft.customSlider("value");
+                    } else {
+                        var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
+                        for(var c in corners){
+                            var borderRadius =  borderSettings['_simulatorSlider'+corners[c]].customSlider("value");
+                            if(c > 1){
+                                borderRadius = 50 - borderRadius;
+                            }
+                            cssRules['border'+corners[c]+'Radius'] = borderRadius;
+                        }
+                    }
+                    this.element.css(cssRules);
+                });
+                
+                mxBuilder.selection.revalidateSelectionContainer();
+                
+            },
+            setValues: function(values){
+                if(values.borderColor){
+                    var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.borderColor);
+                    this._colorInput.val(colorObj.toHex()).css({
+                        backgroundColor: colorObj.toHex(),
+                        color: colorObj.getInverse().toHex()
+                    });
+                }
+                if(values.borderWidth){
+                    values.borderWidth = parseInt(values.borderWidth.replace("px",""),10);
+                    this._widthValue.text(values.borderWidth+" Pixel");
+                    this._widthSlider.customSlider("value",values.borderWidth);
+                }
+                
+                var corners = ["TopLeft","TopRight","BottomLeft","BottomRight"];
+                for(var c in corners){
+                    if(values["border"+corners[c]+"Radius"]){
+                        values["border"+corners[c]+"Radius"] = parseInt(values["border"+corners[c]+"Radius"].replace("px",""),10);
+                        this.setSimRadius(corners[c], values["border"+corners[c]+"Radius"]);
+                        this["_simulatorSlider"+corners[c]].customSlider("value",corners[c].match(/.*Right/)?50-values["border"+corners[c]+"Radius"]:values["border"+corners[c]+"Radius"]);
+                    }
+                }
+            },
+            updateInstanceVariables: function(){
+                this._widthSlider = this._currentInstance.find(".border-width-slider");
+                this._widthValue = this._currentInstance.find(".border-width-value");
+                this._simulator = this._currentInstance.find(".border-radius-simulator");
+                this._simulatorSliderTopLeft = this._simulator.parent().find(".border-radius-slider-t-l");
+                this._simulatorSliderTopRight = this._simulator.parent().find(".border-radius-slider-t-r");
+                this._simulatorSliderBottomLeft = this._simulator.parent().find(".border-radius-slider-b-l");
+                this._simulatorSliderBottomRight = this._simulator.parent().find(".border-radius-slider-b-r");
+                this._radiusValue = this._currentInstance.find(".border-radius-value");
+                this._colorCanvas = this._currentInstance.find(".color-canvas");
+                this._canvasCtx = this._colorCanvas.get(0).getContext("2d");
+                this._colorInput = this._currentInstance.find("#flexly-component-border-color");
             }
         }
     });

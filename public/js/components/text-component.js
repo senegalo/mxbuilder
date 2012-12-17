@@ -8,7 +8,7 @@
                 resizable: {
                     orientation: "h"
                 },
-                ctxZIndex: true,
+                editableZIndex: true,
                 selectable: true,
                 element: properties.element,
                 poppedFromActiveStack: function poppedFromActiveStack(){
