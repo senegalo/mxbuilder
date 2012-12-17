@@ -9,9 +9,12 @@
             _widthValue: null,
             _simulator: null,
             _radiusValue: null,
-            _colorCanvas: null,
-            _canvasCtx: null,
-            _colorInput: null,
+            
+            _picker: null,
+            //            _colorCanvas: null,
+            //            _canvasCtx: null,
+            //            _colorInput: null,
+            
             _simulatorSliderTopLeft: null,
             _simulatorSliderTopRight: null,
             _simulatorSliderBottomLeft: null,
@@ -28,58 +31,18 @@
                 .text("Border")
                 .end();
                 
-                //Color Canvas
-                var image = $('<img src="public/images/palette.png"/>').on({
-                    load: function load(){
-                        borderSettings._canvasCtx.drawImage(image.get(0),0,0);
-                    }
-                });
-                borderSettings._colorCanvas.on({
-                    mousemove: function mousemove(event){
-                        var canvasOffset = borderSettings._colorCanvas.offset();
-                        var canvasX = Math.floor(event.pageX - canvasOffset.left);
-                        var canvasY = Math.floor(event.pageY - canvasOffset.top);
-
-                        var imageData = borderSettings._canvasCtx.getImageData(canvasX, canvasY, 1, 1);
-                        
-                        var colorObj = mxBuilder.colorsManager.createColorObjFromRGBA(imageData.data[0], imageData.data[1], imageData.data[2]);
-                        borderSettings._colorInput.css({
-                            backgroundColor:colorObj.toHex(),
-                            color: colorObj.getInverse().toHex()
-                        });
-                    },
-                    mouseout: function mouseout(){
-                        var colorObj = mxBuilder.colorsManager.createColorObjFromHEXString(borderSettings._colorInput.val());
-                        borderSettings._colorInput.css({
-                            backgroundColor: colorObj.toString(),
-                            color: colorObj.getInverse().toString()
-                        });
-                    },
-                    mousedown: function mousedown(event){
-                        var canvasOffset = borderSettings._colorCanvas.offset();
-                        var canvasX = Math.floor(event.pageX - canvasOffset.left);
-                        var canvasY = Math.floor(event.pageY - canvasOffset.top);
-
-                        var imageData = borderSettings._canvasCtx.getImageData(canvasX, canvasY, 1, 1);
-                        
-                        var colorObj = mxBuilder.colorsManager.createColorObjFromRGBA(imageData.data[0], imageData.data[1], imageData.data[2]);
-                        borderSettings._colorInput.val(colorObj.toHex()).css({
-                            backgroundColor:colorObj.toHex(),
-                            color: colorObj.getInverse().toHex()
-                        });
-                        
+                this._picker.customColorpicker().on({
+                    pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
                                 this.element.css({
-                                    borderColor:colorObj.toString(),
+                                    borderColor:color.toString(),
                                     borderStyle: "solid"
                                 });
                             });
-                        }                        
-                        return false;
-                    }                        
+                        } 
+                    }
                 });
-                
                 
                 //Simulator checkbox
                 this._currentInstance.find("#flexly-component-border-radius-sym").checkbox().on({
@@ -234,7 +197,7 @@
                 
                 mxBuilder.selection.each(function(){
                     var cssRules = {
-                        borderColor: borderSettings._colorInput.val(),
+                        borderColor: borderSettings._picker.customColorpicker("value"),
                         borderWidth: borderSettings._widthSlider.customSlider("value")
                     }
                     if(borderSettings._symmetricRadius){
@@ -258,10 +221,7 @@
             setValues: function(values){
                 if(values.borderColor){
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.borderColor);
-                    this._colorInput.val(colorObj.toHex()).css({
-                        backgroundColor: colorObj.toHex(),
-                        color: colorObj.getInverse().toHex()
-                    });
+                    this._picker.customColorpicker("value",colorObj);
                 }
                 if(values.borderWidth){
                     values.borderWidth = parseInt(values.borderWidth.replace("px",""),10);
@@ -287,9 +247,12 @@
                 this._simulatorSliderBottomLeft = this._simulator.parent().find(".border-radius-slider-b-l");
                 this._simulatorSliderBottomRight = this._simulator.parent().find(".border-radius-slider-b-r");
                 this._radiusValue = this._currentInstance.find(".border-radius-value");
-                this._colorCanvas = this._currentInstance.find(".color-canvas");
-                this._canvasCtx = this._colorCanvas.get(0).getContext("2d");
-                this._colorInput = this._currentInstance.find("#flexly-component-border-color");
+                
+                this._picker = this._currentInstance.find(".picker");
+                
+            //                this._colorCanvas = this._currentInstance.find(".color-canvas");
+            //                this._canvasCtx = this._colorCanvas.get(0).getContext("2d");
+            //                this._colorInput = this._currentInstance.find("#flexly-component-border-color");
             }
         }
     });

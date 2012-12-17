@@ -16,11 +16,14 @@
         <link rel="stylesheet" href="public/css/menu-photos-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-widgets-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-components-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/border-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/background-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/components.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/validation.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/dialogs.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/collapsable-panel.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/colorpicker.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -40,6 +43,7 @@
         <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.min.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
+        <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -88,6 +92,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
         <script type="text/javascript" src="public/js/settings/border.js"></script>
+        <script type="text/javascript" src="public/js/settings/background.js"></script>
 
 
         <!--Loading Components-->
@@ -533,10 +538,7 @@
 
             <div class="flexly-component-border-settings">
                 <div class="border-color-title settings-title">Border Color</div>
-                <div>
-                    <input type="text" id="flexly-component-border-color"/>
-                    <canvas class="color-canvas" height="35" width="169"></canvas>
-                    <div style="clear:both;"></div>
+                <div class="picker">
                 </div>
                 <div class="border-radius-title settings-title">Border Radius</div>
                 <div style="position:relative;">
@@ -558,6 +560,25 @@
                     <div class="border-width-value">0 Pixels</div>
                     <div style="clear:both;"></div>
                 </div>
+            </div>
+            
+            <div class="flexly-component-background-settings">
+                <div class="settings-title">Background Color</div>
+                <div class="picker">
+                    
+                </div>
+                
+                <div class="settings-title">Pattern</div>
+                <div class="patterns">
+                    
+                </div>
+                
+                <div class="settings-title">Scale: <span class="scale-value">100%</span></div>
+                <div class="scale-slider" style="width:238px;"></div>
+                
+                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+                <div class="opacity-slider" style="width:238px;"></div>
+                
             </div>
 
             <div class="test">

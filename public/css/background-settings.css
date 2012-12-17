@@ -1,0 +1,15 @@
+#flexly-component-background-color {
+    border: 2px solid #999999;
+    border-radius: 6px;
+    float: left;
+    height: 29px;
+    width: 51px;
+    margin-right: 11px;
+}
+
+.patterns {
+    width: 214px;
+    height: 104px;
+    border: 2px solid #999999;
+    border-radius: 6px;
+}

@@ -1,0 +1,8 @@
+.flexly-color-picker input.flexly-color-picker-input {
+    border: 2px solid #999999;
+    border-radius: 6px;
+    float: left;
+    height: 29px;
+    width: 51px;
+    margin-right: 11px;
+}

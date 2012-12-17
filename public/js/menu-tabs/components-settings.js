@@ -29,14 +29,7 @@
                 }
                     
                 if(displaySettings.background){
-                    var thePanel = mxBuilder.layout.utils.getCollapsablePanel();
-                    thePanel.find(".flexly-collapsable-title")
-                    .text("Background")
-                    .end()
-                    .find(".flexly-collapsable-content")
-                    .append(mxBuilder.layout.templates.find(".test").clone());
-                
-                    theContent.append(thePanel);
+                    theContent.append(this._settings.background.getPanel());
                 }
                 
                 //the cancel / savebutton 
