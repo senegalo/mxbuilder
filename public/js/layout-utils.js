@@ -15,6 +15,7 @@
                         var theHead = $(this);
                         theContent.slideToggle(300,function(){
                             theHead.find(".flexly-icon").removeClass(classes[(newArrow+1)%2]).addClass(classes[newArrow]);
+                            thePanel.trigger(newArrow === 0 ? "panelClose" : "panelOpen");
                             mxBuilder.menuManager.revalidateScrollbar();
                         });
                     }

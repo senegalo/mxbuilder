@@ -8,8 +8,32 @@
 }
 
 .patterns {
+    width: 234px;
+    height: 104px;
+    overflow:hidden;
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+
+.patterns-container {
+    position:relative;
+}
+
+.patterns-border {
     width: 214px;
     height: 104px;
     border: 2px solid #999999;
     border-radius: 6px;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+.pattern-sample {
+    background-image: url("../images/patterns.png");
+    height: 60px;
+    width: 214px;
+    background-position-x: 0px;
+    border-bottom: 1px solid #999;
 }

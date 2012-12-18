@@ -569,8 +569,9 @@
                 </div>
                 
                 <div class="settings-title">Pattern</div>
-                <div class="patterns">
-                    
+                <div class="patterns-container">
+                    <!--<div class="patterns-border"></div>-->
+                    <select class="patterns"></select>
                 </div>
                 
                 <div class="settings-title">Scale: <span class="scale-value">100%</span></div>
@@ -579,20 +580,6 @@
                 <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
                 <div class="opacity-slider" style="width:238px;"></div>
                 
-            </div>
-
-            <div class="test">
-                <p>
-                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-                    suscipit faucibus urna.
-                </p><p>
-                    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-                    suscipit faucibus urna.
-                </p>
             </div>
 
         </div>

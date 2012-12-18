@@ -1,0 +1,166 @@
+(function($){
+    
+    //helper functions
+    var helpers = {
+        update: function(element){
+            var vScrollbarIndicator = element.find(".jquery-scrollbar-vertical-indicator");
+            var hScrollbarIndicator = element.find(".jquery-scrollbar-horizontal-indicator");
+            var container = element.find(".jquery-scrollbar-container");
+            var containerHeight = container.height();
+            var containerWidth = container.width();
+            //checking for vertical scroll
+            if(container.get(0).scrollHeight > containerHeight){
+                //get the vertical scrollbar height
+                var vScrollbar = element.find(".jquery-scrollbar-vertical");
+                var vScrollbarHeight = vScrollbar.height();
+                
+                //calculating the horizontal scrollbar indicator height
+                //the size is calculated based on how many % is visible.. so if 50% of the content is visible
+                //then the scrollbar indicator will have 50% of the scrollbar height
+                vScrollbarIndicator.height((1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight);
+                
+                vScrollbarIndicator.show();
+            } else {
+                vScrollbarIndicator.hide();
+            }
+            
+            //checking for horizontal scroll
+            if(container.get(0).scrollWidth > containerWidth){
+                //get the vertical scrollbar width
+                var hScrollbar = element.find(".jquery-scrollbar-horizontal");
+                var hScrollbarWidth = hScrollbar.width();
+                
+                //calculating the horizontal scrollbar indicator width
+                //the size is calculated based on how many % is visible.. so if 50% of the content is visible
+                //then the scrollbar indicator will have 50% of the scrollbar width
+                hScrollbarIndicator.width((1-((container.get(0).scrollWidth-containerWidth)/container.get(0).scrollWidth))*hScrollbarWidth);
+                
+                hScrollbarIndicator.show();
+            } else {
+                hScrollbarIndicator.hide();
+            }
+        }
+    };
+    
+    //default settings
+    var settings = {
+        vertical: true,
+        horizontal: false
+    }
+    
+    $.fn.jqueryScrollbar = function(method){
+        var methods = {
+            init: function(){
+                return this.each(function(){
+                    var element = $(this);
+                    
+                    //isolating the content
+                    var container = $('<div class="jquery-scrollbar-container"/>').append(element.contents()).appendTo(element);
+                    
+                    //overriding the container default overflow
+                    container.css({
+                        overflow: "hidden",
+                        height: "100%",
+                        width: "100%"
+                    });
+                    
+                    //Changing some of the element properties to fix the horizontal and vertical bars
+                    var elementCss = {
+                        paddingRight: 8,
+                        paddingBottom: 8
+                    };
+                    if(element.css("position") == "static") {
+                        elementCss.position = "relative";
+                    }
+                    element.css(elementCss);
+                    
+                    //creating the vertical scroll elements if required
+                    if(settings.vertical){
+                        var vScrollbar = $('<div class="jquery-scrollbar-vertical"></div>').appendTo(element).on({
+                            mousedown: function(event){
+                                var element = $(this);
+                                var init = {
+                                    init: true,
+                                    scrollbarPosition: vScrollbar.offset()
+                                }
+                                init.scrollbarPosition.bottom = init.scrollbarPosition.top+vScrollbar.height();
+                                init.maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
+                                element.data("jquery-scrollbar-init",init);
+                                event.preventDefault();
+                            }
+                        });
+                        
+                        //hooking the mousewheel events
+                        element.on({
+                            mousewheel: function(event,delta,deltaX,deltaY){
+                                var vScrollbar = element.find(".jquery-scrollbar-vertical");
+                                var maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
+                                var vScrollbarHandleTop = parseInt(vScrollbarIndicator.css("top").replace("px"),10);
+                                var top = vScrollbarHandleTop - delta*3;
+                                
+                                top = top<0?0:top;
+                                top = top>maxIndicatorTop?maxIndicatorTop:top;
+                                
+                                vScrollbarIndicator.css("top",top);
+                                var theContainer = element.find(".jquery-scrollbar-container");
+                                
+                                theContainer.get(0).scrollTop=(top/maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
+                                
+                                console.log(vScrollbarHandleTop,top,maxIndicatorTop);
+                            }
+                        })
+                        
+                        //on mousedown tell the mouse move to scroll on mouseup on the document clear that flag
+                        var vScrollbarIndicator = $('<div class="jquery-scrollbar-vertical-indicator"></div>').appendTo(vScrollbar);
+                        //clearing the mousemove scroll flag
+                        $(document).on({
+                            mouseup: function(event){
+                                vScrollbar.data("jquery-scrollbar-init",false);
+                            },
+                            mousemove: function(event){
+                                var theContainer = element.find(".jquery-scrollbar-container");
+                                var scrollInitObj = vScrollbar.data("jquery-scrollbar-init");
+                                if(scrollInitObj && scrollInitObj.init === true){
+                                    
+                                    var top = event.pageY-scrollInitObj.scrollbarPosition.top;
+                                    
+                                    top = top<0?0:top;
+                                    top = top>scrollInitObj.maxIndicatorTop?scrollInitObj.maxIndicatorTop:top;
+                                    
+                                    vScrollbarIndicator.css("top",top);
+                                    console.log((top/scrollInitObj.maxIndicatorTop));
+                                    theContainer.get(0).scrollTop=(top/scrollInitObj.maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
+                                    
+                                    event.preventDefault();
+                                }
+                            }
+                        });
+                    }
+                    
+                    //creating the horizontal scroll elements if required
+                    if(settings.horizontal){
+                    //element.append('<div class="jquery-scrollbar-horizontal"><div class="jquery-scrollbar-horizontal-indicator"></div></div>');
+                    }
+                    
+                    
+                    helpers.update(element);
+                    
+                });
+            },
+            update: function(){
+                return this.each(function(){
+                    helpers.update($(this)); 
+                });
+            }
+        }
+        
+        if ( methods[method] ) {
+            return methods[method].call(this,(Array.prototype.slice.call( arguments, 1 )));
+        } else if ( typeof method === 'object' || ! method ) {
+            $.extend(settings,arguments[0]);
+            return methods.init.call(this, arguments[0]);
+        } else {
+            $.error( 'Method ' +  method + ' does not exist' );
+        }   
+    }
+})(jQuery);
