@@ -256,6 +256,9 @@
                 }
                 return this.linkObj;
             },
+            getBorderElement: function getBorderElement(){
+                return this.element.find("img");
+            },
             cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
                 if(saveObj.data.linkObj && saveObj.data.linkObj.type == "page" && saveObj.data.linkobj.pageID == pageID){
                     delete saveObj.data.linkObj;

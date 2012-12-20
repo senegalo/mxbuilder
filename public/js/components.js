@@ -47,7 +47,7 @@
                             });
                             
                             //Activating Z-Index Manipulation context
-                            if(obj.ctxZIndex && mxBuilder.selection.getSelectionCount() < 2){              
+                            if(obj.editableZIndex && mxBuilder.selection.getSelectionCount() < 2){              
                                 ctx.addSubgroup({ 
                                     label:"Z Position" 
                                 }).addItem({
@@ -361,6 +361,12 @@
         destroy: function destroy(){
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
+        },
+        getBorderElement: function getBorderElement(){
+            return this.element;
+        },
+        getBackgroundElement: function getBackgroundElement(){
+            return this.element;
         },
         defaultDraggableSettings: {
             start: function start(){

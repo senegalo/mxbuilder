@@ -77,7 +77,7 @@
                         });
                     });
                 } else {
-                    return this.filter(":first").find(".flexly-component-background-color").val();
+                    return mxBuilder.colorsManager.createColorObjFromHEXString(this.filter(":first").find(".flexly-color-picker-input").val());
                 }
             }
         }

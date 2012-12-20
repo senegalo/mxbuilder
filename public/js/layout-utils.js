@@ -21,6 +21,26 @@
                     }
                 });
                 return thePanel;
+            },
+            readSelectionStyles: function(styles){
+                var settings = {};
+                var firstRun = true;
+                mxBuilder.selection.each(function(){
+                    for(var c in styles){
+                        var element = this['get'+c.uppercaseFirst()+'Element']();
+                        
+                        for(var s in styles[c]){
+                            var style = element.css(styles[c][s]);
+                            if(firstRun){
+                                settings[styles[c][s]] = style;
+                            } else if(settings[styles[c][s]] !== style){
+                                settings[styles[c][s]] = false;
+                            }
+                        }
+                    }
+                    firstRun = false;
+                });
+                return settings;
             }
         }
     });

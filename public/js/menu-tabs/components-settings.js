@@ -5,7 +5,7 @@
             _template: mxBuilder.layout.templates.find(".flexly-menu-component-settings").remove(),
             _settings: {},
             _display: [],
-            _enablePreview: false,
+            _enablePreview: true,
             init: function(){
                 var componentSettings = this;
                 mxBuilder.menuManager.hideTabButtons();

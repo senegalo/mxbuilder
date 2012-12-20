@@ -8,32 +8,41 @@
 }
 
 .patterns {
-    width: 234px;
+    width: 214px;
     height: 104px;
-    overflow:hidden;
     position: relative;
     top: 2px;
     left: 2px;
+}
+
+.patterns .jquery-scrollbar-container {
+    border: 2px solid #999;
+    border-radius: 6px;
+}
+
+.patterns .jquery-scrollbar-vertical { 
+    top: 2px;
+    right: -12px;
 }
 
 .patterns-container {
     position:relative;
 }
 
-.patterns-border {
+.pattern-sample {
     width: 214px;
-    height: 104px;
-    border: 2px solid #999999;
-    border-radius: 6px;
-    position: absolute;
-    top:0;
-    left: 0;
+    height: 60px;
 }
 
-.pattern-sample {
-    background-image: url("../images/patterns.png");
-    height: 60px;
-    width: 214px;
-    background-position-x: 0px;
+.pattern-sample:not(:last-child){
     border-bottom: 1px solid #999;
+}
+
+.pattern-sample.selected {
+    background-color: #F15A24;
+}
+
+.pattern-sample.pattern-image {
+    background-image: url("../images/patterns.png");
+    background-position-x: 0px;
 }

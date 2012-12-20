@@ -11,9 +11,6 @@
             _radiusValue: null,
             
             _picker: null,
-            //            _colorCanvas: null,
-            //            _canvasCtx: null,
-            //            _colorInput: null,
             
             _simulatorSliderTopLeft: null,
             _simulatorSliderTopRight: null,
@@ -35,7 +32,7 @@
                     pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.element.css({
+                                this.getBorderElement().css({
                                     borderColor:color.toString(),
                                     borderStyle: "solid"
                                 });
@@ -104,7 +101,7 @@
                         borderSettings._widthValue.text(ui.value+" Pixels");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.element.css({
+                                this.getBorderElement().css({
                                     borderWidth:ui.value+"px",
                                     borderStyle: "solid"
                                 });
@@ -124,13 +121,13 @@
                     },
                     previewDisabled: function(){
                         mxBuilder.selection.each(function(){
-                            this.element.css(borderSettings._originalSettings);
+                            this.getBorderElement().css(borderSettings._originalSettings);
                         });
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
                         mxBuilder.selection.each(function(){
-                            this.element.css(borderSettings._originalSettings);
+                            this.getBorderElement().css(borderSettings._originalSettings);
                         });
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
@@ -141,7 +138,16 @@
                 .append(borderSettings._currentInstance);
                 
                 //Read the selection values and preset it 
-                this._originalSettings = this.readSelectionSettings();
+                this._originalSettings = mxBuilder.layout.utils.readSelectionStyles({
+                    border: [
+                    "borderWidth",
+                    "backgroundColor",
+                    "borderColor",
+                    "borderTopLeftRadius",
+                    "borderTopRightRadius",
+                    "borderBottomLeftRadius",
+                    "borderBottomRightRadius"]
+                });
                 this.setValues(this._originalSettings);
                 
                 return thePanel;
@@ -170,26 +176,9 @@
                 }
                 if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                     mxBuilder.selection.each(function(){
-                        this.element.css(cssRule);
+                        this.getBorderElement().css(cssRule);
                     });
                 }
-            },
-            readSelectionSettings: function(){
-                var settings = {};
-                var firstRun = true;
-                mxBuilder.selection.each(function(){
-                    var styles = ["borderWidth","borderColor","borderTopLeftRadius","borderTopRightRadius","borderBottomLeftRadius","borderBottomRightRadius"];
-                    for(var s in styles){
-                        var style = this.element.css(styles[s]);
-                        if(firstRun){
-                            settings[styles[s]] = style;
-                        } else if(settings[styles[s]] !== style){
-                            settings[styles[s]] = false;
-                        }
-                    }
-                    firstRun = false;
-                });
-                return settings;
             },
             applyValuesToSelection: function(){
                 
@@ -212,7 +201,7 @@
                             cssRules['border'+corners[c]+'Radius'] = borderRadius;
                         }
                     }
-                    this.element.css(cssRules);
+                    this.getBorderElement().css(cssRules);
                 });
                 
                 mxBuilder.selection.revalidateSelectionContainer();
@@ -249,10 +238,6 @@
                 this._radiusValue = this._currentInstance.find(".border-radius-value");
                 
                 this._picker = this._currentInstance.find(".picker");
-                
-            //                this._colorCanvas = this._currentInstance.find(".color-canvas");
-            //                this._canvasCtx = this._colorCanvas.get(0).getContext("2d");
-            //                this._colorInput = this._currentInstance.find("#flexly-component-border-color");
             }
         }
     });

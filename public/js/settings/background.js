@@ -10,6 +10,7 @@
             _scaleSlider: null,
             _opacityValue: null,
             _opacitySlider: null,
+            _originalSettings: null,
             getPanel: function(){
                 var backgroundSettings = this;
                 
@@ -24,14 +25,33 @@
                 this.updateInstanceVariables();
                 
                 //initiating the color picker
-                this._picker.customColorpicker();
+                this._picker.customColorpicker().on({
+                    pickerColorChanged: function pickerColorChanged(event,color){
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            mxBuilder.selection.each(function(){
+                                color.a = backgroundSettings._opacitySlider.customSlider("value")/100;
+                                this.getBackgroundElement().css({
+                                    backgroundColor:color.toString()
+                                });
+                            });
+                        } 
+                    }
+                });
                 
                 //building the scale slider
                 this._scaleSlider.customSlider({
-                    min:1,
-                    max:10,
+                    min:10,
+                    max:200,
+                    step: 10,
                     slide: function slide(event, ui){
-                        backgroundSettings._scaleValue.text((ui.value*100)+"%");
+                        backgroundSettings._scaleValue.text(ui.value+"px");
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            mxBuilder.selection.each(function(){
+                                this.getBackgroundElement().css({
+                                    backgroundSize: ui.value+"px"
+                                });
+                            });
+                        }
                     }
                 });
                 
@@ -42,18 +62,79 @@
                     value: 100,
                     slide: function slide(event,ui){
                         backgroundSettings._opacityValue.text(ui.value+"%");
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            var theColor = backgroundSettings._picker.customColorpicker("value");
+                            theColor.a = ui.value/100;
+                            mxBuilder.selection.each(function(){
+                                this.getBackgroundElement().css({
+                                    backgroundColor: theColor.toString()
+                                });
+                            });
+                        }
                     }
                 });
                 
-                //populating the panel list
+                //populating the pattern list
+                var theSamples = $();
                 for(var i=0;i<11;i++){
-                    this._patterns.append('<option class="pattern-sample" style="background-position-y:'+(i*60)+'px;">&nbsp;</option>');
+                    theSamples = theSamples.add($('<div class="pattern-sample pattern-image" style="background-position-y:-'+(i*60)+'px;"/>')
+                        .data("flexly-pattern-index",i)
+                        .appendTo(this._patterns));
                 }
+                
+                theSamples.on({
+                    click: function click(){
+                        var element = $(this);
+                        backgroundSettings._patterns.find(".selected").removeClass("selected");
+                        element.addClass("selected");
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            mxBuilder.selection.each(function(){
+                                this.getBackgroundElement().css({
+                                    backgroundImage: 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
+                                    backgroundRepeat: 'repeat'
+                                });
+                            });
+                        }
+                    }
+                })
+                this._patterns.jqueryScrollbar();
                 
                 //hooking the update to the scrollbars when the panels are being opened
                 thePanel.on({
                     panelOpen: function(){
-                        //backgroundSettings._patterns.mCustomScrollbar("update");
+                        backgroundSettings._patterns.jqueryScrollbar("update");
+                    }
+                });
+                
+                //Read the original selection values and store it
+                this._originalSettings = mxBuilder.layout.utils.readSelectionStyles({
+                    background: ["backgroundColor",
+                    "backgroundImage",
+                    "backgroundSize"]
+                });
+                
+                this.setValues(this._originalSettings);
+                
+                //hooking the save / preview / cancel buttons
+                thePanel.on({
+                    cancel: function cancel(){
+                        mxBuilder.selection.each(function(){
+                            this.getBackgroundElement().css(backgroundSettings._originalSettings);
+                        });
+                        mxBuilder.menuManager.closeTab();
+                    },
+                    previewDisabled: function previewDisabled(){
+                        mxBuilder.selection.each(function(){
+                            this.getBackgroundElement().css(backgroundSettings._originalSettings);
+                        });
+                        mxBuilder.menuManager.closeTab();
+                    },
+                    previewEnabled: function previewEnabled(){
+                        backgroundSettings.applyValuesToSelection();
+                    },
+                    save: function save(){
+                        backgroundSettings.applyValuesToSelection();
+                        mxBuilder.menuManager.closeTab();
                     }
                 })
                 
@@ -63,6 +144,33 @@
                 
                 return thePanel;
             },
+            setValues: function(values){
+                if(values.backgroundColor){
+                    var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.backgroundColor);
+                    
+                    //setting the color picker
+                    this._picker.customColorpicker("value",colorObj);
+                    
+                    //setting the opacity slider
+                    var opacity = Math.round(colorObj.a*100);
+                    this._opacitySlider.customSlider("value",opacity);
+                    this._opacityValue.text(opacity+"%");
+                }
+                if(values.backgroundSize){
+                    if(values.backgroundSize == "auto" || values.backgroundSize == "100% 100%"){
+                        scale = 10;
+                    } else {
+                        var scale = values.backgroundSize.split(" ")[0].replace("%","");
+                        try {
+                            scale = parseInt(scale)/10;
+                        } catch(e){
+                            scale = 10;
+                        }
+                    }
+                    this._scaleSlider.customSlider("value",scale);
+                    this._scaleValue.text((scale*10)+"%");
+                }
+            },
             updateInstanceVariables: function() {
                 this._opacitySlider = this._currentInstance.find(".opacity-slider");
                 this._opacityValue = this._currentInstance.find(".opacity-value");
@@ -70,6 +178,11 @@
                 this._picker = this._currentInstance.find(".picker");
                 this._scaleSlider = this._currentInstance.find(".scale-slider");
                 this._scaleValue = this._currentInstance.find(".scale-value");
+            },
+            applyValuesToSelection: function(){
+                var backgroundColor = this._picker.customColorpicker("value");
+                backgroundColor.a = this._opacitySlider.customSlider("value")/100;
+                var pattern = this._patterns.find(".selected").data("flexly-pattern-index");
             }
         }
     });

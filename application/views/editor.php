@@ -573,12 +573,10 @@
                 </div>
 
                 <div class="settings-title">Pattern</div>
-                <div class="patterns-container">
-                    <!--<div class="patterns-border"></div>-->
-                    <select class="patterns"></select>
+                <div class="patterns">
                 </div>
 
-                <div class="settings-title">Scale: <span class="scale-value">100%</span></div>
+                <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
                 <div class="scale-slider" style="width:238px;"></div>
 
                 <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>

@@ -18,22 +18,33 @@
                 };
                 $.extend(settings,args);
                 return this.each(function(){
-                    var element = $(this).addClass("ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all").data("slider-settings",settings);
+                    var element = $(this).addClass("ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all");
+                    
+                    if(typeof settings.value == "undefined"){
+                        settings.value = typeof settings.min != "undefined" ? settings.min : 0;
+                    }
+                    
+                    element.data("slider-settings",settings);
                     $('<a class="ui-slider-handle ui-state-default ui-corner-all" style="height:8px;width:8px;border-width:2px" href="#"></a>').appendTo(element)
                     .draggable({
                         containment: "parent",
                         axis: "x",
                         drag: function(event, ui){
+                            var elementWidth = element.width();
+                            var theHandle = element.find('a.ui-slider-handle');
+                            var settings = element.data("slider-settings");
+                            var handlePosition = theHandle.position();
+                            var percentage = handlePosition.left/(elementWidth-theHandle.outerWidth());
+                            settings.value = Math.round((settings.max-settings.min)*percentage+settings.min);
+                            element.data("slider-settings",settings);
                             settings.slide.call(element,event,{
-                                value: methods.value.call(element)
+                                value: settings.value
                             });
                         }
                     });
                     
-                    if(settings.value){
-                        methods.value.call(element,[settings.value]);
-                        delete settings.value;
-                    }
+                    
+                    methods.value.call(element,[settings.value]);
                 });
             },
             value: function(value){
@@ -45,14 +56,11 @@
                         var settings = element.data("slider-settings");
                         percentage = value[0]/settings.max;
                         theHandle.css("left",percentage*(element.width()-theHandle.outerWidth())); 
+                        settings.value = value[0];
+                        element.data("slider-settings",settings);
                     });
                 } else {
-                    var elementWidth = this.width();
-                    var theHandle = this.find('a.ui-slider-handle');
-                    var settings = this.data("slider-settings");
-                    var handlePosition = theHandle.position();
-                    var percentage = handlePosition.left/(elementWidth-theHandle.outerWidth());
-                    return Math.round((settings.max-settings.min)*percentage+settings.min);
+                    return this.data("slider-settings").value;
                 }
             }
         }
