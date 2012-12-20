@@ -1,13 +1,16 @@
-.flexly-menu-pages-list {
-    padding:0 1px 1px 1px;
-}
+/*.flexly-menu-pages-list {
+    padding-bottom: 1px;
+}*/
 
 .flexly-menu-pages-list li {
     padding: 9px 8px 9px 5px;
     min-height: 48px;
-    margin-bottom: 1px;
     background: rgba(204,204,204,0.9);
     border-radius: 6px;
+}
+
+.flexly-menu-pages-list li:not(:last-child) {
+    margin-bottom: 1px;
 }
 
 .flexly-menu-pages-list li:hover {

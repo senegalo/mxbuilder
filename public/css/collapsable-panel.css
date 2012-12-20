@@ -1,5 +1,5 @@
 .flexly-collapsable-panel {
-    margin: 7px;
+    margin-bottom: 7px;
     padding: 10px;
     border: 2px solid #cccccc;
     background-color: #f2f2f2;
@@ -8,7 +8,7 @@
 }
 
 .flexly-collapsable-header {
-    width: 238px;
+    /*width: 239px;*/
     cursor: pointer;
 }
 

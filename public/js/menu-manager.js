@@ -3,37 +3,13 @@
         var theMenuContainer = $(".flexly-main-bar");
         var theMenuTab = theMenuContainer.find(".flexly-tab");
         var theMenuTabButtons = theMenuContainer.find(".flexly-tab-buttons");
-        var theContentBorder = theMenuContainer.find(".flexly-tab-content-border");
         
         //Scroll settings
         var theContentTab = theMenuTab.find(".flexly-tab-content");
-        var maxTop,theContent;
         
-        theContentTab.mCustomScrollbar({
-            scrollInertia: 550,
-            callbacks: {
-                onScrollStart: function onScrollStart(){
-                    if(theContent){
-                        theContent = theContentTab.find(".mCSB_container");
-                        maxTop = -1*(theContent.outerHeight()-theContentTab.height());
-                    }
-                },
-                whileScrolling: function whileScrolling(){
-                    if(theContent){
-                        var theTop = parseInt(theContent.css("top").replace("px",""),10);
-                        if(theTop < maxTop){
-                            theContent.css("top",maxTop);
-                        }
-                    }
-                },
-                whileScrollingInterval: 20
-            }
-        });
-        
-        //revalidating the content border...
-        var theMenuContainerHeight = theMenuContainer.height();
-        theContentBorder.height(theMenuContainerHeight-61);
-        
+        theContentTab.jqueryScrollbar({
+            contentClass: "flexly-main-menu-content"
+        });        
         
         theMenuContainer.find(".flexly-button").on({
             click: function click(){
@@ -68,7 +44,7 @@
         });
         
         mxBuilder.menuManager = {
-            contentTab: theContentTab.find(".mCSB_container"),
+            contentTab: theContentTab.find(".flexly-main-menu-content"),
             menuTab: theMenuTab,
             tabTitle: theMenuTab.find(".flexly-tab-title"),
             tabButtons: theMenuTabButtons,
@@ -122,7 +98,7 @@
                     width += $(this).outerWidth(true);
                 });
                 this.tabButtonsAux.animate({
-                    width:275-16-width
+                    width:276-16-width
                 },300,"linear",function(){
                     theAuxChilds.fadeIn(100);
                 });
@@ -133,23 +109,29 @@
                 });
                 
                 //updating the containers height
+                var theMenuContainerHeight = theContentTab.css("height","").height();
                 var totalHeight = 0;
                 if(this.tabButtons.is(":visible")){
-                    totalHeight += this.tabButtons.outerHeight();
+                    totalHeight += this.tabButtons.height();
                 }
                 if(this.tabFooterWrapper.is(":visible")){
-                    totalHeight += this.tabFooterWrapper.outerHeight();
+                    totalHeight += this.tabFooterWrapper.height();
+                    this.contentTab.css({
+                        borderBottomLeftRadius: "0px",
+                        borderBottomRightRadius: "0px"
+                    });
+                } else {
+                    this.contentTab.css({
+                        borderBottomLeftRadius: "6px",
+                        borderBottomRightRadius: "6px"
+                    });
                 }
-                
-                theContentTab.height(theMenuContainerHeight-63-totalHeight);
+                theContentTab.height(theMenuContainerHeight-totalHeight);
                 
                 this.revalidateScrollbar();
             },
             revalidateScrollbar: function(){
-                var theCSB = theContentTab.find(".mCSB_container");
-                theCSB.css("height","");
-                theCSB.height(theCSB.children().height());
-                theContentTab.mCustomScrollbar("update");
+                  theContentTab.jqueryScrollbar("update");
             },
             addButtonTo: function(button,where,css){
                 where = where == "main" ? mxBuilder.menuManager.tabButtonsMain : mxBuilder.menuManager.tabButtonsAux;

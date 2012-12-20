@@ -1,6 +1,7 @@
 .flexly-menu-component-settings {
-    position:absolute;
+    /*position:absolute;*/
     min-height: 100%;
+    padding: 7px;
 }
 
 .settings-title {

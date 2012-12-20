@@ -4,7 +4,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <link rel="stylesheet" href="public/css/smoothness/jquery-ui-1.9.2.custom.css" type="text/css"/>
-        <link rel="stylesheet" href="public/css/jquery.mCustomScrollbar.css" type="text/css" />
         <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
         <link rel="stylesheet" href="public/css/menu-layout.css" type="text/css" />
         <link rel="stylesheet" href="public/css/icons.css" type="text/css" />
@@ -24,6 +23,7 @@
         <link rel="stylesheet" href="public/css/dialogs.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/collapsable-panel.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/colorpicker.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/jquery-scrollbar.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -40,7 +40,7 @@
         <script type="text/javascript" src="public/js-libs/plupload/plupload.full.js"></script>
         <script type="text/javascript" src="public/js-libs/jsdiff.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
-        <script type="text/javascript" src="public/js-libs/jquery.mCustomScrollbar.min.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery-scrollbar.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
@@ -192,7 +192,7 @@
 
             <div class="flexly-tab" style="display:none;">
 
-                <div class="flexly-tab-content-border"></div>
+                <!--                <div class="flexly-tab-content-border"></div>-->
                 <div class="flexly-tab-header">
                     <div class="flexly-tab-title"></div>
                     <div class="flexly-icon flexly-icon-close-black flexly-tab-close"></div>
@@ -207,10 +207,10 @@
                         <div style="clear:both;"></div>
                     </div>
                     <div class="flexly-tab-content" style="text-align: justify;"></div>
-                </div>
-                <div class="flexly-tab-footer">
-                    <hr/>
-                    <div class="flexly-tab-footer-container"></div>
+                    <div class="flexly-tab-footer">
+                        <hr/>
+                        <div class="flexly-tab-footer-container"></div>
+                    </div>
                 </div>
             </div>
             <div style="clear:both;"></div>
@@ -534,7 +534,11 @@
                 <div class="flexly-collapsable-content"></div>
             </div>
 
-            <div class="flexly-menu-component-settings form"></div>
+            <div class="flexly-menu-component-settings form">
+                <div class="flexly-menu-component-settings-container">
+                    
+                </div>
+            </div>
 
             <div class="flexly-component-border-settings">
                 <div class="border-color-title settings-title">Border Color</div>
@@ -561,25 +565,25 @@
                     <div style="clear:both;"></div>
                 </div>
             </div>
-            
+
             <div class="flexly-component-background-settings">
                 <div class="settings-title">Background Color</div>
                 <div class="picker">
-                    
+
                 </div>
-                
+
                 <div class="settings-title">Pattern</div>
                 <div class="patterns-container">
                     <!--<div class="patterns-border"></div>-->
                     <select class="patterns"></select>
                 </div>
-                
+
                 <div class="settings-title">Scale: <span class="scale-value">100%</span></div>
                 <div class="scale-slider" style="width:238px;"></div>
-                
+
                 <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
                 <div class="opacity-slider" style="width:238px;"></div>
-                
+
             </div>
 
         </div>

@@ -8,20 +8,26 @@
             var container = element.find(".jquery-scrollbar-container");
             var containerHeight = container.height();
             var containerWidth = container.width();
+            var vScrollbar = element.find(".jquery-scrollbar-vertical");
             //checking for vertical scroll
             if(container.get(0).scrollHeight > containerHeight){
                 //get the vertical scrollbar height
-                var vScrollbar = element.find(".jquery-scrollbar-vertical");
                 var vScrollbarHeight = vScrollbar.height();
                 
                 //calculating the horizontal scrollbar indicator height
                 //the size is calculated based on how many % is visible.. so if 50% of the content is visible
                 //then the scrollbar indicator will have 50% of the scrollbar height
-                vScrollbarIndicator.height((1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight);
+                var vScrollbarIndicatorHeight = (1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight;
+                vScrollbarIndicator.height(vScrollbarIndicatorHeight);
                 
-                vScrollbarIndicator.show();
+                //refreshing position
+                var vMaxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
+                var vScrollbarIndicatorTop = (container.get(0).scrollTop/container.get(0).scrollHeight)*vMaxIndicatorTop;
+                vScrollbarIndicator.css("top",vScrollbarIndicatorTop+"px");
+                
+                vScrollbar.show();
             } else {
-                vScrollbarIndicator.hide();
+                vScrollbar.hide();
             }
             
             //checking for horizontal scroll
@@ -42,20 +48,26 @@
         }
     };
     
-    //default settings
-    var settings = {
-        vertical: true,
-        horizontal: false
-    }
-    
     $.fn.jqueryScrollbar = function(method){
         var methods = {
-            init: function(){
+            init: function(args){    
+                //default settings
+                var settings = {
+                    vertical: true,
+                    horizontal: false,
+                    id: null
+                }
+                $.extend(settings,args);
                 return this.each(function(){
                     var element = $(this);
                     
                     //isolating the content
                     var container = $('<div class="jquery-scrollbar-container"/>').append(element.contents()).appendTo(element);
+                    
+                    //applying the content class if present
+                    if(settings.contentClass !== null){
+                        container.addClass(settings.contentClass);
+                    }
                     
                     //overriding the container default overflow
                     container.css({
@@ -66,8 +78,8 @@
                     
                     //Changing some of the element properties to fix the horizontal and vertical bars
                     var elementCss = {
-                        paddingRight: 8,
-                        paddingBottom: 8
+                    //                        paddingRight: 8,
+                    //                        paddingBottom: 8
                     };
                     if(element.css("position") == "static") {
                         elementCss.position = "relative";
@@ -96,7 +108,7 @@
                                 var vScrollbar = element.find(".jquery-scrollbar-vertical");
                                 var maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
                                 var vScrollbarHandleTop = parseInt(vScrollbarIndicator.css("top").replace("px"),10);
-                                var top = vScrollbarHandleTop - delta*3;
+                                var top = vScrollbarHandleTop - delta*10;
                                 
                                 top = top<0?0:top;
                                 top = top>maxIndicatorTop?maxIndicatorTop:top;
@@ -105,8 +117,8 @@
                                 var theContainer = element.find(".jquery-scrollbar-container");
                                 
                                 theContainer.get(0).scrollTop=(top/maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
-                                
-                                console.log(vScrollbarHandleTop,top,maxIndicatorTop);
+                                                                
+                                event.preventDefault();
                             }
                         })
                         
@@ -128,7 +140,6 @@
                                     top = top>scrollInitObj.maxIndicatorTop?scrollInitObj.maxIndicatorTop:top;
                                     
                                     vScrollbarIndicator.css("top",top);
-                                    console.log((top/scrollInitObj.maxIndicatorTop));
                                     theContainer.get(0).scrollTop=(top/scrollInitObj.maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
                                     
                                     event.preventDefault();
@@ -157,7 +168,6 @@
         if ( methods[method] ) {
             return methods[method].call(this,(Array.prototype.slice.call( arguments, 1 )));
         } else if ( typeof method === 'object' || ! method ) {
-            $.extend(settings,arguments[0]);
             return methods.init.call(this, arguments[0]);
         } else {
             $.error( 'Method ' +  method + ' does not exist' );

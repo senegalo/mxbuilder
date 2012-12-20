@@ -14,6 +14,7 @@ class Assets_Model extends CI_Model {
 
     const SALT = "134!HJ1erlhkj1rf1oij%^!u1406jg!%GQERFGHQEJ5g20i5jqRGAFSGjqoie5jg45og9j0uyjqerlfqjf";
     const UPLOAD_ERROR = "UPLOAD_ERROR";
+    const SERVER_ERROR = "SERVER_ERROR";
     const ASSET_NOT_FOUND = "ASSET_NOT_FOUND";
 
     public function __construct() {
@@ -34,8 +35,12 @@ class Assets_Model extends CI_Model {
         $asset_id = $this->db->insert_id();
         $asset_filename = $this->get_filename($asset_id) . "." . $extension;
         $upload_dir = $this->get_upload_path();
+        
+        if(!$upload_dir){
+            return Assets_Model::SERVER_ERROR;
+        }
 
-        if (!move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
+        if (!is_dir($upload_dir . "/" . $asset_filename) || !move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
             $this->db->where("id", $asset_id)->delete("assets");
             return Assets_Model::UPLOAD_ERROR;
         }
@@ -158,7 +163,9 @@ class Assets_Model extends CI_Model {
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
             if (!is_dir($current_lookup)) {
-                mkdir($current_lookup, 0777);
+                if(!@mkdir($current_lookup, 0777)){
+                    return false;
+                }
             }
         }
         return $current_lookup;
@@ -209,7 +216,7 @@ class Assets_Model extends CI_Model {
 
     public function get_assets($user) {
         $this->load->helper("url");
-        
+
         $query = $this->db->select("*")
                 ->from("assets")
                 ->where("user_id", $user['id'])

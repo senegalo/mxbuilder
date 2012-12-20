@@ -1,9 +1,12 @@
 ul.flexly-menu-photos-list li {
-    width: 117px;
+    width: 118px;
     border-radius: 6px;
-    margin-bottom: 1px;
     background-color: #babcb9;
     padding: 10px;
+}
+
+ul.flexly-menu-photos-list li:not(:last-child){
+    margin-bottom: 1px;
 }
 
 .flexly-menu-photos .left-column li {
@@ -11,19 +14,18 @@ ul.flexly-menu-photos-list li {
 }
 
 .flexly-menu-photos {
-    position: relative;
+/*    position: relative;*/
 }
 
 .flexly-menu-photos .left-column {
     width: 138px;
     float:left;
-    margin: 0px 1px 1px 1px;
+    margin-right: 1px;
 }
 
 .flexly-menu-photos .right-column {
     width: 137px;
     float:left;
-    margin: 0px 1px 1px 0px;
 }
 
 .photo-upload-notification {
