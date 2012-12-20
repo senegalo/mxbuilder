@@ -3,12 +3,13 @@
     //helper functions
     var helpers = {
         update: function(element){
-            var vScrollbarIndicator = element.find(".jquery-scrollbar-vertical-indicator");
-            var hScrollbarIndicator = element.find(".jquery-scrollbar-horizontal-indicator");
-            var container = element.find(".jquery-scrollbar-container");
+            var vScrollbar = element.children(".jquery-scrollbar-vertical");
+            var vScrollbarIndicator = vScrollbar.find(".jquery-scrollbar-vertical-indicator");
+            var hScrollbar = element.children(".jquery-scrollbar-horizontal");
+            var hScrollbarIndicator = hScrollbar.find(".jquery-scrollbar-horizontal-indicator");
+            var container = element.find(".jquery-scrollbar-container:first");
             var containerHeight = container.height();
             var containerWidth = container.width();
-            var vScrollbar = element.find(".jquery-scrollbar-vertical");
             //checking for vertical scroll
             if(container.get(0).scrollHeight > containerHeight){
                 //get the vertical scrollbar height
@@ -105,20 +106,21 @@
                         //hooking the mousewheel events
                         element.on({
                             mousewheel: function(event,delta,deltaX,deltaY){
-                                var vScrollbar = element.find(".jquery-scrollbar-vertical");
+                                var vScrollbar = element.children(".jquery-scrollbar-vertical");
                                 var maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
                                 var vScrollbarHandleTop = parseInt(vScrollbarIndicator.css("top").replace("px"),10);
-                                var top = vScrollbarHandleTop - delta*10;
+                                var top = vScrollbarHandleTop - delta*5;
                                 
                                 top = top<0?0:top;
                                 top = top>maxIndicatorTop?maxIndicatorTop:top;
                                 
                                 vScrollbarIndicator.css("top",top);
-                                var theContainer = element.find(".jquery-scrollbar-container");
+                                var theContainer = element.children(".jquery-scrollbar-container");
                                 
                                 theContainer.get(0).scrollTop=(top/maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
                                                                 
                                 event.preventDefault();
+                                return false;
                             }
                         })
                         
@@ -130,7 +132,7 @@
                                 vScrollbar.data("jquery-scrollbar-init",false);
                             },
                             mousemove: function(event){
-                                var theContainer = element.find(".jquery-scrollbar-container");
+                                var theContainer = element.children(".jquery-scrollbar-container");
                                 var scrollInitObj = vScrollbar.data("jquery-scrollbar-init");
                                 if(scrollInitObj && scrollInitObj.init === true){
                                     
