@@ -15,7 +15,7 @@
                 //get the vertical scrollbar height
                 var vScrollbarHeight = vScrollbar.height();
                 
-                //calculating the horizontal scrollbar indicator height
+                //calculating the vertical scrollbar indicator height
                 //the size is calculated based on how many % is visible.. so if 50% of the content is visible
                 //then the scrollbar indicator will have 50% of the scrollbar height
                 var vScrollbarIndicatorHeight = (1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight;
@@ -23,7 +23,7 @@
                 
                 //refreshing position
                 var vMaxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
-                var vScrollbarIndicatorTop = (container.get(0).scrollTop/container.get(0).scrollHeight)*vMaxIndicatorTop;
+                var vScrollbarIndicatorTop = (container.get(0).scrollTop/(container.get(0).scrollHeight-containerHeight))*vMaxIndicatorTop;
                 vScrollbarIndicator.css("top",vScrollbarIndicatorTop+"px");
                 
                 vScrollbar.show();
@@ -163,6 +163,13 @@
             update: function(){
                 return this.each(function(){
                     helpers.update($(this)); 
+                });
+            },
+            scrollTo: function(args){
+                return this.each(function(){
+                    var element = $(this);
+                    element.children(".jquery-scrollbar-container").get(0).scrollTop = args[0];
+                    helpers.update(element);
                 });
             }
         }
