@@ -1,7 +1,15 @@
 .flexly-menu-component-settings {
     /*position:absolute;*/
     min-height: 100%;
-    padding: 7px;
+    /*padding: 7px;*/
+}
+
+.flexly-menu-component-settings .flexly-collapsable-panel {
+    margin: 7px;
+}
+
+.flexly-menu-component-settings .spacer {
+    height: 1px;
 }
 
 .settings-title {

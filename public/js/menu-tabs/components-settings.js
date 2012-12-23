@@ -32,6 +32,8 @@
                     theContent.append(this._settings.background.getPanel());
                 }
                 
+                theContent.append('<div class="spacer"></div>');
+                
                 //the cancel / savebutton 
                 $('<div class="flexly-icon flexly-icon-cancel-big-black flexly-component-settings-cancel"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
                     click: function(){

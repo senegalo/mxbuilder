@@ -535,9 +535,7 @@
             </div>
 
             <div class="flexly-menu-component-settings form">
-                <div class="flexly-menu-component-settings-container">
-                    
-                </div>
+                    <div class="spacer"></div>
             </div>
 
             <div class="flexly-component-border-settings">

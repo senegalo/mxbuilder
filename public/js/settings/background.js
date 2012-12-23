@@ -10,13 +10,15 @@
             _scaleSlider: null,
             _opacityValue: null,
             _opacitySlider: null,
+            _samples: null,
             _originalSettings: null,
+            _thePanel: null,
             getPanel: function(){
                 var backgroundSettings = this;
                 
                 //creating the panel
-                var thePanel = mxBuilder.layout.utils.getCollapsablePanel();
-                thePanel.find(".flexly-collapsable-title")
+                this._thePanel = mxBuilder.layout.utils.getCollapsablePanel();
+                this._thePanel.find(".flexly-collapsable-title")
                 .text("Background")
                 .end();
                 
@@ -75,14 +77,14 @@
                 });
                 
                 //populating the pattern list
-                var theSamples = $();
+                this._samples = $();
                 for(var i=0;i<11;i++){
-                    theSamples = theSamples.add($('<div class="pattern-sample pattern-image" style="background-position-y:-'+(i*60)+'px;"/>')
+                    this._samples = this._samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="height:60px;background-position-y:-'+(i*60)+'px;"/>')
                         .data("flexly-pattern-index",i)
                         .appendTo(this._patterns));
                 }
                 
-                theSamples.on({
+                this._samples.on({
                     click: function click(){
                         var element = $(this);
                         backgroundSettings._patterns.find(".selected").removeClass("selected");
@@ -100,7 +102,7 @@
                 this._patterns.jqueryScrollbar();
                 
                 //hooking the update to the scrollbars when the panels are being opened
-                thePanel.on({
+                this._thePanel.on({
                     panelOpen: function(){
                         backgroundSettings._patterns.jqueryScrollbar("update");
                     }
@@ -116,7 +118,7 @@
                 this.setValues(this._originalSettings);
                 
                 //hooking the save / preview / cancel buttons
-                thePanel.on({
+                this._thePanel.on({
                     cancel: function cancel(){
                         mxBuilder.selection.each(function(){
                             this.getBackgroundElement().css(backgroundSettings._originalSettings);
@@ -139,10 +141,10 @@
                 })
                 
                 //appending the cloned template to the panel
-                thePanel.find(".flexly-collapsable-content")
+                this._thePanel.find(".flexly-collapsable-content")
                 .append(this._currentInstance);
                 
-                return thePanel;
+                return this._thePanel;
             },
             setValues: function(values){
                 if(values.backgroundColor){
@@ -168,7 +170,14 @@
                         }
                     }
                     this._scaleSlider.customSlider("value",scale);
-                    this._scaleValue.text((scale*10)+"%");
+                    this._scaleValue.text((scale*10)+"px");
+                }
+                if(values.backgroundImage){
+                    var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
+                    if(matches){
+                        var theSelected = this._samples.filter(".pattern-sample-"+matches[0]).trigger("click");
+                        this._patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight());                     
+                    }
                 }
             },
             updateInstanceVariables: function() {
