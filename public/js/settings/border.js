@@ -17,13 +17,13 @@
             _simulatorSliderBottomLeft: null,
             _simulatorSliderBottomRight: null,
             _originalSettings: null,
-            getPanel: function(){
+            getPanel: function(expand){
                 
                 var borderSettings = this;
                 this._currentInstance = this._template.clone();
                 this.updateInstanceVariables();
                 
-                var thePanel = mxBuilder.layout.utils.getCollapsablePanel();
+                var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 thePanel.find(".flexly-collapsable-title")
                 .text("Border")
                 .end();

@@ -19,16 +19,21 @@
                 //the size is calculated based on how many % is visible.. so if 50% of the content is visible
                 //then the scrollbar indicator will have 50% of the scrollbar height
                 var vScrollbarIndicatorHeight = (1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight;
-                vScrollbarIndicator.height(vScrollbarIndicatorHeight);
+                
                 
                 //refreshing position
                 var vMaxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
                 var vScrollbarIndicatorTop = (container.get(0).scrollTop/(container.get(0).scrollHeight-containerHeight))*vMaxIndicatorTop;
-                vScrollbarIndicator.css("top",vScrollbarIndicatorTop+"px");
+
+                //applying the height and position
+                vScrollbarIndicator.animate({
+                    top: vScrollbarIndicatorTop+"px",
+                    height: vScrollbarIndicatorHeight+"px"
+                },300);
                 
-                vScrollbar.show();
+                vScrollbar.stop().clearQueue().fadeTo(300,1);
             } else {
-                vScrollbar.hide();
+                vScrollbar.stop().clearQueue().fadeTo(300,0);
             }
             
             //checking for horizontal scroll
@@ -168,8 +173,17 @@
             scrollTo: function(args){
                 return this.each(function(){
                     var element = $(this);
-                    element.children(".jquery-scrollbar-container").get(0).scrollTop = args[0];
-                    helpers.update(element);
+                    var container = element.children(".jquery-scrollbar-container");
+                    if(args[1]===false){
+                        container.scrollTop(args[0]);
+                        helpers.update(element);
+                    } else {
+                        container.animate({
+                            scrollTop: args[0]+"px"
+                        },300,"linear",function(){
+                            helpers.update(element);
+                        });
+                    }
                 });
             }
         }

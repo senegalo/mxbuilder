@@ -290,12 +290,6 @@
             size.right = size.width+size.left;
             return size;
         },
-        openBackgroundStyleDialog: function openBackgroundStyleDialog(){
-            mxBuilder.dialogs.componentsBackground.show(this.element);
-        },
-        openBorderStyleDialog: function openBorderStyleDialog(){
-            mxBuilder.dialogs.componentsBorder.show(this.element);
-        },
         openDeleteComponentDialog: function openDeleteComponentDialog(){
             var that = this.element;
             mxBuilder.dialogs.deleteComponents(function(){

@@ -18,7 +18,10 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 dblclick: function(){
-                    mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
+                    mxBuilder.menuManager.showTab("componentSettings",{
+                        border: false,
+                        background: true
+                    });
                 }
             });
         }

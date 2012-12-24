@@ -13,11 +13,11 @@
             _samples: null,
             _originalSettings: null,
             _thePanel: null,
-            getPanel: function(){
+            getPanel: function(expand){
                 var backgroundSettings = this;
                 
                 //creating the panel
-                this._thePanel = mxBuilder.layout.utils.getCollapsablePanel();
+                this._thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 this._thePanel.find(".flexly-collapsable-title")
                 .text("Background")
                 .end();
@@ -79,7 +79,7 @@
                 //populating the pattern list
                 this._samples = $();
                 for(var i=0;i<11;i++){
-                    this._samples = this._samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="height:60px;background-position-y:-'+(i*60)+'px;"/>')
+                    this._samples = this._samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="background-position-y:-'+(i*60)+'px;"/>')
                         .data("flexly-pattern-index",i)
                         .appendTo(this._patterns));
                 }
@@ -144,6 +144,12 @@
                 this._thePanel.find(".flexly-collapsable-content")
                 .append(this._currentInstance);
                 
+                //if we fetch the panel expanded.. we trigger the panelOpen event...
+                
+                if(expand){
+                    this._thePanel.trigger("panelOpen");
+                }
+                
                 return this._thePanel;
             },
             setValues: function(values){
@@ -175,8 +181,13 @@
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
                     if(matches){
-                        var theSelected = this._samples.filter(".pattern-sample-"+matches[0]).trigger("click");
-                        this._patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight());                     
+                        var backgroundSettings = this;
+                        this._thePanel.on({
+                            panelOpen: function(){
+                                var theSelected = backgroundSettings._samples.filter(".pattern-sample-"+matches[0]).trigger("click");
+                                backgroundSettings._patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight(),false);
+                            }
+                        });                        
                     }
                 }
             },
@@ -189,9 +200,24 @@
                 this._scaleValue = this._currentInstance.find(".scale-value");
             },
             applyValuesToSelection: function(){
+                var cssRules = {};
                 var backgroundColor = this._picker.customColorpicker("value");
                 backgroundColor.a = this._opacitySlider.customSlider("value")/100;
+                cssRules.backgroundColor = backgroundColor.toString();
+                
                 var pattern = this._patterns.find(".selected").data("flexly-pattern-index");
+                
+                if(pattern.length > 0){
+                    cssRules.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
+                } else {
+                    cssRules.backgroundImage = "none";
+                }
+                
+                cssRules.backgroundSize = this._scaleSlider.customSlider("value");
+                
+                mxBuilder.selection.each(function(){
+                    this.element.css(cssRules); 
+                });
             }
         }
     });

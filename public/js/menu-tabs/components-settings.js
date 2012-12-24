@@ -6,13 +6,13 @@
             _settings: {},
             _display: [],
             _enablePreview: true,
-            init: function(){
+            init: function(expand){
                 var componentSettings = this;
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
                 mxBuilder.menuManager.tabTitle.text("Settings");
                 
-                var theContent = this._template.clone()
+                var theContent = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
                 var displaySettings = {
                     border: true,
@@ -25,11 +25,16 @@
                 });
                 
                 if(displaySettings.border){
-                    theContent.append(this._settings.border.getPanel());
+                    theContent.append(this._settings.border.getPanel(expand?expand.border:false));
                 }
                     
                 if(displaySettings.background){
-                    theContent.append(this._settings.background.getPanel());
+                    var thePanel = this._settings.background.getPanel(expand?expand.background:false)
+                    //patching webkit bug: scrollTop reset on parent/zindex change
+                    var thePanelContent = thePanel.find(".jquery-scrollbar-container");
+                    var scrollCache = thePanelContent.scrollTop();
+                    theContent.append(thePanel);
+                    thePanelContent.scrollTop(scrollCache);
                 }
                 
                 theContent.append('<div class="spacer"></div>');
@@ -60,8 +65,6 @@
                         }
                     }
                 });
-                
-                mxBuilder.menuManager.contentTab.append(theContent);
             },
             isPreview: function(){
                 return this._enablePreview;
