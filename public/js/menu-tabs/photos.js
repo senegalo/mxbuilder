@@ -2,7 +2,7 @@
     
     $(function(){
         
-        var template = mxBuilder.layout.templates.find(".flexly-menu-photos").remove();
+        var template = mxBuilder.layout.templates.find(".flexly-menu-photos").clone().remove();
         var templateImage = template.find(".flexly-menu-photos-list li").remove();
         
         mxBuilder.menuManager.menus.photos = {
@@ -21,12 +21,12 @@
                     }
                 });
                 
-                mxBuilder.menuManager.addButtonTo("flexly-icon-photos-light", "aux");
-                mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light", "aux").css({
-                    opacity: 0.5
-                });
-                mxBuilder.menuManager.addButtonTo("flexly-icon-flicker-light", "aux").css({
-                    opacity: 0.5
+                mxBuilder.menuManager.addButtonTo("flexly-icon-photos-light photos-tab-icon photos-current", "aux");
+                mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light photos-tab-icon", "aux");
+                mxBuilder.menuManager.addButtonTo("flexly-icon-flicker-light photos-tab-icon", "aux").on({
+                    click: function click(){
+                        mxBuilder.menuManager.showTab("photosFlicker");
+                    }
                 });
                 
                 this.__theList = this.__template.clone().appendTo(mxBuilder.menuManager.contentTab);

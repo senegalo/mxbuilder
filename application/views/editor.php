@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="public/css/collapsable-panel.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/colorpicker.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/jquery-scrollbar.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -89,6 +90,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photos-flicker.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
         <script type="text/javascript" src="public/js/settings/border.js"></script>
@@ -103,6 +105,7 @@
         <script type="text/javascript" src="public/js/components/vertical-line-component.js"></script>
         <script type="text/javascript" src="public/js/components/strip-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-component.js"></script>
+        <script type="text/javascript" src="public/js/components/flicker-adapter-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -580,6 +583,10 @@
                 <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
                 <div class="opacity-slider" style="width:238px;"></div>
 
+            </div>
+            
+            <div class="flexly-flicker-adapter">
+                <img src="public/images/loading.gif"/>
             </div>
 
         </div>

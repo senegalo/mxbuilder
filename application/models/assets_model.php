@@ -23,7 +23,7 @@ class Assets_Model extends CI_Model {
 
     public function store($user, $file, $type) {
 
-        $extension = preg_replace("/.*\./", "", $file['name']);
+        $extension = isset($file['flicker_obj']) ? $file['flicker_obj']['originalformat'] : preg_replace("/.*\./", "", $file['name']);
 
         $this->db->set("user_id", $user['id'])
                 ->set("name", $file['name'])
@@ -35,12 +35,14 @@ class Assets_Model extends CI_Model {
         $asset_id = $this->db->insert_id();
         $asset_filename = $this->get_filename($asset_id) . "." . $extension;
         $upload_dir = $this->get_upload_path();
-        
-        if(!$upload_dir){
+
+        if (!$upload_dir) {
             return Assets_Model::SERVER_ERROR;
         }
 
-        if (!is_dir($upload_dir . "/" . $asset_filename) || !move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
+        if (isset($file['flicker_obj'])) {
+            file_put_contents($upload_dir . "/" . $asset_filename, $file['data']);
+        } else if (!is_dir($upload_dir . "/" . $asset_filename) || !move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
             $this->db->where("id", $asset_id)->delete("assets");
             return Assets_Model::UPLOAD_ERROR;
         }
@@ -61,12 +63,21 @@ class Assets_Model extends CI_Model {
 
             unset($generated_sizes['ratio']);
             $generated_sizes = array_keys($generated_sizes);
-            $this->db->set("extra", serialize(array(
-                                "sizes" => $generated_sizes,
-                                "ratio" => $out['ratio'],
-                                "caption" => "",
-                                "title" => ""
-                            )))
+            $extras = array(
+                "sizes" => $generated_sizes,
+                "ratio" => $out['ratio'],
+                "caption" => "",
+                "title" => "",
+                "is_flicker" => 0
+            );
+            
+            if(isset($file['flicker_obj'])){
+                $extras['owner_name'] = $file['flicker_obj']['ownername'];
+                $extras['flicker_id'] = $file['flicker_obj']['id'];
+                $extras['is_flicker'] = 1;
+            }
+            
+            $this->db->set("extra", serialize($extras))
                     ->where("id", $asset_id)
                     ->update("assets");
         } else {
@@ -163,7 +174,7 @@ class Assets_Model extends CI_Model {
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
             if (!is_dir($current_lookup)) {
-                if(!@mkdir($current_lookup, 0777)){
+                if (!@mkdir($current_lookup, 0777)) {
                     return false;
                 }
             }

@@ -100,7 +100,14 @@ class Assets extends MX_Controller {
             success();
         }
     }
-
+    
+    public function add_flicker_image(){
+        $this->load->model("assets_model");
+        $flicker_obj = $this->input->post("flicker_obj");
+        $image = file_get_contents('http://farm'.$flicker_obj['farm'].'.staticflickr.com/'.$flicker_obj['server'].'/'.$flicker_obj['id'].'_'.$flicker_obj['originalsecret'].'_o.'.$flicker_obj['originalformat']);
+        $out  = $this->assets_model->store($this->user,array("name"=>$flicker_obj['title'],"flicker_obj"=>$flicker_obj,"data"=>$image),"image");
+        success(array("asset"=>$out));
+    }
 }
 
 ?>

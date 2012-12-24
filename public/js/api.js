@@ -90,6 +90,58 @@
                         "name": args.name
                     }
                 });
+            },
+            addFlickerImage: function addFlickerImage(args){
+                $.ajax({
+                    url: mxBuilder.config.baseURL+"/assets/add_flicker_image",
+                    success: mxBuilder.api.__genericSuccess(args),
+                    complete: args.complete,
+                    data: {
+                        flicker_obj: args.flickerObj
+                    }
+                });
+            }
+        },
+        flicker: {
+            defaults: {
+                api_key: "ad9d2ae9ab5877431daefbb83d7dbab1",
+                format: "json",
+                nojsoncallback: 1
+            },
+            search: function search(obj){
+                var data = {
+                    text: obj.keyword,
+                    method: "flickr.photos.search",
+                    license: "4",
+                    sort: "relevance",
+                    extras: "o_dims,original_format,owner_name"
+                }
+                $.extend(data, this.defaults);
+                $.ajax({
+                    url: "http://api.flickr.com/services/rest/",
+                    data: data,
+                    success: function(data){
+                        if(data.stat == "ok"){
+                            if(obj.success){
+                                obj.success(data);
+                            }
+                        } else {
+                            if(obj.error){
+                                obj.error(data);
+                            }
+                        }
+                    },
+                    error: function(){
+                        if(obj.error){
+                            obj.error();
+                        }
+                    },
+                    complete: function(){
+                        if(obj.complete){
+                            obj.complete();
+                        }
+                    }
+                });
             }
         }
     }

@@ -61,3 +61,31 @@ ul.flexly-menu-photos-list li:not(:last-child){
     outline: 0px;
     border-radius: 6px;
 }
+
+#flicker-search-box {
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    padding: 3px;
+    margin-top: -13px;
+    margin-left: -80px;
+    height: 20px;
+    width: 150px;
+    background-color: #e6e6e6;
+    border-width: 0;
+    border-bottom: 1px solid #c4c4c4;
+    outline: 0px;
+    border-radius: 6px;
+}
+
+.photos-tab-icon { 
+    opacity: 0.5;
+}
+
+.photos-tab-icon:hover {
+    opacity: 1;
+}
+
+.photos-tab-icon.photos-current {
+    opacity:1;
+}
