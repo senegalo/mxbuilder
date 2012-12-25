@@ -5,12 +5,11 @@
             this.init(properties);
             mxBuilder.Component.apply(this,[{
                 type: "FlickerAdapterComponent",
-                draggable: {},
-                resizable: {},
                 editableZIndex: false,
                 editableBorder: false,
                 editableBackground: false,
-                selectable: false,
+                editableSettings: false,
+                selectable: true,
                 element: properties.element
             }]);
         }

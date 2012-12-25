@@ -39,12 +39,14 @@
                                 mxBuilder.selection.addToSelection(obj.element);
                             }
                             
-                            ctx.addItem({
-                                label: "Settings...",
-                                callback: function(){
-                                    mxBuilder.menuManager.showTab("componentSettings");
-                                }
-                            });
+                            if(obj.editableSettings !== false){
+                                ctx.addItem({
+                                    label: "Settings...",
+                                    callback: function(){
+                                        mxBuilder.menuManager.showTab("componentSettings");
+                                    }
+                                });
+                            }
                             
                             //Activating Z-Index Manipulation context
                             if(obj.editableZIndex && mxBuilder.selection.getSelectionCount() < 2){              
@@ -463,7 +465,9 @@
                     
                     theComponent.setContainer(container);
                     mxBuilder.selection.clearSelection();
-                    mxBuilder.selection.addToSelection(theComponent.element);
+                    if(theComponent.selectable !== false){
+                        mxBuilder.selection.addToSelection(theComponent.element);
+                    }
                     theComponent.element.trigger('componentDropped');
                 } else {
                     mxBuilder.selection.getSelection().each(function(){

@@ -8,7 +8,8 @@
         var theContentTab = theMenuTab.find(".flexly-tab-content");
         
         theContentTab.jqueryScrollbar({
-            contentClass: "flexly-main-menu-content"
+            contentClass: "flexly-main-menu-content",
+            totalScollMargin: 60
         });        
         
         theMenuContainer.find(".flexly-button").on({
@@ -46,6 +47,7 @@
         mxBuilder.menuManager = {
             contentTab: theContentTab.find(".flexly-main-menu-content"),
             menuTab: theMenuTab,
+            scrollContainer: theContentTab,
             tabTitle: theMenuTab.find(".flexly-tab-title"),
             tabButtons: theMenuTabButtons,
             tabButtonsMain: theMenuTabButtons.find(".flexly-tab-buttons-main"),

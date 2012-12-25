@@ -26,12 +26,12 @@
                 var vScrollbarIndicatorTop = (container.get(0).scrollTop/(container.get(0).scrollHeight-containerHeight))*vMaxIndicatorTop;
 
                 //applying the height and position
-                vScrollbarIndicator.animate({
+                vScrollbarIndicator.stop().clearQueue().delay(10000).animate({
                     top: vScrollbarIndicatorTop+"px",
                     height: vScrollbarIndicatorHeight+"px"
                 },300);
                 
-                vScrollbar.stop().clearQueue().fadeTo(300,1);
+                vScrollbar.stop().clearQueue().delay(10000).fadeTo(300,1);
             } else {
                 vScrollbar.stop().clearQueue().fadeTo(300,0);
             }
@@ -61,7 +61,8 @@
                 var settings = {
                     vertical: true,
                     horizontal: false,
-                    id: null
+                    id: null,
+                    totalScollMargin: 10
                 }
                 $.extend(settings,args);
                 return this.each(function(){
@@ -115,15 +116,24 @@
                                 var maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
                                 var vScrollbarHandleTop = parseInt(vScrollbarIndicator.css("top").replace("px"),10);
                                 var top = vScrollbarHandleTop - delta*5;
-                                
-                                top = top<0?0:top;
-                                top = top>maxIndicatorTop?maxIndicatorTop:top;
-                                
-                                vScrollbarIndicator.css("top",top);
                                 var theContainer = element.children(".jquery-scrollbar-container");
                                 
-                                theContainer.get(0).scrollTop=(top/maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
-                                                                
+                                //theContainer.scrollTop((top/maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height()));
+                                theContainer.scrollTop(theContainer.scrollTop()-delta*40);
+                                
+                                var scrollMargin = theContainer.get(0).scrollHeight-settings.totalScollMargin;
+                                var scrollPosition = theContainer.scrollTop()+theContainer.height();
+                                           
+                                if( scrollMargin <  scrollPosition && !vScrollbar.data("jquery-scrollbar-total-scroll")){
+                                    element.trigger("totalScroll");
+                                    vScrollbar.data("jquery-scrollbar-total-scroll",true);
+                                //helpers.update(element);
+                                } else if( scrollMargin >=  scrollPosition) {
+                                    vScrollbar.data("jquery-scrollbar-total-scroll",false);
+                                }
+                                
+                                helpers.update(element);
+                                                     
                                 event.preventDefault();
                                 return false;
                             }
@@ -148,6 +158,17 @@
                                     
                                     vScrollbarIndicator.css("top",top);
                                     theContainer.get(0).scrollTop=(top/scrollInitObj.maxIndicatorTop)*(theContainer.get(0).scrollHeight-theContainer.height());
+                                    
+                                    var scrollMargin = theContainer.get(0).scrollHeight-settings.totalScollMargin;
+                                    var scrollPosition = theContainer.scrollTop()+theContainer.height();
+                                           
+                                    if( scrollMargin <  scrollPosition && !vScrollbar.data("jquery-scrollbar-total-scroll")){
+                                        element.trigger("totalScroll");
+                                        vScrollbar.data("jquery-scrollbar-total-scroll",true);
+                                    //helpers.update(element);
+                                    } else if( scrollMargin >=  scrollPosition) {
+                                        vScrollbar.data("jquery-scrollbar-total-scroll",false);
+                                    }
                                     
                                     event.preventDefault();
                                 }

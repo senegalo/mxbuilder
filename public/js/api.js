@@ -114,6 +114,7 @@
                     method: "flickr.photos.search",
                     license: "4",
                     sort: "relevance",
+                    per_page: 500,
                     extras: "o_dims,original_format,owner_name"
                 }
                 $.extend(data, this.defaults);
