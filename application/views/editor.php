@@ -25,6 +25,7 @@
         <link rel="stylesheet" href="public/css/colorpicker.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/jquery-scrollbar.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/twitter-component.css" type="text/css"/>
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -45,6 +46,7 @@
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
+        <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -93,9 +95,11 @@
         <script type="text/javascript" src="public/js/menu-tabs/photos-flicker.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
+
+        <!-- Loading Settings Panels -->
         <script type="text/javascript" src="public/js/settings/border.js"></script>
         <script type="text/javascript" src="public/js/settings/background.js"></script>
-
+        <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -106,6 +110,7 @@
         <script type="text/javascript" src="public/js/components/strip-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-component.js"></script>
         <script type="text/javascript" src="public/js/components/flicker-adapter-component.js"></script>
+        <script type="text/javascript" src="public/js/components/tweet-button-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -538,7 +543,7 @@
             </div>
 
             <div class="flexly-menu-component-settings form">
-                    <div class="spacer"></div>
+                <div class="spacer"></div>
             </div>
 
             <div class="flexly-component-border-settings">
@@ -584,12 +589,46 @@
                 <div class="opacity-slider" style="width:238px;"></div>
 
             </div>
-            
+
             <div class="flexly-flicker-adapter">
                 <img src="public/images/loading.gif"/>
             </div>
 
-        </div>
+            <div class="tweet-button-component-instance">
+                <div class="overlay"></div>
+                <div class="twitter-button">
+                    <a href="https://twitter.com/share" data-count="horizontal" data-lang="en">Tweet</a>
+                </div>
+            </div>
 
+
+            <div class="flexly-tweet-button-settings">
+                <div class="settings-title">Default Tweet Text</div>
+                <div>
+                    <textarea class="tweet-text"></textarea>
+                </div>
+
+                <div class="settings-title">Count box position</div>
+                <div class="tweet-counter-position">
+                    <input type="radio" name="twitter-count-position" value="none" id="twitter-count-position-none"/>
+                    <label for="twitter-count-position-none">None</label>
+
+                    <input type="radio" name="twitter-count-position" value="horizontal" id="twitter-count-position-hr"/>
+                    <label for="twitter-count-position-hr">Horizontal</label>
+
+                    <input type="radio" name="twitter-count-position" value="vertical" id="twitter-count-position-vr"/>
+                    <label for="twitter-count-position-vr">Vertical</label>
+                </div>
+
+                <div class="settings-title">URL to tweet</div>
+                <div class="tweet-url">
+                    <input type="radio" name="twitter-url" value="none" id="twitter-url-none"/>
+                    <label for="twitter-url-none">Current Page</label>
+                    <br/>
+                    <input type="radio" name="twitter-url" value="custom" id="twitter-url-custom"/>
+                    <input type="text" class="tweet-button-url"/>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

@@ -54,7 +54,7 @@ hr {
     border-radius: 6px;
     border-width: 0;
     /*padding: 0 5px 0 5px;*/
-    height: 33px;
+    padding: 5px;
     outline: 0px;
     background-color: #e6e6e6;
 }
@@ -64,6 +64,7 @@ hr {
     border-width: 0px;
     outline: 0px;
     background-color: #e6e6e6;
+    padding: 5px;
 }
 
 .form label.checkbox-label {

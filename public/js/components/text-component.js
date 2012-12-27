@@ -10,6 +10,7 @@
                 },
                 editableZIndex: true,
                 selectable: true,
+                hasSettings: false,
                 element: properties.element,
                 poppedFromActiveStack: function poppedFromActiveStack(){
                     var theComponent = mxBuilder.components.getComponent($(this));

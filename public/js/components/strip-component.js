@@ -14,7 +14,6 @@
                     orientation: "v"
                 },
                 editableZIndex: true,
-                editableBackground: true,
                 selectable: true,
                 element: properties.element
             }]);
@@ -56,6 +55,11 @@
                     width: $(document.body).outerWidth(),
                     left: -1*mxBuilder.layout.container.offset().left
                 });
+            },
+            getSettingsPanels: function getSettingsPanels(){
+                var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
+                delete out.border;
+                return out;
             }
         });
         

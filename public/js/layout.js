@@ -134,7 +134,8 @@
         layoutHeader: null,
         layoutFooter: null,
         menu: null,
-        templates: null
+        templates: null,
+        settingsPanels: {}
     } 
     
     $(function(){

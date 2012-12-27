@@ -6,9 +6,7 @@
             mxBuilder.Component.apply(this,[{
                 type: "FlickerAdapterComponent",
                 editableZIndex: false,
-                editableBorder: false,
-                editableBackground: false,
-                editableSettings: false,
+                hasSettings: false,
                 selectable: true,
                 element: properties.element
             }]);

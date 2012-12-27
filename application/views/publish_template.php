@@ -3,13 +3,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <link rel="stylesheet" href="<?php print base_url("public/css/blitzer/jquery-ui-1.9.0.custom.css"); ?>" type="text/css"/>
+        <link rel="stylesheet" href="<?php print base_url("public/css/smoothness/jquery-ui-1.9.2.custom.css"); ?>" type="text/css"/>
         <link rel="stylesheet" href="<?php print base_url("public/css/reset.css"); ?>" type="text/css" />
         
         <!--External Libs-->
         <link rel="stylesheet" href="<?php print base_url("public/js-libs/lightbox/css/jquery.lightbox-0.5.css"); ?>" type="text/css" />
         
-        <script type="text/javascript" src="<?php print base_url("public/js-libs/jquery-1.8.1.min.js"); ?>"></script>
+        <script type="text/javascript" src="<?php print base_url("public/js-libs/jquery-1.8.3.min.js"); ?>"></script>
         <script type="text/javascript" src="<?php print base_url("public/js-libs/lightbox/jquery.lightbox-0.5.pack.js"); ?>"></script>
         
         <!--init-->

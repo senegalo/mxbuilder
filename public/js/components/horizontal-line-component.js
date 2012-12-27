@@ -10,7 +10,7 @@
                     orientation: "h"
                 },
                 editableZIndex: true,
-                editableBackground: true,
+                settings: true,
                 selectable: true,
                 element: properties.element
             }]);
@@ -25,7 +25,12 @@
             });
         }
         $.extend(mxBuilder.HorizontalLineComponent.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".hline-component-instance").remove()
+            template: mxBuilder.layout.templates.find(".hline-component-instance").remove(),
+            getSettingsPanels: function getSettingsPanel(){
+                var out = mxBuilder.Component.prototype.getSettingsPanel.call(this);
+                delete out.border;
+                return out;
+            }
         });
     
         //Adding the whole thing to the menu

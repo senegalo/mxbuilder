@@ -1,7 +1,7 @@
 (function($){
     
     $(function(){
-        mxBuilder.menuManager.menus.componentSettings._settings.border = {
+        mxBuilder.layout.settingsPanels.border = {
             _template: mxBuilder.layout.templates.find(".flexly-component-border-settings").remove(),
             _symmetricRadius: false,
             _currentInstance: null,

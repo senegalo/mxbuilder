@@ -169,6 +169,7 @@
                 return this.__currentPage == id;
             },
             getPageComponents: function getPageComponents(id){
+                id = id ? id : this.__currentPage;
                 var theComponentsToRestore = {};
                 for(var i in this.__pinned){
                     theComponentsToRestore[i] = this.__pinned[i];

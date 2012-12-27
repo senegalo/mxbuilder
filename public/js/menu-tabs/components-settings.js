@@ -6,7 +6,7 @@
             _settings: {},
             _display: [],
             _enablePreview: true,
-            init: function(expand){
+            init: function(extra){
                 var componentSettings = this;
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
@@ -14,27 +14,36 @@
                 
                 var theContent = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
-                var displaySettings = {
-                    border: true,
-                    background: true
-                }
+                var displaySettings = {};
                 
                 mxBuilder.selection.each(function(){
-                    displaySettings.border = displaySettings.border && this.editableBorder;
-                    displaySettings.background = displaySettings.background && this.editableBackground;
+                    var componentSettings = this.getSettingsPanels();
+                    for(var p in componentSettings){
+                        if(displaySettings[p]){
+                            displaySettings[p].count++;
+                        } else {
+                            displaySettings[p] = {
+                                count: 1,
+                                panel: componentSettings[p]
+                            }
+                        }
+                    }
                 });
                 
-                if(displaySettings.border){
-                    theContent.append(this._settings.border.getPanel(expand?expand.border:false));
-                }
-                    
-                if(displaySettings.background){
-                    var thePanel = this._settings.background.getPanel(expand?expand.background:false)
-                    //patching webkit bug: scrollTop reset on parent/zindex change
-                    var thePanelContent = thePanel.find(".jquery-scrollbar-container");
-                    var scrollCache = thePanelContent.scrollTop();
-                    theContent.append(thePanel);
-                    thePanelContent.scrollTop(scrollCache);
+                for(var p in displaySettings){
+                    if(displaySettings[p].count == mxBuilder.selection.getSelectionCount()){
+                        var thePanel = displaySettings[p].panel;
+                        
+                        //patching webkit bug: scrollTop reset on parent/zindex change
+                        var thePanelContent = thePanel.find(".jquery-scrollbar-container");
+                        if(thePanelContent.length > 0){
+                            var scrollCache = thePanelContent.scrollTop();
+                            theContent.append(thePanel);
+                            thePanelContent.scrollTop(scrollCache);
+                        } else {
+                            theContent.append(thePanel);
+                        }
+                    }
                 }
                 
                 theContent.append('<div class="spacer"></div>');

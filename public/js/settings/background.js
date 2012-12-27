@@ -1,7 +1,7 @@
 (function($){
     
     $(function(){
-        mxBuilder.menuManager.menus.componentSettings._settings.background = {
+        mxBuilder.layout.settingsPanels.background = {
             _template: mxBuilder.layout.templates.find(".flexly-component-background-settings").remove(),
             _currentInstance: null,
             _picker: null,

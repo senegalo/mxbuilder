@@ -11,7 +11,6 @@
                 draggable: {},
                 resizable: {},
                 editableZIndex: true,
-                editableBorder: true,
                 selectable: true,
                 element: properties.element
             }]);
@@ -335,6 +334,11 @@
                     }
                 }
                 
+                return out;
+            },
+            getSettingsPanels: function getSettingsPanels(){
+                var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
+                delete out.background;
                 return out;
             }
         });

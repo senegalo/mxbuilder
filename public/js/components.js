@@ -39,7 +39,7 @@
                                 mxBuilder.selection.addToSelection(obj.element);
                             }
                             
-                            if(obj.editableSettings !== false){
+                            if(obj.hasSettings !== false){
                                 ctx.addItem({
                                     label: "Settings...",
                                     callback: function(){
@@ -363,6 +363,14 @@
         },
         getBackgroundElement: function getBackgroundElement(){
             return this.element;
+        },
+        getSettingsPanels: function getSettingsPanels(){
+            var out = {};
+            
+            out.border = mxBuilder.layout.settingsPanels.border.getPanel();
+            out.background = mxBuilder.layout.settingsPanels.background.getPanel();
+            
+            return out;
         },
         defaultDraggableSettings: {
             start: function start(){

@@ -7,8 +7,6 @@
                 draggable: {},
                 resizable: {},
                 editableZIndex: true,
-                editableBorder: true,
-                editableBackground: true,
                 selectable: true,
                 element: properties.element
             }]);
