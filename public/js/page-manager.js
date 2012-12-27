@@ -7,7 +7,7 @@
             __addressesHash: {},
             __homepage: null,
             __maxOrder: 1,
-            addPage: function addPage(properties, noLoadFlag){
+            addPage: function(properties, noLoadFlag){
                 if(typeof properties.id == "undefined"){
                     var id = mxBuilder.utils.GUID();
                     properties.id = id;
@@ -38,7 +38,7 @@
                 mxBuilder.recorder.forceSave();
                 return this.__pages[properties.id];
             },
-            setHomepage: function setHomepage(id){
+            setHomepage: function(id){
                 var oldHomepage = this.__pages[this.__homepage];
                 if(oldHomepage){
                     delete oldHomepage.homepage;
@@ -46,7 +46,7 @@
                 this.__homepage = id;
                 this.__pages[id].homepage = true;
             },
-            editPage: function editPage(newObj){
+            editPage: function(newObj){
                 var thePage = mxBuilder.pages.getPageObj(newObj.id);
                 
                 var address = newObj.address;
@@ -61,7 +61,7 @@
                     this.setHomepage(newObj.id);
                 }
             },
-            deletePage: function deletePage(id){
+            deletePage: function(id){
                 id = id ? id : this.__currentPage;
                 var theParent;
                 if(this.__pages[id].parent != "root") {
@@ -123,16 +123,16 @@
                 
                 delete this.__pages[id];
             },
-            getPageObj: function getPageObj(id){
+            getPageObj: function(id){
                 id = id ? id : this.__currentPage;
                 return this.__pages[id];
             },
-            getPages: function getPages(){
+            getPages: function(){
                 var out = {};
                 $.extend(out,this.__pages);
                 return out;
             },
-            getOrderedPages: function getOrderedPages(){
+            getOrderedPages: function(){
                 var pages = this.getPages();
                 var out = [];
                 var insertSort = function insertSort(obj){
@@ -154,7 +154,7 @@
                 }
                 return out;
             },
-            getPageByAddress: function getPageByAddress(addr){
+            getPageByAddress: function(addr){
                 for(var p in this.__pages){
                     if(this.__pages[p].address == addr){
                         return this.__pages[p];
@@ -162,13 +162,13 @@
                 }
                 return null;
             },
-            getCurrentPageID: function getCurrentPageID(){
+            getCurrentPageID: function(){
                 return this.__currentPage;
             },
-            isCurrentPage: function isCurrentPage(id){
+            isCurrentPage: function(id){
                 return this.__currentPage == id;
             },
-            getPageComponents: function getPageComponents(id){
+            getPageComponents: function(id){
                 id = id ? id : this.__currentPage;
                 var theComponentsToRestore = {};
                 for(var i in this.__pinned){
@@ -177,7 +177,7 @@
                 $.extend(theComponentsToRestore,this.__pages[id].components);
                 return theComponentsToRestore;
             },
-            loadPage: function loadPage(id){
+            loadPage: function(id){
                 if(this.__pages[id] && id != this.__currentPage){
                     //Saving if necaissairy
                     mxBuilder.recorder.saveIfRequired();
@@ -214,33 +214,33 @@
                     mxBuilder.recorder.setLastState(this.saveAll());
                 }
             },
-            attachComponentToPage: function attachComponentToPage(component){
+            attachComponentToPage: function(component){
                 //var pageID = component.page ? component.page : this.__currentPage;
                 var pageID = this.__currentPage;
                 component.page = pageID;
                 this.__pages[pageID].components[component.getID()] = component;
             },
-            detachComponentFromPage: function detachComponentFromPage(component){
+            detachComponentFromPage: function(component){
                 if(this.__pages[component.page]){
                     delete this.__pages[component.page].components[component.getID()];
                 }
             },
-            pinComponent: function pinComponent(component){
+            pinComponent: function(component){
                 var componentID = component.getID();
                 delete this.__pages[component.page].components[componentID];
                 this.__pinned[componentID] = component;
             },
-            unpinComponent: function unpinComponent(component){
+            unpinComponent: function(component){
                 if(this.__pinned[component.getID()]){
                     delete this.__pinned[component.getID()];
                     //assigning it to this page
                     this.attachComponentToPage(component);
                 }
             },
-            getPageCount: function getPageCount(){
+            getPageCount: function(){
                 return Object.keys(this.__pages).length;
             },
-            removeImgComponentFromPages: function removeImgComponentFromPages(assetID){
+            removeImgComponentFromPages: function(assetID){
                 for(var p in this.__pages){
                     if(p == this.__currentPage){
                         continue;
@@ -252,7 +252,7 @@
                     }
                 }
             },
-            saveAll: function saveAll(){
+            saveAll: function(){
                 var out = {
                     pages: [],
                     pinned: [],
@@ -277,7 +277,7 @@
                 }
                 return out;
             },
-            publishAll: function publishAll(){
+            publishAll: function(){
                 var out = {
                     pages: [],
                     assets: {},
@@ -322,7 +322,7 @@
                 this.loadPage(currentPage);
                 return out;
             },
-            restorePages: function restorePages(restore){                
+            restorePages: function(restore){                
                 //mxBuilder.layout.setLayout(restore.layoutHeights,true);
                 
                 var firstPage = null;
@@ -354,15 +354,15 @@
                 this.__currentPage = null;
                 this.loadPage(firstPage.id);
             },
-            getContentHeight: function getContentHeight(pageID){
+            getContentHeight: function(pageID){
                 pageID = pageID ? pageID : this.__currentPage;
                 return this.__pages[pageID].contentHeight;
             },
-            setContentHeight: function setContentHeight(height,pageID){
+            setContentHeight: function(height,pageID){
                 pageID = pageID ? pageID : this.__currentPage;
                 this.__pages[pageID].contentHeight = height;
             },
-            setPageAddress: function setPageAddress(id,address){
+            setPageAddress: function(id,address){
                 if(this.__pages[id].address != address && address != "index"){
                     if(this.__pages[id].address){
                         delete this.__addressesHash[this.__pages[id].address];
@@ -371,7 +371,7 @@
                     this.__addressesHash[address] = true;
                 }
             },
-            validateAddress: function validateAddress(address){
+            validateAddress: function(address){
                 address = address.replace(/[^a-zA-Z0-9_]/g,"").toLowerCase();
                 var validAddress = address;
                 var index = 0;
@@ -380,11 +380,11 @@
                 }
                 return validAddress;
             },
-            isValidAddress: function isValidAddress(address,id){
+            isValidAddress: function(address,id){
                 id = id ? id : this.__currentPage;
                 return (address == "index" || (this.__addressesHash[address] && id && this.__pages[id].address != address)) ? false : true;
             },
-            getLayoutBackground: function getLayoutBackground(){
+            getLayoutBackground: function(){
                 return {
                     header: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutHeader),
                     body: mxBuilder.utils.getElementBackgroundObj($(document.body)),
