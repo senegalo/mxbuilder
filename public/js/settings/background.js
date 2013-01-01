@@ -170,13 +170,13 @@
                     } else {
                         var scale = values.backgroundSize.split(" ")[0].replace("%","");
                         try {
-                            scale = parseInt(scale)/10;
+                            scale = parseInt(scale);
                         } catch(e){
                             scale = 10;
                         }
                     }
                     this._scaleSlider.customSlider("value",scale);
-                    this._scaleValue.text((scale*10)+"px");
+                    this._scaleValue.text((scale)+"px");
                 }
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
@@ -201,18 +201,21 @@
             },
             applyValuesToSelection: function(){
                 var cssRules = {};
+                
+                //Applying the background color
                 var backgroundColor = this._picker.customColorpicker("value");
                 backgroundColor.a = this._opacitySlider.customSlider("value")/100;
                 cssRules.backgroundColor = backgroundColor.toString();
                 
-                var pattern = this._patterns.find(".selected").data("flexly-pattern-index");
-                
+                //Applying the pattern
+                var pattern = this._patterns.find(".selected");//.data("flexly-pattern-index");
                 if(pattern.length > 0){
                     cssRules.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
                 } else {
                     cssRules.backgroundImage = "none";
                 }
                 
+                //Applying the size
                 cssRules.backgroundSize = this._scaleSlider.customSlider("value");
                 
                 mxBuilder.selection.each(function(){

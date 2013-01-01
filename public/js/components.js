@@ -323,15 +323,14 @@
             if(this.ctxZIndex){
                 out.css.zIndex = this.element.css("zIndex");
             }
-            if(this.editableBorder){
-                out.css.border = this.element.css("border");
-                var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
-                for(var c in corners){
-                    out.css['border'+corners[c]+'Radius'] = this.element.css("border"+corners[c]+"Radius");
-                }
+            out.css.border = this.element.css("border");
+            var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
+            for(var c in corners){
+                out.css['border'+corners[c]+'Radius'] = this.element.css("border"+corners[c]+"Radius");
             }
-            if(this.editableBackground){
-                out.css.background = this.element.css("background");
+            var background = ["image","size","color"];
+            for(c in background){
+                out.css["background-"+background[c]] = this.element.css("background-"+background[c]);
             }
             out.data.container = this.container;
             out.data.type = this.type;

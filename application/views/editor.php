@@ -26,6 +26,11 @@
         <link rel="stylesheet" href="public/css/jquery-scrollbar.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/twitter-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
+
+        <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/dropdown.vertical.rtl.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/themes/default/default.advanced.css" media="screen" rel="stylesheet" type="text/css" />
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -47,6 +52,7 @@
         <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
         <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
+        <script type="text/javascript" src="public/js-libs/custom-menu.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -111,6 +117,7 @@
         <script type="text/javascript" src="public/js/components/image-component.js"></script>
         <script type="text/javascript" src="public/js/components/flicker-adapter-component.js"></script>
         <script type="text/javascript" src="public/js/components/tweet-button-component.js"></script>
+        <script type="text/javascript" src="public/js/components/menu-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -601,7 +608,6 @@
                 </div>
             </div>
 
-
             <div class="flexly-tweet-button-settings">
                 <div class="settings-title">Default Tweet Text</div>
                 <div>
@@ -628,6 +634,12 @@
                     <input type="radio" name="twitter-url" value="custom" id="twitter-url-custom"/>
                     <input type="text" class="tweet-button-url"/>
                 </div>
+            </div>
+
+            <div class="flexly-main-menu-component-instance">
+                <ul class="main-menu-container">
+                    <li><a class="main-menu-title" href="javascript:void(0)"></a></li>
+                </ul>
             </div>
         </div>
     </body>

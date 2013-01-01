@@ -36,7 +36,7 @@
             rebuild: function rebuild(element){
                 element = element ? element : this.element;
                 element.children("ul, div.clearer").remove();
-                var theList= listTemplate.clone().find("li").remove().end().addClass("main-menu-container").appendTo(element);
+                var theList= listTemplate.clone().find("li").remove().end().appendTo(element);
                 var pages = mxBuilder.pages.getOrderedPages();
                 for(var p in pages){
                     if(pages[p].showInMenu !== true){
@@ -65,27 +65,24 @@
                         
                     }
                 }
-                theList.menu({
-                    position: {
-                        my: "left top",
-                        at: "left bottom+5"
-                    }
-                });
+                theList.customMenu();                
                 theList.children("li").each(function(){
                     var element = $(this);
                     element.data("true-width",element.width());
                 });
+                this.revalidate(element);
                 mxBuilder.selection.revalidateSelectionContainer();
             },
             getList: function getList(obj){
                 return listTemplate.clone()
-                .addClass("main-menu-cat-child main-menu-cat-"+obj.id);
+                .addClass("main-menu-cat-child main-menu-cat-"+obj.id)
+                .removeClass("main-menu-container");
             },
             getListElement: function getListElement(obj){
                 return listElementTemplate.clone().addClass("main-menu-cat main-menu-cat-"+obj.id).find("a").text(obj.title).end();
             },
-            revalidate: function revalidate(){
-                var element = this.element;
+            revalidate: function revalidate(element){
+                element = element ? element : this.element;
                 var theUl = element.children("ul");
                 var moreListElement = theUl.find(".main-menu-more");
                 var moreListElementChilds = moreListElement.find(">ul").children("li");
@@ -117,7 +114,6 @@
                     if(moreListChildren.children("li").length == 0){
                         moreListElement.remove();
                     }
-                    theUl.menu("refresh");    
                 }
                     
                 //Push it back in the more element if we do not have enough space
@@ -131,7 +127,9 @@
                         .find("a")
                         .text("More of a link than the others...")
                         .end();
-                        listTemplate.clone().appendTo(moreListElement);
+                        listTemplate.clone().appendTo(moreListElement)
+                        .addClass("main-menu-cat-child")
+                        .removeClass("main-menu-container");
                         sumListElementWidth += moreListElement.width()+extraSpace;
                     }
                     var x = 0;
@@ -141,7 +139,12 @@
                         sumListElementWidth -= extraSpace+thePushedDown.width();
                         thePushedDown.prependTo(moreListElement.children("ul"));
                     }
-                    theUl.menu("refresh");
+                }
+                element.height(theUl.outerHeight(true));
+            },
+            getSettingsPanel: function getSettingsPanel(){
+                return {
+                    mainMenu: mxBuilder.layout.settingsPanels.mainMenu.getPanel(true)
                 }
             }
         });

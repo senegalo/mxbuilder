@@ -14,7 +14,6 @@
                     var newArrow = theContent.is(":visible") ? 1 : 0;
                     theHead.find(".flexly-icon").removeClass(classes[(newArrow+1)%2]).addClass(classes[newArrow]);
                     thePanel.trigger(newArrow === 0 ? "panelClose" : "panelOpen");
-                    mxBuilder.menuManager.revalidateScrollbar();
                 }
                 
                 if(expand){

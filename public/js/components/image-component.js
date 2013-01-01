@@ -338,6 +338,7 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
+                out.background.remove();
                 delete out.background;
                 return out;
             }

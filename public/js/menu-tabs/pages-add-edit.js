@@ -96,9 +96,9 @@
                 this.__theForm.find("#page-desc").val(data.desc);
                 this.__theForm.find("#page-keywords").val(data.keywords);
                 if(typeof data.showInMenu == "undefined" || data.showInMenu === true){
-                    this.__theForm.find("#page-show-in-menu").attr("checked","checked");
+                    this.__theForm.find("#page-show-in-menu").attr("checked","checked").trigger("change");
                 } else {
-                    this.__theForm.find("#page-show-in-menu").removeAttr("checked","checked");
+                    this.__theForm.find("#page-show-in-menu").removeAttr("checked","checked").trigger("change");
                 }
                 if(data.homepage){
                     this.__theForm.find("#page-as-homepage")

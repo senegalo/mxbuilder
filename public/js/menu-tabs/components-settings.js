@@ -46,7 +46,14 @@
                     }
                 }
                 
-                theContent.append('<div class="spacer"></div>');
+                theContent.append('<div class="spacer"></div>').on({
+                    panelOpen: function(){
+                        mxBuilder.menuManager.revalidateScrollbar();
+                    },
+                    panelClose: function(){
+                        mxBuilder.menuManager.revalidateScrollbar();
+                    }
+                });
                 
                 //the cancel / savebutton 
                 $('<div class="flexly-icon flexly-icon-cancel-big-black flexly-component-settings-cancel"/>').appendTo(mxBuilder.menuManager.tabFooter).on({

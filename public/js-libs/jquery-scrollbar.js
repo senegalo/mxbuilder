@@ -2,6 +2,7 @@
     
     //helper functions
     var helpers = {
+        _lastInterval: null,
         update: function(element){
             var vScrollbar = element.children(".jquery-scrollbar-vertical");
             var vScrollbarIndicator = vScrollbar.find(".jquery-scrollbar-vertical-indicator");
@@ -12,26 +13,32 @@
             var containerWidth = container.width();
             //checking for vertical scroll
             if(container.get(0).scrollHeight > containerHeight){
-                //get the vertical scrollbar height
-                var vScrollbarHeight = vScrollbar.height();
+                if(this._lastInterval !== null){
+                    clearInterval(this._lastInterval);
+                }
+                this._lastInterval = setInterval(function(){
+                    //get the vertical scrollbar height
+                    var vScrollbarHeight = vScrollbar.height();
                 
-                //calculating the vertical scrollbar indicator height
-                //the size is calculated based on how many % is visible.. so if 50% of the content is visible
-                //then the scrollbar indicator will have 50% of the scrollbar height
-                var vScrollbarIndicatorHeight = (1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight;
+                    //calculating the vertical scrollbar indicator height
+                    //the size is calculated based on how many % is visible.. so if 50% of the content is visible
+                    //then the scrollbar indicator will have 50% of the scrollbar height
+                    var vScrollbarIndicatorHeight = (1-((container.get(0).scrollHeight-containerHeight)/container.get(0).scrollHeight))*vScrollbarHeight;
                 
                 
-                //refreshing position
-                var vMaxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
-                var vScrollbarIndicatorTop = (container.get(0).scrollTop/(container.get(0).scrollHeight-containerHeight))*vMaxIndicatorTop;
+                    //refreshing position
+                    var vMaxIndicatorTop = vScrollbar.height()-vScrollbarIndicatorHeight;
+                    var vScrollbarIndicatorTop = (container.get(0).scrollTop/(container.get(0).scrollHeight-containerHeight))*vMaxIndicatorTop;
 
-                //applying the height and position
-                vScrollbarIndicator.stop().clearQueue().delay(10000).animate({
-                    top: vScrollbarIndicatorTop+"px",
-                    height: vScrollbarIndicatorHeight+"px"
-                },300);
-                
-                vScrollbar.stop().clearQueue().delay(10000).fadeTo(300,1);
+                    //applying the height and position
+                    var theAnimation = {
+                        top: vScrollbarIndicatorTop+"px",
+                        height: vScrollbarIndicatorHeight+"px"
+                    }
+                    vScrollbarIndicator.stop().clearQueue().animate(theAnimation,300);
+                    vScrollbar.stop().clearQueue().fadeTo(300,1);
+                    clearInterval(helpers._lastInterval);
+                },100);
             } else {
                 vScrollbar.stop().clearQueue().fadeTo(300,0);
             }
@@ -84,10 +91,7 @@
                     });
                     
                     //Changing some of the element properties to fix the horizontal and vertical bars
-                    var elementCss = {
-                    //                        paddingRight: 8,
-                    //                        paddingBottom: 8
-                    };
+                    var elementCss = {}
                     if(element.css("position") == "static") {
                         elementCss.position = "relative";
                     }

@@ -60,6 +60,21 @@
                 if(newObj.homepage){
                     this.setHomepage(newObj.id);
                 }
+                this.rebuildActiveMenuComponents();
+            },
+            switchParent: function(pageID,newParentID){
+                this.__pages[pageID].parent = newParentID;
+                this.rebuildActiveMenuComponents();
+            },
+            setPageOrder: function(pageID,order){
+                this.__pages[pageID].order = order;
+                this.rebuildActiveMenuComponents();
+            },
+            rebuildActiveMenuComponents: function(){
+                var components = mxBuilder.components.getComponentsByType("MenuComponent");
+                for(var c in components){
+                    components[c].rebuild();
+                }
             },
             deletePage: function(id){
                 id = id ? id : this.__currentPage;

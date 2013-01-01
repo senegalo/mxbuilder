@@ -26,7 +26,8 @@
                     //instance.element.width(before-12);
                     instance.element.css({
                         width: before-10,
-                        left: instance.element.position().left + 4
+                        left: instance.element.position().left + 4,
+                        backgroundPosition: "-4px 0"
                     }).data("original-width",before);
                     console.log("Before",before,"position",instance.element.position())
                     mxBuilder.selection.revalidateSelectionContainer();
@@ -35,7 +36,8 @@
                     //instance.resetSize();
                     instance.element.css({
                         width: instance.element.data("original-width")-1,
-                        left: instance.element.position().left - 4
+                        left: instance.element.position().left - 4,
+                        backgroundPosition: "0 0"
                     })
                     instance.element.width(instance.element.data("original-width")-1);
                     console.log("Cur.Width",instance.element.width(),"position",instance.element.position())
@@ -58,6 +60,7 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
+                out.border.remove();
                 delete out.border;
                 return out;
             }

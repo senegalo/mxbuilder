@@ -125,4 +125,13 @@
         };
     })();
     
+    
+    /**
+     * DEBUG METHODS 
+     */
+    
+    mxBuilder.dumpSelected = function(){
+        mxBuilder.selection.each(function(){console.log(this.save())})
+    }
+    
 }(jQuery));

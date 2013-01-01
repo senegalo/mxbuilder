@@ -67,9 +67,10 @@
                     theList.find("li").each(function(){
                         var element = $(this);
                         var parentUl = element.parents(".flexly-menu-pages-list:first");
-                        var pageObj = mxBuilder.pages.getPageObj(element.data("pageID"));
-                        pageObj.order = iterator++;
-                        pageObj.parent = parentUl.hasClass("flexly-menu-pages-list-child") ? parentUl.parents("li:first").data("pageID") : "root";
+                        var pageID = element.data("pageID");
+                        
+                        mxBuilder.pages.switchParent(pageID, parentUl.hasClass("flexly-menu-pages-list-child") ? parentUl.parents("li:first").data("pageID") : "root");
+                        mxBuilder.pages.setPageOrder(pageID, iterator++);
                     });
                     mxBuilder.menuManager.revalidateScrollbar("pages");
                 };
