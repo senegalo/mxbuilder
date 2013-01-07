@@ -5,10 +5,14 @@
         var collapsablePanelTemplate = mxBuilder.layout.templates.find(".flexly-collapsable-panel").remove();
         
         mxBuilder.layout.utils = {
-            getCollapsablePanel: function(expand){
+            getCollapsablePanel: function(expand,title){
                 var thePanel = collapsablePanelTemplate.clone().appendTo(document.body);
                 var theContent = thePanel.find(".flexly-collapsable-content");
                 var classes = ["flexly-icon-plus-small-grey", "flexly-icon-minus-small-grey"];
+                
+                if(title){
+                    thePanel.find(".flexly-collapsable-title").text(title);
+                }
                 
                 var updatePanel = function updatePanel(theHead){
                     var newArrow = theContent.is(":visible") ? 1 : 0;

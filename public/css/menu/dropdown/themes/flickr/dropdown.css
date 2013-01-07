@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+/** 
+ * Flickr Ultimate CSS Drop-Down Menu Theme
+ *
+ * @file		default.ultimate.css
+ * @name		Flickr
+ * @version		beta
+ * @type		transitional
+ * @browsers	Windows: IE7+, Opera7+, Firefox3+
+ *				Mac OS: Safari2+, Firefox3+
+ *
+ * @link		http://www.lwis.net/free-css-drop-down-menu
+ * @copyright	2009-2012 Live Web Initiatives, http://www.lwis.net
+ *
+ */
+
+@import "default.css";
+
+
+/* -- Base style extension -- */
+
+ul.dropdown.flickr-theme a {
+ display: block;
+ padding: 4px 6px;
+}
+
+ul.dropdown.flickr-theme ul a,
+ul.dropdown.flickr-theme ul span {
+ padding: 4px 0;
+}
+
+
+/* -- Base style override -- */
+
+ul.dropdown.flickr-theme li {
+ padding: 0;
+ border: none;
+}
+
+
+/* -- Custom styles -- */
+
+ul.dropdown.flickr-theme li a,
+ul.dropdown.flickr-theme *.dir {
+ border-style: solid;
+ border-width: 1px 1px 0;
+ border-color: #fff;
+}
+
+ul.dropdown.flickr-theme ul li a,
+ul.dropdown.flickr-theme ul *.dir {
+ border: none;
+}
+
+ul.dropdown-vertical.flickr-theme li a,
+ul.dropdown-vertical.flickr-theme *.dir {
+ border-width: 1px 0 1px 1px;
+}
+
+ul.dropdown-vertical-rtl.flickr-theme li a,
+ul.dropdown-vertical-rtl.flickr-theme *.dir {
+ border-width: 1px 1px 1px 0;
+}
+
+
+/* -- Drop-down open -- */
+
+ul.dropdown.flickr-theme li:hover > *.dir {
+ position: relative;
+ z-index: 600;
+ margin: -1px 0;
+ padding-top: 5px;
+ padding-bottom: 5px;
+ border-color: #f0f0f0 #666 #666 #f0f0f0;
+ background-color: #fff;
+ background-image: url(../../../../images/flickr.com/nav-arrow-down-open.png);
+ color: #0063dc;
+}
+
+ul.dropdown-horizontal.flickr-theme li:hover > *.dir,
+ul.dropdown-upward.flickr-theme li:hover > *.dir,
+ul.dropdown-linear.flickr-theme li:hover > *.dir {
+ float: left;
+}
+
+ul.dropdown-vertical.flickr-theme li:hover > *.dir {
+ margin: 0 -1px 0 0;
+ padding-top: 4px;
+ padding-bottom: 4px;
+ padding-right: 7px;
+ *position: static;
+}
+
+ul.dropdown-vertical-rtl.flickr-theme li:hover > *.dir {
+ margin: 0 0 0 -1px;
+ padding-right: 6px;
+ padding-left: 7px;
+}
+
+ul.dropdown-vertical-rtl.flickr-theme > li:hover > *.dir {
+ background-position: 6px 50%;
+}
+
+ul.dropdown-vertical.flickr-theme ul li:hover > *.dir {
+ padding-right: 0;
+ padding-left: 0;
+}
+
+ul.dropdown.flickr-theme ul li:hover > *.dir {
+ position: static;
+ z-index: 0;
+ float: none;
+ margin: 0;
+ padding-top: 4px;
+ padding-bottom: 4px;
+ border: none;
+}
+
+ul.dropdown.flickr-theme ul li:hover > *.dir,
+ul.dropdown-vertical.flickr-theme li:hover > *.dir {
+ background-image: url(../../../../images/flickr.com/nav-arrow-right-open.png);
+}
+
+ul.dropdown-vertical-rtl.flickr-theme li:hover > *.dir,
+ul.dropdown-vertical-rtl.flickr-theme ul li:hover > *.dir {
+ background-image: url(../../../../images/flickr.com/nav-arrow-left-open.png);
+}
+
+ul.dropdown-upward.flickr-theme li:hover > *.dir {
+ background-image: url(../../../../images/flickr.com/nav-arrow-up-open.png);
+}
+
+ul.dropdown-upward.flickr-theme ul li:hover > *.dir {
+ background-image: url(../../../../images/flickr.com/nav-arrow-right-open.png);
+}

@@ -18,16 +18,15 @@
 
 @import "dropdown.css";
 
-ul.dropdown-vertical {
- min-width: 200px;
- height: 100%;
+ul.dropdown-vertical.flickr-theme {
+ width: 200px;
 }
 
-ul.dropdown-vertical ul {
+ul.dropdown-vertical.flickr-theme ul {
  top: 1px;
  left: 99%;
 }
 
-ul.dropdown-vertical li {
+ul.dropdown-vertical.flickr-theme li {
  float: none;
 }

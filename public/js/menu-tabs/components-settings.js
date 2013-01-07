@@ -21,6 +21,7 @@
                     for(var p in componentSettings){
                         if(displaySettings[p]){
                             displaySettings[p].count++;
+                            componentSettings[p].remove();
                         } else {
                             displaySettings[p] = {
                                 count: 1,

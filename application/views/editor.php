@@ -29,16 +29,27 @@
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
-        <link href="public/css/menu/dropdown/dropdown.vertical.rtl.css" media="screen" rel="stylesheet" type="text/css" />
-        <link href="public/css/menu/dropdown/themes/default/default.advanced.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
+
+        <!--Default Menu Theme-->
+        <link href="public/css/menu/dropdown/themes/default/default.v.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/themes/default/default.h.css" media="screen" rel="stylesheet" type="text/css" />
+
+        <!--Flicker Menu Theme-->
+        <link href="public/css/menu/dropdown/themes/flickr/default.v.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/themes/flickr/default.h.css" media="screen" rel="stylesheet" type="text/css" />
+        
+        <!--Nvidia Menu Theme-->
+        <link href="public/css/menu/dropdown/themes/nvidia/default.v.css" media="screen" rel="stylesheet" type="text/css" />
+        <link href="public/css/menu/dropdown/themes/nvidia/default.h.css" media="screen" rel="stylesheet" type="text/css" />
+        
+        
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
-
-
         <title>Builder</title>
         <!-- Loading Libs -->
-        <script type="text/javascript" src="public/js-libs/jquery-1.8.3.min.js"></script>
+        <script type="text/javascript" src="public/js-libs/jquery-1.8.3.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.2.custom.min.js"></script>
         <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
@@ -106,6 +117,7 @@
         <script type="text/javascript" src="public/js/settings/border.js"></script>
         <script type="text/javascript" src="public/js/settings/background.js"></script>
         <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -637,9 +649,25 @@
             </div>
 
             <div class="flexly-main-menu-component-instance">
-                <ul class="main-menu-container">
+                <ul class="main-menu-container" >
                     <li><a class="main-menu-title" href="javascript:void(0)"></a></li>
                 </ul>
+            </div>
+
+            <div class="main-menu-settings">
+                <div class="settings-title">Orientation</div>
+                <select class="main-menu-orientation">
+                    <option value="h">Horizontal</option>
+                    <option value="v">Vertical</option>
+                </select>
+                <div class="settings-title">Themes</div>
+                <select class="main-menu-themes">
+                    <option value="default">Default</option>
+                    <option value="flickr">Flickr</option>
+                    <option value="nvidia">Nvidia</option>
+                </select>
+                <div class="settings-title">More Link Text</div>
+                <input type="text" class="more-link-text"/>
             </div>
         </div>
     </body>

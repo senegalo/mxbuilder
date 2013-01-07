@@ -20,8 +20,9 @@
                 resize: function resize(){
                     menuComponent.revalidate();
                 } 
-            });
+            })
         
+            this.rebuild(properties.element,true);
         }
         
         var template = mxBuilder.layout.templates.find(".flexly-main-menu-component-instance").remove();
@@ -29,14 +30,22 @@
         var listElementTemplate = listTemplate.find("li").remove();
         $.extend(mxBuilder.MenuComponent.prototype,new mxBuilder.Component(), {
             template: template,
+            orientation: "h",
+            moreLinkText: "More...",
+            theme: "default",
+            _themeLinkTag: $("#main-menu-theme"),
             init: function init(properties){
                 mxBuilder.Component.prototype.init.call(this,properties);
-                this.rebuild(properties.element);
             },
             rebuild: function rebuild(element){
                 element = element ? element : this.element;
                 element.children("ul, div.clearer").remove();
                 var theList= listTemplate.clone().find("li").remove().end().appendTo(element);
+                
+                this.setOrientation(this.orientation);
+                this.setTheme(this.theme);
+                this.setMoreLink(this.moreLinkText);
+                
                 var pages = mxBuilder.pages.getOrderedPages();
                 for(var p in pages){
                     if(pages[p].showInMenu !== true){
@@ -59,6 +68,7 @@
                         if(theParentSiblings.length == 0){
                             theParentSiblings = this.getList(parentPageObj);
                             theParentList.append(theParentSiblings);
+                            theParentList.find("a").wrapInner('<div class="dir"/>');
                         }
                         //finally append the element
                         theParentSiblings.append(this.getListElement(pages[p]));
@@ -68,9 +78,13 @@
                 theList.customMenu();                
                 theList.children("li").each(function(){
                     var element = $(this);
-                    element.data("true-width",element.width());
+                    element.data("true-dimensions",{
+                        width: element.width(),
+                        height: element.height()
+                    });
                 });
-                this.revalidate(element);
+                this.setOrientation(this.orientation);
+                this.setTheme(this.theme);
                 mxBuilder.selection.revalidateSelectionContainer();
             },
             getList: function getList(obj){
@@ -79,36 +93,43 @@
                 .removeClass("main-menu-container");
             },
             getListElement: function getListElement(obj){
-                return listElementTemplate.clone().addClass("main-menu-cat main-menu-cat-"+obj.id).find("a").text(obj.title).end();
+                return listElementTemplate.clone()
+                .addClass("main-menu-cat main-menu-cat-"+obj.id)
+                .find("a")
+                .attr("data-id",obj.id)
+                .text(obj.title)
+                .end();
             },
             revalidate: function revalidate(element){
                 element = element ? element : this.element;
+                
+                var length = this.orientation == "h" || this.orientation == "hu" ? "width" : "height";
                 var theUl = element.children("ul");
                 var moreListElement = theUl.find(".main-menu-more");
                 var moreListElementChilds = moreListElement.find(">ul").children("li");
-                var elementWidth = element.width();
+                var elementLength = element[length]();
                 var extraSpace = null;
                     
                 //Checklist
-                var sumListElementWidth = 0;
+                var sumListElementLength = 0;
                 theUl.children("li").each(function(){
                     var element = $(this);
                     if(extraSpace == null){
-                        extraSpace = element.outerWidth(true)-element.width();
+                        extraSpace = element["outer"+length.uppercaseFirst()](true)-element[length]();
                     }
-                    sumListElementWidth += element.width()+extraSpace;
+                    sumListElementLength += element[length]()+extraSpace;
                 });
                     
                 var isMoreListElementCreated = moreListElement.length > 0 && moreListElementChilds.length > 0;
-                var isEnoughWidth = (moreListElementChilds.first().data("true-width")+extraSpace)+sumListElementWidth +10; //< elementWidth;
+                var isEnoughLength = isMoreListElementCreated ? (moreListElementChilds.first().data("true-dimensions")[length]+extraSpace)+sumListElementLength +10 : 0;
                   
                 if(moreListElementChilds.length == 1){
-                    isEnoughWidth -= moreListElement.width()-extraSpace;
+                    isEnoughLength -= moreListElement[length]()-extraSpace;
                 }
-                isEnoughWidth = isEnoughWidth < elementWidth;
+                isEnoughLength = isEnoughLength < elementLength;
                   
                 //Remove from the more element and push it to the main menu if we have enough space
-                if(isMoreListElementCreated  && isEnoughWidth){
+                if(isMoreListElementCreated  && isEnoughLength){
                     var moreListChildren = moreListElement.children("ul");
                     moreListChildren.children("li:first-child").insertBefore(moreListElement);
                     if(moreListChildren.children("li").length == 0){
@@ -117,7 +138,7 @@
                 }
                     
                 //Push it back in the more element if we do not have enough space
-                if(sumListElementWidth > elementWidth){
+                if(sumListElementLength > elementLength){
                         
                     //Do we have a more list element !??
                     if(moreListElement.length == 0){
@@ -125,27 +146,102 @@
                         .addClass("main-menu-cat main-menu-more")
                         .appendTo(theUl)
                         .find("a")
-                        .text("More of a link than the others...")
+                        .html('<div class="dir">'+this.moreLinkText+'</div>')
                         .end();
                         listTemplate.clone().appendTo(moreListElement)
                         .addClass("main-menu-cat-child")
                         .removeClass("main-menu-container");
-                        sumListElementWidth += moreListElement.width()+extraSpace;
+                        sumListElementLength += moreListElement[length]()+extraSpace;
                     }
                     var x = 0;
-                    while(sumListElementWidth > elementWidth){
+                    var thePushedDown = {
+                        length: 1
+                    };
+                    while(sumListElementLength > elementLength && thePushedDown.length > 0){
                         x++;
-                        var thePushedDown = moreListElement.prev();
-                        sumListElementWidth -= extraSpace+thePushedDown.width();
+                        thePushedDown = moreListElement.prev();
+                        sumListElementLength -= extraSpace+thePushedDown[length]();
                         thePushedDown.prependTo(moreListElement.children("ul"));
                     }
                 }
-                element.height(theUl.outerHeight(true));
+                if(length == "width"){
+                    element.height(theUl.outerHeight(true));
+                } else {
+                    element.width(theUl.outerWidth(true));
+                }
+                mxBuilder.selection.revalidateSelectionContainer();
             },
-            getSettingsPanel: function getSettingsPanel(){
+            getSettingsPanels: function getSettingsPanel(){
                 return {
                     mainMenu: mxBuilder.layout.settingsPanels.mainMenu.getPanel(true)
                 }
+            },
+            setMoreLink: function setMoreLinkText(text){
+                if(text.trim() == ""){
+                    text = "More...";
+                }
+                this.moreLinkText = text;
+                this.element.find(".main-menu-cat.main-menu-more>a").text(text)
+                this.revalidate();
+            },
+            setTheme: function setTheme(theme){
+                var mainMenu = this;
+                this.element.children("ul").removeClass(this.theme+"-theme").addClass(theme+"-theme");
+                this.theme = theme;
+                mainMenu.element.css("background",mainMenu.element.find("ul.main-menu-container > li:first").css("background"));
+                mainMenu.revalidate();
+            },
+            setOrientation: function setOrientation(o){
+                var theUl = this.element.children("ul");
+                var widest = 0;
+                this.element.find("ul.main-menu-container>li").each(function(){
+                    var width = $(this).outerWidth(true);
+                    if(width > widest){
+                        widest = width;
+                    }
+                });
+                
+                theUl.removeClass(this.orientation == "h"?"dropdown-horizontal":"dropdown-vertical");
+                switch(o){
+                    case "h":
+                        theUl.addClass("dropdown-horizontal");
+                        this.element.height(theUl.height());
+                        break;
+                    case "v":
+                        theUl.addClass("dropdown-vertical");
+                        this.element.width(theUl.width());
+                        break;
+                }
+                this.updateResizeHandles(o);
+                this.orientation = o;
+                this.revalidate();
+            },
+            save: function save(){
+                var out = mxBuilder.Component.prototype.save.call(this);
+                out.data.orientation = this.orientation;
+                out.data.moreLinkText = this.moreLinkText;
+                out.data.theme = this.theme;
+                return out;
+            },
+            publish: function publish(){
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                out.find("a").each(function(){
+                    var element = $(this);
+                    var page = mxBuilder.pages.getPageObj(element.data("id"));
+                    var address = page.homepage ? "index.html" : page.address+".html";
+                    element.attr("href",address);
+                });
+                return out;
+            },
+            getHeadIncludes: function getHeadIncludes(){
+                var out = mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                out.css["mainMenuOrientation"+this.orientation.uppercaseFirst()] = "public/css/menu/dropdown/dropdown"+(this.orientation == "v" ? ".vertical" : "")+".css";
+                out.css["mainMenuTheme"+this.theme.uppercaseFirst()] = "public/css/menu/dropdown/themes/"+this.theme+"/default."+this.orientation+".css";
+                return out;
+            },
+            updateResizeHandles: function updateResizeHandles(orientation){
+                mxBuilder.Component.prototype.updateResizeHandles.call(this,orientation);
+                this.element.find(".component-resizable-handle").css("z-index",1000);
             }
         });
         
@@ -156,11 +252,9 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = mxBuilder.MenuComponent.prototype.template.clone()
-                    .addClass("mx-helper")
+                    return $('<div style="width: 400px;height:30px;background-color:#fff"/>').addClass("mx-helper")
                     .data("component","MenuComponent")
                     .appendTo(mxBuilder.layout.container);
-                    return theContent;
                 }
             }
         }); 

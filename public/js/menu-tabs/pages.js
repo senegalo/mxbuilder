@@ -72,6 +72,7 @@
                         mxBuilder.pages.switchParent(pageID, parentUl.hasClass("flexly-menu-pages-list-child") ? parentUl.parents("li:first").data("pageID") : "root");
                         mxBuilder.pages.setPageOrder(pageID, iterator++);
                     });
+                    mxBuilder.pages.rebuildActiveMenuComponents();
                     mxBuilder.menuManager.revalidateScrollbar("pages");
                 };
                 

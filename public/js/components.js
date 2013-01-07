@@ -2,6 +2,8 @@
     mxBuilder.Component = function Component(obj){
         if(obj){
             
+            this.element = obj.element;
+            
             //storing the size and position
             this.size = {
                 width: obj.element.width(),
@@ -164,7 +166,7 @@
             //Making it resizable
             if(typeof obj.resizable != "undefined"){
                 var handle = $('<div class="component-resizable-handle"/>');
-                var orientation = obj.resizable.orientation?obj.resizable.orientation:"hv";
+                var orientation = obj.resizable.orientation = obj.resizable.orientation?obj.resizable.orientation:"hv";
                 var handles = {};
                 
                 if(orientation.match(/h/i)){
@@ -320,9 +322,7 @@
             out.css.left = position.left;
             out.css.height = this.element.height();
             out.css.width = this.element.width();
-            if(this.ctxZIndex){
-                out.css.zIndex = this.element.css("zIndex");
-            }
+            out.css.zIndex = this.element.css("zIndex");
             out.css.border = this.element.css("border");
             var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
             for(var c in corners){
@@ -343,6 +343,12 @@
             .end()
             .removeClass("ui-draggable ui-resizable ui-selected mx-selectable-component");
         },
+        getHeadIncludes: function getHeadIncludes(){
+            return {
+                scripts: {},
+                css: {}
+            };
+        },
         init: function init(properties){
             if(typeof properties.element == "undefined"){
                 if(properties.data.container == "footer"){
@@ -352,6 +358,7 @@
                 properties.element = this.template.clone().css(properties.css).appendTo(mxBuilder.layout[properties.data.container]);
             }
             $.extend(this,properties.data);
+            this.element = properties.element;
         },
         destroy: function destroy(){
             mxBuilder.components.removeComponent(this.element);
@@ -370,6 +377,42 @@
             out.background = mxBuilder.layout.settingsPanels.background.getPanel();
             
             return out;
+        },
+        updateResizeHandles: function updateResizeHandles(orientation){   
+            
+            this.element.resizable("destroy").find(".component-resizable-handle").remove();
+            
+            var handle = $('<div class="component-resizable-handle"/>');
+            
+            if(mxBuilder.selection.isSelected(this.element)){
+                handle.show();
+            }
+            
+            this.resizable.orientation = orientation;
+            var handles = {};
+                
+            if(orientation.match(/h/i)){
+                $.extend(handles,{
+                    e: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-e"),
+                    w: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-w")
+                });
+            } 
+            if(orientation.match(/v/i)){
+                $.extend(handles,{
+                    s: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-s"), 
+                    n: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-n")
+                });
+            }
+            if(orientation.match(/(hv|vh)/i)){
+                $.extend(handles,{
+                    ne: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-ne"), 
+                    se: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-se"), 
+                    sw: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-sw"), 
+                    nw: handle.clone().appendTo(this.element).addClass("ui-resizable-handle ui-resizable-nw")
+                });
+            }
+            this.resizable.handles = handles;
+            this.element.resizable(this.resizable);            
         },
         defaultDraggableSettings: {
             start: function start(){

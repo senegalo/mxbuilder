@@ -134,4 +134,10 @@
         mxBuilder.selection.each(function(){console.log(this.save())})
     }
     
+    mxBuilder.getSelected = function(){
+        var out;
+        mxBuilder.selection.each(function(){out = this; });
+        return out;
+    }
+    
 }(jQuery));

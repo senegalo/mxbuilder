@@ -36,6 +36,7 @@
                     this.setHomepage(properties.id);
                 }
                 mxBuilder.recorder.forceSave();
+                this.rebuildActiveMenuComponents();
                 return this.__pages[properties.id];
             },
             setHomepage: function(id){
@@ -64,11 +65,9 @@
             },
             switchParent: function(pageID,newParentID){
                 this.__pages[pageID].parent = newParentID;
-                this.rebuildActiveMenuComponents();
             },
             setPageOrder: function(pageID,order){
                 this.__pages[pageID].order = order;
-                this.rebuildActiveMenuComponents();
             },
             rebuildActiveMenuComponents: function(){
                 var components = mxBuilder.components.getComponentsByType("MenuComponent");
@@ -314,6 +313,10 @@
                     var components = this.getPageComponents(p);
                     page.title = this.__pages[p].htmlTitle ? this.__pages[p].htmlTitle : "Untitled Page";
                     page.content_height = this.__pages[p].contentHeight;
+                    page.head_includes = {
+                        css: {},
+                        scripts: {}
+                    };
                     page.components = {
                         header: [],
                         body: [],
@@ -329,6 +332,9 @@
                             }
                         }
                         page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
+                        var headIncludes = components[c].getHeadIncludes();
+                        $.extend(page.head_includes.css,headIncludes.css);
+                        $.extend(page.head_includes.scripts,headIncludes.scripts);
                     }
                     page.address = this.__pages[p].homepage ? "index" : this.__pages[p].address;
                     out.pages.push(page);

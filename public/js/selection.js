@@ -48,9 +48,6 @@
                 this.getSelection().find(".component-resizable-handle").hide();
             }
             
-            //updating the selection most outer corners
-            this.revalidateSelectionContainer(instance);
-            
             //Augmenting the jquery ui selection plugin
             var selectedObj = instance.data("selectableItem");
             if(selectedObj){
@@ -68,6 +65,8 @@
             //triggering the selected event
             instance.trigger("selected");
             
+            //updating the selection most outer corners
+            this.revalidateSelectionContainer(instance);
         },
         removeFromSelection: function(element,skipSelContainerValidation){
             
@@ -126,9 +125,9 @@
             }
             return true;
         },
-        isSelected: function(instance){
-            instance = $(instance);
-            return this.__selected[mxBuilder.components.getComponent(instance).getID()]?true:false;
+        isSelected: function(element){
+            var component = mxBuilder.components.getComponent($(element));
+            return component && this.__selected[component.getID()]?true:false;
         },
         toggle: function(instance){
             instance = $(instance);
@@ -159,12 +158,8 @@
                 this.updateSelectionCorners(this.__selected[item]);
             }
         },
-        revalidateSelectionContainer: function(instance){
-            if(instance){
-                this.updateSelectionCorners(instance);
-            } else {
-                this.revalidateSelectionCorners();
-            }
+        revalidateSelectionContainer: function(){
+            this.revalidateSelectionCorners();
             if(this.__selectionCount > 0){
                 this.__selectionContainer.show().css({
                     position: "absolute",
