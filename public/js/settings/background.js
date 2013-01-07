@@ -3,35 +3,34 @@
     $(function(){
         mxBuilder.layout.settingsPanels.background = {
             _template: mxBuilder.layout.templates.find(".flexly-component-background-settings").remove(),
-            _currentInstance: null,
-            _picker: null,
-            _patterns: null,
-            _scaleValue: null,
-            _scaleSlider: null,
-            _opacityValue: null,
-            _opacitySlider: null,
-            _samples: null,
-            _originalSettings: null,
-            _thePanel: null,
             getPanel: function(expand){
                 var backgroundSettings = this;
                 
                 //creating the panel
-                this._thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
-                this._thePanel.find(".flexly-collapsable-title")
+                var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
+                thePanel.find(".flexly-collapsable-title")
                 .text("Background")
                 .end();
                 
                 //cloning the template and updating the object properties
-                this._currentInstance = this._template.clone();
-                this.updateInstanceVariables();
+                var currentInstance = this._template.clone();
+                
+                var controls = {
+                    opacitySlider: currentInstance.find(".opacity-slider"),
+                    opacityValue: currentInstance.find(".opacity-value"),
+                    patterns: currentInstance.find(".patterns"),
+                    picker: currentInstance.find(".picker"),
+                    scaleSlider: currentInstance.find(".scale-slider"),
+                    scaleValue: currentInstance.find(".scale-value"),
+                    thePanel: thePanel
+                }         
                 
                 //initiating the color picker
-                this._picker.customColorpicker().on({
+                controls.picker.customColorpicker().on({
                     pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                color.a = backgroundSettings._opacitySlider.customSlider("value")/100;
+                                color.a =  controls.opacitySlider.customSlider("value")/100;
                                 this.getBackgroundElement().css({
                                     backgroundColor:color.toString()
                                 });
@@ -41,12 +40,12 @@
                 });
                 
                 //building the scale slider
-                this._scaleSlider.customSlider({
+                controls.scaleSlider.customSlider({
                     min:10,
                     max:200,
                     step: 10,
                     slide: function slide(event, ui){
-                        backgroundSettings._scaleValue.text(ui.value+"px");
+                        controls.scaleValue.text(ui.value+"px");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
                                 this.getBackgroundElement().css({
@@ -58,14 +57,14 @@
                 });
                 
                 //building the opacity slider
-                this._currentInstance.find(".opacity-slider").customSlider({
+                controls.opacitySlider.customSlider({
                     min: 0,
                     max: 100,
                     value: 100,
                     slide: function slide(event,ui){
-                        backgroundSettings._opacityValue.text(ui.value+"%");
+                        controls.opacityValue.text(ui.value+"%");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            var theColor = backgroundSettings._picker.customColorpicker("value");
+                            var theColor =  controls.picker.customColorpicker("value");
                             theColor.a = ui.value/100;
                             mxBuilder.selection.each(function(){
                                 this.getBackgroundElement().css({
@@ -77,17 +76,17 @@
                 });
                 
                 //populating the pattern list
-                this._samples = $();
+                controls.samples = $();
                 for(var i=0;i<11;i++){
-                    this._samples = this._samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="background-position-y:-'+(i*60)+'px;"/>')
+                    controls.samples = controls.samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="background-position-y:-'+(i*60)+'px;"/>')
                         .data("flexly-pattern-index",i)
-                        .appendTo(this._patterns));
+                        .appendTo(controls.patterns));
                 }
                 
-                this._samples.on({
+                controls.samples.on({
                     click: function click(){
                         var element = $(this);
-                        backgroundSettings._patterns.find(".selected").removeClass("selected");
+                        controls.patterns.find(".selected").removeClass("selected");
                         element.addClass("selected");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
@@ -99,70 +98,70 @@
                         }
                     }
                 })
-                this._patterns.jqueryScrollbar();
+                controls.patterns.jqueryScrollbar();
                 
                 //hooking the update to the scrollbars when the panels are being opened
-                this._thePanel.on({
+                thePanel.on({
                     panelOpen: function(){
-                        backgroundSettings._patterns.jqueryScrollbar("update");
+                        controls.patterns.jqueryScrollbar("update");
                     }
                 });
                 
                 //Read the original selection values and store it
-                this._originalSettings = mxBuilder.layout.utils.readSelectionStyles({
+                var originalSettings = mxBuilder.layout.utils.readSelectionStyles({
                     background: ["backgroundColor",
                     "backgroundImage",
                     "backgroundSize"]
                 });
                 
-                this.setValues(this._originalSettings);
+                this.setValues(controls,originalSettings);
                 
                 //hooking the save / preview / cancel buttons
-                this._thePanel.on({
+                thePanel.on({
                     cancel: function cancel(){
                         mxBuilder.selection.each(function(){
-                            this.getBackgroundElement().css(backgroundSettings._originalSettings);
+                            this.getBackgroundElement().css(originalSettings);
                         });
                         mxBuilder.menuManager.closeTab();
                     },
                     previewDisabled: function previewDisabled(){
                         mxBuilder.selection.each(function(){
-                            this.getBackgroundElement().css(backgroundSettings._originalSettings);
+                            this.getBackgroundElement().css(originalSettings);
                         });
                         mxBuilder.menuManager.closeTab();
                     },
                     previewEnabled: function previewEnabled(){
-                        backgroundSettings.applyValuesToSelection();
+                        backgroundSettings.applyValuesToSelection(controls);
                     },
                     save: function save(){
-                        backgroundSettings.applyValuesToSelection();
+                        backgroundSettings.applyValuesToSelection(controls);
                         mxBuilder.menuManager.closeTab();
                     }
                 })
                 
                 //appending the cloned template to the panel
-                this._thePanel.find(".flexly-collapsable-content")
-                .append(this._currentInstance);
+                thePanel.find(".flexly-collapsable-content")
+                .append(currentInstance);
                 
                 //if we fetch the panel expanded.. we trigger the panelOpen event...
                 
                 if(expand){
-                    this._thePanel.trigger("panelOpen");
+                    thePanel.trigger("panelOpen");
                 }
                 
-                return this._thePanel;
+                return thePanel;
             },
-            setValues: function(values){
+            setValues: function(controls,values){
                 if(values.backgroundColor){
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.backgroundColor);
                     
                     //setting the color picker
-                    this._picker.customColorpicker("value",colorObj);
+                    controls.picker.customColorpicker("value",colorObj);
                     
                     //setting the opacity slider
                     var opacity = Math.round(colorObj.a*100);
-                    this._opacitySlider.customSlider("value",opacity);
-                    this._opacityValue.text(opacity+"%");
+                    controls.opacitySlider.customSlider("value",opacity);
+                    controls.opacityValue.text(opacity+"%");
                 }
                 if(values.backgroundSize){
                     if(values.backgroundSize == "auto" || values.backgroundSize == "100% 100%"){
@@ -175,40 +174,31 @@
                             scale = 10;
                         }
                     }
-                    this._scaleSlider.customSlider("value",scale);
-                    this._scaleValue.text((scale)+"px");
+                    controls.scaleSlider.customSlider("value",scale);
+                    controls.scaleValue.text((scale)+"px");
                 }
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
                     if(matches){
-                        var backgroundSettings = this;
-                        this._thePanel.on({
+                        controls.thePanel.on({
                             panelOpen: function(){
-                                var theSelected = backgroundSettings._samples.filter(".pattern-sample-"+matches[0]).trigger("click");
-                                backgroundSettings._patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight(),false);
+                                var theSelected = controls.samples.filter(".pattern-sample-"+matches[0]).trigger("click");
+                                controls.patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight(),false);
                             }
                         });                        
                     }
                 }
             },
-            updateInstanceVariables: function() {
-                this._opacitySlider = this._currentInstance.find(".opacity-slider");
-                this._opacityValue = this._currentInstance.find(".opacity-value");
-                this._patterns = this._currentInstance.find(".patterns");
-                this._picker = this._currentInstance.find(".picker");
-                this._scaleSlider = this._currentInstance.find(".scale-slider");
-                this._scaleValue = this._currentInstance.find(".scale-value");
-            },
-            applyValuesToSelection: function(){
+            applyValuesToSelection: function(controls){
                 var cssRules = {};
                 
                 //Applying the background color
-                var backgroundColor = this._picker.customColorpicker("value");
-                backgroundColor.a = this._opacitySlider.customSlider("value")/100;
+                var backgroundColor = controls.picker.customColorpicker("value");
+                backgroundColor.a = controls.opacitySlider.customSlider("value")/100;
                 cssRules.backgroundColor = backgroundColor.toString();
                 
                 //Applying the pattern
-                var pattern = this._patterns.find(".selected");//.data("flexly-pattern-index");
+                var pattern = controls.patterns.find(".selected");//.data("flexly-pattern-index");
                 if(pattern.length > 0){
                     cssRules.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
                 } else {
@@ -216,7 +206,7 @@
                 }
                 
                 //Applying the size
-                cssRules.backgroundSize = this._scaleSlider.customSlider("value");
+                cssRules.backgroundSize = controls.scaleSlider.customSlider("value");
                 
                 mxBuilder.selection.each(function(){
                     this.element.css(cssRules); 
