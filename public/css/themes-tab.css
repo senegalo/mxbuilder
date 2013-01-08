@@ -1,0 +1,11 @@
+.themes-tab {
+    min-height: 100%;
+}
+
+.themes-tab .flexly-collapsable-panel {
+    margin: 7px;
+}
+
+.themes-tab .spacer {
+    height: 1px;
+}
