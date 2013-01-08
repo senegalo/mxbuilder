@@ -7,6 +7,12 @@
     margin-right: 11px;
 }
 
+.pattern-image-none {
+    font-weight: bold;
+    text-align: center;
+    line-height: 60px;
+}
+
 .patterns {
     width: 214px;
     height: 104px;

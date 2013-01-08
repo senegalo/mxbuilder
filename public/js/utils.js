@@ -38,7 +38,8 @@
                 "background-color": element.css("backgroundColor"),
                 "background-image": element.css("backgroundImage"),
                 "background-repeat": element.css("backgroundRepeat"),
-                "background-attachment": element.css("backgroundAttachment")
+                "background-attachment": element.css("backgroundAttachment"),
+                "background-size": element.css("backgroundSize")
             }
         }
     }

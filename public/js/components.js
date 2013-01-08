@@ -28,11 +28,10 @@
             //Context Menus
             obj.element.on({
                 mousedown: function mousedown(event){
-                    
                     var ctx = mxBuilder.contextmenu.getMainCtx();
-                    
-                    if(mxBuilder.selection.getSelectionCount() < 2 || mxBuilder.selection.isAllSelectedSameType()){
-                        if(event.which == 3){
+                    if(event.which == 3){
+                        if(mxBuilder.selection.getSelectionCount() < 2 || mxBuilder.selection.isAllSelectedSameType()){
+                        
                             var theComponent = mxBuilder.components.getComponent(obj.element);
                             if(mxBuilder.selection.getSelectionCount() == 0){
                                 mxBuilder.selection.addToSelection(obj.element);
@@ -79,81 +78,82 @@
                                 });
                             }
                         }
+                        if(mxBuilder.selection.getSelectionCount() > 1){
+                            //Alignment Menu
+                            ctx.addSubgroup({
+                                label: "Alignment"
+                            }).addItem({
+                                label: "Align Left",
+                                callback: function(){
+                                    mxBuilder.components.alignment.alignLeft();
+                                }
+                            }).addItem({
+                                label: "Align Right",
+                                callback: function(){
+                                    mxBuilder.components.alignment.alignRight();
+                                }
+                            }).addItem({
+                                label: "Align Top",
+                                callback: function(){
+                                    mxBuilder.components.alignment.alignTop();
+                                }
+                            }).addItem({
+                                label: "Align Bottom",
+                                callback: function(){
+                                    mxBuilder.components.alignment.alignBottom();
+                                }
+                            }).addItem({
+                                label: "Center Vertically",
+                                callback: function(){
+                                    mxBuilder.components.alignment.centerVertically();
+                                }
+                            }).addItem({
+                                label: "Center Horizontally",
+                                callback: function(){
+                                    mxBuilder.components.alignment.centerHorizontally();
+                                }
+                            });
+                        }
+                    
+                        if(obj.pinnable !== false){
+                            var pinned = true;
+                            mxBuilder.selection.getSelection().each(function(){
+                                if(!mxBuilder.components.getComponent($(this)).isPinned()){
+                                    pinned = false;
+                                }
+                            });
+                            ctx.addItem({
+                                label: "Pin",
+                                checked: pinned,
+                                callback: function(){
+                                    mxBuilder.selection.getSelection().each(function(){
+                                        var theComponent = mxBuilder.components.getComponent($(this));
+                                        if(pinned){
+                                            theComponent.unpin();
+                                        } else {
+                                            theComponent.pin();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    
+                        //Adding Delete ctx menu
+                        if(obj.deletable !== false){
+                            ctx.addItem({
+                                label: "Delete",
+                                callback: function(){
+                                    mxBuilder.dialogs.deleteDialog({
+                                        msg: "Are you sure you want to delete the selected component(s) ?",
+                                        callback: function(){
+                                            mxBuilder.selection.getSelection().trigger("destroy"); 
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        ctx.stopPropagation();
                     } 
-                    if(mxBuilder.selection.getSelectionCount() > 1){
-                        //Alignment Menu
-                        ctx.addSubgroup({
-                            label: "Alignment"
-                        }).addItem({
-                            label: "Align Left",
-                            callback: function(){
-                                mxBuilder.components.alignment.alignLeft();
-                            }
-                        }).addItem({
-                            label: "Align Right",
-                            callback: function(){
-                                mxBuilder.components.alignment.alignRight();
-                            }
-                        }).addItem({
-                            label: "Align Top",
-                            callback: function(){
-                                mxBuilder.components.alignment.alignTop();
-                            }
-                        }).addItem({
-                            label: "Align Bottom",
-                            callback: function(){
-                                mxBuilder.components.alignment.alignBottom();
-                            }
-                        }).addItem({
-                            label: "Center Vertically",
-                            callback: function(){
-                                mxBuilder.components.alignment.centerVertically();
-                            }
-                        }).addItem({
-                            label: "Center Horizontally",
-                            callback: function(){
-                                mxBuilder.components.alignment.centerHorizontally();
-                            }
-                        });
-                    }
-                    
-                    if(obj.pinnable !== false){
-                        var pinned = true;
-                        mxBuilder.selection.getSelection().each(function(){
-                            if(!mxBuilder.components.getComponent($(this)).isPinned()){
-                                pinned = false;
-                            }
-                        });
-                        ctx.addItem({
-                            label: "Pin",
-                            checked: pinned,
-                            callback: function(){
-                                mxBuilder.selection.getSelection().each(function(){
-                                    var theComponent = mxBuilder.components.getComponent($(this));
-                                    if(pinned){
-                                        theComponent.unpin();
-                                    } else {
-                                        theComponent.pin();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    
-                    //Adding Delete ctx menu
-                    if(obj.deletable !== false){
-                        ctx.addItem({
-                            label: "Delete",
-                            callback: function(){
-                                mxBuilder.dialogs.deleteDialog({
-                                    msg: "Are you sure you want to delete the selected component(s) ?",
-                                    callback: function(){
-                                        mxBuilder.selection.getSelection().trigger("destroy"); 
-                                    }
-                                });
-                            }
-                        });
-                    }
                 }
             });
                 

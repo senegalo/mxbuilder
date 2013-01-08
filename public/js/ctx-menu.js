@@ -28,6 +28,7 @@
         
         mxBuilder.contextmenu = {
             __mainCtx: null,
+            __stopPropagation: false,
             getMainCtx: function(){
                 if(this.__mainCtx === null){
                     this.__mainCtx = ctxMenu.clone().on("contextmenu",function(event){
@@ -35,19 +36,24 @@
                         return false;
                     }).appendTo(document.body);
                 }
+                var stopPropagation = this.__stopPropagation;
                 return {
-                    __groupObj: ctxMenuGroupStamp.clone().appendTo(this.__mainCtx),
-                    __parent: this.__mainCtx.append('<hr/>'),
+                    __groupObj: !stopPropagation?ctxMenuGroupStamp.clone().appendTo(this.__mainCtx):$(),
+                    __parent: !stopPropagation?this.__mainCtx.append('<hr/>'):this.__mainCtx,
                     __level: 0,
                     addItem: function addItem(obj){
                         
                         //if it's a separator add and hr and get the hell out..
-                        if(obj.type == "separator" || obj.type == "sep"){
+                        if((obj.type == "separator" || obj.type == "sep") && !stopPropagation){
                             this.__groupObj.append('<hr/>');
                             return this;
                         }
                         
                         var theItem = ctxMenuItemStamp.clone();
+                        
+                        if(stopPropagation){
+                            theItem.hide();
+                        }
                     
                         //Adding classes if found...
                         if(obj.cls){
@@ -90,7 +96,7 @@
                         this.__groupObj.append(theItem);
                         return this;
                     },
-                    addSubgroup: function addSubgroup(itemObj,subgroupName){
+                    addSubgroup: function addSubgroup(itemObj,subgroupName){                
                         
                         //cloning the current object
                         var theSub = {}
@@ -110,6 +116,10 @@
                         .find(".context-item-checked").hide()
                         .end()
                         .appendTo(this.__groupObj);
+                        
+                        if(stopPropagation){
+                            theItem.hide();
+                        }
                         
                         //Creating the new sub-context menu
                         var theNewCtx = ctxMenu.clone().addClass("sub-context-menu level"+theSub.__level)
@@ -147,12 +157,16 @@
                             return this;
                         }
                     },
+                    stopPropagation: function stopPropagation(){
+                        mxBuilder.contextmenu.__stopPropagation = true;
+                    },
                     addGroup: mxBuilder.contextmenu.addGroup
                 };
             },
             reset: function(){
                 $(".context-menu").remove();
                 this.__mainCtx = null;
+                mxBuilder.contextmenu.__stopPropagation = false;
             }
         }
         
@@ -195,10 +209,10 @@
                 }
             },
             contextmenu: function contextmenu(event){                
-                //if(ctxMenu.is(":visible")){
-//                    event.preventDefault();
-//                    return false;
-                //}
+            //if(ctxMenu.is(":visible")){
+            //                    event.preventDefault();
+            //                    return false;
+            //}
             }
         });
     

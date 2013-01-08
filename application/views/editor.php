@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/twitter-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -102,6 +103,7 @@
         <script type="text/javascript" src="public/js/flexly-dialog.js"></script>
         <script type="text/javascript" src="public/js/layout-utils.js"></script>
         <script type="text/javascript" src="public/js/colors-manager.js"></script>
+        <script type="text/javascript" src="public/js/layout-settings.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -112,12 +114,14 @@
         <script type="text/javascript" src="public/js/menu-tabs/photos-flicker.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/themes.js"></script>
 
         <!-- Loading Settings Panels -->
         <script type="text/javascript" src="public/js/settings/border.js"></script>
         <script type="text/javascript" src="public/js/settings/background.js"></script>
         <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
         <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
+        <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -669,6 +673,29 @@
                 <div class="settings-title">More Link Text</div>
                 <input type="text" class="more-link-text"/>
             </div>
+            
+            <div class="themes-tab form">
+                <div class="spacer"></div>
+            </div>
+            
+            <div class="flexly-component-layout-background-settings">
+                <div class="settings-title">Background Color</div>
+                <div class="picker">
+
+                </div>
+
+                <div class="settings-title">Pattern</div>
+                <div class="patterns">
+                </div>
+
+                <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
+                <div class="scale-slider" style="width:238px;"></div>
+
+                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+                <div class="opacity-slider" style="width:238px;"></div>
+
+            </div>
+            
         </div>
     </body>
 </html>
