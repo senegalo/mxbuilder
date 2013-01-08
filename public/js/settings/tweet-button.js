@@ -21,30 +21,40 @@
                 
                 thePanel.find(".flexly-collapsable-title").text("Tweet Button");
                 
-                this._theInstance = this._template.clone();
+                var theInstance = this._template.clone();
                 
-                this.revalidateInstanceVariable();
+                var controls = {
+                    countPositionHorizontal: theInstance.find("#twitter-count-position-hr"),
+                    countPositionNone: theInstance.find("#twitter-count-position-none"),
+                    countPositionVertical: theInstance.find("#twitter-count-position-vr"),
+                    countPosition: theInstance.find('.tweet-counter-position input[name="twitter-count-position"]'),
+                    tweetText: theInstance.find(".tweet-text"),
+                    urlCustom: theInstance.find("#twitter-url-custom"),
+                    urlNone: theInstance.find("#twitter-url-none"),
+                    url: theInstance.find('.tweet-url input[name="twitter-url"]'),
+                    urlText: theInstance.find(".tweet-button-url")
+                }
                 
-                this._originalSettings = {};
+                var originalSettings = {};
                 var properties = ["text","count","url"];
                 var firstPass = true;
                 mxBuilder.selection.each(function(){
                     var theSettings = this.getSettings();
                     for(var p in properties){
                         if(firstPass){
-                            tweetButton._originalSettings[properties[p]] =theSettings[properties[p]];
+                            originalSettings[properties[p]] =theSettings[properties[p]];
                         }
                         var data = theSettings[properties[p]];
-                        if (tweetButton._originalSettings[properties[p]] !== data){
-                            tweetButton._originalSettings[properties[p]] = false;
+                        if (originalSettings[properties[p]] !== data){
+                            originalSettings[properties[p]] = false;
                         }
                     }
                     firstPass = false;
                 });
                 
-                this.setValues(this._originalSettings);
+                this.setValues(controls,originalSettings);
                 
-                this._countPosition.on({
+                controls.countPosition.on({
                     click: function click(){
                         if(settingsTab.isPreview()){
                             var chosenPosition = $(this).filter(":checked").val();
@@ -56,34 +66,34 @@
                     }
                 });
                 
-                this._urlText.on({
+                controls.urlText.on({
                     focus: function(){
-                        tweetButton._urlCustom.attr("checked","checked");
+                        controls.urlCustom.attr("checked","checked");
                     }
                 })
                 
                 thePanel.on({
                     previewEnabled: function(){
-                        tweetButton.applyToSelection();
+                        tweetButton.applyToSelection(controls);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function(){
-                        tweetButton.applyToSelection();
+                        tweetButton.applyToSelection(controls);
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        tweetButton.applyToSelection(tweetButton._originalSettings);
+                        tweetButton.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        tweetButton.applyToSelection(tweetButton._originalSettings);
+                        tweetButton.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
                 })                
                 
-                thePanel.find(".flexly-collapsable-content").append(this._theInstance);
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel
             },
             revalidateInstanceVariable: function(){
@@ -97,44 +107,44 @@
                 this._url = this._theInstance.find('.tweet-url input[name="twitter-url"]');
                 this._urlText = this._theInstance.find(".tweet-button-url");
             },
-            setValues: function(values){
+            setValues: function(controls, values){
                 if(values.text !== false){
-                    this._tweetText.val(values.text);
+                    controls.tweetText.val(values.text);
                 } else {
-                    this._tweetText.val('');
+                    controls.tweetText.val('');
                 }
                 
-                this._countPosition.removeAttr("checked");
+                controls.countPosition.removeAttr("checked");
                 if(values.count !== false){
-                    this['_countPosition'+values.count.uppercaseFirst()].attr("checked","checked");
+                    controls['countPosition'+values.count.uppercaseFirst()].attr("checked","checked");
                 }
                 
-                this._url.removeAttr("checked");
+                controls.url.removeAttr("checked");
                 if(values.url !== false){
                     if(typeof values.url == "undefined" || values.url == "none"){
-                        this._urlNone.attr("checked","checked");
-                        this._urlText.val("");
+                        controls.urlNone.attr("checked","checked");
+                        controls.urlText.val("");
                     } else {
-                        this._urlCustom.attr("checked","checked");
-                        this._urlText.val(values.url);
+                        controls.urlCustom.attr("checked","checked");
+                        controls.urlText.val(values.url);
                     }
                 }                
                 
             },
-            applyToSelection: function applyToSelection(values){
+            applyToSelection: function applyToSelection(controls,values){
                 if(typeof values === "undefined"){
                     values  = {
-                        text: this._tweetText.val()
+                        text: controls.tweetText.val()
                     };
                     
-                    var theCheckedCount = this._countPosition.filter(":checked");
+                    var theCheckedCount = controls.countPosition.filter(":checked");
                     if(theCheckedCount.length > 0){
                         values.count = theCheckedCount.filter(":checked").val();
                     }
                     
-                    var theCheckedUrl = this._url.filter(":checked");
+                    var theCheckedUrl = controls.url.filter(":checked");
                     if(theCheckedUrl.length > 0){
-                        values.url = this._urlNone.is(":checked") ? "none" : this._urlText.val();
+                        values.url = controls.urlNone.is(":checked") ? "none" : this._urlText.val();
                     }
                 }
                 mxBuilder.selection.each(function(){
