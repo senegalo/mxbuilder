@@ -12,11 +12,12 @@
             var containerHeight = container.height();
             var containerWidth = container.width();
             //checking for vertical scroll
+            var interval = element.data("jquery-scrollbar-interval");
             if(container.get(0).scrollHeight > containerHeight){
-                if(this._lastInterval !== null){
-                    clearInterval(this._lastInterval);
+                if(typeof interval != 'undefined'){
+                    clearInterval(interval);
                 }
-                this._lastInterval = setInterval(function(){
+                interval = setInterval(function(){
                     //get the vertical scrollbar height
                     var vScrollbarHeight = vScrollbar.height();
                 
@@ -37,8 +38,9 @@
                     }
                     vScrollbarIndicator.stop().clearQueue().animate(theAnimation,300);
                     vScrollbar.stop().clearQueue().fadeTo(300,1);
-                    clearInterval(helpers._lastInterval);
+                    clearInterval(vScrollbar.parent().data("jquery-scrollbar-interval"));
                 },100);
+                element.data("jquery-scrollbar-interval",interval);
             } else {
                 vScrollbar.stop().clearQueue().fadeTo(300,0);
             }
