@@ -68,7 +68,7 @@
                     r: r,
                     g: g,
                     b: b,
-                    a: a?a:1
+                    a: typeof a != "undefined" && a !== null ?a:1
                 });
                 return out;
             }

@@ -11,12 +11,21 @@
                 
                 var theContent = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
-                //header background panel
-                mxBuilder.layout.settingsPanels.layoutBackground.getPanel("header",extra?extra.header:false).appendTo(theContent);
-                
-                mxBuilder.layout.settingsPanels.layoutBackground.getPanel("body",extra?extra.body:false).appendTo(theContent);
-                
-                mxBuilder.layout.settingsPanels.layoutBackground.getPanel("footer",extra?extra.footer:false).appendTo(theContent);
+                //Background panels
+                var containers = ["header","body","footer"];
+                for(var c in containers){
+                    var expand = extra?extra[containers[c]]:false;
+                    var thePanel = mxBuilder.layout.settingsPanels.layoutBackground.getPanel(containers[c],expand);
+                    //patching webkit bug: scrollTop reset on parent/zindex change
+                    var thePanelContent = thePanel.find(".jquery-scrollbar-container");
+                    if(thePanelContent.length > 0){
+                        var scrollCache = thePanelContent.scrollTop();
+                        theContent.append(thePanel);
+                        thePanelContent.scrollTop(scrollCache);
+                    } else {
+                        theContent.append(thePanel);
+                    }
+                }
                 
                 theContent.append('<div class="spacer"></div>').on({
                     panelOpen: function(){

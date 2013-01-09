@@ -48,6 +48,15 @@
                                 backgroundColor:color.toString()
                             });
                         } 
+                    },
+                    pickerColorReset: function pickerColorRest(event,color){
+                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
+                            controls.opacitySlider.customSlider("value",color.a);
+                            controls.opacityValue.text("0%")
+                            layoutPart.css({
+                                backgroundColor:color.toString()
+                            });
+                        } 
                     }
                 });
                 
@@ -110,7 +119,7 @@
                 controls.patterns.jqueryScrollbar();
                 
                 //hooking the update to the scrollbars when the panels are being opened
-                thePanel.on({
+                controls.thePanel.on({
                     panelOpen: function(){
                         controls.patterns.jqueryScrollbar("update");
                     }
@@ -126,7 +135,7 @@
                 this.setValues(controls,originalSettings);
                 
                 //hooking the save / preview / cancel buttons
-                thePanel.on({
+                controls.thePanel.on({
                     cancel: function cancel(){
                         layoutPart.css(originalSettings);
                         mxBuilder.menuManager.closeTab();
@@ -145,16 +154,16 @@
                 })
                 
                 //appending the cloned template to the panel
-                thePanel.find(".flexly-collapsable-content")
+                controls.thePanel.find(".flexly-collapsable-content")
                 .append(currentInstance);
                 
                 //if we fetch the panel expanded.. we trigger the panelOpen event...
                 
                 if(expand){
-                    thePanel.trigger("panelOpen");
+                    controls.thePanel.trigger("panelOpen");
                 }
                 
-                return thePanel;
+                return controls.thePanel;
             },
             setValues: function(controls,values){
                 if(values.backgroundColor){

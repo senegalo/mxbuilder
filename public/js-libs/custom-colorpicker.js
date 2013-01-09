@@ -27,11 +27,24 @@
                     element.data("custom-colopicker-settings",settings);
                     
                     //building the colorpicker
-                    var pickerElements = $('<div class="flexly-color-picker"><input type="text" class="flexly-color-picker-input"/><canvas class="color-canvas" height="35" width="169"></canvas><div style="clear:both;"></div></div>')
-                    .appendTo(element);
-                    var theCanvas = pickerElements.find("canvas");
+                    var pickerElements = $('<div class="flexly-color-picker"></div>').appendTo(element);
+                    
+                    var theInput = $('<input type="text" class="flexly-color-picker-input"/>').appendTo(pickerElements);
+                    var theCanvas = $('<canvas class="color-canvas" height="35" width="169"></canvas>').appendTo(pickerElements);
+                    pickerElements.append('<div style="clear:both;"/>');
+                    var theClearButton = $('<button class="jquery-colorpicker-clear">No Color</button>').appendTo(pickerElements);
+                    
                     var theContext = theCanvas.get(0).getContext("2d");
-                    var theInput = pickerElements.find("input");
+                    
+                    
+                    //The Clear Button
+                    
+                    theClearButton.on({
+                        click: function click(){
+                            var color = mxBuilder.colorsManager.createColorObjFromRGBA(0, 0, 0, 0);
+                            element.trigger("pickerColorReset",color);
+                        }
+                    });
                     
                     //Color Canvas
                     var image = $('<img src="public/images/palette.png"/>').on({
