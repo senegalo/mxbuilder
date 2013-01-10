@@ -31,6 +31,10 @@
                 margin-left: -490px;
             }
 
+            .flexly-background-image {
+                overflow: hidden;
+            }
+
         </style>
 
         <?php
@@ -57,6 +61,57 @@
                     imageBtnClose: "<?php print base_url("public/js-libs/lightbox/images/lightbox-btn-close.gif"); ?>",
                     imageBlank: "<?php print base_url("public/js-libs/lightbox/images/lightbox-blank.gif"); ?>"
                 });
+                var containers = ["header","body","footer"];
+                for(var c in containers){
+                    var container = containers[c];
+                    var className = container+"-background-image";
+            
+                    if(container == "header"){
+                        container = $("#header");
+                    } else if (container == "body") {
+                        container = $(document.body);
+                    } else {
+                        container = $("#footer");
+                    }
+            
+                    var theDiv = container.children("."+className);
+                                    
+                    var theImg = theDiv.find("img");
+                                    
+                    var wDiv = theDiv.width();
+                    var hDiv = theDiv.height();
+                
+                    var ratioDiv = wDiv/hDiv;
+            
+                    var wImg, hImg, ratioImg = theImg.data("ratio");
+                    if(ratioImg > 0){
+                        wImg = wDiv;
+                        hImg = ratioImg/wImg;
+                    } else {
+                        wImg = hDiv*ratioImg;
+                        hImg = hDiv;
+                    }
+            
+                                    
+                    if (ratioDiv < ratioImg) {
+                        hImg = hDiv;
+                        wImg = hDiv * ratioImg;
+                    } else if (ratioDiv > ratioImg) {
+                        wImg = wDiv;
+                        hImg = wDiv / ratioImg;
+                    } else {
+                        wImg = wDiv;
+                        hImg = hDiv;
+                    }
+                                    
+                    theImg.css({
+                        position: "absolute",
+                        width: wImg,
+                        height: hImg,
+                        top: ((hDiv - hImg) / 2) + 'px', 
+                        left: ((wDiv - wImg) / 2) + 'px'
+                    });
+                }
             });
         </script>
 
@@ -72,26 +127,52 @@
 
     </head>
     <body>
-
+        <?php
+        if (isset($background['bodyImage']['image'])):
+            ?>
+            <div style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1" class="body-background-image flexly-background-image">
+                <img src="./images/<?php print $background['bodyImage']['image']; ?>" data-ratio="<?php print $background['bodyImage']['ratio'];?>"/>
+            </div>
+            <?php
+        endif;
+        ?>
         <div id="editor-area" style="width:100%;height:100%;">
 
-            <div id="header" style="<?php
+            <div id="header" style="position:relative;<?php
         foreach ($background['header'] as $p => $v) {
             print $p . ":" . $v . ";";
         }
         ?>height:<?php print $height['header']; ?>px">
+                 <?php
+                 if (isset($background['headerImage']['image'])):
+                     ?>
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1" class="header-background-image flexly-background-image">
+                        <img src="./images/<?php print $background['headerImage']['image']; ?>" data-ratio="<?php print $background['headerImage']['ratio'];?>"/>
+                    </div>
+                    <?php
+                endif;
+                ?>
             </div>
             <div id="body" style="<?php
-                 foreach ($background['body'] as $p => $v) {
-                     print $p . ":" . $v . ";";
-                 }
-        ?>height:<?php print $content_height; ?>px">
+                foreach ($background['body'] as $p => $v) {
+                    print $p . ":" . $v . ";";
+                }
+                ?>height:<?php print $content_height; ?>px">
             </div>
-            <div id="footer"  style="<?php
+            <div id="footer"  style="position:relative;<?php
                  foreach ($background['footer'] as $p => $v) {
                      print $p . ":" . $v . ";";
                  }
-        ?>height:<?php print $height['footer']; ?>px">
+                ?>height:<?php print $height['footer']; ?>px">
+                 <?php
+                 if (isset($background['footerImage']['image'])):
+                     ?>
+                    <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:1" class="footer-background-image flexly-background-image">
+                        <img src="./images/<?php print $background['footerImage']['image']; ?>" data-ratio="<?php print $background['footerImage']['ratio'];?>">
+                    </div>
+                    <?php
+                endif;
+                ?>
             </div>
 
             <div id="container">

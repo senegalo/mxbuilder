@@ -178,8 +178,10 @@
             });
         },
         getBackgroundImage: function(container){
-            if(typeof container == "string"){
+            if(typeof container == "string" && container != "body"){
                 return mxBuilder.layout['layout'+container.uppercaseFirst()].children(".flexly-background-image");
+            } else if(typeof container == "string"){
+                return $(document.body).children(".flexly-background-image");
             } else {
                 return container.children(".flexly-background-image");
             }

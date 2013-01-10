@@ -304,6 +304,21 @@
                         background: this.getLayoutBackground()
                     }
                 };
+                
+                //Adding the assets required for the background images
+                var layoutParts = ["header","body","footer"];
+                for(var c in layoutParts){
+                    var assetID = out.layout.background[layoutParts[c]+"Image"];
+                    if(!out.assets[assetID]){
+                        out.assets[assetID] = [];
+                    }
+                    out.assets[assetID].push(mxBuilder.assets.getBiggestImageSize(assetID));
+                    out.layout.background[layoutParts[c]+"Image"] = {
+                        image: mxBuilder.assets.get(assetID)[mxBuilder.assets.getBiggestImageSize(assetID)],
+                        ratio: mxBuilder.assets.get(assetID).ratio
+                    }
+                }
+                
                 var currentPage = this.__currentPage;
                 for(var p in this.__pages){
                     var page = {};
@@ -324,7 +339,7 @@
                     };
                     for(var c in components){
                         if(components[c].type == "ImageComponent"){
-                            var assetID = components[c].getAssetID();
+                            assetID = components[c].getAssetID();
                             out.assets[assetID] = [components[c].getImageSize()];
                             var linkObj = components[c].getLinkObj();
                             if(linkObj && linkObj.type == "lightbox"){
@@ -422,9 +437,9 @@
                     header: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutHeader),
                     body: mxBuilder.utils.getElementBackgroundObj($(document.body)),
                     footer: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutFooter),
-                    headerImage: mxBuilder.layout.layoutHeader.find(".header-background-image").data("id"),
-                    bodyImage: $(".body-background-image").data("id"),
-                    footerImage: mxBuilder.layout.layoutFooter.find(".footer-background-image").data("id")
+                    headerImage: mxBuilder.layout.getBackgroundImage("header").data("id"),
+                    bodyImage: mxBuilder.layout.getBackgroundImage("body").data("id"),
+                    footerImage: mxBuilder.layout.getBackgroundImage("footer").data("id")
                 }
             }
         }        
