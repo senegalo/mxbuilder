@@ -19,7 +19,16 @@
                                     expand[layoutPart] = true;
                                     mxBuilder.menuManager.showTab("themes", expand);
                                 }
-                            });                    
+                            });
+                            
+                            if(!mxBuilder.clipboard.isEmpty()){
+                                ctx.addItem({
+                                    label: "Paste",
+                                    callback: function(){
+                                        mxBuilder.clipboard.paste(layoutPart,this.originalCoordinates.left,this.originalCoordinates.top);
+                                    }
+                                });
+                            }
                         }
                     }
                 });

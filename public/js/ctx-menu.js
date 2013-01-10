@@ -75,6 +75,7 @@
                         }
                         action[obj.action] = function(event){
                             if(obj.callback){
+                                obj.originalCoordinates = mxBuilder.contextmenu.__mainCtx.position();
                                 obj.callback();
                             }
                             hideCtx($(".context-menu:visible"));

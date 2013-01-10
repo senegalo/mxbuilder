@@ -104,6 +104,7 @@
         <script type="text/javascript" src="public/js/layout-utils.js"></script>
         <script type="text/javascript" src="public/js/colors-manager.js"></script>
         <script type="text/javascript" src="public/js/layout-settings.js"></script>
+        <script type="text/javascript" src="public/js/clipboard.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -233,13 +234,13 @@
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
-            <div id="header" style="height: 200px;width:100%;z-index:10;overflow: hidden;">
+            <div id="header" style="height: 200px;width:100%;z-index:10;">
 
             </div>
-            <div id="body" style="height: 300px;width:100%;z-index:10;">
+            <div id="body" style="height: 300px;width:100%;z-index:9;">
 
             </div>
-            <div id="footer" style="height: 200px;width:100%;z-index:10;overflow:hidden;">
+            <div id="footer" style="height: 200px;width:100%;z-index:8;">
 
             </div>
             <div id="container">

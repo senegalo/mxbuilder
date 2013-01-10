@@ -77,3 +77,7 @@ hr {
     width: 250px;
     color: #a39c96;
 }
+
+.flexly-background-image {
+    overflow: hidden;
+}

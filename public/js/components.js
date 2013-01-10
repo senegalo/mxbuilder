@@ -79,6 +79,12 @@
                             }
                         }
                         if(mxBuilder.selection.getSelectionCount() > 1){
+                            ctx.addItem({
+                                label: "Copy",
+                                callback: function(){
+                                    mxBuilder.clipboard.copySelected();
+                                }
+                            })
                             //Alignment Menu
                             ctx.addSubgroup({
                                 label: "Alignment"
