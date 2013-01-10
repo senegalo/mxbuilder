@@ -54,7 +54,7 @@
             }
             delete this.__assets[id];
         },
-        getBiggestImageSize: function getBiggestImageSize(id){
+        getBiggestImageSize: function(id){
             var imgObj = this.__assets[id];
             if(imgObj.full)
                 return "full";
@@ -66,7 +66,7 @@
                 return "thumb";
             }
         },
-        getClosestImageSize: function getClosestImageSize(id,size,directionUp){
+        getClosestImageSize: function(id,size,directionUp){
             var imgObj = this.__assets[id];
             var sizes = ["full","medium","small","thumb"];
                 

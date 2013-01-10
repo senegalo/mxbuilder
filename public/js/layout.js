@@ -124,6 +124,66 @@
                 that.css("top",thePosition.top);
             });
         },
+        setBackgroundImage: function(container, image){
+            var className = container+"-background-image";
+            
+            if(container == "header"){
+                container = this.layoutHeader;
+            } else if (container == "body") {
+                container = $(document.body);
+            } else {
+                container = this.layoutFooter;
+            }
+            
+            container.find("."+className).remove();
+            
+            var theDiv = $('<div style="position:'+(className == "body-background-image"?"fixed":"absolute")+';top:0;left:0;width:100%;height:100%;z-index:1" class="'+className+' flexly-background-image" data-id="'+image.id+'"></div>')
+            .appendTo(container);
+                                    
+            var theImg = $('<img src="'+image.location+"/"+image[mxBuilder.assets.getBiggestImageSize(image.id)]+'"/>')
+            .appendTo(theDiv);
+                                    
+            var wDiv = theDiv.width();
+            var hDiv = theDiv.height();
+                
+            var ratioDiv = wDiv/hDiv;
+            
+            var wImg, hImg, ratioImg = image.ratio;
+            if(ratioImg > 0){
+                wImg = wDiv;
+                hImg = ratioImg/wImg;
+            } else {
+                wImg = hDiv*ratioImg;
+                hImg = hDiv;
+            }
+            
+                                    
+            if (ratioDiv < ratioImg) {
+                hImg = hDiv;
+                wImg = hDiv * ratioImg;
+            } else if (ratioDiv > ratioImg) {
+                wImg = wDiv;
+                hImg = wDiv / ratioImg;
+            } else {
+                wImg = wDiv;
+                hImg = hDiv;
+            }
+                                    
+            theImg.css({
+                position: "absolute",
+                width: wImg,
+                height: hImg,
+                top: ((hDiv - hImg) / 2) + 'px', 
+                left: ((wDiv - wImg) / 2) + 'px'
+            });
+        },
+        getBackgroundImage: function(container){
+            if(typeof container == "string"){
+                return mxBuilder.layout['layout'+container.uppercaseFirst()].children(".flexly-background-image");
+            } else {
+                return container.children(".flexly-background-image");
+            }
+        },
         header: null,
         body: null,
         footer: null,

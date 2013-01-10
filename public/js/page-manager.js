@@ -368,9 +368,21 @@
                 }
                 
                 if(restore.layoutBackground){
+                    //colors
                     mxBuilder.layout.layoutHeader.css(restore.layoutBackground.header);
                     $(document.body).css(restore.layoutBackground.body);
                     mxBuilder.layout.layoutFooter.css(restore.layoutBackground.footer);
+                    //images
+                    var image;
+                    var container = ["header","body","footer"];
+                    for(c in container){
+                        if(restore.layoutBackground[container[c]+"Image"]){
+                            image = mxBuilder.assets.get(restore.layoutBackground[container[c]+"Image"]);
+                            if(image){
+                                mxBuilder.layout.setBackgroundImage(container[c], image);
+                            }
+                        }
+                    }
                 }
                 this.__currentPage = null;
                 this.loadPage(firstPage.id);
@@ -409,7 +421,10 @@
                 return {
                     header: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutHeader),
                     body: mxBuilder.utils.getElementBackgroundObj($(document.body)),
-                    footer: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutFooter)
+                    footer: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutFooter),
+                    headerImage: mxBuilder.layout.layoutHeader.find(".header-background-image").data("id"),
+                    bodyImage: $(".body-background-image").data("id"),
+                    footerImage: mxBuilder.layout.layoutFooter.find(".footer-background-image").data("id")
                 }
             }
         }        

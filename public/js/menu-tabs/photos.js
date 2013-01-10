@@ -56,47 +56,68 @@
                 .append('<img src="'+obj.location+"/"+obj.thumb+'" style="width:114px;height:'+(114/obj.ratio)+'px;" title="'+obj.name+'"/>')
                 .end()
                 .find(".asset-name")
-                .text(obj.name.reduceString(10))
+                .text(obj.name.reduceString(17))
                 .attr("title",obj.name)
                 .end()
-                .find(".photo-delete")
+                .data("assetid",obj.id)
                 .on({
-                    click: function click(){
-                        var theLi = $(this).parents("li:first");
-                        mxBuilder.dialogs.deleteDialog({
-                            msg: "Are you sure you want to delete the selected image ? <br/>If it's used anywhere it will be automatically removed",
-                            callback: function callback(){
-                                mxBuilder.api.assets.remove({
-                                    assetID: theLi.data("assetid"),
-                                    success: function success(){     
-                                        mxBuilder.assets.remove(theLi.data("assetid"));
-                                        theLi.css({
-                                            height: theLi.outerHeight(),
-                                            width: theLi.outerWidth(),
-                                            padding: 0
-                                        })
-                                        .contents()
-                                        .remove()
-                                        .end().animate({
-                                            height: 0
-                                        },300,"linear",function(){
-                                            mxBuilder.menuManager.menus.photos.revalidate();
-                                        });
-                                    }
-                                });
-                            }
-                        });
+                    mousedown: function mousedown(event){
+                        if(event.which == 3){
+                            mxBuilder.contextmenu.getMainCtx().addSubgroup({
+                                label: "Set as background"
+                            }).addItem({
+                                label: "Header",
+                                callback: function callback(){
+                                    mxBuilder.layout.setBackgroundImage("header", obj);
+                                }
+                            }).addItem({
+                                label: "Body",
+                                callback: function callback(){
+                                    mxBuilder.layout.setBackgroundImage("body", obj);
+                                }
+                            }).addItem({
+                                label: "Footer",
+                                callback: function callback(){
+                                    mxBuilder.layout.setBackgroundImage("footer", obj);
+                                }
+                            })
+                            .end()
+                            .addItem({
+                                label: "Image Settings...",
+                                callback: function callback(){
+                                    mxBuilder.menuManager.showTab("photoProperties",theItem.data("assetid"))
+                                }
+                            }).addItem({
+                                label: "Delete Image...",
+                                callback: function callback(){
+                                    mxBuilder.dialogs.deleteDialog({
+                                        msg: "Are you sure you want to delete the selected image ? <br/>If it's used anywhere it will be automatically removed",
+                                        callback: function callback(){
+                                            mxBuilder.api.assets.remove({
+                                                assetID: theItem.data("assetid"),
+                                                success: function success(){     
+                                                    mxBuilder.assets.remove(theItem.data("assetid"));
+                                                    theItem.css({
+                                                        height: theItem.outerHeight(),
+                                                        width: theItem.outerWidth(),
+                                                        padding: 0
+                                                    })
+                                                    .contents()
+                                                    .remove()
+                                                    .end().animate({
+                                                        height: 0
+                                                    },300,"linear",function(){
+                                                        mxBuilder.menuManager.menus.photos.revalidate();
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
-                })
-                .end()
-                .find(".photo-properties")
-                .on({
-                    click: function click(){
-                        mxBuilder.menuManager.showTab("photoProperties",$(this).parents("li:first").data("assetid"));
-                    }
-                })
-                .end()
-                .data("assetid",obj.id);
+                });
                 
                 var theSelCol = leftColumn.height() > rightColumn.height() ? rightColumn:leftColumn;
                 if(prependFlag){
@@ -119,25 +140,25 @@
                 
                 //activating the cancel button on the notification canvas
                 $("#flexly-notification-container").on({
-                   click: function(){
-                       uploader.stop();
-                       uploader.splice(0,uploader.files.length);
-                       uploader.refresh();
-                       queueSize = 0;
-                       mxBuilder.notifications.setIdleState();
-                   } 
+                    click: function(){
+                        uploader.stop();
+                        uploader.splice(0,uploader.files.length);
+                        uploader.refresh();
+                        queueSize = 0;
+                        mxBuilder.notifications.setIdleState();
+                    } 
                 });
                 
                 var queueSize = 0;
-//                var uploaderNotification = mxBuilder.layout.templates.find(".photo-upload-notification")
-//                .find('.progress')
-//                .progressbar({
-//                    max: 100,
-//                    varlue: 0
-//                })
-//                .end()
-//                .appendTo(document.body)
-//                .hide();
+                //                var uploaderNotification = mxBuilder.layout.templates.find(".photo-upload-notification")
+                //                .find('.progress')
+                //                .progressbar({
+                //                    max: 100,
+                //                    varlue: 0
+                //                })
+                //                .end()
+                //                .appendTo(document.body)
+                //                .hide();
                 
                 
                 uploadButton.on({
@@ -149,13 +170,13 @@
                 uploader.init();
 
                 uploader.bind('FilesAdded', function(up, files) {
-//                    uploaderNotification.find(".progress")
-//                    .progressbar('option','value',0)
-//                    .end()
-//                    .find(".info")
-//                    .text("0%")
-//                    .end()
-//                    .show();
+                    //                    uploaderNotification.find(".progress")
+                    //                    .progressbar('option','value',0)
+                    //                    .end()
+                    //                    .find(".info")
+                    //                    .text("0%")
+                    //                    .end()
+                    //                    .show();
                     queueSize += files.length;
                     mxBuilder.notifications.uploadProgress(0,0,files.length);
                     
@@ -164,11 +185,11 @@
                 });
 
                 uploader.bind('UploadProgress', function(up, file) {
-//                    uploaderNotification.find(".progress")
-//                    .progressbar('option','value', up.total.percent)
-//                    .end()
-//                    .find(".info")
-//                    .text(up.total.percent+"%");
+                    //                    uploaderNotification.find(".progress")
+                    //                    .progressbar('option','value', up.total.percent)
+                    //                    .end()
+                    //                    .find(".info")
+                    //                    .text(up.total.percent+"%");
                     mxBuilder.notifications.uploadProgress(up.total.percent,queueSize-up.total.queued,queueSize);
                 });
 

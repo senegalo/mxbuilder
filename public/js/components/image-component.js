@@ -119,7 +119,7 @@
                         resizeMethod = Object.keys(resizeMethod);
                         resizeMethod = resizeMethod.length == 1 ? resizeMethod[0] : false;
                         
-                        mxBuilder.contextmenu.getMainCtx().addSubgroup({
+                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addSubgroup({
                             label: "Resize Method"
                         }).addItem({
                             label: "Stretch",
@@ -170,7 +170,7 @@
                                     urlObj: currentLinkObj
                                 });
                             }
-                        });
+                        }).stopPropagation();
                     }
                 }
             });

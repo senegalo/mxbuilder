@@ -150,21 +150,6 @@
         <script type="text/javascript" src="public/js/init.js"></script>
     </head>
     <body>
-
-        <!--        <div id="menu" style="border: 1px solid black;position:fixed;top:50%;left:10px;width:200px;height:300px;margin-top:-150px;z-index:30000009;background-color:#e4e4e4;">
-                    <div class="menu-item">
-                        <select id="website-pages" style="width:190px"></select>
-                    </div>
-                    <div id="add-page" class="menu-item" style="font-weight:bold;cursor:pointer">Add Page</div>
-                    <div id="edit-page" class="menu-item" style="font-weight:bold;cursor:pointer">Edit Page</div>
-                    <div id="delete-page" class="menu-item" style="font-weight:bold;cursor:pointer">Delete Page</div>
-                    <div id="save" class="menu-item" style="font-weight:bold;cursor:pointer">Save</div>
-                    <div id="publish" class="menu-item" style="font-weight:bold;cursor:pointer">Publish</div>
-                    <div id="header-background" class="menu-item" style="font-weight:bold;cursor:pointer">Header Background</div>
-                    <div id="body-background" class="menu-item" style="font-weight:bold;cursor:pointer">Body Background</div>
-                    <div id="footer-background" class="menu-item" style="font-weight:bold;cursor:pointer">Footer Background</div>
-                </div>-->
-
         <div class="flexly-main-bar">
             <div class="flexly-buttons">
                 <div class="flexly-icon flexly-logo" id="flexly-logo">
@@ -248,13 +233,13 @@
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
-            <div id="header" style="height: 200px;width:100%;">
+            <div id="header" style="height: 200px;width:100%;z-index:10;overflow: hidden;">
 
             </div>
-            <div id="body" style="height: 300px;width:100%;">
+            <div id="body" style="height: 300px;width:100%;z-index:10;">
 
             </div>
-            <div id="footer" style="height: 200px;width:100%;">
+            <div id="footer" style="height: 200px;width:100%;z-index:10;overflow:hidden;">
 
             </div>
             <div id="container">
@@ -507,12 +492,7 @@
 
                             </div>
                             <div>
-                                <div style="float:left;" class="asset-name"></div>
-                                <div style="float:right;" class="asset-controls">
-                                    <div style="display:inline-block" class="flexly-icon flexly-icon-gear-small-dark photo-properties"></div>
-                                    <div style="display:inline-block" class="flexly-icon flexly-icon-trash-small-dark photo-delete"></div>
-                                </div>
-                                <div style="clear:both;"></div>
+                                <div class="asset-name"></div>
                             </div>
                         </li>
                     </ul>

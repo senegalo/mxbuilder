@@ -92,6 +92,15 @@
                     }
                 });
                 
+                
+                //Read the original selection values and store it
+                var originalSettings = {
+                    backgroundColor: layoutPart.css("backgroundColor"),
+                    backgroundImage: layoutPart.css("backgroundImage"),
+                    backgroundSize: layoutPart.css("backgroundSize")
+                }; 
+                var originalBackgroundImage = layoutPart.children(".flexly-background-image").clone();
+                
                 //populating the pattern list
                 controls.samples = $('<div class="pattern-sample pattern-image-none">No Pattern</div>')
                 .data("flexly-pattern-index",-1)
@@ -106,6 +115,7 @@
                 controls.samples.on({
                     click: function click(){
                         var element = $(this);
+                        mxBuilder.layout.getBackgroundImage(layoutPart).remove();
                         controls.patterns.find(".selected").removeClass("selected");
                         element.addClass("selected");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
@@ -115,7 +125,7 @@
                             });
                         }
                     }
-                })
+                });
                 controls.patterns.jqueryScrollbar();
                 
                 //hooking the update to the scrollbars when the panels are being opened
@@ -125,23 +135,22 @@
                     }
                 });
                 
-                //Read the original selection values and store it
-                var originalSettings = {
-                    backgroundColor: layoutPart.css("backgroundColor"),
-                    backgroundImage: layoutPart.css("backgroundImage"),
-                    backgroundSize: layoutPart.css("backgroundSize")
-                }; 
-                
                 this.setValues(controls,originalSettings);
                 
                 //hooking the save / preview / cancel buttons
                 controls.thePanel.on({
                     cancel: function cancel(){
                         layoutPart.css(originalSettings);
+                        if(mxBuilder.layout.getBackgroundImage(layoutPart).length == 0){
+                            layoutPart.append(originalBackgroundImage);
+                        }
                         mxBuilder.menuManager.closeTab();
                     },
                     previewDisabled: function previewDisabled(){
                         layoutPart.css(originalSettings);
+                        if(mxBuilder.layout.getBackgroundImage(layoutPart).length == 0){
+                            layoutPart.append(originalBackgroundImage);
+                        }
                         mxBuilder.menuManager.closeTab();
                     },
                     previewEnabled: function previewEnabled(){
@@ -204,7 +213,7 @@
                     }
                     controls.thePanel.on({
                         panelOpen: function(){
-                            var theSelected = controls.samples.filter(filter).trigger("click");
+                            var theSelected = controls.samples.filter(filter).addClass("selected");
                             controls.patterns.jqueryScrollbar("scrollTo",scrollToIndex*theSelected.outerHeight(),false);
                         }
                     });  

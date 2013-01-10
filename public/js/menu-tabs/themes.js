@@ -3,8 +3,9 @@
     $(function(){
         mxBuilder.menuManager.menus.themes = {
             _template: mxBuilder.layout.templates.find(".themes-tab"),
+            _enablePreview: true,
             init: function(extra){
-                
+                var themes = this;
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
                 mxBuilder.menuManager.tabTitle.text("Themes");
@@ -35,6 +36,36 @@
                         mxBuilder.menuManager.revalidateScrollbar();
                     }
                 });
+                
+                //the cancel / savebutton 
+                $('<div class="flexly-icon flexly-icon-cancel-big-black flexly-component-settings-cancel"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
+                    click: function(){
+                        theContent.children().trigger("cancel");
+                    }
+                });
+                $('<div class="flexly-icon flexly-icon-save-big-black flexly-component-settings-save"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
+                    click: function(){
+                        theContent.children().trigger("save");
+                    }
+                });
+                
+                $('<div class="flexly-icon flexly-icon-preview-'+(this._enablePreview?"enabled":"disabled")+' flexly-component-settings-preview"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
+                    click: function(){
+                        var element = $(this);
+                        if(element.hasClass("flexly-icon-preview-disabled")){
+                            element.removeClass("flexly-icon-preview-disabled").addClass("flexly-icon-preview-enabled");
+                            themes._enablePreview = true;
+                            theContent.children().trigger("previewEnabled");
+                        } else {
+                            element.removeClass("flexly-icon-preview-enabled").addClass("flexly-icon-preview-disabled");
+                            themes._enablePreview = false;
+                            theContent.children().trigger("previewDisabled");
+                        }
+                    }
+                });
+            },
+            isPreview: function(){
+                return this._enablePreview;
             }
         }
     });

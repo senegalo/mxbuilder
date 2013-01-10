@@ -159,9 +159,14 @@
                     },
                     stopPropagation: function stopPropagation(){
                         mxBuilder.contextmenu.__stopPropagation = true;
+                        return this;
                     },
                     addGroup: mxBuilder.contextmenu.addGroup
                 };
+            },
+            allowPropagation: function allowPropagation(){
+                mxBuilder.contextmenu.__stopPropagation = false;
+                return this;
             },
             reset: function(){
                 $(".context-menu").remove();
