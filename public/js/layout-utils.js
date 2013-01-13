@@ -35,19 +35,17 @@
                 });
                 return thePanel;
             },
-            readSelectionStyles: function(styles){
+            readSelectionStyles: function(types){
                 var settings = {};
                 var firstRun = true;
                 mxBuilder.selection.each(function(){
-                    for(var c in styles){
-                        var element = this['get'+c.uppercaseFirst()+'Element']();
-                        
-                        for(var s in styles[c]){
-                            var style = element.css(styles[c][s]);
+                    for(var t in types){
+                        var styles = this["get"+types[t].uppercaseFirst()]();
+                        for(var c in styles){
                             if(firstRun){
-                                settings[styles[c][s]] = style;
-                            } else if(settings[styles[c][s]] !== style){
-                                settings[styles[c][s]] = false;
+                                settings[c] = styles[c];
+                            } else if(settings[c] !== styles[c]){
+                                settings[c] = false;
                             }
                         }
                     }

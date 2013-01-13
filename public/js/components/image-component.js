@@ -25,14 +25,6 @@
             }).end().on({
                 componentDropped: function componentDropped(){
                     self.setImageSize("small");
-//                    self.element.css({
-//                        width: self.theImage.width() + 'px', 
-//                        height: self.theImage.height() + 'px'
-//                    });
-                },
-                borderWidthChanged: function borderWidthChanged(){
-                    properties.element.width(properties.element.find(".image").outerWidth());
-                    properties.element.height(properties.element.find(".image").outerHeight());
                 },
                 selected: function selected(){
                     mxBuilder.activeStack.push(properties.element);
@@ -47,8 +39,9 @@
                     var ratioDiv = wDiv/hDiv;
                     var sourceSwitchMargin = 10;
                 
-                    var wImg = self.theImage.width();
-                    var hImg = self.theImage.height();
+                    var wImg = self.theImage.outerWidth(true);
+                    var hImg = self.theImage.outerHeight(true);
+                    var imageOuterLength = wImg - self.theImage.width();
                     var ratioImg = self.getImageObj().ratio;
                 
                     //Implementing different resize methods
@@ -79,15 +72,15 @@
                             break;
                         case "ratio":
                         case "stretch":
-                            wImg = wDiv;
-                            hImg = hDiv;
+                            wImg = wDiv-imageOuterLength;
+                            hImg = hDiv-imageOuterLength;
                     }
                 
                     self.theImage.width(wImg);
                     self.theImage.height(hImg);
                     self.theImage.css({
-                        top: ((hDiv - hImg) / 2) + 'px', 
-                        left: ((wDiv - wImg) / 2) + 'px'
+                        top: ((hDiv - hImg - imageOuterLength) / 2) + 'px', 
+                        left: ((wDiv - wImg - imageOuterLength) / 2) + 'px'
                     });
                 
                     //Change source if necessary
@@ -255,8 +248,13 @@
                 }
                 return this.linkObj;
             },
-            getBorderElement: function getBorderElement(){
-                return this.element.find("img");
+            getBorder: function getBorder(){
+                return mxBuilder.Component.prototype.getBorder(this.element.find("img"));
+            },
+            setBorder: function setBorder(obj){
+                var theImage = this.element.find("img").css(obj);
+                this.element.width(theImage.outerWidth(true));
+                this.element.height(theImage.outerHeight(true));
             },
             cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
                 if(saveObj.data.linkObj && saveObj.data.linkObj.type == "page" && saveObj.data.linkobj.pageID == pageID){
@@ -272,6 +270,7 @@
                 out.data.extra = {
                     originalAssetID: this.extra.originalAssetID
                 }
+                out.data.border = this.getBorder();
                 return out;
             },
             init: function init(properties){
@@ -296,7 +295,7 @@
                     
                         properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
                     
-                        properties.element = this.template.clone().find("img")
+                        this.element = properties.element = this.template.clone().find("img")
                         .attr({
                             src: obj.location+"/"+obj[properties.data.__currentSize],
                             title: obj.title
@@ -308,6 +307,9 @@
                         .end()
                         .css(properties.css)
                         .appendTo(mxBuilder.layout[properties.data.container]);
+                        if(properties.data.border){
+                            this.setBorder(properties.data.border);
+                        }
                     }
             },
             publish: function publish(){

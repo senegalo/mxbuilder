@@ -370,11 +370,37 @@
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
         },
-        getBorderElement: function getBorderElement(){
-            return this.element;
+        getBorder: function getBorder(element){
+            element = element ? element : this.element;
+            var styles = ["borderWidth",
+            "borderStyle",
+            "borderColor",
+            "borderTopLeftRadius",
+            "borderTopRightRadius",
+            "borderBottomLeftRadius",
+            "borderBottomRightRadius"];
+            var out = {};
+            for(var s in styles){
+                out[styles[s]] = element.css(styles[s]);
+            }
+            return out;
         },
-        getBackgroundElement: function getBackgroundElement(){
-            return this.element;
+        setBorder: function setBorder(obj){
+            this.element.css(obj);
+        },
+        getBackground: function getBackground(element){
+            element = element ? element : this.element;
+            var styles = ["backgroundColor",
+            "backgroundImage",
+            "backgroundSize"];
+            var out = {};
+            for(var s in styles){
+                out[styles[s]] = element.css(styles[s]);
+            }
+            return out;
+        },
+        setBackground: function setBackground(obj){
+            this.element.css(obj);
         },
         getSettingsPanels: function getSettingsPanels(){
             var out = {};

@@ -31,7 +31,7 @@
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
                                 color.a =  controls.opacitySlider.customSlider("value")/100;
-                                this.getBackgroundElement().css({
+                                this.setBackground({
                                     backgroundColor:color.toString()
                                 });
                             });
@@ -48,7 +48,7 @@
                         controls.scaleValue.text(ui.value+"px");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.getBackgroundElement().css({
+                                this.setBackground({
                                     backgroundSize: ui.value+"px"
                                 });
                             });
@@ -67,7 +67,7 @@
                             var theColor =  controls.picker.customColorpicker("value");
                             theColor.a = ui.value/100;
                             mxBuilder.selection.each(function(){
-                                this.getBackgroundElement().css({
+                                this.setBackground({
                                     backgroundColor: theColor.toString()
                                 });
                             });
@@ -90,7 +90,7 @@
                         element.addClass("selected");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.getBackgroundElement().css({
+                                this.setBackground({
                                     backgroundImage: 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
                                     backgroundRepeat: 'repeat'
                                 });
@@ -108,11 +108,7 @@
                 });
                 
                 //Read the original selection values and store it
-                var originalSettings = mxBuilder.layout.utils.readSelectionStyles({
-                    background: ["backgroundColor",
-                    "backgroundImage",
-                    "backgroundSize"]
-                });
+                var originalSettings = mxBuilder.layout.utils.readSelectionStyles(["background"]);
                 
                 this.setValues(controls,originalSettings);
                 
@@ -120,13 +116,13 @@
                 thePanel.on({
                     cancel: function cancel(){
                         mxBuilder.selection.each(function(){
-                            this.getBackgroundElement().css(originalSettings);
+                            this.setBackground(originalSettings);
                         });
                         mxBuilder.menuManager.closeTab();
                     },
                     previewDisabled: function previewDisabled(){
                         mxBuilder.selection.each(function(){
-                            this.getBackgroundElement().css(originalSettings);
+                            this.setBackground(originalSettings);s
                         });
                         mxBuilder.menuManager.closeTab();
                     },
@@ -209,7 +205,7 @@
                 cssRules.backgroundSize = controls.scaleSlider.customSlider("value");
                 
                 mxBuilder.selection.each(function(){
-                    this.element.css(cssRules); 
+                    this.setBackground(cssRules); 
                 });
             }
         }

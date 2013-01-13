@@ -29,8 +29,8 @@
                     pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.getBorderElement().css({
-                                    borderColor:color.toString(),
+                                this.setBorder({
+                                    borderColor: color.toString(),
                                     borderStyle: "solid"
                                 });
                             });
@@ -98,7 +98,7 @@
                         controls.widthValue.text(ui.value+" Pixels");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                this.getBorderElement().css({
+                                this.setBorder({
                                     borderWidth:ui.value+"px",
                                     borderStyle: "solid"
                                 });
@@ -135,16 +135,7 @@
                 .append(currentInstance);
                 
                 //Read the selection values and preset it 
-                var originalSettings = mxBuilder.layout.utils.readSelectionStyles({
-                    border: [
-                    "borderWidth",
-                    "backgroundColor",
-                    "borderColor",
-                    "borderTopLeftRadius",
-                    "borderTopRightRadius",
-                    "borderBottomLeftRadius",
-                    "borderBottomRightRadius"]
-                });
+                var originalSettings = mxBuilder.layout.utils.readSelectionStyles(["border"]);
                 this.setValues(controls,originalSettings);
                 
                 return thePanel;
@@ -173,7 +164,7 @@
                 }
                 if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                     mxBuilder.selection.each(function(){
-                        this.getBorderElement().css(cssRule);
+                        this.setBorder(cssRule);
                     });
                 }
             },
@@ -195,7 +186,7 @@
                             cssRules['border'+corners[c]+'Radius'] = borderRadius;
                         }
                     }
-                    this.getBorderElement().css(cssRules);
+                    this.setBorder(cssRules);
                 });
                 
                 mxBuilder.selection.revalidateSelectionContainer();

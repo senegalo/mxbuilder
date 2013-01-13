@@ -294,7 +294,9 @@
             </div>
 
             <div class="image-component-instance">
-                <div class="image"><img src="" alt="" title=""/></div>
+                <div class="image">
+                    <img src="" alt="" title=""/>
+                </div>
             </div>
 
             <div class="assets-image-template" style="float:left;width:140px;height:120px;outline: 1px solid black;margin:10px;">
