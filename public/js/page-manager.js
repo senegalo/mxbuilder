@@ -309,6 +309,9 @@
                 var layoutParts = ["header","body","footer"];
                 for(var c in layoutParts){
                     var assetID = out.layout.background[layoutParts[c]+"Image"];
+                    if(!assetID){
+                        continue;
+                    }
                     if(!out.assets[assetID]){
                         out.assets[assetID] = [];
                     }

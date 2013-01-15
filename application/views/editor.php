@@ -26,6 +26,7 @@
         <link rel="stylesheet" href="public/css/jquery-scrollbar.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/twitter-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/fb-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
 
@@ -39,12 +40,12 @@
         <!--Flicker Menu Theme-->
         <link href="public/css/menu/dropdown/themes/flickr/default.v.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/themes/flickr/default.h.css" media="screen" rel="stylesheet" type="text/css" />
-        
+
         <!--Nvidia Menu Theme-->
         <link href="public/css/menu/dropdown/themes/nvidia/default.v.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/themes/nvidia/default.h.css" media="screen" rel="stylesheet" type="text/css" />
-        
-        
+
+
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
 
@@ -65,6 +66,7 @@
         <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
         <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-menu.js"></script>
+        <script type="text/javascript" src="public/js-libs/facebook-loader.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -123,6 +125,7 @@
         <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
         <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
         <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
+        <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -135,18 +138,13 @@
         <script type="text/javascript" src="public/js/components/flicker-adapter-component.js"></script>
         <script type="text/javascript" src="public/js/components/tweet-button-component.js"></script>
         <script type="text/javascript" src="public/js/components/menu-component.js"></script>
+        <script type="text/javascript" src="public/js/components/facebook-like-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
         <script type="text/javascript" src="public/js/dialogs/components-delete.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/components-border.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/components-background.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/image-component-settings.js"></script>
-        <!--<script type="text/javascript" src="public/js/dialogs/pages-add-edit-dialog.js"></script>-->
         <script type="text/javascript" src="public/js/dialogs/alert-dialog.js"></script>
         <script type="text/javascript" src="public/js/dialogs/progress-dialog.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/asset-properties-dialog.js"></script>
-        <script type="text/javascript" src="public/js/dialogs/image-default-properties-dialog.js"></script>
 
         <script type="text/javascript" src="public/js/init.js"></script>
     </head>
@@ -656,11 +654,11 @@
                 <div class="settings-title">More Link Text</div>
                 <input type="text" class="more-link-text"/>
             </div>
-            
+
             <div class="themes-tab form">
                 <div class="spacer"></div>
             </div>
-            
+
             <div class="flexly-component-layout-background-settings">
                 <div class="settings-title">Background Color</div>
                 <div class="picker">
@@ -678,7 +676,32 @@
                 <div class="opacity-slider" style="width:238px;"></div>
 
             </div>
-            
+
+            <div class="fb-like-component-instance" style="width:90px;height:20px;">
+                <div class="button">
+                    <fb:like width="100" layout="button_count"></fb:like>
+                </div>
+                <div class="overlay"></div>
+            </div>
+
+            <div class="flexly-fb-button-settings">
+                <div class="settings-title">Count box position</div>
+                <div class="fb-counter-position">
+                    <input type="radio" name="fb-count-position" value="horizontal" id="fb-count-position-hr"/>
+                    <label for="fb-count-position-hr">Horizontal</label>
+
+                    <input type="radio" name="fb-count-position" value="vertical" id="fb-count-position-vr"/>
+                    <label for="fb-count-position-vr">Vertical</label>
+                </div>
+                <div class="settings-title">Action</div>
+                <div class="fb-action">
+                    <input type="radio" name="fb-action" value="like" id="fb-action-like"/>
+                    <label for="fb-action-like">Like</label>
+
+                    <input type="radio" name="fb-action" value="recommend" id="fb-action-recommend"/>
+                    <label for="fb-action-recommend">Recommend</label>
+                </div>
+            </div>
         </div>
     </body>
 </html>

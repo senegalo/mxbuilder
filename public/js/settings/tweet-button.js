@@ -3,17 +3,6 @@
     $(function(){
         mxBuilder.layout.settingsPanels.tweetButton = {
             _template: mxBuilder.layout.templates.find(".flexly-tweet-button-settings"),
-            _theInstance: null,
-            _tweetText: null,
-            _countPositionNone: null,
-            _countPositionHorizontal: null,
-            _countPositionVertical: null,
-            _countPosition: null,
-            _urlNone: null,
-            _urlCustom: null,
-            _urlText: null,
-            _url: null,
-            _originalSettings: null,
             getPanel: function(expand){
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var tweetButton = this;
@@ -91,21 +80,10 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
-                })                
+                });                
                 
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel
-            },
-            revalidateInstanceVariable: function(){
-                this._countPositionHorizontal = this._theInstance.find("#twitter-count-position-hr");
-                this._countPositionNone = this._theInstance.find("#twitter-count-position-none");
-                this._countPositionVertical = this._theInstance.find("#twitter-count-position-vr");
-                this._countPosition = this._theInstance.find('.tweet-counter-position input[name="twitter-count-position"]');
-                this._tweetText = this._theInstance.find(".tweet-text");
-                this._urlCustom = this._theInstance.find("#twitter-url-custom");
-                this._urlNone = this._theInstance.find("#twitter-url-none");
-                this._url = this._theInstance.find('.tweet-url input[name="twitter-url"]');
-                this._urlText = this._theInstance.find(".tweet-button-url");
             },
             setValues: function(controls, values){
                 if(values.text !== false){
