@@ -48,7 +48,8 @@
                 out.css({
                     left: position.left,
                     top: position.top,
-                    position: "absolute"
+                    position: "absolute",
+                    zIndex: this.element.css("zIndex")
                 });
                 
                 out.get(0).appendChild(script);
