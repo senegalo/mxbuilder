@@ -118,13 +118,13 @@
                     },
                     previewDisabled: function(){
                         mxBuilder.selection.each(function(){
-                            this.getBorderElement().css(originalSettings);
+                            this.setBorder(originalSettings);
                         });
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
                         mxBuilder.selection.each(function(){
-                            this.getBorderElement().css(originalSettings);
+                            this.setBorder(originalSettings);
                         });
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();

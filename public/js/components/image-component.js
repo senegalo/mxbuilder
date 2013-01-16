@@ -14,7 +14,7 @@
                 selectable: true,
                 element: properties.element
             }]);
-            self.theImage = properties.element.find("img").css({
+            self.theImage.css({
                 position: 'absolute'
             });
             properties.element.addClass("image-component-element").find(".image").css({
@@ -30,7 +30,7 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 dblclick: function dblclick(){
-                    mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
+                //                    mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
                 },
                 resize: function resize(event,ui){
                     var wDiv = self.element.width();
@@ -39,9 +39,11 @@
                     var ratioDiv = wDiv/hDiv;
                     var sourceSwitchMargin = 10;
                 
-                    var wImg = self.theImage.outerWidth(true);
-                    var hImg = self.theImage.outerHeight(true);
-                    var imageOuterLength = wImg - self.theImage.width();
+                    var imgSource = self.getResizeMethod() == "crop" ? self.theImageContainer : self.theImage;
+                
+                    var wImg = imgSource.outerWidth(true);
+                    var hImg = imgSource.outerHeight(true);
+                    var imageOuterLength = wImg - imgSource.width();
                     var ratioImg = self.getImageObj().ratio;
                 
                     //Implementing different resize methods
@@ -78,10 +80,20 @@
                 
                     self.theImage.width(wImg);
                     self.theImage.height(hImg);
-                    self.theImage.css({
-                        top: ((hDiv - hImg - imageOuterLength) / 2) + 'px', 
-                        left: ((wDiv - wImg - imageOuterLength) / 2) + 'px'
-                    });
+                    
+                    if(self.getResizeMethod() != "crop"){
+                        self.theImage.css({
+                            top: ((hDiv - hImg - imageOuterLength) / 2) + 'px', 
+                            left: ((wDiv - wImg - imageOuterLength) / 2) + 'px'
+                        });
+                    } else {
+                        self.theImageContainer.css({
+                            backgroundPosition: ((wDiv - wImg - imageOuterLength) / 2) +"px "+((hDiv - hImg - imageOuterLength) / 2) + "px",
+                            backgroundSize: wImg+"px "+hImg+"px"
+                        });
+                        self.theImageContainer.outerHeight(self.element.height());
+                        self.theImageContainer.outerWidth(self.element.width());
+                    }
                 
                     //Change source if necessary
                     var length = ratioDiv < 1 ? hDiv : wDiv;
@@ -176,6 +188,7 @@
             __currentResizeMethod: "ratio",
             template: mxBuilder.layout.templates.find(".image-component-instance").remove(),
             theImage:  null,
+            theImageContainer: null,
             getImageObj: function getImageObj(){
                 var obj = mxBuilder.assets.get(this.extra.originalAssetID);
                 return obj?obj:mxBuilder.assets.get(0);
@@ -195,7 +208,13 @@
                 var imageObj = this.getImageObj();
                 if(imageObj[newSize] && this.__currentSize != newSize){
                     this.__currentSize = newSize;
-                    this.theImage.attr("src",imageObj.location+"/"+imageObj[newSize]);
+                    if(this.getResizeMethod() != "crop"){
+                        this.theImage.attr("src",imageObj.location+"/"+imageObj[newSize]);
+                    } else {
+                        this.theImageContainer.css({
+                            backgroundImage: 'url("'+imageObj.location+"/"+imageObj[newSize]+'")'
+                        });
+                    }
                     mxBuilder.selection.revalidateSelectionContainer();
                     return true;
                 }
@@ -209,6 +228,11 @@
             },
             setResizeMethod: function setResizeMethod(method){
                 this.__currentResizeMethod = method;
+                if(method == "crop"){
+                    this.setCropResize();
+                } else {
+                    this.unsetCropResize();
+                }
                 switch(method){
                     case "stretch":
                         this.element.resizable("option","aspectRatio",false).trigger("resize"); 
@@ -239,6 +263,42 @@
                         break;
                 }
             },
+            setCropResize: function setCropResize(){
+                if(this.theImage.is(":visible")){
+                    var styles = {
+                        backgroundImage: 'url("'+this.theImage.attr("src")+'")',
+                        border: this.theImage.css("border"),
+                        borderRadius: this.theImage.css("border-radius"),
+                        backgroundRepeat: "no-repeat"
+                    }
+                    
+                    this.theImageContainer.outerHeight(this.element.height());
+                    this.theImageContainer.outerWidth(this.element.width());
+                    this.theImage.hide();
+                    var imageContainer = this.theImageContainer;
+                    imageContainer.css(styles);
+                }
+            },
+            unsetCropResize: function unsetCropResize(){
+                if(!this.theImage.is(":visible")){
+                    var imageContainer = this.theImageContainer;
+                    this.setImageSize(this.__currentSize);
+                    var styles = {
+                        border: imageContainer.css("border"),
+                        borderRadius: imageContainer.css("borderRadius")
+                    }
+                    this.theImageContainer.css({
+                        backgroundImage: '',
+                        border: '',
+                        borderRadius: '',
+                        backgroundRepeat: "no-repeat",
+                        width: "100%",
+                        height: "100%"
+                    });
+                    this.theImage.css(styles);
+                    this.theImage.show();
+                }
+            },
             setLinkObj: function setLinkObj(obj){
                 this.linkObj = obj;
             }, 
@@ -249,12 +309,18 @@
                 return this.linkObj;
             },
             getBorder: function getBorder(){
-                return mxBuilder.Component.prototype.getBorder(this.element.find("img"));
+                return mxBuilder.Component.prototype.getBorder(this.theImage);
             },
             setBorder: function setBorder(obj){
-                var theImage = this.element.find("img").css(obj);
+                var theImage = this.getResizeMethod() == "crop" ? this.theImageContainer : this.theImage;
+                theImage.css(obj);
+                
+                //apply it to the image eitherway !
+                this.theImage.css(obj);
+                
                 this.element.width(theImage.outerWidth(true));
                 this.element.height(theImage.outerHeight(true));
+                mxBuilder.selection.revalidateSelectionContainer();
             },
             cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
                 if(saveObj.data.linkObj && saveObj.data.linkObj.type == "page" && saveObj.data.linkobj.pageID == pageID){
@@ -278,39 +344,43 @@
                 if(typeof properties.element == "undefined"){
                     var obj = this.getImageObj();
                     
-                        $.extend({
-                            height: 300/obj.ratio,
-                            width: 300
-                        },properties.css)
+                    $.extend({
+                        height: 300/obj.ratio,
+                        width: 300
+                    },properties.css)
                     
-                        if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
-                            if(obj.ratio > 1){
-                                properties.css.width = 300;
-                                properties.css.height = 300/obj.ratio;
-                            } else {
-                                properties.css.height = 300;
-                                properties.css.width = 300/obj.ratio;
-                            }
-                        }
-                    
-                        properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
-                    
-                        this.element = properties.element = this.template.clone().find("img")
-                        .attr({
-                            src: obj.location+"/"+obj[properties.data.__currentSize],
-                            title: obj.title
-                        })
-                        .css({
-                            width: properties.css.width,
-                            height: properties.css.height
-                        })
-                        .end()
-                        .css(properties.css)
-                        .appendTo(mxBuilder.layout[properties.data.container]);
-                        if(properties.data.border){
-                            this.setBorder(properties.data.border);
+                    if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
+                        if(obj.ratio > 1){
+                            properties.css.width = 300;
+                            properties.css.height = 300/obj.ratio;
+                        } else {
+                            properties.css.height = 300;
+                            properties.css.width = 300/obj.ratio;
                         }
                     }
+                    
+                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
+                    
+                    this.element = properties.element = this.template.clone().find("img")
+                    .attr({
+                        src: obj.location+"/"+obj[properties.data.__currentSize],
+                        title: obj.title
+                    })
+                    .css({
+                        width: properties.css.width,
+                        height: properties.css.height
+                    })
+                    .end()
+                    .css(properties.css)
+                    .appendTo(mxBuilder.layout[properties.data.container]);
+                    
+                    this.theImage = this.element.find("img");
+                    this.theImageContainer = this.element.find(".image");
+                    
+                    if(properties.data.border){
+                        this.setBorder(properties.data.border);
+                    }
+                }
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this)
