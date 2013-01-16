@@ -318,8 +318,8 @@
                 //apply it to the image eitherway !
                 this.theImage.css(obj);
                 
-                this.element.width(theImage.outerWidth(true));
-                this.element.height(theImage.outerHeight(true));
+                theImage.outerWidth(this.element.width());
+                theImage.outerHeight(this.element.height());
                 mxBuilder.selection.revalidateSelectionContainer();
             },
             cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
