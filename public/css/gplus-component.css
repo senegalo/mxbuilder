@@ -1,0 +1,24 @@
+.google-plus-component-instance .overlay{
+    top:0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.flexly-gplus-button-settings textarea {
+    width: 227px;
+    height: 60px;
+}
+
+.flexly-gplus-button-settings div label {
+    display: inline-block;
+}
+
+.flexly-gplus-button-settings div input {
+    height: auto;
+}
+
+.flexly-gplus-button-settings .tweet-button-url {
+    width: 203px;
+}

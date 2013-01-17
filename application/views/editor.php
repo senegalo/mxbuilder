@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="public/css/flicker-adapter.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/twitter-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/fb-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/gplus-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
 
@@ -67,6 +68,7 @@
         <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-menu.js"></script>
         <script type="text/javascript" src="public/js-libs/facebook-loader.js"></script>
+        <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 
         <!--Loading Framework-->
         <script type="text/javascript" src="public/js/mxbuilder.js"></script>
@@ -126,6 +128,7 @@
         <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
         <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
         <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -139,6 +142,7 @@
         <script type="text/javascript" src="public/js/components/tweet-button-component.js"></script>
         <script type="text/javascript" src="public/js/components/menu-component.js"></script>
         <script type="text/javascript" src="public/js/components/facebook-like-component.js"></script>
+        <script type="text/javascript" src="public/js/components/google-plus-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -702,6 +706,36 @@
                     <label for="fb-action-recommend">Recommend</label>
                 </div>
             </div>
+
+            <div class="google-plus-component-instance" style="width:90px;height:20px;">
+                <div class="button">
+                    <div class="g-plusone" data-size="tall">+1</div>
+                </div>
+                <div class="overlay"></div>
+            </div>
+            
+            <div class="flexly-gplus-button-settings">
+                <div class="settings-title">Size</div>
+                <div class="gplus-size">
+                    <select id="gplus-size">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="standard">Standard</option>
+                    </select>
+                </div>
+                <div class="settings-title">Counter</div>
+                <div class="gplus-annotation">
+                    <input type="radio" name="gplus-annotation" value="none" id="gplus-annotation-none"/>
+                    <label for="gplus-annotation-none">None</label>
+                    
+                    <input type="radio" name="gplus-annotation" value="horizontal" id="gplus-annotation-hr"/>
+                    <label for="gplus-annotation-hr">Horizontal</label>
+                    
+                    <input type="radio" name="gplus-annotation" value="vertical" id="gplus-annotation-vr"/>
+                    <label for="gplus-annotation-vr">Vertical</label>
+                </div>
+            </div>
+
         </div>
     </body>
 </html>

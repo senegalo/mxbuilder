@@ -41,7 +41,7 @@
         if (isset($head_includes, $head_includes["css"])):
             foreach ($head_includes["css"] as $element):
                 ?>
-                <link href="<?php print base_url($element); ?>" media="screen" rel="stylesheet" type="text/css" />
+                <link href="<?php print !stristr($element,"http")?base_url($element):$element; ?>" media="screen" rel="stylesheet" type="text/css" />
                 <?php
             endforeach;
         endif;
@@ -119,7 +119,7 @@
         if (isset($head_includes, $head_includes["scripts"])):
             foreach ($head_includes["scripts"] as $element):
                 ?>
-                <script type="text/javascript" src="<?php print base_url($element); ?>"></script>
+                <script type="text/javascript" src="<?php print !stristr($element,"http")?base_url($element):$element;?>"></script>
                 <?php
             endforeach;
         endif;
