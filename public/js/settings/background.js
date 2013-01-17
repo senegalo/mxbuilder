@@ -76,7 +76,10 @@
                 });
                 
                 //populating the pattern list
-                controls.samples = $();
+                controls.samples = $('<div class="pattern-sample pattern-image-none pattern-sample-0">No Pattern</div>')
+                .data("flexly-pattern-index",-1)
+                .appendTo(controls.patterns);
+                
                 for(var i=0;i<11;i++){
                     controls.samples = controls.samples.add($('<div class="pattern-sample pattern-image pattern-sample-'+(i+1)+'" style="background-position-y:-'+(i*60)+'px;"/>')
                         .data("flexly-pattern-index",i)
@@ -91,7 +94,7 @@
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
                                 this.setBackground({
-                                    backgroundImage: 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
+                                    backgroundImage: element.data("flexly-pattern-index") == -1 ? 'none': 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
                                     backgroundRepeat: 'repeat'
                                 });
                             });
@@ -122,7 +125,8 @@
                     },
                     previewDisabled: function previewDisabled(){
                         mxBuilder.selection.each(function(){
-                            this.setBackground(originalSettings);s
+                            this.setBackground(originalSettings);
+                            s
                         });
                         mxBuilder.menuManager.closeTab();
                     },
@@ -175,15 +179,16 @@
                 }
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
-                    if(matches){
-                        controls.thePanel.on({
-                            panelOpen: function(){
-                                var theSelected = controls.samples.filter(".pattern-sample-"+matches[0]).trigger("click");
-                                controls.patterns.jqueryScrollbar("scrollTo",(matches[0]-1)*theSelected.outerHeight(),false);
-                            }
-                        });                        
-                    }
+                    
+                    controls.thePanel.on({
+                        panelOpen: function(){
+                            var match = matches === null ? "0" : matches[0];
+                            var theSelected = controls.samples.filter(".pattern-sample-"+match).trigger("click");
+                            controls.patterns.jqueryScrollbar("scrollTo",match*theSelected.outerHeight(),false);
+                        }
+                    });                        
                 }
+                
             },
             applyValuesToSelection: function(controls){
                 var cssRules = {};
@@ -195,7 +200,7 @@
                 
                 //Applying the pattern
                 var pattern = controls.patterns.find(".selected");//.data("flexly-pattern-index");
-                if(pattern.length > 0){
+                if(pattern.length > 0 && pattern.data("flexly-pattern-index") != -1){
                     cssRules.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
                 } else {
                     cssRules.backgroundImage = "none";

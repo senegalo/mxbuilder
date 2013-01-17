@@ -102,7 +102,7 @@
                 var originalBackgroundImage = layoutPart.children(".flexly-background-image").clone();
                 
                 //populating the pattern list
-                controls.samples = $('<div class="pattern-sample pattern-image-none">No Pattern</div>')
+                controls.samples = $('<div class="pattern-sample pattern-image-none pattern-sample-0">No Pattern</div>')
                 .data("flexly-pattern-index",-1)
                 .appendTo(controls.patterns);
                 
