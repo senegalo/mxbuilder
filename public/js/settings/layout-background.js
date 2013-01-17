@@ -229,7 +229,7 @@
                 
                 //Applying the pattern
                 var pattern = controls.patterns.find(".selected");//.data("flexly-pattern-index");
-                if(pattern.length > 0){
+                if(pattern.length > 0 && pattern.data("flexly-pattern-index") != -1){
                     cssRules.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
                 } else {
                     cssRules.backgroundImage = "none";

@@ -51,7 +51,6 @@
                 var firstPass = true;
                 mxBuilder.selection.each(function(){
                     for(var p in properties){
-                        console.log(this["get"+properties[p].uppercaseFirst()]);
                         if(firstPass){
                             originalSettings[properties[p]] = this["get"+properties[p].uppercaseFirst()]();
                         }
