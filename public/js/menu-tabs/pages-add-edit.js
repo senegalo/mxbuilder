@@ -109,6 +109,10 @@
                     .find(".page-is-homepage").show();
                     
                     this.setHomepage(true);
+                } else if (data.parent != "root"){
+                    this.__theForm.find(".page-as-homepage").hide()
+                    .end()
+                    .find(".page-is-homepage").find("i").text("Subpages can't be set as homepage !").show();
                 } else {
                     this.__theForm.find(".page-as-homepage").show()
                     .end()

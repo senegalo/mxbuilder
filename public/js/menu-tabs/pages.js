@@ -3,36 +3,6 @@
         var listTemplate = mxBuilder.layout.templates.find(".flexly-menu-pages-list").remove();
         var listElementTemplate = listTemplate.find("li").remove();
         
-        var selectionManager = {
-            __selection: {},
-            select: function addToSelection(element){
-                element.addClass("flexly-menu-pages-list-selected");
-                this.__selection[element.data("pageID")] = element;
-                mxBuilder.menuManager.revalidate();
-            },
-            deselect: function removeFromSelection(element,noRevalidation){
-                element.removeClass("flexly-menu-pages-list-selected");
-                delete this.__selection[element.data("pageID")];
-                if(!noRevalidation){
-                    mxBuilder.menuManager.revalidate();
-                }
-            },
-            isSelected: function isSelected(element){
-                return typeof this.__selection[element.data("pageID")] != "undefined" ? true : false;
-            },
-            clear: function clear(){
-                this.each(function(){
-                    selectionManager.deselect(this,true);
-                });
-                mxBuilder.menuManager.revalidate();
-            },
-            each: function each(callback){
-                for(var e in this.__selection){
-                    callback.call(this.__selection[e]);
-                }
-            }
-        }
-        
         mxBuilder.menuManager.menus.pages = {
             init: function init(){
                 mxBuilder.menuManager.tabTitle.text("Pages");
@@ -78,6 +48,7 @@
                 
                 theList.sortable({
                     connectWith: ".flexly-menu-pages-list",
+                    items: "li:not(.flexly-menu-pages-homepage)",
                     start: function(event,ui){
                         if(ui.item.hasClass("has-childs")){
                             theList.sortable("option","connectWith",false);
@@ -152,6 +123,10 @@
                 });
                 if(mxBuilder.pages.isCurrentPage(page.id)){
                     element.addClass("flexly-menu-pages-list-current");
+                }
+                
+                if(page.homepage){
+                    element.addClass("flexly-menu-pages-homepage");
                 }
                 
                 if(!noChildListFlag){

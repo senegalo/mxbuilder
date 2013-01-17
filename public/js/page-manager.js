@@ -44,6 +44,11 @@
                 if(oldHomepage){
                     delete oldHomepage.homepage;
                 }
+                var pages = this.getOrderedPages();
+                for(var p in pages){
+                    pages[p].order = pages[p].order+1;
+                }
+                this.__pages[id].order = 0;
                 this.__homepage = id;
                 this.__pages[id].homepage = true;
             },
@@ -403,7 +408,7 @@
                     }
                 }
                 this.__currentPage = null;
-                this.loadPage(firstPage.id);
+                this.loadPage(this.__homepage);
             },
             getContentHeight: function(pageID){
                 pageID = pageID ? pageID : this.__currentPage;
