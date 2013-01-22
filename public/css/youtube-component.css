@@ -1,0 +1,12 @@
+.youtube-component-instance {
+    width: 640px;
+    height: 360px;
+}
+
+.youtube-component-instance .overlay{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

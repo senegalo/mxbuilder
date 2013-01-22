@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flickr-badge.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -131,6 +132,7 @@
         <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
         <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
         <script type="text/javascript" src="public/js/settings/flickr-badge.js"></script>
+        <script type="text/javascript" src="public/js/settings/youtube.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -146,6 +148,7 @@
         <script type="text/javascript" src="public/js/components/facebook-like-component.js"></script>
         <script type="text/javascript" src="public/js/components/google-plus-component.js"></script>
         <script type="text/javascript" src="public/js/components/flickr-badge-component.js"></script>
+        <script type="text/javascript" src="public/js/components/youtube-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -785,7 +788,19 @@
                 </div>
                 
             </div>
-
+            
+            <div class="youtube-component-instance">
+                <div class="video"></div>
+                <div class="overlay"></div>
+            </div>
+            
+            <div class="youtube-settings">
+                <div class="settings-title">Video ID</div>
+                <input type="text" id="youtube-video-id"/>
+                
+                <div class="settings-title">Auto Play</div>
+                <input type="checkbox" id="youtube-video-autoplay"/>
+            </div>
         </div>
     </body>
 </html>
