@@ -741,7 +741,6 @@
             
             <div class="flexly-flickr-badge-component-instance">
                 <div class="images"></div>
-                <div class="overlay"></div>
             </div>
             
             <div class="flickr-badge-settings">

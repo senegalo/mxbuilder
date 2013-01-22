@@ -103,10 +103,21 @@
                 return out;
             },
             publish: function publish(){
-                return mxBuilder.Component.prototype.publish.call(this);
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                out.attr({
+                    "data-count": this.count,
+                    "data-display": this.display,
+                    "data-imgsize": this.imgSize,
+                    "data-user": this.user
+                });
+                out.find(".images").empty();
+                return out;
             },
             getHeadIncludes: function getHeadIncludes(){
-                return mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                var out = mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                out.scripts.flickrBadgeLoader = "public/js-published/flickr-badge-loader.js";
+                out.css.flickrBadge = "public/css-published/flickr-badge.css";
+                return out;
             },
             init: function init(properties){
                 mxBuilder.Component.prototype.init.call(this,properties);                

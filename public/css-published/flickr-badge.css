@@ -1,0 +1,8 @@
+.flexly-flickr-badge-component-instance {
+    padding: 10px;
+}
+
+.flexly-flickr-badge-component-instance .flickr-badge-img {
+    margin: 3px;
+    display:inline-block;
+}
