@@ -12,6 +12,7 @@
             if(typeof properties.data.container != "undefined"){
                 component.setContainer(properties.data.container);
             }
+            this.__components[guid].element.trigger("componentInit");
             return this.__components[guid];
         },
         getComponent: function(obj){

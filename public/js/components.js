@@ -170,7 +170,7 @@
             }
             
             //Making it resizable
-            if(typeof obj.resizable != "undefined"){
+            if(typeof obj.resizable != "undefined" && obj.resizable !== false){
                 var handle = $('<div class="component-resizable-handle"/>');
                 var orientation = obj.resizable.orientation = obj.resizable.orientation?obj.resizable.orientation:"hv";
                 var handles = {};

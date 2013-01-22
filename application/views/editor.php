@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="public/css/gplus-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/flickr-badge.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -129,6 +130,7 @@
         <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
         <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
         <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/flickr-badge.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -143,6 +145,7 @@
         <script type="text/javascript" src="public/js/components/menu-component.js"></script>
         <script type="text/javascript" src="public/js/components/facebook-like-component.js"></script>
         <script type="text/javascript" src="public/js/components/google-plus-component.js"></script>
+        <script type="text/javascript" src="public/js/components/flickr-badge-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -734,6 +737,54 @@
                     <input type="radio" name="gplus-annotation" value="vertical" id="gplus-annotation-vr"/>
                     <label for="gplus-annotation-vr">Vertical</label>
                 </div>
+            </div>
+            
+            <div class="flexly-flickr-badge-component-instance">
+                <div class="images"></div>
+                <div class="overlay"></div>
+            </div>
+            
+            <div class="flickr-badge-settings">
+                
+                <div class="settings-title">Username</div>
+                <div class="flickr-badge-username">
+                    <input type="text" id="flickr-badge-username"/>
+                </div>
+                
+                <div class="settings-title">Image Size</div>
+                <div class="flickr-badge-imgsize">
+                    <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-s" value="s"/>
+                    <label for="flickr-badge-imgsize-s">Square</label>
+                    
+                    <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-t" value="t"/>
+                    <label for="flickr-badge-imgsize-t">Thumbnail</label>
+                    
+                    <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-m" value="m"/>
+                    <label for="flickr-badge-imgsize-m">Medium</label>
+                </div>
+                
+                <div class="settings-title">Display</div>
+                <div class="flickr-badge-display">
+                    <input type="radio" name="flickr-badge-display" id="flickr-badge-diplsay-latest" value="latest"/>
+                    <label for="flickr-badge-diplsay-latest">Latest</label>
+                    
+                    <input type="radio" name="flickr-badge-display" id="flickr-badge-diplsay-random" value="random"/>
+                    <label for="flickr-badge-diplsay-random">Random</label>
+                </div>
+                
+                <div class="settings-title">Count</div>
+                <div class="flickr-badge-count">
+                    <select>
+                        <?php 
+                        for($i=1;$i<11;$i++):
+                            ?>
+                        <option value="<?php print $i; ?>"><?php print $i; ?></option>
+                        <?php
+                        endfor;
+                        ?>
+                    </select>
+                </div>
+                
             </div>
 
         </div>
