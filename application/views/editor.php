@@ -32,6 +32,7 @@
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flickr-badge.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/button.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -65,6 +66,7 @@
         <script type="text/javascript" src="public/js-libs/jquery.mousewheel.min.js"></script>
         <script type="text/javascript" src="public/js-libs/jquery-scrollbar.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-checkbox.js"></script>
+        <script type="text/javascript" src="public/js-libs/custom-radiobox.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-slider.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-colorpicker.js"></script>
         <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
@@ -133,6 +135,8 @@
         <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
         <script type="text/javascript" src="public/js/settings/flickr-badge.js"></script>
         <script type="text/javascript" src="public/js/settings/youtube.js"></script>
+        <script type="text/javascript" src="public/js/settings/links.js"></script>
+        <script type="text/javascript" src="public/js/settings/button.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -149,6 +153,7 @@
         <script type="text/javascript" src="public/js/components/google-plus-component.js"></script>
         <script type="text/javascript" src="public/js/components/flickr-badge-component.js"></script>
         <script type="text/javascript" src="public/js/components/youtube-component.js"></script>
+        <script type="text/javascript" src="public/js/components/buttons-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -371,42 +376,42 @@
                 </div>
             </div>
 
-            <div class="linkto-dialog">
-                <div>
-                    <div style="display:inline-block;">
-                        <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
-                        <label for="linkto-external">External Link</label>
-                    </div>
-                    <div style="display:inline-block;">
-                        <select id="linkto-protocol">
-                            <option value="http://">http://</option>
-                            <option value="https://">https://</option>
-                        </select>
-                        <input type="text" name="external_link" class="link-input"/>
-                    </div>
-                </div>
-                <div>
-                    <div style="display:inline-block;">
-                        <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
-                        <label for="linkto-page">Link to a page</label>
-                    </div>
-                    <div style="display:inline-block;">
-                        <select name="page" class="link-input">
-                            <option value="">Select a page</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="lightbox">
-                    <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
-                    <label for="linkto-lightbox">Open in a Lightbox</label>
-                </div>
-
-                <div style="margin-top:6px;">
-                    <input type="checkbox" id="linkto-new-window"/>
-                    <label for="linkto-new-window">Open in a new window</label>
-                </div>
-            </div>
+            <!--            <div class="linkto-dialog">
+                            <div>
+                                <div style="display:inline-block;">
+                                    <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
+                                    <label for="linkto-external">External Link</label>
+                                </div>
+                                <div style="display:inline-block;">
+                                    <select id="linkto-protocol">
+                                        <option value="http://">http://</option>
+                                        <option value="https://">https://</option>
+                                    </select>
+                                    <input type="text" name="external_link" class="link-input"/>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:inline-block;">
+                                    <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
+                                    <label for="linkto-page">Link to a page</label>
+                                </div>
+                                <div style="display:inline-block;">
+                                    <select name="page" class="link-input">
+                                        <option value="">Select a page</option>
+                                    </select>
+                                </div>
+                            </div>
+            
+                            <div class="lightbox">
+                                <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
+                                <label for="linkto-lightbox">Open in a Lightbox</label>
+                            </div>
+            
+                            <div style="margin-top:6px;">
+                                <input type="checkbox" id="linkto-new-window"/>
+                                <label for="linkto-new-window">Open in a new window</label>
+                            </div>
+                        </div>-->
 
             <div class="pages-add-edit-tab">
                 <ul class="form menu-form">
@@ -719,7 +724,7 @@
                 </div>
                 <div class="overlay"></div>
             </div>
-            
+
             <div class="flexly-gplus-button-settings">
                 <div class="settings-title">Size</div>
                 <div class="gplus-size">
@@ -733,74 +738,119 @@
                 <div class="gplus-annotation">
                     <input type="radio" name="gplus-annotation" value="none" id="gplus-annotation-none"/>
                     <label for="gplus-annotation-none">None</label>
-                    
+
                     <input type="radio" name="gplus-annotation" value="horizontal" id="gplus-annotation-hr"/>
                     <label for="gplus-annotation-hr">Horizontal</label>
-                    
+
                     <input type="radio" name="gplus-annotation" value="vertical" id="gplus-annotation-vr"/>
                     <label for="gplus-annotation-vr">Vertical</label>
                 </div>
             </div>
-            
+
             <div class="flexly-flickr-badge-component-instance">
                 <div class="images"></div>
             </div>
-            
+
             <div class="flickr-badge-settings">
-                
+
                 <div class="settings-title">Username</div>
                 <div class="flickr-badge-username">
                     <input type="text" id="flickr-badge-username"/>
                 </div>
-                
+
                 <div class="settings-title">Image Size</div>
                 <div class="flickr-badge-imgsize">
                     <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-s" value="s"/>
                     <label for="flickr-badge-imgsize-s">Square</label>
-                    
+
                     <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-t" value="t"/>
                     <label for="flickr-badge-imgsize-t">Thumbnail</label>
-                    
+
                     <input type="radio" name="flickr-badge-imgsize" id="flickr-badge-imgsize-m" value="m"/>
                     <label for="flickr-badge-imgsize-m">Medium</label>
                 </div>
-                
+
                 <div class="settings-title">Display</div>
                 <div class="flickr-badge-display">
                     <input type="radio" name="flickr-badge-display" id="flickr-badge-diplsay-latest" value="latest"/>
                     <label for="flickr-badge-diplsay-latest">Latest</label>
-                    
+
                     <input type="radio" name="flickr-badge-display" id="flickr-badge-diplsay-random" value="random"/>
                     <label for="flickr-badge-diplsay-random">Random</label>
                 </div>
-                
+
                 <div class="settings-title">Count</div>
                 <div class="flickr-badge-count">
                     <select>
-                        <?php 
-                        for($i=1;$i<11;$i++):
-                            ?>
-                        <option value="<?php print $i; ?>"><?php print $i; ?></option>
                         <?php
+                        for ($i = 1; $i < 11; $i++):
+                            ?>
+                            <option value="<?php print $i; ?>"><?php print $i; ?></option>
+                            <?php
                         endfor;
                         ?>
                     </select>
                 </div>
-                
+
             </div>
-            
+
             <div class="youtube-component-instance">
                 <div class="video"></div>
                 <div class="overlay"></div>
             </div>
-            
+
             <div class="youtube-settings">
                 <div class="settings-title">Video ID</div>
                 <input type="text" id="youtube-video-id"/>
-                
+
                 <div class="settings-title">Auto Play</div>
                 <input type="checkbox" id="youtube-video-autoplay"/>
             </div>
+
+            <div class="linkto">
+                <div>
+                    <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
+                    <label for="linkto-external" class="settings-title" style="display: inline-block">External Link</label>
+                </div>
+                <div>
+                    <select id="linkto-protocol">
+                        <option value="http://">http://</option>
+                        <option value="https://">https://</option>
+                    </select>
+                    <input type="text" id="linkto-external-link" class="link-input"/>
+                </div>
+
+                <div>
+                    <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
+                    <label for="linkto-page" class="settings-title" style="display:inline-block;">Link to a page</label>
+                </div>
+                <div>
+                    <select id="linkto-pages" class="link-input">
+                    </select>
+                </div>
+
+                <div class="lightbox">
+                    <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
+                    <label for="linkto-lightbox" class="settings-title" style="display:inline-block;">Open in a Lightbox</label>
+                </div>
+
+                <div style="margin-top:6px;">
+                    <input type="checkbox" id="linkto-new-window"/>
+                    <label for="linkto-new-window" class="settings-title" style="display:inline-block;">Open in a new window</label>
+                </div>
+            </div>
+
+            <div class="button-component-instance">
+                <div class="label">Button</div>
+            </div>
+            
+            <div class="button-settings">
+                <div class="settings-title">Button Label</div>
+                <div>
+                    <input type="text" id="button-label"/>
+                </div>
+            </div>
+            
         </div>
     </body>
 </html>

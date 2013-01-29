@@ -126,7 +126,6 @@
                     previewDisabled: function previewDisabled(){
                         mxBuilder.selection.each(function(){
                             this.setBackground(originalSettings);
-                            s
                         });
                         mxBuilder.menuManager.closeTab();
                     },
@@ -179,10 +178,12 @@
                 }
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);
+                    var match = matches === null ? "0" : matches[0];
+                    
+                    controls.samples.filter(".pattern-sample-"+match).trigger("click");
                     
                     controls.thePanel.on({
                         panelOpen: function(){
-                            var match = matches === null ? "0" : matches[0];
                             var theSelected = controls.samples.filter(".pattern-sample-"+match).trigger("click");
                             controls.patterns.jqueryScrollbar("scrollTo",match*theSelected.outerHeight(),false);
                         }

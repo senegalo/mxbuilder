@@ -157,12 +157,16 @@
     height: 14px;
 }
 
-.flexly-icon-radiobutton {
-    
+.flexly-icon-radiobox {  
+    height: 18px;
+    width: 18px;
+    background-position: -168px -103px
 }
 
-.flexly-icon-radiobutton-checked {
-    
+.flexly-icon-radiobox-checked {
+    height: 18px;
+    width: 18px;
+    background-position: -168px -78px
 }
 
 .flexly-icon-cancel-button {
