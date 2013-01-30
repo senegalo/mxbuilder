@@ -17,11 +17,15 @@
                 element: properties.element
             }]);
     
-            this.labelContainer = this.element.find(".label");
-            this.setLabel(this.label);
-            this.labelContainer.css({
-                margin: "-"+(this.labelContainer.height()/2)+"px 0 0 -"+(this.labelContainer.width()/2)+"px"
+            this.labelContainer = this.element.find(".label").css({
+                position: "absolute",
+                top: "50%",
+                width: "100%",
+                textAlign: "center",
+                display: "inline-block"
             });
+            
+            this.setLabel(this.label);
     
             properties.element.on({
                 selected: function(){
@@ -29,10 +33,10 @@
                 },
                 resize: function(){
                     instance.labelContainer.css({
-                        margin: "-"+(instance.labelContainer.height()/2)+"px 0 0 -"+(instance.labelContainer.width()/2)+"px"
+                        marginTop: "-"+(instance.labelContainer.height()/2)+"px"
                     });
                 }
-            });
+            }).trigger("resize");
         }
         $.extend(mxBuilder.ButtonsComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".button-component-instance").remove(),
@@ -48,7 +52,29 @@
                 return out;
             },
             publish: function publish(){
-                return mxBuilder.Component.prototype.publish.call(this);
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                
+                out.css({
+                    cursor: "pointer"
+                });
+                
+                var extras = this.linkObj.linkOpenIn?' target = "_blank"':"";
+                
+                extras += ' style="width:100%;height:100%;display:block"';
+                
+                switch(this.linkObj.linkType){
+                    case "external":
+                        out.find(".label").wrap('<a href="'+this.linkObj.linkURL+'"'+extras+'/>');
+                        break;
+                    case "page":
+                        var page = mxBuilder.pages.getPageObj(this.linkObj.linkURL);
+                        if(page.address){
+                            out.find(".label").wrap('<a href="./'+page.address+'.html"'+extras+'/>');
+                        }
+                        break;
+                }
+                
+                return out;
             },
             getHeadIncludes: function getHeadIncludes(){
                 return mxBuilder.Component.prototype.getHeadIncludes.call(this);
