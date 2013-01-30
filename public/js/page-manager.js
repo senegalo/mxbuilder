@@ -32,7 +32,7 @@
                 if(noLoadFlag !== true){
                     this.loadPage(properties.id);
                 }
-                if(properties.homepage){
+                if(properties.homepage === true){
                     this.setHomepage(properties.id);
                 }
                 mxBuilder.recorder.forceSave();
