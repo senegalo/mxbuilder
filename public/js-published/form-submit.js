@@ -9,10 +9,10 @@
                     var submitButton = $(this).attr("disabled","disabled");
                     var loading = $('<img src="images/loading.gif" style="height:15px;"/>').insertAfter(submitButton);
                     $.post("mail.php",{
-                        name: element.find('.name').val(),
-                        email: element.find(".email").val(),
-                        subject: element.find(".subject").val(),
-                        message: element.find(".message").val()
+                        name: element.find('.form-name').val(),
+                        email: element.find(".form-email").val(),
+                        subject: element.find(".form-subject").val(),
+                        message: element.find(".form-message").val()
                     },function(){
                         submitButton.removeAttr("disabled");
                         loading.remove();

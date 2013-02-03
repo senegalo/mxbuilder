@@ -873,7 +873,7 @@
                     </div>
                     <div class="form-split-two">
                         <div>
-                            <textarea class="message" name="message"></textarea>
+                            <textarea class="form-message" name="message"></textarea>
                         </div>
                     </div>
                     <div style="clear:both;"></div>
