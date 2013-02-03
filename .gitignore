@@ -1,5 +1,6 @@
 nbproject
 application/config/config.php
+application/config/database.php
 public/js/config.js
 public/uploads
 public/websites
