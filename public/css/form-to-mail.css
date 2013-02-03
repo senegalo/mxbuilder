@@ -1,0 +1,22 @@
+.form-to-mail-component-instance .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top:0;
+    left:0;
+    z-index: 1000;
+}
+
+.form-to-mail-component-instance label {
+    width: 60px;
+    display: inline-block; 
+}
+
+.form-to-mail-component-instance form {
+    display:inline-block;
+    padding: 10px;
+}
+
+.form-to-mail-settings div label{
+    display:inline-block;
+}

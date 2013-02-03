@@ -68,6 +68,10 @@ class websites extends MX_Controller {
             $content = $this->load->view('publish_template', $merge, true);
             file_put_contents($user_dir . "/" . $page['address'] . ".html", $content);
         }
+        if($this->input->post("has_forms") == 1){
+            file_put_contents($user_dir . "/mail.php", $this->websites_model->get_mail_page($this->user['email']));
+            copy("public/images/loading.gif", $user_dir . "/images/loading.gif");
+        }
         success(array("website" => base_url('/public/websites/' . $this->user['username'])));
     }
 

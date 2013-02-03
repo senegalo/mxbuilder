@@ -45,7 +45,8 @@
                     data:  {
                         pages: args.pages,
                         layout: args.layout,
-                        assets: args.assets
+                        assets: args.assets,
+                        has_forms: args.hasForms
                     }
                 });
             }

@@ -1,0 +1,9 @@
+<?php
+
+$msg = "Name: ".$_POST['name']."\n";
+$msg .= "Email: ".$_POST['email']."\n";
+$msg .= $_POST['message'];
+
+mail("##email-to","Form To Mail Submission",$msg);
+
+?>

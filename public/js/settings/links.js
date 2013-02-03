@@ -53,11 +53,12 @@
                     controls.lightboxContainer.hide();
                 }
                 
-                var pages = mxBuilder.pages.getOrderedPages();
-                for(var p in pages){
-                    var text = pages[p].parent == "root" ? pages[p].title : "---"+pages[p].title
-                    controls.pages.append('<option value="'+pages[p].id+'">'+text+'</option>');
-                }
+//                var pages = mxBuilder.pages.getOrderedPages();
+//                for(var p in pages){
+//                    var text = pages[p].parent == "root" ? pages[p].title : "---"+pages[p].title
+//                    controls.pages.append('<option value="'+pages[p].id+'">'+text+'</option>');
+//                }
+                controls.pages.append(mxBuilder.layout.utils.getOrderdPagesList());
                 controls.pages.on({
                     change: function change(){
                         controls.linktoPage.attr("checked","checked").trigger("change");

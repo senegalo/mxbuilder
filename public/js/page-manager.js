@@ -353,6 +353,8 @@
                             if(linkObj && linkObj.type == "lightbox"){
                                 out.assets[assetID].push(components[c].getClosestSize("full"));
                             }
+                        } else if (components[c].type == "FormToMailComponent"){
+                            out.hasForms = 1;
                         }
                         page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
                         var headIncludes = components[c].getHeadIncludes();

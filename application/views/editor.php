@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="public/css/flickr-badge.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/button.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/form-to-mail.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -137,6 +138,7 @@
         <script type="text/javascript" src="public/js/settings/youtube.js"></script>
         <script type="text/javascript" src="public/js/settings/links.js"></script>
         <script type="text/javascript" src="public/js/settings/button.js"></script>
+        <script type="text/javascript" src="public/js/settings/form-to-mail.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -154,6 +156,7 @@
         <script type="text/javascript" src="public/js/components/flickr-badge-component.js"></script>
         <script type="text/javascript" src="public/js/components/youtube-component.js"></script>
         <script type="text/javascript" src="public/js/components/buttons-component.js"></script>
+        <script type="text/javascript" src="public/js/components/form-to-mail-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -843,14 +846,97 @@
             <div class="button-component-instance">
                 <div class="label">Button</div>
             </div>
-            
+
             <div class="button-settings">
                 <div class="settings-title">Button Label</div>
                 <div>
                     <input type="text" id="button-label"/>
                 </div>
             </div>
-            
+
+            <div class="form-to-mail-component-instance">
+                <div class="after-submit-message" style="display:none;"></div>
+                <form>
+                    <div class="form-split-one">
+                        <div>
+                            <label>Name:</label>
+                            <input type="text" class="form-name" name="name"/>
+                        </div>
+                        <div>
+                            <label>Email:</label>
+                            <input type="text" class="form-email" name="email"/>
+                        </div>
+                        <div>
+                            <label>Subject:</label>
+                            <input type="text" class="form-subject" name="subject"/>
+                        </div>
+                    </div>
+                    <div class="form-split-two">
+                        <div>
+                            <textarea class="message" name="message"></textarea>
+                        </div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div>
+                        <input type="button" value="Send"/>
+                    </div>
+                </form>
+                <div class="overlay"></div>
+            </div>
+
+            <div class="form-to-mail-settings">
+                <div class="settings-title">Email To</div>
+                <div>
+                    <input type="text" id="form-mail-to"/>
+                </div>
+
+                <div class="settings-title">Mode</div>
+                <div class="form-mode">
+                    <input type="radio" id="form-mode-normal" name="form-mode" value="normal"/>
+                    <label for="form-mode-normal">Normal Mode</label>
+
+                    <input type="radio" id="form-mode-compact" name="form-mode" value="compact"/>
+                    <label for="form-mode-compact">Compact Mode</label>
+                </div>
+
+                <div class="settings-title">After Submission</div>
+                <div class="form-after-submit">
+                    <div style="padding-left: 5px;">
+
+                        <input type="radio" id="form-redirect-to-page" name="form-after-submission" value="redirect"/>
+                        <label for="form-redirect-to-page">Redirect to Page</label>
+
+                        <div style="padding-left: 5px;margin-bottom:5px;">
+                            <select id="form-redirect-page">
+
+                            </select>
+                        </div>
+
+
+                        <input type="radio" id="form-show-message" name="form-after-submission" value="message"/>
+                        <label for="form-show-message">Show Message</label>
+
+                        <div style="padding-left: 5px;">
+                            <input type="text" id="form-message" style="margin-bottom: 5px;"/>
+
+                            <br/>
+                            
+                            <input type="checkbox" id="form-hide"/>
+                            <label for="form-hide">Hide form after submission</label>
+
+                            <br/>
+
+                            <input type="checkbox" id="form-redisplay"/>
+                            <label for="form-redisplay">Show it again after</label>
+                            
+                            <input type="text" style="width:30px" id="form-redisplay-seconds"/>
+                            <label for="form-redisplay-seconds"> Seconds</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </body>
 </html>

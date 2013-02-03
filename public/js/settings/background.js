@@ -30,7 +30,13 @@
                     pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
                             mxBuilder.selection.each(function(){
-                                color.a =  controls.opacitySlider.customSlider("value")/100;
+                                var sliderVal = controls.opacitySlider.customSlider("value");
+                                if(sliderVal == 0){
+                                    sliderVal = 100;
+                                    controls.opacitySlider.customSlider("value",100);
+                                    controls.opacityValue.text("100%");
+                                }
+                                color.a =  sliderVal/100;
                                 this.setBackground({
                                     backgroundColor:color.toString()
                                 });
@@ -92,12 +98,7 @@
                         controls.patterns.find(".selected").removeClass("selected");
                         element.addClass("selected");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                this.setBackground({
-                                    backgroundImage: element.data("flexly-pattern-index") == -1 ? 'none': 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
-                                    backgroundRepeat: 'repeat'
-                                });
-                            });
+                            backgroundSettings.applyValuesToSelection(controls);
                         }
                     }
                 })
@@ -170,7 +171,7 @@
                         try {
                             scale = parseInt(scale);
                         } catch(e){
-                            scale = 10;
+                            scale = 20;
                         }
                     }
                     controls.scaleSlider.customSlider("value",scale);

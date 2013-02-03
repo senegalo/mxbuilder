@@ -52,6 +52,15 @@
                     firstRun = false;
                 });
                 return settings;
+            },
+            getOrderdPagesList: function(){
+                var pages = mxBuilder.pages.getOrderedPages();
+                var out = $();
+                for(var p in pages){
+                    var text = pages[p].parent == "root" ? pages[p].title : "---"+pages[p].title
+                    out = out.add($('<option value="'+pages[p].id+'">'+text+'</option>'));
+                }
+                return out;
             }
         }
     });

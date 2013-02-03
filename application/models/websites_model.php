@@ -72,6 +72,13 @@ class Websites_Model extends CI_Model {
             rmdir($folder);
         }
     }
+    
+    public function get_mail_page($email){
+        $contents = file_get_contents("application/views/mail_php_template");
+        $contents = str_replace("##email-to", $email, $contents);
+        return $contents;
+        
+    }
 
 }
 
