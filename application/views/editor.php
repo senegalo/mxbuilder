@@ -166,7 +166,7 @@
         <script type="text/javascript" src="public/js/components/youtube-component.js"></script>
         <script type="text/javascript" src="public/js/components/buttons-component.js"></script>
         <script type="text/javascript" src="public/js/components/form-to-mail-component.js"></script>
-        <script type="text/javascript" src="public/js/components/image-gallery-component.js"></script>
+        <script type="text/javascript" src="public/js/components/image-slider-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -933,7 +933,7 @@
 
             </div>
 
-            <div class="image-gallery-component-instance">
+            <div class="image-slider-component-instance">
             </div>
 
             <div class="image-gallery-slider">

@@ -60,7 +60,7 @@
                                 selectedImages.push(this.data("assetid"));
                             });
                             ui.helper.find("img").replaceWith(multipleImageSelect.clone()).end()
-                            .data("component","ImageGalleryComponent")
+                            .data("component","ImageSliderComponent")
                             .data("extra",selectedImages)
                             .appendTo(mxBuilder.layout.container);
                         } 

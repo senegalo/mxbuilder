@@ -1,11 +1,11 @@
 (function($){
     $(function(){
-        mxBuilder.ImageGalleryComponent = function ImageGalleryComponent(properties){
+        mxBuilder.ImageSliderComponent = function ImageSliderComponent(properties){
             this.init(properties);
-            var imageGallery = this;
+            var imageSlider = this;
             //Edit component behavious settings...
             mxBuilder.Component.apply(this,[{
-                type: "ImageGalleryComponent",
+                type: "ImageSliderComponent",
                 draggable: {},
                 resizable: {
                     orientation: "hv"
@@ -35,7 +35,7 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function(){
-                    imageGallery.revalidate();
+                    imageSlider.revalidate();
                 }
             });
             
@@ -54,8 +54,8 @@
             
         //Extra Initializtion actions...
         }
-        $.extend(mxBuilder.ImageGalleryComponent.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".image-gallery-component-instance"),
+        $.extend(mxBuilder.ImageSliderComponent.prototype, new mxBuilder.Component(), {
+            template: mxBuilder.layout.templates.find(".image-slider-component-instance"),
             sliderTemplate: mxBuilder.layout.templates.find(".image-gallery-slider"),
             sliderSettings: {
                 autoPlay: false,
@@ -311,23 +311,6 @@
                 }
             }
         });
-        
-        
-        //Change widget name and icon
-        var widgets = mxBuilder.menuManager.menus.widgets;
-        widgets.addComponent("root",{
-            icon: "flexly-icon-box-component",
-            title: "Image Gallery",
-            draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
-                helper: function(event){
-                    var theContent = mxBuilder.ImageGalleryComponent.prototype.template.clone()
-                    .addClass("mx-helper")
-                    .data("component","ImageGalleryComponent")
-                    .appendTo(mxBuilder.layout.container);
-                    return theContent;
-                }
-            }
-        });
+       
     });
 }(jQuery))
