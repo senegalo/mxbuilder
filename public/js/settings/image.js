@@ -85,7 +85,7 @@
             },
             updateComponents: function updatecomponents(assetID){
                 //updating image galleries
-                var components = mxBuilder.components.getComponentsByType("ImageGalleryComponent")
+                var components = mxBuilder.components.getComponentsByType("ImageSliderComponent")
                 for(var c in components){
                     components[c].updateImagesInfo();
                 }
