@@ -83,6 +83,26 @@
                             backgroundSize: '100% auto',
                             backgroundRepeat: 'no-repeat',
                             height: 75
+                        }).on({
+                            mousedown: function mousedown(event){
+                                var header = $(this);
+                                if(event.which == 3){
+                                    mxBuilder.contextmenu.getMainCtx().addItem({
+                                        label: "Settings",
+                                        callback: function(){
+                                            header.trigger("click");
+                                        }
+                                    }).addItem({
+                                        label: "Delete",
+                                        callback: function(){
+                                            header.parents(".flexly-collapsable-panel:first").remove();
+                                            if(settingsTab.isPreview()){
+                                                galleryImageList.applyToSelection(controls);
+                                            }
+                                        }
+                                    }).stopPropagation();
+                                }
+                            }
                         }).end()
                         .find('.flexly-icon').hide().end()
                         .appendTo(controls.listContainer);
