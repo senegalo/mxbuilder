@@ -1069,6 +1069,10 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="image-grid-component-instance">
+                
+            </div>
 
         </div>
     </body>

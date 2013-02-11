@@ -53,7 +53,7 @@
                         })
                         .appendTo(mxBuilder.layout.container);
                     },
-                    start: function dragstart(event,ui){
+                    start: function start(event,ui){
                         if(photos._selectionCount > 1){
                             var selectedImages = [];
                             photos.each(function(){
@@ -64,6 +64,9 @@
                             .data("extra",selectedImages)
                             .appendTo(mxBuilder.layout.container);
                         } 
+                    },
+                    stop: function stop(){
+                        photos.clearSelection();
                     }
                 })
                 .append('<img src="'+obj.location+"/"+obj.thumb+'" style="width:114px;height:'+(114/obj.ratio)+'px;" title="'+obj.name+'"/>')

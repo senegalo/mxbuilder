@@ -20,22 +20,63 @@
     
             //Add element events...
             if(this.extra){
+                this.list = [];
                 for(var i in this.extra){
-                    this.list[this.extra[i]] = {
+                    this.list.push({
                         id: this.extra[i],
                         caption: true,
                         title: true,
                         link: {}
-                    };
+                    });
                 }
             }
             
             properties.element.on({
-                selected: function(){
+                selected: function selected(){
                     mxBuilder.activeStack.push(properties.element);
                 },
-                resize: function(){
+                resize: function resize(){
                     imageSlider.revalidate();
+                }
+            }).droppable({
+                greedy: true,
+                over: function over(event,ui){
+                    ui.helper.data("deny-drop",true);
+                },
+                out: function out(event,ui){
+                    ui.helper.data("deny-drop",false);
+                },
+                drop: function drop(event,ui){
+                    console.log("Image Component Dropped Triggered...");
+                    if(ui.helper.hasClass("mx-helper")){
+                        var component = ui.helper.data("component");
+                        if(component == "ImageComponent"){
+                            imageSlider.list.push({
+                                id: ui.helper.data("extra").originalAssetID,
+                                title: true,
+                                caption: true,
+                                link: {}
+                            });
+                            ui.helper.remove();
+                            imageSlider.rebuild();
+                            console.log("Done...");
+                            return false;
+                        } else if(component == "ImageSliderComponent") {
+                            var selected = ui.helper.data("extra");
+                            for(var i in selected){
+                                imageSlider.list.push({
+                                    id: selected[i],
+                                    title: true,
+                                    caption: true,
+                                    link: {}
+                                });
+                            }
+                            ui.helper.remove();
+                            imageSlider.rebuild();
+                            console.log("Done...");
+                            return false;
+                        }
+                    }
                 }
             });
             
@@ -64,7 +105,7 @@
                 action: true,
                 navigation: "thumbs"
             },
-            list: {},
+            list: null,
             thumbSize: "full",
             revalidateImageSize: function revalidateImageSize(){
                 var elementWidth = this.element.width();
