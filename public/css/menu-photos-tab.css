@@ -5,6 +5,10 @@ ul.flexly-menu-photos-list li {
     padding: 10px;
 }
 
+ul.flexly-menu-photos-list li.photo-selected{
+    background-color: #6f6f6f;
+}
+
 ul.flexly-menu-photos-list li:not(:last-child){
     margin-bottom: 1px;
 }
@@ -88,4 +92,8 @@ ul.flexly-menu-photos-list li:not(:last-child){
 
 .photos-tab-icon.photos-current {
     opacity:1;
+}
+
+.photos-selected {
+    
 }

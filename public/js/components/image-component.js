@@ -328,6 +328,9 @@
                 }
                 return saveObj;
             },
+            updateImageInfo: function updateImageInfo(){
+                this.theImage.attr("title",this.getImageObj().title);
+            },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.__currentSize = this.__currentSize;

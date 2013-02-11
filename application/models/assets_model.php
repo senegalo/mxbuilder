@@ -264,10 +264,10 @@ class Assets_Model extends CI_Model {
         $out[] = array("id" => 0,
             "type" => "image",
             "location" => base_url('/public/images'),
-            "name" => "error",
+            "name" => "No Image",
             "ratio" => 1.09,
-            "title" => "Couldn't load the image",
-            "caption" => "",
+            "title" => "No Image",
+            "caption" => "Yes... Add some images !",
             "medium" => "error-medium.png",
             "small" => "error-small.png",
             "thumb" => "error-thumb.png");

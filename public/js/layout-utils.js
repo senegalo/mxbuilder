@@ -11,7 +11,7 @@
                 var classes = ["flexly-icon-plus-small-grey", "flexly-icon-minus-small-grey"];
                 
                 if(title){
-                    thePanel.find(".flexly-collapsable-title").text(title);
+                    thePanel.find(".flexly-collapsable-title").html(title);
                 }
                 
                 var updatePanel = function updatePanel(theHead){

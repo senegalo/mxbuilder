@@ -46,7 +46,7 @@ hr {
 .form label {
     display:block;
     color: #4a4a4a;
-    font-weight: bold;
+    /*font-weight: bold;*/
     margin-bottom: 9px;
 }
 
@@ -59,9 +59,24 @@ hr {
     background-color: #e6e6e6;
 }
 
+.form input[type="text"] {
+    width: 230px;
+}
+
+.form input[type="radio"], .form input[type="radio"] + label, .form input[type="checkbox"], .form input[type="checkbox"] + label {
+    display: inline-block;
+}
+
+.form input[type="radio"] + label, .form input[type="checkbox"] + label {
+    position:relative;
+    top:-2px;
+}
+
 .form textarea {
     border-radius: 6px;
     border-width: 0px;
+    width: 230px;
+    height: 100px;
     outline: 0px;
     background-color: #e6e6e6;
     padding: 5px;

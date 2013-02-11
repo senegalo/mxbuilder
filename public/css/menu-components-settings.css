@@ -11,23 +11,3 @@
 .flexly-menu-component-settings .spacer {
     height: 1px;
 }
-
-.settings-title {
-    color:#4b4a4a;
-    margin: 14px 0 7px 0;
-}
-
-.flexly-component-settings-cancel {
-    float:left;
-    margin-left: 21px;
-}
-
-.flexly-component-settings-save {
-    float:left;
-    margin-left: 11px;
-}
-
-.flexly-component-settings-preview {
-    float:right;
-    margin-right: 17px;
-}

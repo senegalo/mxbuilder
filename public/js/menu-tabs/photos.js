@@ -4,11 +4,14 @@
         
         var template = mxBuilder.layout.templates.find(".flexly-menu-photos").clone().remove();
         var templateImage = template.find(".flexly-menu-photos-list li").remove();
+        var multipleImageSelect = template.find(".flexly-multiple-files").remove();
         
         mxBuilder.menuManager.menus.photos = {
             __theList: null,
             __template: template,
             __templateImage: templateImage,
+            _selectedElements: {},
+            _selectionCount: 0,
             init: function init(){
                 mxBuilder.menuManager.hideFooter();
                 mxBuilder.menuManager.tabTitle.text("Photos");
@@ -35,6 +38,7 @@
                 this.initUploader(uploadButton);
             },
             addItem: function addItem(obj,prependFlag,list){
+                var photos = this;
                 list = list ? list : this.__theList;
                 var leftColumn = list.find(".left-column ul");
                 var rightColumn = list.find(".right-column ul");
@@ -49,8 +53,17 @@
                         })
                         .appendTo(mxBuilder.layout.container);
                     },
-                    dragstop: function dragstop(event, ui){
-                        ui.helper.remove();
+                    start: function dragstart(event,ui){
+                        if(photos._selectionCount > 1){
+                            var selectedImages = [];
+                            photos.each(function(){
+                                selectedImages.push(this.data("assetid"));
+                            });
+                            ui.helper.find("img").replaceWith(multipleImageSelect.clone()).end()
+                            .data("component","ImageGalleryComponent")
+                            .data("extra",selectedImages)
+                            .appendTo(mxBuilder.layout.container);
+                        } 
                     }
                 })
                 .append('<img src="'+obj.location+"/"+obj.thumb+'" style="width:114px;height:'+(114/obj.ratio)+'px;" title="'+obj.name+'"/>')
@@ -85,7 +98,7 @@
                             .addItem({
                                 label: "Image Settings...",
                                 callback: function callback(){
-                                    mxBuilder.menuManager.showTab("photoProperties",theItem.data("assetid"))
+                                    mxBuilder.menuManager.showTab("photoSettings",theItem.data("assetid"))
                                 }
                             }).addItem({
                                 label: "Delete Image...",
@@ -116,6 +129,12 @@
                                 }
                             });
                         }
+                    },
+                    click: function click(event){
+                        if(!event.ctrlKey){
+                            photos.clearSelection();
+                        }
+                        photos.addToSelection($(this));
                     }
                 });
                 
@@ -215,6 +234,27 @@
                     queueSize = 0;
                     mxBuilder.notifications.setIdleState();
                 });
+            },
+            addToSelection: function addToSelection(element){
+                element.addClass("photo-selected");
+                this._selectionCount++;
+                this._selectedElements[element.data("assetid")] = element;
+            },
+            removeFromSelection: function removeFromSelection(element){
+                element.removeClass("photo-selected");
+                this._selectionCount--;
+                delete this._selectedElements[element.data("assetid")];
+            },
+            clearSelection: function clearSelection(){
+                var photos = this;
+                this.each(function(){
+                    photos.removeFromSelection(this);
+                });
+            },
+            each: function each(callback){
+                for(var e in this._selectedElements){
+                    callback.call(this._selectedElements[e]);
+                }
             }
         }
         

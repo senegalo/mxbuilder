@@ -27,7 +27,7 @@
                 };
                 
                 //Configure the controls here
-                controls.linkType.radiobox().on({
+                controls.linkType.on({
                     change: function change(){
                         if(settingsTab.isPreview()){
                             mxBuilder.selection.each(function(){

@@ -1,0 +1,11 @@
+.gallery-image-settings .flexly-collapsable-header img{
+    max-height: 60px;
+}
+
+.gallery-image-settings .link-type {
+    width: auto;
+}
+
+.gallery-image-settings input.link-input[type="text"] {
+    width: 118px;
+}

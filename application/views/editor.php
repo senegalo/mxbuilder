@@ -34,6 +34,11 @@
         <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/button.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/form-to-mail.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/image-gallery.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/image-slider.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/photo-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/settings-common.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/gallery-image-list-settings.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -73,6 +78,7 @@
         <script type="text/javascript" src="public/js-libs/twitter-init-script.js"></script>
         <script type="text/javascript" src="public/js-libs/custom-menu.js"></script>
         <script type="text/javascript" src="public/js-libs/facebook-loader.js"></script>
+        <script type="text/javascript" src="public/js-libs/image-slider.js"></script>
         <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 
         <!--Loading Framework-->
@@ -119,7 +125,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
-        <script type="text/javascript" src="public/js/menu-tabs/photo-properties.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photo-settings.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-flicker.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
@@ -139,6 +145,9 @@
         <script type="text/javascript" src="public/js/settings/links.js"></script>
         <script type="text/javascript" src="public/js/settings/button.js"></script>
         <script type="text/javascript" src="public/js/settings/form-to-mail.js"></script>
+        <script type="text/javascript" src="public/js/settings/image.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-gallery.js"></script>
+        <script type="text/javascript" src="public/js/settings/gallery-image-list.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -157,6 +166,7 @@
         <script type="text/javascript" src="public/js/components/youtube-component.js"></script>
         <script type="text/javascript" src="public/js/components/buttons-component.js"></script>
         <script type="text/javascript" src="public/js/components/form-to-mail-component.js"></script>
+        <script type="text/javascript" src="public/js/components/image-gallery-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -522,6 +532,7 @@
                     </ul>
                 </div>
                 <div style="clear:both;"></div>
+                <img src="public/images/multiple-file.png" class="flexly-multiple-files"/>
             </div>
 
             <div class="photo-upload-notification">
@@ -530,21 +541,6 @@
             </div>
 
             <button id="photos-select-files" style="display:none;"></button>
-
-            <ul class="photos-properties form" style="height:389px;">
-                <li>
-                    <label for="photo-name">Photo Name</label>
-                    <input type="text" id="photo-name" style="width:260px"/>
-                </li>
-                <li>
-                    <label for="photo-title">Title</label>
-                    <input type="text" id="photo-title"  style="width:260px"/>
-                </li>
-                <li>
-                    <label for="photo-caption">Caption</label>
-                    <textarea id="photo-caption" style="width:260px;height:100px;"></textarea>
-                </li>
-            </ul>
 
             <ul class="flexly-menu-widgets-list">
                 <li class="mx-helper">
@@ -920,7 +916,7 @@
                             <input type="text" id="form-message" style="margin-bottom: 5px;"/>
 
                             <br/>
-                            
+
                             <input type="checkbox" id="form-hide"/>
                             <label for="form-hide">Hide form after submission</label>
 
@@ -928,13 +924,150 @@
 
                             <input type="checkbox" id="form-redisplay"/>
                             <label for="form-redisplay">Show it again after</label>
-                            
+
                             <input type="text" style="width:30px" id="form-redisplay-seconds"/>
                             <label for="form-redisplay-seconds"> Seconds</label>
                         </div>
                     </div>
                 </div>
 
+            </div>
+
+            <div class="image-gallery-component-instance">
+            </div>
+
+            <div class="image-gallery-slider">
+                <ul>
+                    <li>
+                        <a href="javascript:void(0);"></a>
+                        <div class="thumb">
+
+                        </div>
+                        <div class="slider-caption">
+                            <h1></h1>
+                            <p></p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="image-gallery-settings">
+
+                <div class="settings-title">Auto Play</div>
+                <div class="gallery-autoplay">
+                    <input type="radio" name="gallery-autoplay" value="on" id="gallery-autoplay-on"/>
+                    <label for="gallery-autoplay-on">On</label>
+
+                    <input type="radio" name="gallery-autoplay" value="off" id="gallery-autoplay-off"/>
+                    <label for="gallery-autoplay-off">Off</label>                    
+                </div>
+
+                <div class="settings-title">Transition Speed</div>
+                <div class="gallery-transition">
+                    <input type="radio" name="gallery-transition" value="slow" id="gallery-transition-slow"/>
+                    <label for="gallery-transition-slow">Slow</label>
+
+                    <input type="radio" name="gallery-transition" value="medium" id="gallery-transition-medium"/>
+                    <label for="gallery-transition-medium">Medium</label>
+
+                    <input type="radio" name="gallery-transition" value="fast" id="gallery-transition-fast"/>
+                    <label for="gallery-transition-fast">Fast</label>
+                </div>
+
+                <div class="settings-title">Show Timer Indicator</div>
+                <div class="gallery-timer-indicator">
+                    <input type="radio" name="gallery-timer-indicator" value="on" id="gallery-timer-indicator-on"/>
+                    <label for="gallery-timer-indicator-on">On</label>
+
+                    <input type="radio" name="gallery-timer-indicator" value="off" id="gallery-timer-indicator-off"/>
+                    <label for="gallery-timer-indicator-off">Off</label>
+                </div>
+
+                <div class="settings-title">Show Play/Pause Buttons</div>
+                <div class="gallery-action">
+                    <input type="radio" name="gallery-action-buttons" value="on" id="gallery-action-buttons-on"/>
+                    <label for="gallery-action-buttons-on">On</label>
+
+                    <input type="radio" name="gallery-action-buttons" value="off" id="gallery-action-buttons-off"/>
+                    <label for="galery-action-buttons-off">Off</label>
+                </div>
+
+                <div class="settings-title">Navigation Method</div>
+                <div class="gallery-navigation">
+                    <input type="radio" name="gallery-navigation" value="buttons" id="gallery-navigation-buttons"/>
+                    <label for="gallery-navigation-buttons">Buttons</label>
+
+                    <input type="radio" name="gallery-navigation" value="thumbs" id="gallery-navigation-thumbs"/>
+                    <label for="gallery-navigation-thumbs">Thumbnails</label>
+
+                    <input type="radio" name="gallery-navigation" value="none" id="gallery-navigation-none"/>
+                    <label for="gallery-navigation-none">None</label>
+                </div>
+            </div>
+
+            <div class="photos-settings">
+                <div class="settings-title">Photo Name</div>
+                <div>
+                    <input type="text" id="photo-name"/>
+                </div>
+
+                <div class="settings-title">Title</div>
+                <div>
+                    <input type="text" id="photo-title"/>
+                </div>
+
+                <div class="settings-title">Caption</div>
+                <div>
+                    <textarea id="photo-caption"></textarea>
+                </div>
+            </div>
+
+            <div class="photo-settings-tab form">
+                <div class="spacer"></div>
+            </div>
+
+            <div class="gallery-image-settings">
+                <div class="settings-title">Drag to order.<br/>Click to see individual settings</div>
+                <div class="items-container">
+                    <div class="list-item">
+                        <div class="image-name"></div>
+                        <div class="settings-title">Image Info</div>
+                        <div>
+                            <input type="checkbox" id="gallery-settings-title"/>
+                            <label for="gallery-settings-title">Show Title</label>
+
+                            <input type="checkbox" id="gallery-settings-caption"/>
+                            <label for="gallery-settings-caption">Show Caption</label>
+                        </div>
+                        <div class="settings-title">Image Link</div>
+                        <div>
+                            <div>
+                                <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
+                                <label for="linkto-external" class="settings-title" style="display: inline-block">External Link</label>
+                            </div>
+                            <div>
+                                <select id="linkto-protocol">
+                                    <option value="http://">http://</option>
+                                    <option value="https://">https://</option>
+                                </select>
+                                <input type="text" class="link-input" id="link-input"/>
+                            </div>
+
+                            <div>
+                                <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
+                                <label for="linkto-page" class="settings-title" style="display:inline-block;">Link to a page</label>
+                            </div>
+                            <div>
+                                <select id="linkto-pages" class="link-input">
+                                </select>
+                            </div>
+                            <div>
+                                <input type="radio" name="link_type" class="link-type" value="none" id="linkto-none">
+                                <label for="linkto-none" class="settings-title" style="display:inline-block;">None</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -1,0 +1,10 @@
+.photo-settings-tab {
+    min-height: 100%;
+}
+.photo-settings-tab .spacer {
+    height: 1px;
+}
+
+.photo-settings-tab .flexly-collapsable-panel {
+    margin: 7px;
+}

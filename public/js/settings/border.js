@@ -97,12 +97,13 @@
                     slide: function slide(event,ui){
                         controls.widthValue.text(ui.value+" Pixels");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                this.setBorder({
-                                    borderWidth:ui.value+"px",
-                                    borderStyle: "solid"
-                                });
-                            });
+//                            mxBuilder.selection.each(function(){
+//                                this.setBorder({
+//                                    borderWidth:ui.value+"px",
+//                                    borderStyle: "solid"
+//                                });
+//                            });
+                            borderSettings.applyValuesToSelection(controls);
                             mxBuilder.selection.revalidateSelectionContainer();
                         }
                     }
@@ -171,7 +172,7 @@
             applyValuesToSelection: function(controls){
                 mxBuilder.selection.each(function(){
                     var cssRules = {
-                        borderColor: controls.picker.customColorpicker("value"),
+                        borderColor: controls.picker.customColorpicker("value").toString(),
                         borderWidth: controls.widthSlider.customSlider("value")
                     }
                     if(controls.symmetricRadius){
