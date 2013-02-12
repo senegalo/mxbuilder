@@ -526,8 +526,8 @@
                     return ;
                 }
                 
-                var className =  ui.helper.data("component");
-                if(className){
+                var componentType =  ui.helper.data("component");
+                if(componentType){
                     if(container == "footer"){
                         ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
                     }
@@ -538,7 +538,7 @@
                         },
                         data:{ 
                             container: container,
-                            type: className,
+                            type: componentType,
                             extra: ui.helper.data("extra")
                         }
                     });

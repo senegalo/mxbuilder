@@ -34,6 +34,11 @@
                 
                 //remove from other pages
                 mxBuilder.pages.removeImgComponentFromPages(id);
+                
+                components = mxBuilder.components.getComponentsByType("ImageSliderComponent");
+                for(c in components){
+                    components[c].removeImage(id);
+                }
             }
             
             //binnary search: search for the asset in the ordered array and removing it

@@ -157,6 +157,11 @@
                     var imgObj = mxBuilder.assets.get(this.list[i].id);
                     var link;
                     
+                    if(!imgObj){
+                        this.removeImage(this.list[i].id);
+                        continue;
+                    }
+                    
                     if(withLinks && this.list[i].link.type != "none"){
                         if(this.list[i].link.type == "external"){
                             link = this.list[i].link.protocol+this.list[i].link.url;
@@ -303,6 +308,34 @@
                 out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel(true);
                 
                 return out;
+            },
+            removeImage: function removeImage(id){
+                var revalidate = false;
+                for(var i in this.list){
+                    if(this.list[i].id == id){
+                        this.list.splice(i,1);
+                        revalidate = true;
+                        break;
+                    }
+                }
+                
+                if(revalidate){
+                    var listLen = this.list.length;
+                    if(listLen == 1){
+                        var properties = this.save();
+                        properties.data.type = "ImageComponent";                        
+                        properties.data.extra = {
+                            originalAssetID: this.list[0].id
+                        }
+                        this.destroy();
+                        mxBuilder.components.addComponent(properties);
+                    } else if(listLen == 0 ){
+                        this.destroy();
+                    } else {
+                        this.rebuild();
+                    }
+                }
+                
             },
             getSpeed: function getSpeed(){
                 switch(this.sliderSettings.transitionSpeed){
