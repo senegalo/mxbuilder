@@ -76,7 +76,7 @@
                     var pagesOptions = mxBuilder.layout.utils.getOrderdPagesList();
                     for(var i in list){
                         var imgObj = mxBuilder.assets.get(list[i].id);
-                        var headerBackground = imgObj[mxBuilder.assets.getClosestImageSize(imgObj.id, "medium", false)];
+                        var headerBackground = imgObj[mxBuilder.imageUtils.getClosestImageSize(imgObj.id, "medium", false)];
                         var thePanel = mxBuilder.layout.utils.getCollapsablePanel(false,'')
                         .find('.flexly-collapsable-header').css({
                             backgroundImage: 'url('+imgObj.location+'/'+headerBackground+')',
@@ -137,16 +137,7 @@
                                     var imgObj = mxBuilder.assets.get(check.parents(".list-item:first").data("imgID"));
                                     if(imgObj.title != ""){
                                         mxBuilder.selection.each(function(){
-                                            var caption = this.element.find("li.slide-"+imgObj.id+" .slider-caption")
-                                            .find("h1")
-                                            .text(check.is(":checked")?imgObj.title:"")
-                                            .end()
-                                            
-                                            if(caption.find("h1").text() == "" && caption.find("p").text() == ""){
-                                                caption.hide();
-                                            } else {
-                                                caption.show();
-                                            }
+                                            this.toggleSlideTitle(imgObj,check.is(":checked"));
                                         });
                                     }
                                 }
@@ -159,16 +150,7 @@
                                     var imgObj = mxBuilder.assets.get(check.parents(".list-item:first").data("imgID"));
                                     if(imgObj.caption != ""){
                                         mxBuilder.selection.each(function(){
-                                            var caption = this.element.find("li.slide-"+imgObj.id+" .slider-caption")
-                                            .find("p")
-                                            .text(check.is(":checked")?imgObj.caption:"")
-                                            .end();
-                                            
-                                            if(caption.find("h1").text() == "" && caption.find("p").text() == ""){
-                                                caption.hide();
-                                            } else {
-                                                caption.show();
-                                            }
+                                            this.toggleSlideCaption(imgObj,check.is(":checked"));
                                         });
                                     }
                                 }
@@ -304,6 +286,7 @@
                     //apply the values to the selection
                     this.setImageList(theList);
                     this.rebuild();
+                    this.revalidate();
                 });
             },
             applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){

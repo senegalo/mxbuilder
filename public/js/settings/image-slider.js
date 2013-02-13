@@ -1,11 +1,11 @@
 (function($){
     $(function(){
-        mxBuilder.layout.settingsPanels.imageGallery = {
+        mxBuilder.layout.settingsPanels.imageSlider = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".image-gallery-settings").remove(),
             getPanel: function(expand){
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
-                var imageGallery = this;
+                var imageSlider = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
                 //change settings panel title
@@ -52,20 +52,20 @@
                 
                 thePanel.on({
                     previewEnabled: function(){
-                        imageGallery.applyToSelection(controls);
+                        imageSlider.applyToSelection(controls);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function(){
-                        imageGallery.applyToSelection(controls);
+                        imageSlider.applyToSelection(controls);
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        imageGallery.applyToSelection(controls,originalSettings);
+                        imageSlider.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        imageGallery.applyToSelection(controls,originalSettings);
+                        imageSlider.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -124,14 +124,14 @@
                 });
             },
             applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
-                var imageGallery = this;
+                var imageSlider = this;
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
                     if(settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
                             extra.call();
                         }
-                        imageGallery.applyToSelection(controls);
+                        imageSlider.applyToSelection(controls);
                     }
                 });
             }

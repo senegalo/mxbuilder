@@ -267,6 +267,7 @@
         }
     }
     mxBuilder.Component.prototype = {
+        trashed: false,
         setContainer: function setContainer(container){
             this.container = container;
             this.element.appendTo(mxBuilder.layout[container]);
@@ -342,6 +343,7 @@
             out.data.container = this.container;
             out.data.type = this.type;
             out.data.page = this.page;
+            out.data.trashed = this.trashed;
             return out;
         },
         publish: function publish(){
@@ -366,6 +368,11 @@
             }
             $.extend(this,properties.data);
             this.element = properties.element;
+        },
+        trashComponent: function trashComponent(){
+            this.trashed = true;
+            mxBuilder.selection.removeFromSelection(this.element);
+            this.element.removeClass("mx-selectable-component").hide();
         },
         destroy: function destroy(){
             mxBuilder.components.removeComponent(this.element);

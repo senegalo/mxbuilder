@@ -22,12 +22,26 @@
             if(this.extra){
                 this.list = [];
                 for(var i in this.extra){
-                    this.list.push({
-                        id: this.extra[i],
-                        caption: true,
-                        title: true,
-                        link: {}
-                    });
+                    //if the id is present then the list is transfered from another component
+                    //otherwise it's coming stright from the photo list so we generate the missing
+                    //properties
+                    if(this.extra[i].id){
+                        var listItem = {
+                            id: this.extra[i].id,
+                            caption: true,
+                            title: true,
+                            link: {}
+                        }
+                        $.extend(listItem,this.extra[i]);
+                        this.list.push(listItem);
+                    } else {
+                        this.list.push({
+                            id: this.extra[i],
+                            caption: true,
+                            title: true,
+                            link: {}
+                        });
+                    }
                 }
             }
             
@@ -37,6 +51,16 @@
                 },
                 resize: function resize(){
                     imageSlider.revalidate();
+                },
+                mousedown: function mousedown(event){
+                    if(event.which == 3){
+                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
+                            label: "Convert to Grid Gallery",
+                            callback: function(){
+                                imageSlider.convertToGrid();
+                            }
+                        }).stopPropagation();
+                    }
                 }
             }).droppable({
                 greedy: true,
@@ -47,7 +71,6 @@
                     ui.helper.data("deny-drop",false);
                 },
                 drop: function drop(event,ui){
-                    console.log("Image Component Dropped Triggered...");
                     if(ui.helper.hasClass("mx-helper")){
                         var component = ui.helper.data("component");
                         if(component == "ImageComponent"){
@@ -59,7 +82,6 @@
                             });
                             ui.helper.remove();
                             imageSlider.rebuild();
-                            console.log("Done...");
                             return false;
                         } else if(component == "ImageSliderComponent") {
                             var selected = ui.helper.data("extra");
@@ -73,7 +95,6 @@
                             }
                             ui.helper.remove();
                             imageSlider.rebuild();
-                            console.log("Done...");
                             return false;
                         }
                     }
@@ -107,42 +128,18 @@
             },
             list: null,
             thumbSize: "full",
-            revalidateImageSize: function revalidateImageSize(){
-                var elementWidth = this.element.width();
-                var elementHeight = this.element.height();
-                    
-                //Deciding which size to use !
-                var length = elementWidth/elementHeight < 1 ? elementHeight : elementWidth;
-                var sourceSwitchMargin = 10;
-                    
-                if(this.thumbSize == "thumb" && length > 100+sourceSwitchMargin){
-                    this.thumbSize = "small";
-                } else if (this.thumbSize == "small" && length <= 100){
-                    this.thumbSize = "thumb";
-                } else if(this.thumbSize == "small" && length >= 300+sourceSwitchMargin){
-                    this.thumbSize = "medium";
-                } else if(this.thumbSize == "medium" && length <= 300){
-                    this.thumbSize = "small";
-                } else if(this.thumbSize == "medium" && length >= 500+sourceSwitchMargin){
-                    this.thumbSize = "full";
-                } else if(this.thumbSize == "full" && length <= 500){
-                    this.thumbSize = "medium";
-                }
-            },
             revalidate: function revalidate(){
                 var instance = this;
-                this.revalidateImageSize();
+                this.thumbSize = mxBuilder.imageUtils.getImageSource(this.thumbSize, this.element);
                 this.element.find(".image-gallery-slider")
                 .find("a img")
                 .each(function(){
                     var image = $(this);
                     var id = image.data("id");
                     var imgObj = mxBuilder.assets.get(id);
-                        
-                    image.attr("src",imgObj.location+'/'+imgObj[mxBuilder.assets.getClosestImageSize(id, instance.thumbSize, false)]);
+                    image.attr("src",imgObj.location+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(id, instance.thumbSize, false)]);
                 })
                 .end().imageSlider("options",this.getSliderSettings()).imageSlider("revalidate");
-                
             },
             rebuild: function rebuild(returnFlag,withLinks){
                 var slider = this.sliderTemplate.clone();
@@ -150,7 +147,7 @@
                 var slide = slider.find("li").remove();
                     
                 //Deciding which size to use !
-                this.revalidateImageSize();
+                this.thumbSize = mxBuilder.imageUtils.getImageSource(this.thumbSize, this.element);
                     
                     
                 for(var i in this.list){
@@ -159,7 +156,7 @@
                     
                     if(!imgObj){
                         this.removeImage(this.list[i].id);
-                        continue;
+                        break;
                     }
                     
                     if(withLinks && this.list[i].link.type != "none"){
@@ -173,9 +170,9 @@
                         link = "javascript:void(0);";
                     }
                     
-                    var theSlide = slide.clone().find('a')
+                    var theSlide = slide.clone().data("id",imgObj.id).find('a')
                     .attr("href",link)
-                    .append('<img src="'+imgObj.location+'/'+imgObj[mxBuilder.assets.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
+                    .append('<img src="'+imgObj.location+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
                     .end()
                     .find(".thumb")
                     .append('<img src="'+imgObj.location+'/'+imgObj.thumb+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
@@ -246,6 +243,77 @@
                 }
                 return false;
             },
+            convertToGrid: function convertToGrid(){
+                var imageSlider = this;
+                var properties = this.save();
+                properties.data.type = "ImageGridComponent";
+                if(this.border){
+                    properties.data.border = this.border;
+                }
+                if(this.gridSettings){
+                    properties.data.gridSettings = this.gridSettings;
+                }                
+                
+                //transition animation
+                var initialElement = this.element.find(".current");
+                var imgObj = mxBuilder.assets.get(initialElement.data("id"));
+                var theSize = mxBuilder.imageUtils.getImageSource("small", this.element);
+                
+                
+                //gettings the image index
+                var imageIndex = 0;
+                for(imageIndex in this.list){
+                    if(this.list[imageIndex].id == imgObj.id){
+                        break;
+                    }
+                }
+                
+                var totalCols = this.gridSettings && this.gridSettings.cols ? this.gridSettings.cols : mxBuilder.ImageGridComponent.prototype.gridSettings.cols;
+                var spacing = this.gridSettings && this.gridSettings.spacing ? this.gridSettings.spacing : mxBuilder.ImageGridComponent.prototype.gridSettings.spacing;
+                var row = Math.floor(imageIndex/totalCols);
+                var col = imageIndex%totalCols;
+                var singleRowHeight = (this.element.height()/Math.ceil(this.list.length/totalCols))-2*spacing;
+                var singleColWidth = (this.element.width()/totalCols)-2*spacing;
+                var finalTop = row*singleRowHeight+(row+1)*spacing;
+                var finalLeft = singleColWidth*col+(col+1)*spacing;
+                   
+                var container = $('<div/>').css({
+                    height: singleRowHeight,
+                    width: singleColWidth,
+                    overflow: "hidden",
+                    position: "absolute",
+                    left: 0,
+                    top: 0
+                });
+                   
+                var metrics = mxBuilder.imageUtils.getImageCropped(imgObj.id, container);
+                var initialMetrics = mxBuilder.imageUtils.getImageCropped(imgObj.id, initialElement);
+                initialMetrics.imageCss.position = "absolute";
+                
+                
+                container.appendTo(mxBuilder.layout[this.container]).css({
+                    width: this.element.width(),
+                    height: this.element.height(),
+                    top: properties.css.top,
+                    left: properties.css.left
+                }).animate({
+                    top: properties.css.top+finalTop,
+                    left: properties.css.left+finalLeft,
+                    width: singleColWidth,
+                    height: singleRowHeight
+                },300,"easeInExpo");
+                
+                $("<img/>").attr({
+                    src: imgObj.location+"/"+imgObj[mxBuilder.imageUtils.getClosestImageSize(imgObj.id, theSize, false)]
+                }).css(initialMetrics.imageCss).appendTo(container)
+                .animate(metrics.imageCss,300,"easeInExpo",function(){
+                    imageSlider.trashComponent();
+                    var component = mxBuilder.components.addComponent(properties);
+                    mxBuilder.selection.addToSelection(component.element);
+                    container.remove();
+                });
+                this.trashComponent();
+            },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.sliderSettings = this.sliderSettings;
@@ -304,7 +372,7 @@
                 out.background.remove();
                 delete out.background;
                 
-                out.imageGallery = mxBuilder.layout.settingsPanels.imageGallery.getPanel();
+                out.imageSlider= mxBuilder.layout.settingsPanels.imageSlider.getPanel();
                 out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel(true);
                 
                 return out;
@@ -327,10 +395,10 @@
                         properties.data.extra = {
                             originalAssetID: this.list[0].id
                         }
-                        this.destroy();
+                        this.trashComponent();
                         mxBuilder.components.addComponent(properties);
                     } else if(listLen == 0 ){
-                        this.destroy();
+                        this.trashComponent();
                     } else {
                         this.rebuild();
                     }
@@ -382,6 +450,30 @@
                         this.list[i].link = link;
                         break;
                     }
+                }
+            },
+            toggleSlideTitle: function toggleSlideTitle(imgObj,flag){
+                var caption = this.element.find("li.slide-"+imgObj.id+" .slider-caption")
+                .find("h1")
+                .text(flag?imgObj.title:"")
+                .end()
+                                            
+                if(caption.find("h1").text() == "" && caption.find("p").text() == ""){
+                    caption.hide();
+                } else {
+                    caption.show();
+                }
+            },
+            toggleSlideCaption: function toggleSlideCaption(imgObj,flag){
+                var caption = this.element.find("li.slide-"+imgObj.id+" .slider-caption")
+                .find("p")
+                .text(flag?imgObj.caption:"")
+                .end();
+                                            
+                if(caption.find("h1").text() == "" && caption.find("p").text() == ""){
+                    caption.hide();
+                } else {
+                    caption.show();
                 }
             }
         });

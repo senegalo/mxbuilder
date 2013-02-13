@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/button.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/form-to-mail.css" type="text/css"/>
-        <link rel="stylesheet" href="public/css/image-gallery.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/image-grid.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/image-slider.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/photo-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/settings-common.css" type="text/css"/>
@@ -120,6 +120,7 @@
         <script type="text/javascript" src="public/js/colors-manager.js"></script>
         <script type="text/javascript" src="public/js/layout-settings.js"></script>
         <script type="text/javascript" src="public/js/clipboard.js"></script>
+        <script type="text/javascript" src="public/js/image-utils.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -146,8 +147,9 @@
         <script type="text/javascript" src="public/js/settings/button.js"></script>
         <script type="text/javascript" src="public/js/settings/form-to-mail.js"></script>
         <script type="text/javascript" src="public/js/settings/image.js"></script>
-        <script type="text/javascript" src="public/js/settings/image-gallery.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-slider.js"></script>
         <script type="text/javascript" src="public/js/settings/gallery-image-list.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-grid.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -167,6 +169,7 @@
         <script type="text/javascript" src="public/js/components/buttons-component.js"></script>
         <script type="text/javascript" src="public/js/components/form-to-mail-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-slider-component.js"></script>
+        <script type="text/javascript" src="public/js/components/image-grid-component.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1071,7 +1074,23 @@
             </div>
             
             <div class="image-grid-component-instance">
+                <table>
+                    
+                </table>
+            </div>
+            
+            <div class="image-grid-settings">
+            
+                <div class="settings-title">Columns</div>
+                <div>
+                    <input type="text" id="image-grid-columns"/>
+                </div>
                 
+                <div class="settings-title">Spacing</div>
+                <div>
+                    <input type="text" id="image-grid-spacing"/>
+                </div>
+            
             </div>
 
         </div>

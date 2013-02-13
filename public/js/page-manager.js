@@ -287,12 +287,20 @@
                     //delete copy.id;
                     copy.components = [];
                     for(var c in this.__pages[p].components){
-                        copy.components.push(p == this.__currentPage ? this.__pages[p].components[c].save() : this.__pages[p].components[c]);
+                        if(this.__currentPage){
+                            if(!this.__pages[p].components[c].trashed){
+                                copy.components.push(this.__pages[p].components[c].save());
+                            }
+                        } else {
+                            copy.components.push(this.__pages[p].components[c]);
+                        }
                     }
                     out.pages.push(copy);
                 }
                 for(c in this.__pinned){
-                    out.pinned.push(this.__pinned[c].save());
+                    if(this.__pinned[c].trashed){
+                        out.pinned.push(this.__pinned[c].save());
+                    }
                 }
                 return out;
             },
@@ -320,9 +328,9 @@
                     if(!out.assets[assetID]){
                         out.assets[assetID] = [];
                     }
-                    out.assets[assetID].push(mxBuilder.assets.getBiggestImageSize(assetID));
+                    out.assets[assetID].push(mxBuilder.imageUtils.getBiggestImageSize(assetID));
                     out.layout.background[layoutParts[c]+"Image"] = {
-                        image: mxBuilder.assets.get(assetID)[mxBuilder.assets.getBiggestImageSize(assetID)],
+                        image: mxBuilder.assets.get(assetID)[mxBuilder.imageUtils.getBiggestImageSize(assetID)],
                         ratio: mxBuilder.assets.get(assetID).ratio
                     }
                 }
@@ -345,7 +353,10 @@
                         body: [],
                         footer: []
                     };
-                    for(var c in components){
+                    for(c in components){
+                        if(components[c].trashed){
+                            continue;
+                        }
                         if(components[c].type == "ImageComponent"){
                             assetID = components[c].getAssetID();
                             out.assets[assetID] = [components[c].getImageSize()];

@@ -37,7 +37,6 @@
                     var hDiv = self.element.height();
                 
                     var ratioDiv = wDiv/hDiv;
-                    var sourceSwitchMargin = 10;
                 
                     var imgSource = self.getResizeMethod() == "crop" ? self.theImageContainer : self.theImage;
                 
@@ -96,22 +95,7 @@
                     }
                 
                     //Change source if necessary
-                    var length = ratioDiv < 1 ? hDiv : wDiv;
-                
-                    var size = "";
-                    if(self.getImageSize() == "thumb" && length > 100+sourceSwitchMargin){
-                        size = "small";
-                    } else if (self.getImageSize() == "small" && length <= 100){
-                        size = "thumb";
-                    } else if(self.getImageSize() == "small" && length >= 300+sourceSwitchMargin){
-                        size = "medium";
-                    } else if(self.getImageSize() == "medium" && length <= 300){
-                        size = "small";
-                    } else if(self.getImageSize() == "medium" && length >= 500+sourceSwitchMargin){
-                        size = "full";
-                    } else if(self.getImageSize() == "full" && length <= 500){
-                        size = "medium";
-                    }
+                    var size = mxBuilder.imageUtils.getImageSource(self.getImageSize(), self.element);
                     self.setImageSize(size, wImg, hImg);
                 
                 },
@@ -195,11 +179,11 @@
             },
             getBiggestSize: function getBiggestSize(){
                 var imgObj = this.getImageObj();
-                return mxBuilder.assets.getBiggestImageSize(imgObj.id);
+                return mxBuilder.imageUtils.getBiggestImageSize(imgObj.id);
             },
             getClosestSize: function getClosestSize(size,directionUp){
                 var imgObj = this.getImageObj();
-                return mxBuilder.assets.getClosestImageSize(imgObj.id, size, directionUp);
+                return mxBuilder.imageUtils.getClosestImageSize(imgObj.id, size, directionUp);
             },
             getAssetID: function getAssetID(){
                 return this.extra.originalAssetID;

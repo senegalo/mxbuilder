@@ -1,0 +1,20 @@
+
+.image-grid-component-instance td:hover .caption-container {
+  opacity: 1;
+}
+.image-grid-component-instance .caption-container {
+    width: 100%; 
+    position: absolute;
+    background: black;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: all 0.6s ease;
+    -moz-transition:    all 0.6s ease;
+    -o-transition:      all 0.6s ease;
+}
+.image-grid-component-instance .image-title, .image-grid-component-instance .image-caption {
+    padding: 10px 20px;
+}
