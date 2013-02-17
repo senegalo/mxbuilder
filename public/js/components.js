@@ -30,7 +30,8 @@
                 mousedown: function mousedown(event){
                     var ctx = mxBuilder.contextmenu.getMainCtx();
                     if(event.which == 3){
-                        if(mxBuilder.selection.getSelectionCount() < 2 || mxBuilder.selection.isAllSelectedSameType()){
+                        var sameType = mxBuilder.selection.isAllSelectedSameType();
+                        if(mxBuilder.selection.getSelectionCount() < 2 || sameType){
                         
                             var theComponent = mxBuilder.components.getComponent(obj.element);
                             if(mxBuilder.selection.getSelectionCount() == 0){
@@ -79,6 +80,23 @@
                             }
                         }
                         if(mxBuilder.selection.getSelectionCount() > 1){
+                            
+                            if(sameType && sameType == "ImageComponent"){
+                                ctx.addSubgroup({
+                                    label: "Transform to"
+                                }).addItem({
+                                    label: "Grid Gallery",
+                                    callback: function callback(){
+                                        mxBuilder.imageUtils.createGalleryFromSelected("ImageGridComponent");
+                                    }
+                                }).addItem({
+                                    label: "Slider Gallery",
+                                    callback: function callback(){
+                                        mxBuilder.imageUtils.createGalleryFromSelected("ImageSliderComponent");
+                                    }
+                                }).end()
+                            }
+                            
                             //Alignment Menu
                             ctx.addSubgroup({
                                 label: "Alignment"
@@ -112,7 +130,7 @@
                                 callback: function(){
                                     mxBuilder.components.alignment.centerHorizontally();
                                 }
-                            });
+                            }).end();
                         }
                     
                         ctx.addItem({
@@ -247,10 +265,6 @@
             //Making it deletable
             obj.element.on({
                 destroy: function destroy(){
-                    var theComponent = mxBuilder.components.getComponent(obj.element);
-                    theComponent.unpin();
-                    mxBuilder.pages.detachComponentFromPage(theComponent);
-                    mxBuilder.selection.removeFromSelection(obj.element);
                     mxBuilder.components.getComponent(obj.element).destroy();
                 }
             });
@@ -375,6 +389,9 @@
             this.element.removeClass("mx-selectable-component").hide();
         },
         destroy: function destroy(){
+            this.unpin();
+            mxBuilder.pages.detachComponentFromPage(this);
+            mxBuilder.selection.removeFromSelection(this.element);
             mxBuilder.components.removeComponent(this.element);
             this.element.remove();
         },

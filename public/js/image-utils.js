@@ -84,6 +84,32 @@
                 }
                 
                 return imageDim;
+            },
+            createGalleryFromSelected: function(galleryType){
+                var properties = {
+                    data: {
+                        type: galleryType,
+                        extra: []
+                    },
+                    css: {
+                        width: "500px",
+                        height: "300px",
+                        top: 3000,
+                        left: 3000
+                    }
+                };
+                mxBuilder.selection.each(function(){
+                    var pos = this.element.position();
+                    if(pos.top < properties.css.top && pos.left < properties.css.left){
+                        properties.css.top = pos.top;
+                        properties.css.left = pos.left;
+                        properties.data.container = this.container;
+                    }
+                    properties.data.extra.push(this.extra.originalAssetID);
+                    this.destroy();
+                });
+                mxBuilder.components.addComponent(properties);
+                mxBuilder.selection.revalidateSelectionContainer();
             }
         }
     });

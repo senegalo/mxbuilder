@@ -123,7 +123,7 @@
                 }
                 oldType = currentType;
             }
-            return true;
+            return currentType;
         },
         isSelected: function(element){
             var component = mxBuilder.components.getComponent($(element));
