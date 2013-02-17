@@ -1064,6 +1064,12 @@
                                 <select id="linkto-pages" class="link-input">
                                 </select>
                             </div>
+
+                            <div class="lightbox" style="display:none;">
+                                <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
+                                <label for="linkto-lightbox" class="settings-title" style="display:inline-block;">Lightbox</label>
+                            </div>
+
                             <div>
                                 <input type="radio" name="link_type" class="link-type" value="none" id="linkto-none">
                                 <label for="linkto-none" class="settings-title" style="display:inline-block;">None</label>
@@ -1072,25 +1078,25 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="image-grid-component-instance">
                 <table>
-                    
+
                 </table>
             </div>
-            
+
             <div class="image-grid-settings">
-            
+
                 <div class="settings-title">Columns</div>
                 <div>
                     <input type="text" id="image-grid-columns"/>
                 </div>
-                
+
                 <div class="settings-title">Spacing</div>
                 <div>
                     <input type="text" id="image-grid-spacing"/>
                 </div>
-            
+
             </div>
 
         </div>

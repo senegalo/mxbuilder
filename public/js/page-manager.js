@@ -287,7 +287,7 @@
                     //delete copy.id;
                     copy.components = [];
                     for(var c in this.__pages[p].components){
-                        if(this.__currentPage){
+                        if(this.__currentPage == p){
                             if(!this.__pages[p].components[c].trashed){
                                 copy.components.push(this.__pages[p].components[c].save());
                             }

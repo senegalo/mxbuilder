@@ -4,9 +4,9 @@
             //update the template variable
             _itemTemplate: mxBuilder.layout.templates.find(".gallery-image-settings .list-item").remove(),
             _template: mxBuilder.layout.templates.find(".gallery-image-settings").remove(),
-            getPanel: function(expand){
+            getPanel: function(settings){
                 var galleryImageList = this;
-                var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
+                var thePanel = mxBuilder.layout.utils.getCollapsablePanel(settings.expand);
                 
                 //change settings panel title
                 thePanel.find(".flexly-collapsable-title").text("Image List Settings");
@@ -18,7 +18,8 @@
                 //fill in all the controls 
                 var controls = {
                     theInstance: theInstance,
-                    listContainer: theInstance.find(".items-container")
+                    listContainer: theInstance.find(".items-container"),
+                    showLightbox: settings.lightbox
                 };
                 
                 
@@ -73,8 +74,11 @@
                 if(list == false){
                     controls.listContainer.append("<div><i><b>Lists in the selected galleries are different.</b></i></div>");
                 } else {
+                    //Getting the pages
                     var pagesOptions = mxBuilder.layout.utils.getOrderdPagesList();
                     for(var i in list){
+                        
+                        //prepping the image and placing it at the header of the collapsable block
                         var imgObj = mxBuilder.assets.get(list[i].id);
                         var headerBackground = imgObj[mxBuilder.imageUtils.getClosestImageSize(imgObj.id, "medium", false)];
                         var thePanel = mxBuilder.layout.utils.getCollapsablePanel(false,'')
@@ -107,9 +111,15 @@
                         .find('.flexly-icon').hide().end()
                         .appendTo(controls.listContainer);
                         
+                        //Preparing the collasable body
                         var theItem = this._itemTemplate.clone();
                         
-                        var alterID = ["gallery-settings-title","gallery-settings-caption","linkto-protocol","linkto-external","linkto-page","linkto-pages", "link-input", "linkto-none"]
+                        if(controls.showLightbox){
+                            theItem.find(".lightbox").show();
+                        }
+                        
+                        //Modifing the idz by concatenating the image id to them
+                        var alterID = ["gallery-settings-title","gallery-settings-caption","linkto-protocol","linkto-external","linkto-page","linkto-pages", "link-input", "linkto-lightbox", "linkto-none"]
                                                 
                         for(var id in alterID){
                             var element = theItem.find("#"+alterID[id]);
@@ -123,6 +133,7 @@
                             label.attr("for",alterID[id]+"-"+imgObj.id);
                         }
                         
+                        //adding the image name and the pages dropdown list
                         theItem.find(".image-name")
                         .append(imgObj.name)
                         .end()
@@ -130,6 +141,7 @@
                         .append(pagesOptions.clone())
                         .end();
                         
+                        //listening to title checkbox changes and applying them if preview is on
                         var title = theItem.find("#gallery-settings-title-"+imgObj.id).on({
                             change: function change(){
                                 if(settingsTab.isPreview()){
@@ -143,6 +155,8 @@
                                 }
                             }
                         });
+                        
+                        //listening to caption checkbox changes and applying them if preview is on 
                         var caption = theItem.find("#gallery-settings-caption-"+imgObj.id).on({
                             change: function change(){
                                 if(settingsTab.isPreview()){
@@ -157,6 +171,7 @@
                             }
                         });
                         
+                        //checking the title and caption if they were set
                         if(list[i].title){
                             title.attr("checked","checked");
                         }
@@ -165,6 +180,7 @@
                             caption.attr("checked","checked");
                         }
                         
+                        //listening to link type change and applying it if the preivew is on
                         theItem.find(".link-type").on({
                             change: function change(){
                                 if(settingsTab.isPreview){

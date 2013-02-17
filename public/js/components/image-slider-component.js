@@ -373,7 +373,7 @@
                 delete out.background;
                 
                 out.imageSlider= mxBuilder.layout.settingsPanels.imageSlider.getPanel();
-                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel(true);
+                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel({expand:true});
                 
                 return out;
             },

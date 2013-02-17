@@ -141,22 +141,14 @@
                     if(iterator != 0 && iterator%breakRow == 0){
                         row = $('<tr/>').appendTo(gridContainer);
                     }
-                    var td = $('<td/>').css({
+                    var td = $('<td class="slide-'+imgObj.id+'" data-id="'+imgObj.id+'"/>').css({
                         width: (100/this.gridSettings.cols)+"%",
                         backgroundImage: 'url("'+imgObj.location+"/"+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'")',
                         position: "relative"
                     });
                     
-                    if(this.list[i].caption == true || this.list[i].title == true){
-                        var captionContainer = $('<div class="caption-container"/>');
-                        if(this.list[i].title && imgObj.title != ""){
-                            captionContainer.append('<div class="image-title">'+imgObj.title+'</div>');
-                        }
-                        if(this.list[i].caption && imgObj.caption != ""){
-                            captionContainer.append('<div class="image-caption">'+imgObj.caption+'</div>');
-                        }
-                        captionContainer.appendTo(td);
-                    }
+                    var captionContainer = this.buildCaptionContainer(imgObj.title, imgObj.caption).appendTo(td);
+                    this.validateCaption(captionContainer, this.list[i]);
                     
                     if(this.border){
                         td.css(this.border);
@@ -250,10 +242,44 @@
                 return out;
             },
             publish: function publish(){
-                return mxBuilder.Component.prototype.publish.call(this);
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                
+                for(var i in this.list){
+                    var theTD = out.find("td.slide-"+this.list[i].id);
+                    if(this.list[i].link.type && this.list[i].link.type != "none"){
+                        var theLink = $('<a></a>');
+                        
+                        var attr = {};
+                        if(this.list[i].link.type == "external"){
+                            attr.href = this.list[i].link.protocol+this.list[i].link.url;
+                        } else if (this.list[i].link.type == "page"){
+                            var thePage = mxBuilder.pages.getPageObj(this.list[i].link.page);
+                            if(thePage.homepage){
+                                attr.href = "index.html";
+                            } else {
+                                attr.href = mxBuilder.pages.address;
+                            }
+                        } else if( this.list[i].link.type == "lightbox"){
+                            var imgObj = mxBuilder.assets.get(this.list[i].id);
+                            theLink.addClass("lightbox");
+                            attr.href = imgObj.location+"/"+imgObj[mxBuilder.imageUtils.getBiggestImageSize(imgObj.id)];
+                        }
+                        theLink.css({
+                            width: "100%",
+                            height: "100%",
+                            position: "absolute",
+                            top:0,
+                            left: 0
+                        }).attr(attr).appendTo(theTD);
+                    }
+                }                
+                return out;
             },
             getHeadIncludes: function getHeadIncludes(){
-                return mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                var out =  mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                out.css.gridGallery = "public/css/image-grid.css";
+                out.scripts.lightbox = "public/js-libs/lightbox/jquery.lightbox-0.5.pack.js";
+                return out;
             },
             init: function init(properties){
                 mxBuilder.Component.prototype.init.call(this,properties);
@@ -279,7 +305,10 @@
                 delete out.background;
                 
                 out.gridGallerySettings = mxBuilder.layout.settingsPanels.imageGrid.getPanel();
-                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel(true);
+                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel({
+                    expand: true,
+                    lightbox: true
+                });
                 
                 return out;
             },            
@@ -338,10 +367,83 @@
                 });
             },
             toggleSlideTitle: function toggleSlideTitle(imgObj,flag){
-                
+                var theTd = this.element.find(".slide-"+imgObj.id);
+                var container = theTd.find(".caption-container");
+                if(flag){
+                    if(container.length == 0){
+                        container = this.buildCaptionContainer(imgObj.title, imgObj.caption);
+                    }
+                    this.validateCaption(container, {
+                        title:true
+                    });
+                } else {
+                    container.find(".image-title").removeClass("visible").hide();
+                }
             },
             toggleSlideCaption: function toggleSlideCaption(imgObj,flag){
+                var theTd = this.element.find(".slide-"+imgObj.id);
+                var container = theTd.find(".caption-container");
+                if(flag){
+                    if(container.length == 0){
+                        container= this.buildCaptionContainer(imgObj.title,imgObj.caption);
+                    }
+                    this.validateCaption(container, {
+                        caption:true
+                    });
+                } else {
+                    container.find(".image-caption").removeClass("visible").hide();
+                }
+            },
+            buildCaptionContainer: function buildCaptionContainer(title,caption){
+                var captionContainer = $('<div class="caption-container"/>');
                 
+                var titleContainer = $('<div class="image-title visible">'+title+'</div>').appendTo(captionContainer);
+                if(title == ""){
+                    titleContainer.removeClass("visible").hide();
+                }
+                
+                var captionTextContainer = $('<div class="image-caption visible">'+caption+'</div>').appendTo(captionContainer);
+                if(caption == ""){
+                    captionTextContainer.removeClass("visible").hide();
+                }
+                
+                return captionContainer;
+            },
+            validateCaption: function validateCaption(captionContainer,rules){
+                var title = captionContainer.find(".image-title");
+                var caption = captionContainer.find(".image-caption");
+                
+                if(rules.title === false){
+                    title.removeClass("visible").hide();                        
+                } else if(rules.title === true){
+                    title.addClass("visible").show();
+                    captionContainer.show();
+                }
+                
+                if(rules.caption === false){
+                    caption.removeClass("visible").hide();
+                } else if(rules.caption === true){
+                    caption.addClass("visible").show();
+                    captionContainer.show();
+                }
+                
+                var hideCaption = true;
+                captionContainer.children().each(function(){
+                    if($(this).text() != ""){
+                        hideCaption = false;
+                    }
+                }); 
+                if(hideCaption){
+                    captionContainer.hide();
+                }
+            },
+            updateLink: function updateLink(id,link){
+                for(var i in this.list){
+                    if(this.list[i].id == id){
+                        this.list[i].link = link;
+                        break;
+                    }
+                }
             }
         });
     });
