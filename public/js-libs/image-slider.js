@@ -119,14 +119,9 @@
                 next: next
             };
             for(var s in slots){
-                var slot = thumbsContainer.find(".thumb-"+s)
-                .stop()
-                .clearQueue()
-                .fadeTo(300,0,(function(slot){
-                    return function(){
-                        $(this).empty().append(slot.find(".thumb").clone()).fadeTo(300,1);
-                    }
-                }(slots[s])));
+                thumbsContainer.find(".thumb-"+s)
+                .empty()
+                .append(slots[s].find(".thumb").clone());
             }
         }
     };
