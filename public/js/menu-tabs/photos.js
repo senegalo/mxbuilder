@@ -138,6 +138,9 @@
                             photos.clearSelection();
                         }
                         photos.addToSelection($(this));
+                    },
+                    dblclick: function dblclick(){
+                        mxBuilder.menuManager.showTab("photoSettings",theItem.data("assetid"));
                     }
                 });
                 
