@@ -145,7 +145,7 @@
                 if(components[i]){
                     continue;
                 }
-                this.__components[i].destroy();
+                this.__components[i].archive();
             }
             
             //restoring components

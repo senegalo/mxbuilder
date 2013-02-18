@@ -39,6 +39,7 @@
         <link rel="stylesheet" href="public/css/photo-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/settings-common.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/gallery-image-list-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/google-maps.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -132,25 +133,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/themes.js"></script>
-
-        <!-- Loading Settings Panels -->
-        <script type="text/javascript" src="public/js/settings/border.js"></script>
-        <script type="text/javascript" src="public/js/settings/background.js"></script>
-        <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
-        <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
-        <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
-        <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
-        <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
-        <script type="text/javascript" src="public/js/settings/flickr-badge.js"></script>
-        <script type="text/javascript" src="public/js/settings/youtube.js"></script>
-        <script type="text/javascript" src="public/js/settings/links.js"></script>
-        <script type="text/javascript" src="public/js/settings/button.js"></script>
-        <script type="text/javascript" src="public/js/settings/form-to-mail.js"></script>
-        <script type="text/javascript" src="public/js/settings/image.js"></script>
-        <script type="text/javascript" src="public/js/settings/image-slider.js"></script>
-        <script type="text/javascript" src="public/js/settings/gallery-image-list.js"></script>
-        <script type="text/javascript" src="public/js/settings/image-grid.js"></script>
-
+        
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
         <script type="text/javascript" src="public/js/components/text-component.js"></script>
@@ -170,6 +153,26 @@
         <script type="text/javascript" src="public/js/components/form-to-mail-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-slider-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-grid-component.js"></script>
+        <script type="text/javascript" src="public/js/components/google-maps-component.js"></script>
+
+        <!-- Loading Settings Panels -->
+        <script type="text/javascript" src="public/js/settings/border.js"></script>
+        <script type="text/javascript" src="public/js/settings/background.js"></script>
+        <script type="text/javascript" src="public/js/settings/tweet-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/main-menu.js"></script>
+        <script type="text/javascript" src="public/js/settings/layout-background.js"></script>
+        <script type="text/javascript" src="public/js/settings/fb-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/gplus-button.js"></script>
+        <script type="text/javascript" src="public/js/settings/flickr-badge.js"></script>
+        <script type="text/javascript" src="public/js/settings/youtube.js"></script>
+        <script type="text/javascript" src="public/js/settings/links.js"></script>
+        <script type="text/javascript" src="public/js/settings/button.js"></script>
+        <script type="text/javascript" src="public/js/settings/form-to-mail.js"></script>
+        <script type="text/javascript" src="public/js/settings/image.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-slider.js"></script>
+        <script type="text/javascript" src="public/js/settings/gallery-image-list.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-grid.js"></script>
+        <script type="text/javascript" src="public/js/settings/google-maps.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1098,7 +1101,20 @@
                 </div>
 
             </div>
+            
+            <div class="google-maps-component-instance">
+                <div class="map"></div>
+                <div class="overlay"></div>
+            </div>
+            
+            <div class="google-maps-settings">
+                <div class="settings-title">Edit Mode</div>
+                <div>
+                    <button id="google-maps-edit"></button>
+                </div>
+            </div>
 
         </div>
+
     </body>
 </html>

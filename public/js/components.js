@@ -388,6 +388,11 @@
             mxBuilder.selection.removeFromSelection(this.element);
             this.element.removeClass("mx-selectable-component").hide();
         },
+        archive: function archive(){
+            mxBuilder.selection.removeFromSelection(this.element);
+            mxBuilder.components.removeComponent(this.element);
+            this.element.remove();
+        },
         destroy: function destroy(){
             this.unpin();
             mxBuilder.pages.detachComponentFromPage(this);
