@@ -488,6 +488,7 @@
             this.element.resizable(this.resizable);            
         },
         defaultDraggableSettings: {
+            cursor : "move",
             start: function start(){
                 var element = $(this);
                 
@@ -517,8 +518,6 @@
                 } else {
                     element.data("movement-axis",false).draggable("option","axis",false);
                 }
-                
-                element.css("cursor","move");
             },
             drag: function drag(event,ui){
                 var element = $(this);
@@ -550,7 +549,6 @@
                 },true);
             },
             stop: function stop(){
-                $(this).css("cursor","default");
                 mxBuilder.layout.revalidateLayoutWidth();
             },
             scroll: false

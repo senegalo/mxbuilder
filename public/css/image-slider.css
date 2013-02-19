@@ -1,5 +1,6 @@
 /*Icons*/
 .slider-icons {
+    cursor: pointer;
     background-image: url('../images/sprite.png');
 }
 

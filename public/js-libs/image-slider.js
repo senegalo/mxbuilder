@@ -53,7 +53,7 @@
         autoPlay: function (element,autoPlay){
             var settings = element.data("imageSliderSettings");
             settings.autoPlay = autoPlay;
-            this.runSlider(element, settings, true);
+            //this.runSlider(element, settings, true);
             element.data("imageSliderSettings",settings);
         },
         action: function(element,action){
@@ -277,7 +277,7 @@
                     
                     var thumbScaleFactor = 10;
                     
-                    element.find("a")
+                    element.find(".image")
                     .css({
                         width: "100%",
                         height: "100%",

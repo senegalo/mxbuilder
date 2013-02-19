@@ -43,11 +43,5 @@
             }
         });
         
-        $(document).on({
-            selectionChanged: function(){
-                console.log("Selection Changed");
-            }
-        });
-        
     });
 }(jQuery));

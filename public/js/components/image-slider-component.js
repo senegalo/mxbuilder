@@ -3,6 +3,20 @@
         mxBuilder.ImageSliderComponent = function ImageSliderComponent(properties){
             this.init(properties);
             var imageSlider = this;
+            
+            this.element.on({
+                mousedown: function mousedown(event){
+                    if(event.which == 3 && (mxBuilder.selection.getSelectionCount() == 0 || mxBuilder.selection.isAllSelectedSameType())){
+                        mxBuilder.contextmenu.getMainCtx().addItem({
+                            label: "Convert to Grid Gallery",
+                            callback: function(){
+                                imageSlider.convertToGrid();
+                            }
+                        });
+                    }
+                }
+            });
+            
             //Edit component behavious settings...
             mxBuilder.Component.apply(this,[{
                 type: "ImageSliderComponent",
@@ -51,16 +65,6 @@
                 },
                 resize: function resize(){
                     imageSlider.revalidate();
-                },
-                mousedown: function mousedown(event){
-                    if(event.which == 3){
-                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
-                            label: "Convert to Grid Gallery",
-                            callback: function(){
-                                imageSlider.convertToGrid();
-                            }
-                        }).stopPropagation();
-                    }
                 }
             }).droppable({
                 greedy: true,
@@ -132,7 +136,7 @@
                 var instance = this;
                 this.thumbSize = mxBuilder.imageUtils.getImageSource(this.thumbSize, this.element);
                 this.element.find(".image-gallery-slider")
-                .find("a img")
+                .find(".image img")
                 .each(function(){
                     var image = $(this);
                     var id = image.data("id");
@@ -159,20 +163,20 @@
                         break;
                     }
                     
+                    var theImage = $('<img src="'+imgObj.location+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>');
+                    
                     if(withLinks && this.list[i].link.type != "none"){
                         if(this.list[i].link.type == "external"){
                             link = this.list[i].link.protocol+this.list[i].link.url;
                         } else if(this.list[i].link.type == "page") {
                             var page = mxBuilder.pages.getPageObj(this.list[i].link.page);
-                            link = page.homepage?"index.html":page.address;
+                            link = page.homepage?"index.html":page.address+".html";
                         }
-                    } else {
-                        link = "javascript:void(0);";
+                        theImage = $('<a href="'+link+'"/>').append(theImage);
                     }
                     
-                    var theSlide = slide.clone().data("id",imgObj.id).find('a')
-                    .attr("href",link)
-                    .append('<img src="'+imgObj.location+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
+                    var theSlide = slide.clone().data("id",imgObj.id).find('.image')
+                    .append(theImage)
                     .end()
                     .find(".thumb")
                     .append('<img src="'+imgObj.location+'/'+imgObj.thumb+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
@@ -306,10 +310,12 @@
                 $("<img/>").attr({
                     src: imgObj.location+"/"+imgObj[mxBuilder.imageUtils.getClosestImageSize(imgObj.id, theSize, false)]
                 }).css(initialMetrics.imageCss).appendTo(container)
-                .animate(metrics.imageCss,300,"easeInExpo",function(){
+                .animate(metrics.imageCss,300,"linear",function(){
                     imageSlider.trashComponent();
                     var component = mxBuilder.components.addComponent(properties);
-                    mxBuilder.selection.addToSelection(component.element);
+                    component.element.hide().fadeTo(300,1,function(){
+                        mxBuilder.selection.addToSelection(component.element); 
+                    });
                     container.remove();
                 });
                 this.trashComponent();

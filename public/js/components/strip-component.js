@@ -29,7 +29,6 @@
                         left: instance.element.position().left + 4,
                         backgroundPosition: "-4px 0"
                     }).data("original-width",before);
-                    console.log("Before",before,"position",instance.element.position())
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 deselected: function(){
@@ -40,7 +39,6 @@
                         backgroundPosition: "0 0"
                     })
                     instance.element.width(instance.element.data("original-width")-1);
-                    console.log("Cur.Width",instance.element.width(),"position",instance.element.position())
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 dblclick: function(){

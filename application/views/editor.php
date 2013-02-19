@@ -133,7 +133,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/themes.js"></script>
-        
+
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
         <script type="text/javascript" src="public/js/components/text-component.js"></script>
@@ -395,42 +395,42 @@
                 </div>
             </div>
 
-            <!--            <div class="linkto-dialog">
-                            <div>
-                                <div style="display:inline-block;">
-                                    <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
-                                    <label for="linkto-external">External Link</label>
-                                </div>
-                                <div style="display:inline-block;">
-                                    <select id="linkto-protocol">
-                                        <option value="http://">http://</option>
-                                        <option value="https://">https://</option>
-                                    </select>
-                                    <input type="text" name="external_link" class="link-input"/>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="display:inline-block;">
-                                    <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
-                                    <label for="linkto-page">Link to a page</label>
-                                </div>
-                                <div style="display:inline-block;">
-                                    <select name="page" class="link-input">
-                                        <option value="">Select a page</option>
-                                    </select>
-                                </div>
-                            </div>
-            
-                            <div class="lightbox">
-                                <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
-                                <label for="linkto-lightbox">Open in a Lightbox</label>
-                            </div>
-            
-                            <div style="margin-top:6px;">
-                                <input type="checkbox" id="linkto-new-window"/>
-                                <label for="linkto-new-window">Open in a new window</label>
-                            </div>
-                        </div>-->
+            <div class="linkto-dialog">
+                <div>
+                    <div style="display:inline-block;">
+                        <input type="radio" name="link_type" class="link-type" value="external" id="linkto-external">
+                        <label for="linkto-external">External Link</label>
+                    </div>
+                    <div style="display:inline-block;">
+                        <select id="linkto-protocol">
+                            <option value="http://">http://</option>
+                            <option value="https://">https://</option>
+                        </select>
+                        <input type="text" name="external_link" class="link-input"/>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:inline-block;">
+                        <input type="radio" name="link_type" class="link-type" value="page" id="linkto-page">
+                        <label for="linkto-page">Link to a page</label>
+                    </div>
+                    <div style="display:inline-block;">
+                        <select name="page" class="link-input">
+                            <option value="">Select a page</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="lightbox">
+                    <input type="radio" name="link_type" class="link-type" value="lightbox" id="linkto-lightbox">
+                    <label for="linkto-lightbox">Open in a Lightbox</label>
+                </div>
+
+                <div style="margin-top:6px;">
+                    <input type="checkbox" id="linkto-new-window"/>
+                    <label for="linkto-new-window">Open in a new window</label>
+                </div>
+            </div>
 
             <div class="pages-add-edit-tab">
                 <ul class="form menu-form">
@@ -945,7 +945,8 @@
             <div class="image-gallery-slider">
                 <ul>
                     <li>
-                        <a href="javascript:void(0);"></a>
+                        <div class="image">
+                        </div>
                         <div class="thumb">
 
                         </div>
@@ -1101,12 +1102,12 @@
                 </div>
 
             </div>
-            
+
             <div class="google-maps-component-instance">
                 <div class="map"></div>
                 <div class="overlay"></div>
             </div>
-            
+
             <div class="google-maps-settings">
                 <div class="settings-title">Edit Mode</div>
                 <div>
