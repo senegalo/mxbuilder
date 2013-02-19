@@ -255,12 +255,14 @@
                         theItem.appendTo(thePanel.find(".flexly-collapsable-content")).data("imgID",imgObj.id);
                     }
                     controls.listContainer.sortable({
+                        axis: "y",
+                        containment: "parent",
                         stop: function stop(){
                             if(settingsTab.isPreview()){
                                 galleryImageList.applyToSelection(controls);
                             }
                         }
-                    });
+                    }).disableSelection();
                 }
             },
             getLinkFromItem: function getLinkFromItem(item,id){
