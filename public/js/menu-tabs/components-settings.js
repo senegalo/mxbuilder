@@ -1,6 +1,20 @@
 (function($){
     
     $(function(){
+        
+        $(document).on({
+            selectionChanged: function selectionChanged(){
+                if(mxBuilder.menuManager.currentTab == "componentSettings"){
+                    var panels = mxBuilder.menuManager.menus.componentSettings.getCommonSettingsPanels();
+                    if(panels.length > 0){
+                        mxBuilder.menuManager.showTab("componentSettings");
+                    } else {
+                        mxBuilder.menuManager.closeTab();
+                    }
+                }
+            }
+        });
+        
         mxBuilder.menuManager.menus.componentSettings = {
             _template: mxBuilder.layout.templates.find(".flexly-menu-component-settings").remove(),
             _settings: {},
@@ -14,37 +28,21 @@
                 
                 var theContent = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 
-                var displaySettings = {};
-                
-                mxBuilder.selection.each(function(){
-                    var componentSettings = this.getSettingsPanels();
-                    for(var p in componentSettings){
-                        if(displaySettings[p]){
-                            displaySettings[p].count++;
-                            componentSettings[p].remove();
-                        } else {
-                            displaySettings[p] = {
-                                count: 1,
-                                panel: componentSettings[p]
-                            }
-                        }
-                    }
-                });
+                var displaySettings = this.getCommonSettingsPanels();
                 
                 for(var p in displaySettings){
-                    if(displaySettings[p].count == mxBuilder.selection.getSelectionCount()){
-                        var thePanel = displaySettings[p].panel;
+                    var thePanel = displaySettings[p].panel.getPanel(displaySettings[p].params);
                         
-                        //patching webkit bug: scrollTop reset on parent/zindex change
-                        var thePanelContent = thePanel.find(".jquery-scrollbar-container");
-                        if(thePanelContent.length > 0){
-                            var scrollCache = thePanelContent.scrollTop();
-                            theContent.append(thePanel);
-                            thePanelContent.scrollTop(scrollCache);
-                        } else {
-                            theContent.append(thePanel);
-                        }
+                    //patching webkit bug: scrollTop reset on parent/zindex change
+                    var thePanelContent = thePanel.find(".jquery-scrollbar-container");
+                    if(thePanelContent.length > 0){
+                        var scrollCache = thePanelContent.scrollTop();
+                        theContent.append(thePanel);
+                        thePanelContent.scrollTop(scrollCache);
+                    } else {
+                        theContent.append(thePanel);
                     }
+                    
                 }
                 
                 theContent.append('<div class="spacer"></div>').on({
@@ -82,6 +80,35 @@
                         }
                     }
                 });
+            },
+            getCommonSettingsPanels: function getCommonSettingsPanels(){
+                var panels = {};
+                
+                mxBuilder.selection.each(function(){
+                    var componentSettings = this.getSettingsPanels();
+                    for(var p in componentSettings){
+                        if(panels[p]){
+                            panels[p].count++;
+                        } else {
+                            panels[p] = {
+                                count: 1,
+                                panel: componentSettings[p].panel,
+                                params: componentSettings[p].params
+                            }
+                        }
+                    }
+                });
+                var out = [];
+                for(var p in panels){
+                    if(panels[p].count != mxBuilder.selection.getSelectionCount()){
+                        continue;
+                    }
+                    out.push({
+                        panel: panels[p].panel, 
+                        params: panels[p].params
+                    });
+                }
+                return out;                
             },
             isPreview: function(){
                 return this._enablePreview;

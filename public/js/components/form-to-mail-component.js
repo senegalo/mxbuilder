@@ -129,7 +129,10 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-                out.form = mxBuilder.layout.settingsPanels.formToMail.getPanel(true);
+                out.form = {
+                    panel: mxBuilder.layout.settingsPanels.formToMail,
+                    params: true
+                };
                 
                 return out;
             },

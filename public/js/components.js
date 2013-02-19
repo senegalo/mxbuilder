@@ -31,6 +31,23 @@
                     var ctx = mxBuilder.contextmenu.getMainCtx();
                     if(event.which == 3){
                         var sameType = mxBuilder.selection.isAllSelectedSameType();
+                        
+                        var showSettings = true;
+                        mxBuilder.selection.each(function(){
+                            if(!this.hasSettings){
+                                showSettings = false;
+                            }
+                        });
+                    
+                        if(showSettings && mxBuilder.menuManager.menus.componentSettings.getCommonSettingsPanels().length > 0){
+                            ctx.addItem({
+                                label: "Settings...",
+                                callback: function(){
+                                    mxBuilder.menuManager.showTab("componentSettings");
+                                }
+                            });
+                        }
+                        
                         if(mxBuilder.selection.getSelectionCount() < 2 || sameType){
                         
                             var theComponent = mxBuilder.components.getComponent(obj.element);
@@ -39,15 +56,6 @@
                             } else if(mxBuilder.selection.getSelectionCount() == 1 && !mxBuilder.selection.isSelected(obj.element)){
                                 mxBuilder.selection.clearSelection();
                                 mxBuilder.selection.addToSelection(obj.element);
-                            }
-                            
-                            if(obj.hasSettings !== false){
-                                ctx.addItem({
-                                    label: "Settings...",
-                                    callback: function(){
-                                        mxBuilder.menuManager.showTab("componentSettings");
-                                    }
-                                });
                             }
                             
                             //Activating Z-Index Manipulation context
@@ -244,8 +252,7 @@
                                 mxBuilder.selection.toggle(obj.element);
                             } else {
                                 if(!mxBuilder.selection.isSelected(obj.element)){
-                                    mxBuilder.selection.clearSelection();
-                                    mxBuilder.selection.addToSelection(obj.element); 
+                                    mxBuilder.selection.switchSelection(obj.element);
                                 } else if(mxBuilder.selection.getSelectionCount() > 1){
                                     mxBuilder.selection.clearSelection(obj.element);
                                 }
@@ -282,6 +289,7 @@
     }
     mxBuilder.Component.prototype = {
         trashed: false,
+        hasSettings: true,
         setContainer: function setContainer(container){
             this.container = container;
             this.element.appendTo(mxBuilder.layout[container]);
@@ -434,9 +442,12 @@
         },
         getSettingsPanels: function getSettingsPanels(){
             var out = {};
-            
-            out.border = mxBuilder.layout.settingsPanels.border.getPanel();
-            out.background = mxBuilder.layout.settingsPanels.background.getPanel();
+            out.border = {
+                panel: mxBuilder.layout.settingsPanels.border
+            };
+            out.background = {
+                panel: mxBuilder.layout.settingsPanels.background
+            };
             
             return out;
         },

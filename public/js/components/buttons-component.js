@@ -97,8 +97,14 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-                out.linkto = mxBuilder.layout.settingsPanels.links.getPanel(false);
-                out.button = mxBuilder.layout.settingsPanels.button.getPanel(true);
+                out.linkto = {
+                    panel: mxBuilder.layout.settingsPanels.links,
+                    params: false
+                };
+                out.button = { 
+                    panel: mxBuilder.layout.settingsPanels.button,
+                    params: true
+                };
                 
                 return out;
             },

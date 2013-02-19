@@ -173,6 +173,14 @@
             template: mxBuilder.layout.templates.find(".image-component-instance").remove(),
             theImage:  null,
             theImageContainer: null,
+            getSettings: function getSettings(){
+                var imgObj = this.getImageObj();
+                return {
+                    name: imgObj.name,
+                    title: imgObj.title,
+                    caption: imgObj.caption
+                };
+            },
             getImageObj: function getImageObj(){
                 var obj = mxBuilder.assets.get(this.extra.originalAssetID);
                 return obj?obj:mxBuilder.assets.get(0);
@@ -397,7 +405,6 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                out.background.remove();
                 delete out.background;
                 return out;
             }

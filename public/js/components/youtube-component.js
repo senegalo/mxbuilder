@@ -76,9 +76,11 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                out.youtube = mxBuilder.layout.settingsPanels.youtube.getPanel(true);
+                out.youtube = {
+                    panel: mxBuilder.layout.settingsPanels.youtube,
+                    params: true
+                };
                     
-                out.background.remove();
                 delete out.background;
                 
                 return out;

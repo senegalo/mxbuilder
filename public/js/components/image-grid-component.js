@@ -304,11 +304,16 @@
                 out.background.remove();
                 delete out.background;
                 
-                out.gridGallerySettings = mxBuilder.layout.settingsPanels.imageGrid.getPanel();
-                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel({
-                    expand: true,
-                    lightbox: true
-                });
+                out.gridGallerySettings = {
+                    panel: mxBuilder.layout.settingsPanels.imageGrid
+                };
+                out.galleryImageList = {
+                    panel: mxBuilder.layout.settingsPanels.galleryImageList,
+                    params: {
+                        expand: true,
+                        lightbox: true
+                    }
+                };
                 
                 return out;
             },            

@@ -57,7 +57,12 @@
                 return out;
             },
             getSettingsPanels: function getSettingsPanels(){
-                return { "tweetButton": mxBuilder.layout.settingsPanels.tweetButton.getPanel(true) };
+                return { 
+                    tweetButton: {
+                        panel: mxBuilder.layout.settingsPanels.tweetButton,
+                        params: true
+                    } 
+                };
             },
             setCounterPosition: function setCounterPosition(position){
                 this.count = position;

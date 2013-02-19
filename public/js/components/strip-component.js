@@ -60,8 +60,9 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                out.border.remove();
+                
                 delete out.border;
+                
                 return out;
             }
         });

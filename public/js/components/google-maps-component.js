@@ -169,7 +169,10 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-                out.googleMaps = mxBuilder.layout.settingsPanels.googleMaps.getPanel(true);
+                out.googleMaps = {
+                    panel: mxBuilder.layout.settingsPanels.googleMaps,
+                    params: true
+                };
                 
                 return out;
             },

@@ -189,6 +189,9 @@
                 });
                 return out;
             },
+            getSettingsPanels: function(){
+                return {}
+            },
             cleanDeadLinks: function cleanDeadLinks(pageID){
                 this.element.find(".inline-links").each(function(){
                     var that = $(this);

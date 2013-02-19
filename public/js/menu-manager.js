@@ -55,6 +55,7 @@
             tabFooterWrapper: theMenuTab.find(".flexly-tab-footer"),
             tabFooter: theMenuTab.find(".flexly-tab-footer-container"),
             menus: {},
+            currentTab: "",
             showTab: function(tabID,extraData){
                 if(theMenuContainer.width() < 70){
                     theMenuContainer.animate({
@@ -66,6 +67,7 @@
                 } else {
                     mxBuilder.menuManager.displayTabContent(tabID,extraData);
                 }
+                this.currentTab = tabID;
             },
             displayTabContent: function(tabID,extraData){
                 this.contentTab.empty();
@@ -84,6 +86,7 @@
                 this.tabButtons.hide();
             },
             closeTab: function(){
+                this.currentTab = "";
                 theMenuTab.fadeOut(300,function(){
                     theMenuContainer.animate({
                         width: 68

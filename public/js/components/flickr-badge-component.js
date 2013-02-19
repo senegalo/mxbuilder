@@ -136,7 +136,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                out.flickrBadgeSettings = mxBuilder.layout.settingsPanels.flickrBadge.getPanel(true);
+                out.flickrBadgeSettings = {
+                    panel: mxBuilder.layout.settingsPanels.flickrBadge,
+                    params: true
+                };
                 return out;
             },
             getSettings: function getSettings(){

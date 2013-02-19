@@ -47,7 +47,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 return {
-                    "fbButton": mxBuilder.layout.settingsPanels.fbButton.getPanel(true)
+                    fbButton: {
+                        panel:mxBuilder.layout.settingsPanels.fbButton,
+                        params: true
+                    }
                 };
             },
             setCounterPosition: function setCounterPosition(pos){

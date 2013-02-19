@@ -30,45 +30,48 @@
         getSelectionContainer: function(){
             return this.__selectionContainer;
         },
-        addToSelection: function(instance){
+        addToSelection: function(element,muteGlobalEvent){
             
-            if(this.isSelected(instance)){
+            if(this.isSelected(element)){
                 return;
             }
             
-            instance = $(instance).addClass("ui-selected");
+            element = $(element).addClass("ui-selected");
             
             //incrementing selection count
             this.__selectionCount++;
             
             //displaying the resizable handles
             if(this.__selectionCount == 1){
-                instance.find(".ui-resizable-handle").show();
+                element.find(".ui-resizable-handle").show();
             } else {
                 this.getSelection().find(".component-resizable-handle").hide();
             }
             
             //Augmenting the jquery ui selection plugin
-            var selectedObj = instance.data("selectableItem");
+            var selectedObj = element.data("selectableItem");
             if(selectedObj){
                 selectedObj.selected = true;
                 selectedObj.startselected = true;
-                instance.data("selectableItem",selectedObj);
+                element.data("selectableItem",selectedObj);
             }
             
             //adding the instance in the selection hash
-            this.__selected[mxBuilder.components.getComponent(instance).getID()] = instance;
+            this.__selected[mxBuilder.components.getComponent(element).getID()] = element;
             
             //adding the instance to the active stack
-            mxBuilder.activeStack.push(instance);
+            mxBuilder.activeStack.push(element);
             
             //triggering the selected event
-            instance.trigger("selected");
+            element.trigger("selected");
+            if(muteGlobalEvent !== true){
+                $(document).trigger("selectionChanged");
+            }
             
             //updating the selection most outer corners
-            this.revalidateSelectionContainer(instance);
+            this.revalidateSelectionContainer();
         },
-        removeFromSelection: function(element,skipSelContainerValidation){
+        removeFromSelection: function(element,skipSelContainerValidation,muteGlobalEvent){
             
             if(!this.isSelected(element)){
                 return;
@@ -91,20 +94,43 @@
                 this.getSelection().find(".component-resizable-handle").show();
             }
             
+            
+            element.trigger("deselected").trigger("blur");
+            
+            if(muteGlobalEvent !== true){
+                $(document).trigger("selectionChanged");
+            }
+            
             if(skipSelContainerValidation !== true){
                 this.revalidateSelectionContainer();
             }
-            element.trigger("deselected").trigger("blur");
         },
-        clearSelection: function(exclude){
+        clearSelection: function(exclude, muteGlobalEvent){
             var selection = this.getSelection();
             if(exclude){
                 selection = selection.not(exclude);
             }
             selection.each(function(){
-                mxBuilder.selection.removeFromSelection($(this),true); 
+                mxBuilder.selection.removeFromSelection($(this),true,true); 
             });
+            
+            if(muteGlobalEvent !== true){
+                $(document).trigger("selectionChanged");
+            }
+            
             this.revalidateSelectionContainer();
+        },
+        switchSelection: function(element){
+            this.clearSelection(true);
+            this.addToSelection(element);
+        },
+        toggle: function(element){
+            element = $(element);
+            if(this.__selected[mxBuilder.components.getComponent(element).getID()]){
+                this.removeFromSelection(element);
+            } else {
+                this.addToSelection(element);
+            }
         },
         getSelection: function(exclude){
             var out = $();
@@ -128,14 +154,6 @@
         isSelected: function(element){
             var component = mxBuilder.components.getComponent($(element));
             return component && this.__selected[component.getID()]?true:false;
-        },
-        toggle: function(instance){
-            instance = $(instance);
-            if(this.__selected[mxBuilder.components.getComponent(instance).getID()]){
-                this.removeFromSelection(instance);
-            } else {
-                this.addToSelection(instance);
-            }
         },
         updateSelectionCorners: function(instance){
             var metrics = instance.position();
@@ -199,10 +217,13 @@
                     distance: 2,
                     filter: ".mx-selectable-component",
                     selected: function(event,ui){
-                        mxBuilder.selection.addToSelection(ui.selected)
+                        mxBuilder.selection.addToSelection(ui.selected,true)
                     },
                     unselected: function(event,ui){
-                        mxBuilder.selection.removeFromSelection(ui.unselected);
+                        mxBuilder.selection.removeFromSelection(ui.unselected,false,true);
+                    },
+                    stop: function(){
+                        $(document).trigger("selectionChanged");
                     }
                 });
             } else {

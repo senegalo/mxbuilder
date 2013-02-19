@@ -41,7 +41,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 return {
-                    "gplusButton": mxBuilder.layout.settingsPanels.gplusButton.getPanel(true)
+                    gplusButton: {
+                        panel: mxBuilder.layout.settingsPanels.gplusButton,
+                        params: true
+                    }
                 };
             },
             setCounterPosition: function setCounterPosition(pos){

@@ -173,7 +173,10 @@
             },
             getSettingsPanels: function getSettingsPanel(){
                 return {
-                    mainMenu: mxBuilder.layout.settingsPanels.mainMenu.getPanel(true)
+                    mainMenu: {
+                        panel: mxBuilder.layout.settingsPanels.mainMenu,
+                        params: true
+                    }
                 }
             },
             setMoreLink: function setMoreLinkText(text){

@@ -369,11 +369,17 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-                out.background.remove();
                 delete out.background;
                 
-                out.imageSlider= mxBuilder.layout.settingsPanels.imageSlider.getPanel();
-                out.galleryImageList = mxBuilder.layout.settingsPanels.galleryImageList.getPanel({expand:true});
+                out.imageSlider = {
+                    panel: mxBuilder.layout.settingsPanels.imageSlider
+                };
+                out.galleryImageList = {
+                    panel: mxBuilder.layout.settingsPanels.galleryImageList,
+                    params: {
+                        expand: true
+                    }
+                };
                 
                 return out;
             },
