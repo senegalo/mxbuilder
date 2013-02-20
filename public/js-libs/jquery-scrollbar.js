@@ -101,23 +101,28 @@
                     
                     //creating the vertical scroll elements if required
                     if(settings.vertical){
-                        var vScrollbar = $('<div class="jquery-scrollbar-vertical"></div>').appendTo(element).on({
+                        var vScrollbar = $('<div class="jquery-scrollbar-vertical"></div>').appendTo(element);
+                        
+                        //on mousedown tell the mouse move to scroll on mouseup on the document clear that flag
+                        var vScrollbarIndicator = $('<div class="jquery-scrollbar-vertical-indicator"></div>').appendTo(vScrollbar).on({
                             mousedown: function(event){
-                                var element = $(this);
+                                var vScrollbar = $(this).parents(".jquery-scrollbar-vertical:first");
+                                var vScrollbarIndicatorPosition = $(this).position();
                                 var init = {
                                     init: true,
-                                    scrollbarPosition: vScrollbar.offset()
+                                    scrollbarPosition: vScrollbar.offset(),
+                                    cursorOffset: event.offsetY
                                 }
                                 init.scrollbarPosition.bottom = init.scrollbarPosition.top+vScrollbar.height();
                                 init.maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
-                                element.data("jquery-scrollbar-init",init);
+                                vScrollbar.data("jquery-scrollbar-init",init);
                                 event.preventDefault();
                             }
                         });
                         
                         //hooking the mousewheel events
                         element.on({
-                            mousewheel: function(event,delta,deltaX,deltaY){
+                            mousewheel: function mousewheel(event,delta,deltaX,deltaY){
                                 var vScrollbar = element.children(".jquery-scrollbar-vertical");
                                 var maxIndicatorTop = vScrollbar.height()-vScrollbarIndicator.height();
                                 var vScrollbarHandleTop = parseInt(vScrollbarIndicator.css("top").replace("px"),10);
@@ -143,10 +148,8 @@
                                 event.preventDefault();
                                 return false;
                             }
-                        })
+                        });
                         
-                        //on mousedown tell the mouse move to scroll on mouseup on the document clear that flag
-                        var vScrollbarIndicator = $('<div class="jquery-scrollbar-vertical-indicator"></div>').appendTo(vScrollbar);
                         //clearing the mousemove scroll flag
                         $(document).on({
                             mouseup: function(event){
@@ -157,7 +160,7 @@
                                 var scrollInitObj = vScrollbar.data("jquery-scrollbar-init");
                                 if(scrollInitObj && scrollInitObj.init === true){
                                     
-                                    var top = event.pageY-scrollInitObj.scrollbarPosition.top;
+                                    var top = event.pageY-scrollInitObj.scrollbarPosition.top-scrollInitObj.cursorOffset;
                                     
                                     top = top<0?0:top;
                                     top = top>scrollInitObj.maxIndicatorTop?scrollInitObj.maxIndicatorTop:top;
