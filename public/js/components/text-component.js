@@ -192,6 +192,11 @@
             getSettingsPanels: function(){
                 return {}
             },
+            nudgeComponent: function nudgeComponent(directionKey,shiftKey){
+                if(!this.isEditMode()){
+                    mxBuilder.Component.prototype.nudgeComponent.call(this,directionKey,shiftKey);
+                }
+            },
             cleanDeadLinks: function cleanDeadLinks(pageID){
                 this.element.find(".inline-links").each(function(){
                     var that = $(this);

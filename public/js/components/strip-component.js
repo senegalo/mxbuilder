@@ -20,29 +20,13 @@
     
             properties.element.on({
                 selected: function(){
-                    mxBuilder.activeStack.push(properties.element);
-                    //instance.resetSize();
-                    var before = instance.element.width();
-                    //instance.element.width(before-12);
-                    instance.element.css({
-                        width: before-10,
-                        left: instance.element.position().left + 4,
-                        backgroundPosition: "-4px 0"
-                    }).data("original-width",before);
-                    mxBuilder.selection.revalidateSelectionContainer();
+                    instance.resetSize();
                 },
                 deselected: function(){
-                    //instance.resetSize();
-                    instance.element.css({
-                        width: instance.element.data("original-width")-1,
-                        left: instance.element.position().left - 4,
-                        backgroundPosition: "0 0"
-                    })
-                    instance.element.width(instance.element.data("original-width")-1);
-                    mxBuilder.selection.revalidateSelectionContainer();
+                    instance.resetSize();
                 },
                 dblclick: function(){
-                    mxBuilder.components.getComponent(properties.element).openBackgroundStyleDialog();
+                    mxBuilder.menuManager.showTab("componentSettings");
                 }
             });
             
@@ -50,18 +34,21 @@
         }
         $.extend(mxBuilder.StripComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".strip-component-instance").remove(),
-            resetSize: function resetSize(){
+            resetSize: function resetSize(){                
                 this.element.css({
-                    width: $(document.body).outerWidth(),
+                    width: $(document.body).outerWidth(true),
                     left: -1*mxBuilder.layout.container.offset().left
                 });
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                
                 delete out.border;
-                
                 return out;
+            },
+            nudgeComponent: function nudgeComponent(keyCode,shift){
+                if(keyCode != 37 && keyCode != 39){
+                    mxBuilder.Component.prototype.nudgeComponent.call(this,keyCode,shift);
+                }
             }
         });
         

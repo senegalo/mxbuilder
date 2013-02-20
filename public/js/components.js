@@ -487,6 +487,38 @@
             this.resizable.handles = handles;
             this.element.resizable(this.resizable);            
         },
+        nudgeComponent: function nudgeComponent(directionKey,shiftKey){
+            var step = shiftKey ? 10 : 1;
+            var position = this.element.position();
+            var headerThreshold = mxBuilder.layout.header.height();
+            var bodyThreshold = headerThreshold+mxBuilder.layout.body.height();
+            var direction;
+              
+            if(directionKey%2 != 0){
+                direction = "left";
+                delete position.top;
+            } else {
+                direction = "top";
+                delete position.left;
+            }
+            
+            position[direction] = position[direction] + (directionKey-38 > 0 ?1:-1)*step; 
+                            
+            var threshold = this.element.height()/2 + position.top;
+                        
+            this.element.css(position);
+                        
+            if(this.container == "header" && headerThreshold < threshold){
+                this.setContainer("body");
+            } else if (this.container == "body"){
+                if(bodyThreshold < threshold){
+                    this.setContainer("footer");
+                } else if(headerThreshold > threshold){
+                    this.setContainer("header");
+                }
+            }
+                        
+        },
         defaultDraggableSettings: {
             cursor : "move",
             start: function start(){
@@ -504,20 +536,39 @@
                     }
                 }
                 
-                var hasStripComponent = false;
+                var restrictMovment = {
+                    x: false,
+                    y: false
+                };
+                
                 mxBuilder.selection.each(function(that){
-                    that.data("initial-position",that.position());
-                    var theComponent = mxBuilder.components.getComponent(that);
-                    if(theComponent && theComponent.type == "StripComponent"){
-                        hasStripComponent =  true;
+                    if(this.draggable && this.draggable.axis == "x"){
+                        restrictMovment.y = true;
                     } 
+                    if(this.draggable && this.draggable.axis == "y"){
+                        restrictMovment.x = true;
+                    }
+                    that.data("initial-position",that.position());
                 },true);
                 
-                if(hasStripComponent){
-                    element.data("movement-axis","y").draggable("option","axis","y");
-                } else {
-                    element.data("movement-axis",false).draggable("option","axis",false);
-                }
+                mxBuilder.selection.each(function(element){
+                    if(restrictMovment.x == false && restrictMovment.y == false){
+                        var restore;
+                        if(!this.draggable){
+                            restore = false;
+                        } else {
+                            restore = this.draggable.axis?this.draggable.axis:false;
+                        }
+                        element.draggable("option","axis", restore);
+                    } else if(restrictMovment.y) {
+                        element.draggable("option","axis","x");
+                    } else if(restrictMovment.x){
+                        element.draggable("option","axis","y");
+                    }
+                },true);
+                
+                mxBuilder.selection.getSelectionContainer().data("restrict-movment",restrictMovment);
+                
             },
             drag: function drag(event,ui){
                 var element = $(this);
@@ -530,10 +581,7 @@
                     top: initialPosition.top-currentPosition.top
                 }
                 
-                if(element.data("movement-axis") == "y"){
-                    element.css("left",initialPosition.left);
-                    mxBuilder.selection.revalidateSelectionContainer();
-                }
+                var restrict = mxBuilder.selection.getSelectionContainer().data("restrict-movment");
                         
                 mxBuilder.selection.each(function(currentSelectionComponent){
                     if(element.get(0) === currentSelectionComponent.get(0)){
@@ -541,10 +589,12 @@
                     }
                     var initialPosition = currentSelectionComponent.data("initial-position");
                     var newPosition = {};
-                    if(element.data("movement-axis") != "y"){ 
+                    if(!restrict.x){
                         newPosition.left = initialPosition.left - theOffset.left;
                     }
-                    newPosition.top =  initialPosition.top - theOffset.top;
+                    if(!restrict.y){
+                        newPosition.top =  initialPosition.top - theOffset.top;
+                    }
                     currentSelectionComponent.css(newPosition);
                 },true);
             },
@@ -647,37 +697,8 @@
             },
             keydown: function keydown(event){
                 if(event.keyCode >= 37 && event.keyCode <=40){
-                    var selectionCount = mxBuilder.selection.getSelectionCount();
-                    if(selectionCount == 1){
-                        var theSelectedComponent =  mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
-                        if(theSelectedComponent.type == "TextComponent" && theSelectedComponent.isEditMode()){
-                            return;
-                        }
-                    }
                     mxBuilder.selection.each(function(){
-                        var that = this.element;
-                        var step = event.shiftKey ? 10 : 1;
-                        var position = that.position();
-                        var headerThreshold = mxBuilder.layout.header.height();
-                        var bodyThreshold = headerThreshold+mxBuilder.layout.body.height();
-                        
-                        var direction = event.keyCode%2 !=0 ?"left":"top";
-                        position[direction] = position[direction] + (event.keyCode-38 > 0 ?1:-1)*step; 
-                            
-                        var threshold = that.height()/2 + position.top;
-                        
-                        that.css(position);
-                        
-                        if(this.container == "header" && headerThreshold < threshold){
-                            this.setContainer("body");
-                        } else if (this.container == "body"){
-                            if(bodyThreshold < threshold){
-                                this.setContainer("footer");
-                            } else if(headerThreshold > threshold){
-                                this.setContainer("header");
-                            }
-                        }
-                        
+                        this.nudgeComponent(event.keyCode, event.shiftKey);
                     });
                     mxBuilder.layout.revalidateLayout();
                     mxBuilder.selection.revalidateSelectionContainer();

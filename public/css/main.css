@@ -2,7 +2,7 @@ html {
     font-size: 12px;
     overflow-x: auto;
     font-family:Arial,Verdana,Sans-serif;
-    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 hr {
