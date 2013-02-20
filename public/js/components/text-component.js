@@ -45,6 +45,9 @@
                                 }
                             }).find(".content")
                             .attr("contenteditable","true")
+                            .css({
+                                "-webkit-nbsp-mode": "normal"
+                            })
                             .focus()
                             .get(0);
                         
