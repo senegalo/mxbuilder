@@ -89,22 +89,6 @@
                         }
                         if(mxBuilder.selection.getSelectionCount() > 1){
                             
-                            if(sameType && sameType == "ImageComponent"){
-                                ctx.addSubgroup({
-                                    label: "Transform to"
-                                }).addItem({
-                                    label: "Grid Gallery",
-                                    callback: function callback(){
-                                        mxBuilder.imageUtils.createGalleryFromSelected("ImageGridComponent");
-                                    }
-                                }).addItem({
-                                    label: "Slider Gallery",
-                                    callback: function callback(){
-                                        mxBuilder.imageUtils.createGalleryFromSelected("ImageSliderComponent");
-                                    }
-                                }).end()
-                            }
-                            
                             //Alignment Menu
                             ctx.addSubgroup({
                                 label: "Alignment"
