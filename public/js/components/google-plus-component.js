@@ -140,7 +140,7 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = $('<div>+1</div>')
+                    var theContent = $('<div><img src="public/images/gplus.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","GooglePlusComponent")
                     .appendTo(mxBuilder.layout.container);

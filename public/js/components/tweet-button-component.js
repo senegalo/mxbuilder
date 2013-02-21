@@ -124,7 +124,7 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = mxBuilder.TweetButtonComponent.prototype.template.clone()
+                    var theContent = $('<div><img src="public/images/tweet.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","TweetButtonComponent")
                     .appendTo(mxBuilder.layout.container);

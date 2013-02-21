@@ -36,13 +36,13 @@
         }
         $.extend(mxBuilder.YoutubeComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".youtube-component-instance").remove(),
-            videoID: "lwAqhThd_EQ",
+            videoID: "d-1xU0VfJ-g",
             autoplay: false,
             videoContainer: null,
             rebuild: function rebuild(){
                 this.videoContainer.empty()
                 .append('<iframe width="'+this.element.width()+'" height="'+this.element.height()
-                    +'" src="http://www.youtube.com/embed/'+this.videoID+(this.autoplay?"?autoplay=1":"")
+                    +'" src="http://www.youtube.com/embed/'+this.videoID+(this.autoplay?"?autoplay=1&wmode=transparent":"?wmode=transparent")
                     +'" frameborder="0" allowfullscreen></iframe>')
                 this.element.find(".overlay").height(this.element.height()-39);
                 mxBuilder.selection.revalidateSelectionContainer();
@@ -100,7 +100,7 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = mxBuilder.YoutubeComponent.prototype.template.clone()
+                    var theContent = $('<div><img src="public/images/youtube.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","YoutubeComponent")
                     .appendTo(mxBuilder.layout.container);

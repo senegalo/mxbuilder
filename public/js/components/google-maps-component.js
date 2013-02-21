@@ -53,10 +53,10 @@
         $.extend(mxBuilder.GoogleMapsComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".google-maps-component-instance").remove(),
             mapObj: null,
-            lon: 31.21258,
-            lat: 29.941099,
+            lon: 29.940842782096848,
+            lat: 31.212794260952904,
             mapType: null,
-            zoom: 12,
+            zoom: 17,
             editMode: false,
             overlay: null,
             buttonOn: "Finished Editing",
@@ -94,12 +94,14 @@
                 document.body.appendChild(script);  
             },
             ready: function ready(func){
-                if($("#google-maps-api").length == 0){
+                if(typeof google == "undefined"){
                     var instance = this;
                     $(document).one("googleMapsReady",function(){
                         func.call(instance);
                     });
-                    this.loadAPI();
+                    if($("#google-maps-api").length == 0){
+                        this.loadAPI();
+                    }
                 } else {
                     func.call(this);
                 }
@@ -211,11 +213,9 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = mxBuilder.GoogleMapsComponent.prototype.template.clone()
+                    var theContent = $('<div><img src="public/images/gmap.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","GoogleMapsComponent")
-                    .find(".map").append('<img src="public/images/maps-icon.png"/>')
-                    .end()
                     .appendTo(mxBuilder.layout.container);
                     return theContent;
                 }

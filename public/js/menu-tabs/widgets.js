@@ -54,6 +54,10 @@
                                 
             },
             addComponent: function addComponent(category,obj){
+                obj.draggableSettings.cursorAt = {
+                    left: 10,
+                    top: 10
+                };
                 for(var c in this.__widgets){
                     if(this.__widgets[c].title == category){
                         this.__widgets[c].components.push(obj);

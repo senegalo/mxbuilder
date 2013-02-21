@@ -135,7 +135,7 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = $('<div>Like</div>')
+                    var theContent = $('<div><img src="public/images/facebook.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","FBLikeComponent")
                     .appendTo(mxBuilder.layout.container);

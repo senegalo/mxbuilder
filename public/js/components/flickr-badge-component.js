@@ -159,7 +159,7 @@
             draggableSettings: {
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
-                    var theContent = mxBuilder.FlickrBadgeComponent.prototype.template.clone()
+                    var theContent = $('<div><img src="public/images/flickr-badge.png"/></div>')
                     .addClass("mx-helper")
                     .data("component","FlickrBadgeComponent")
                     .appendTo(mxBuilder.layout.container);

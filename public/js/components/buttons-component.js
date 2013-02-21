@@ -17,13 +17,7 @@
                 element: properties.element
             }]);
     
-            this.labelContainer = this.element.find(".label").css({
-                position: "absolute",
-                top: "50%",
-                width: "100%",
-                textAlign: "center",
-                display: "inline-block"
-            });
+            this.labelContainer = this.element.find(".label");
             
             this.setLabel(this.label);
     
@@ -81,6 +75,13 @@
             },
             init: function init(properties){
                 mxBuilder.Component.prototype.init.call(this,properties);
+                this.element.find(".label").css({
+                    position: "absolute",
+                    top: "50%",
+                    width: "100%",
+                    textAlign: "center",
+                    display: "inline-block"
+                });
             },
             getBorder: function getBorder(element){
                 return mxBuilder.Component.prototype.getBorder.call(this,element);
@@ -129,6 +130,16 @@
                 grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.ButtonsComponent.prototype.template.clone()
+                    .find(".label")
+                    .css({
+                        position: "absolute",
+                        top: "50%",
+                        width: "100%",
+                        textAlign: "center",
+                        display: "inline-block",
+                        marginTop: "-6px"
+                    })
+                    .end()
                     .addClass("mx-helper")
                     .data("component","ButtonsComponent")
                     .appendTo(mxBuilder.layout.container);
