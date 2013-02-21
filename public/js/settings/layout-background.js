@@ -43,7 +43,13 @@
                 controls.picker.customColorpicker().on({
                     pickerColorChanged: function pickerColorChanged(event,color){
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            color.a =  controls.opacitySlider.customSlider("value")/100;
+                            var sliderVal = controls.opacitySlider.customSlider("value");
+                            if(sliderVal == 0){
+                                sliderVal = 100;
+                                controls.opacitySlider.customSlider("value",100);
+                                controls.opacityValue.text("100%");
+                            }
+                            color.a =  sliderVal/100;
                             layoutPart.css({
                                 backgroundColor:color.toString()
                             });
@@ -119,10 +125,7 @@
                         controls.patterns.find(".selected").removeClass("selected");
                         element.addClass("selected");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            layoutPart.css({
-                                backgroundImage: element.data("flexly-pattern-index") == -1 ? 'none': 'url("public/images/patterns/pat'+(element.data("flexly-pattern-index")+1)+'.png")',
-                                backgroundRepeat: 'repeat'
-                            });
+                            backgroundSettings.applyValuesToSelection(controls);
                         }
                     }
                 });
@@ -188,13 +191,13 @@
                 }
                 if(values.backgroundSize){
                     if(values.backgroundSize == "auto" || values.backgroundSize == "100% 100%"){
-                        scale = 10;
+                        scale = 60;
                     } else {
                         var scale = values.backgroundSize.split(" ")[0].replace("%","");
                         try {
                             scale = parseInt(scale);
                         } catch(e){
-                            scale = 10;
+                            scale = 60;
                         }
                     }
                     controls.scaleSlider.customSlider("value",scale);

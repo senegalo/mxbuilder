@@ -165,13 +165,13 @@
                 }
                 if(values.backgroundSize){
                     if(values.backgroundSize == "auto" || values.backgroundSize == "100% 100%"){
-                        scale = 10;
+                        scale = 60;
                     } else {
                         var scale = values.backgroundSize.split(" ")[0].replace("%","");
                         try {
                             scale = parseInt(scale);
                         } catch(e){
-                            scale = 20;
+                            scale = 60;
                         }
                     }
                     controls.scaleSlider.customSlider("value",scale);
