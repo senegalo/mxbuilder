@@ -126,7 +126,11 @@
         ?>
 
     </head>
-    <body>
+    <body style="<?php
+                foreach ($background['body'] as $p => $v) {
+                    print $p . ":" . $v . ";";
+                }
+                ?>">
         <?php
         if (isset($background['bodyImage']['image'])):
             ?>
@@ -153,11 +157,7 @@
                 endif;
                 ?>
             </div>
-            <div id="body" style="<?php
-                foreach ($background['body'] as $p => $v) {
-                    print $p . ":" . $v . ";";
-                }
-                ?>height:<?php print $content_height; ?>px">
+            <div id="body" style="height:<?php print $content_height; ?>px">
             </div>
             <div id="footer"  style="position:relative;<?php
                  foreach ($background['footer'] as $p => $v) {
