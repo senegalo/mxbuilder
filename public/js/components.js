@@ -30,6 +30,14 @@
                 mousedown: function mousedown(event){
                     var ctx = mxBuilder.contextmenu.getMainCtx();
                     if(event.which == 3){
+                        
+                        if(mxBuilder.selection.getSelectionCount() == 0){
+                            mxBuilder.selection.addToSelection(obj.element);
+                        } else if(mxBuilder.selection.getSelectionCount() == 1 && !mxBuilder.selection.isSelected(obj.element)){
+                            mxBuilder.selection.clearSelection();
+                            mxBuilder.selection.addToSelection(obj.element);
+                        }
+                        
                         var sameType = mxBuilder.selection.isAllSelectedSameType();
                         
                         var showSettings = true;
@@ -51,12 +59,6 @@
                         if(mxBuilder.selection.getSelectionCount() < 2 || sameType){
                         
                             var theComponent = mxBuilder.components.getComponent(obj.element);
-                            if(mxBuilder.selection.getSelectionCount() == 0){
-                                mxBuilder.selection.addToSelection(obj.element);
-                            } else if(mxBuilder.selection.getSelectionCount() == 1 && !mxBuilder.selection.isSelected(obj.element)){
-                                mxBuilder.selection.clearSelection();
-                                mxBuilder.selection.addToSelection(obj.element);
-                            }
                             
                             //Activating Z-Index Manipulation context
                             if(obj.editableZIndex && mxBuilder.selection.getSelectionCount() < 2){              
@@ -211,7 +213,9 @@
                     grid: mxBuilder.properties.gridSize,
                     handles: handles,
                     start: function start(event,ui){
-                        mxBuilder.selection.clearSelection($(this));
+                        mxBuilder.selection.clearSelection({
+                            exclude: $(this)
+                        });
                         mxBuilder.layout.outline(mxBuilder.components.getComponent($(this)).container);
                     },
                     resize: function resize(event,ui){
@@ -238,7 +242,9 @@
                                 if(!mxBuilder.selection.isSelected(obj.element)){
                                     mxBuilder.selection.switchSelection(obj.element);
                                 } else if(mxBuilder.selection.getSelectionCount() > 1){
-                                    mxBuilder.selection.clearSelection(obj.element);
+                                    mxBuilder.selection.clearSelection({
+                                        exclude: obj.element
+                                    });
                                 }
                             
                             }
@@ -514,8 +520,7 @@
                         mxBuilder.selection.addToSelection(element);
                     } else {
                         if(!mxBuilder.selection.isSelected(element)){
-                            mxBuilder.selection.clearSelection();
-                            mxBuilder.selection.addToSelection(element);
+                            mxBuilder.selection.switchSelection(element);
                         }
                     }
                 }

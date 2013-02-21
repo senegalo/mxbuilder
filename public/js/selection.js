@@ -105,23 +105,25 @@
                 this.revalidateSelectionContainer();
             }
         },
-        clearSelection: function(exclude, muteGlobalEvent){
+        clearSelection: function(settings){
             var selection = this.getSelection();
-            if(exclude){
-                selection = selection.not(exclude);
+            if(settings && settings.exclude){
+                selection = selection.not(settings.exclude);
             }
             selection.each(function(){
                 mxBuilder.selection.removeFromSelection($(this),true,true); 
             });
             
-            if(muteGlobalEvent !== true){
+            if(!settings || settings.muteGlobalEvent !== true){
                 $(document).trigger("selectionChanged");
             }
             
             this.revalidateSelectionContainer();
         },
         switchSelection: function(element){
-            this.clearSelection(true);
+            this.clearSelection({
+                muteGlobalEvent: true
+            });
             this.addToSelection(element);
         },
         toggle: function(element){

@@ -7,84 +7,7 @@
             self.init(properties);
             
             this.element.on({
-                mousedown: function mousedown(event){
-                    if(event.which === 3 && mxBuilder.selection.isAllSelectedSameType()){
-                        var resizeMethod = {};
-                        mxBuilder.selection.getSelection().each(function(){
-                            resizeMethod[mxBuilder.components.getComponent(this).getResizeMethod()] = true;
-                        });
-                        resizeMethod = Object.keys(resizeMethod);
-                        resizeMethod = resizeMethod.length == 1 ? resizeMethod[0] : false;
-                        
-                        var ctx = mxBuilder.contextmenu.allowPropagation().getMainCtx().addSubgroup({
-                            label: "Resize Method"
-                        }).addItem({
-                            label: "Stretch",
-                            checked: resizeMethod == "stretch",
-                            callback: function(){
-                                mxBuilder.selection.each(function(element){
-                                    this.setResizeMethod("stretch");
-                                });
-                            }
-                        }).addItem({
-                            label: "Lock Ratio",
-                            checked: resizeMethod == "ratio",
-                            callback: function(){
-                                mxBuilder.selection.each(function(){
-                                    this.setResizeMethod("ratio");
-                                });
-                            }
-                        }).addItem({
-                            label: "Crop",
-                            checked: resizeMethod == "crop",
-                            callback: function(){
-                                mxBuilder.selection.each(function(){
-                                    this.setResizeMethod("crop");
-                                });
-                            }
-                        }).end()
-                        .addItem({
-                            label: "Change image title...",
-                            callback: function(){
-                                mxBuilder.dialogs.imageComponentChangeTitle.show(mxBuilder.selection.getSelection());
-                            }
-                        }).addItem({
-                            label: "Link To...",
-                            callback: function(){
-                                var currentLinkObj = self.getLinkObj();
-                                mxBuilder.dialogs.linkTo.show({
-                                    link: function(urlObj){
-                                        mxBuilder.selection.each(function(){
-                                            this.setLinkObj(urlObj);
-                                        });
-                                    },
-                                    unlink: function(){
-                                        mxBuilder.selection.each(function(){
-                                            this.setLinkObj(null);
-                                        });
-                                    },
-                                    imageBox: true,
-                                    urlObj: currentLinkObj
-                                });
-                            }
-                        });
-                        if(mxBuilder.selection.getSelectionCount() > 1){
-                            ctx.addSubgroup({
-                                label: "Transform to"
-                            }).addItem({
-                                label: "Grid Gallery",
-                                callback: function callback(){
-                                    mxBuilder.imageUtils.createGalleryFromSelected("ImageGridComponent");
-                                }
-                            }).addItem({
-                                label: "Slider Gallery",
-                                callback: function callback(){
-                                    mxBuilder.imageUtils.createGalleryFromSelected("ImageSliderComponent");
-                                }
-                            }).end()
-                        }                        
-                    }
-                }
+                
             });
         
             mxBuilder.Component.apply(this,[{
@@ -179,6 +102,85 @@
                     var size = mxBuilder.imageUtils.getImageSource(self.getImageSize(), self.element);
                     self.setImageSize(size, wImg, hImg);
                 
+                },
+                mousedown: function mousedown(event){
+                    if(event.which === 3 && mxBuilder.selection.isAllSelectedSameType()){
+                        var resizeMethod = {};
+                        mxBuilder.selection.getSelection().each(function(){
+                            resizeMethod[mxBuilder.components.getComponent(this).getResizeMethod()] = true;
+                        });
+                        resizeMethod = Object.keys(resizeMethod);
+                        resizeMethod = resizeMethod.length == 1 ? resizeMethod[0] : false;
+                        
+                        var ctx = mxBuilder.contextmenu.allowPropagation().getMainCtx().addSubgroup({
+                            label: "Resize Method"
+                        }).addItem({
+                            label: "Stretch",
+                            checked: resizeMethod == "stretch",
+                            callback: function(){
+                                mxBuilder.selection.each(function(element){
+                                    this.setResizeMethod("stretch");
+                                });
+                            }
+                        }).addItem({
+                            label: "Lock Ratio",
+                            checked: resizeMethod == "ratio",
+                            callback: function(){
+                                mxBuilder.selection.each(function(){
+                                    this.setResizeMethod("ratio");
+                                });
+                            }
+                        }).addItem({
+                            label: "Crop",
+                            checked: resizeMethod == "crop",
+                            callback: function(){
+                                mxBuilder.selection.each(function(){
+                                    this.setResizeMethod("crop");
+                                });
+                            }
+                        }).end()
+                        .addItem({
+                            label: "Change image title...",
+                            callback: function(){
+                                mxBuilder.dialogs.imageComponentChangeTitle.show(mxBuilder.selection.getSelection());
+                            }
+                        }).addItem({
+                            label: "Link To...",
+                            callback: function(){
+                                var currentLinkObj = self.getLinkObj();
+                                mxBuilder.dialogs.linkTo.show({
+                                    link: function(urlObj){
+                                        mxBuilder.selection.each(function(){
+                                            this.setLinkObj(urlObj);
+                                        });
+                                    },
+                                    unlink: function(){
+                                        mxBuilder.selection.each(function(){
+                                            this.setLinkObj(null);
+                                        });
+                                    },
+                                    imageBox: true,
+                                    urlObj: currentLinkObj
+                                });
+                            }
+                        });
+                        if(mxBuilder.selection.getSelectionCount() > 1){
+                            ctx.addSubgroup({
+                                label: "Transform to"
+                            }).addItem({
+                                label: "Grid Gallery",
+                                callback: function callback(){
+                                    mxBuilder.imageUtils.createGalleryFromSelected("ImageGridComponent");
+                                }
+                            }).addItem({
+                                label: "Slider Gallery",
+                                callback: function callback(){
+                                    mxBuilder.imageUtils.createGalleryFromSelected("ImageSliderComponent");
+                                }
+                            }).end()
+                        }                        
+                        ctx.stopPropagation();
+                    }
                 }
             });
             
