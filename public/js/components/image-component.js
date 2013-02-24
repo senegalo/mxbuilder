@@ -8,7 +8,7 @@
             
             this.element.on({
                 
-            });
+                });
         
             mxBuilder.Component.apply(this,[{
                 type: "ImageComponent",
@@ -332,7 +332,18 @@
                 
                 theImage.outerWidth(this.element.width());
                 theImage.outerHeight(this.element.height());
+                this.revalidateShadow();
                 mxBuilder.selection.revalidateSelectionContainer();
+            },
+            applyShadow: function applyShadow(id,element){
+                var theImage = this.getResizeMethod() == "crop" ? this.theImageContainer : this.theImage
+                
+                mxBuilder.shadowManager.applyShadow({
+                    id: id,
+                    element: element,
+                    leftRadius: theImage.css("borderBottomLeftRadius"),
+                    rightRadius: theImage.css("borderBottomRightRadius")
+                });
             },
             cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj,pageID){
                 if(saveObj.data.linkObj && saveObj.data.linkObj.type == "page" && saveObj.data.linkobj.pageID == pageID){
@@ -396,6 +407,7 @@
                         this.setBorder(properties.data.border);
                     }
                 }
+                this.revalidateShadow();
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this)

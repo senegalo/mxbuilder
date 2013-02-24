@@ -219,6 +219,7 @@
                         mxBuilder.layout.outline(mxBuilder.components.getComponent($(this)).container);
                     },
                     resize: function resize(event,ui){
+                        mxBuilder.components.getComponent($(this)).revalidateShadow();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     stop: function(){
@@ -356,6 +357,7 @@
             out.data.type = this.type;
             out.data.page = this.page;
             out.data.trashed = this.trashed;
+            out.data.shadow = this.shadow;
             return out;
         },
         publish: function publish(){
@@ -380,6 +382,7 @@
             }
             $.extend(this,properties.data);
             this.element = properties.element;
+            this.revalidateShadow();
         },
         trashComponent: function trashComponent(){
             this.trashed = true;
@@ -415,6 +418,7 @@
         },
         setBorder: function setBorder(obj){
             this.element.css(obj);
+            this.revalidateShadow();
         },
         getBackground: function getBackground(element){
             element = element ? element : this.element;
@@ -430,6 +434,9 @@
         setBackground: function setBackground(obj){
             this.element.css(obj);
         },
+        getSettings: function getSettings(){
+            return {};
+        },
         getSettingsPanels: function getSettingsPanels(){
             var out = {};
             out.border = {
@@ -438,6 +445,9 @@
             out.background = {
                 panel: mxBuilder.layout.settingsPanels.background
             };
+            out.shadow = {
+                panel: mxBuilder.layout.settingsPanels.shadow
+            }
             
             return out;
         },
@@ -508,6 +518,30 @@
                 }
             }
                         
+        },
+        setShadow: function setShadow(id){
+            var shadow = this.element.find(".shadow");
+            if(shadow.length == 0){
+                shadow = $('<div class="shadow"/>').appendTo(this.element);
+            }
+            this.applyShadow(id,shadow);
+            this.shadow = id;
+            mxBuilder.selection.revalidateSelectionContainer();
+        },
+        applyShadow: function applyShadow(id, element){
+            mxBuilder.shadowManager.applyShadow({
+                id: id,
+                element: element
+            });
+        },
+        revalidateShadow: function revalidateShadow(){
+            if(this.shadow){
+                this.setShadow(this.shadow);
+            }
+        },
+        removeShadow: function removeShadow(){
+            delete this.shadow;
+            this.element.find(".shadow").remove();
         },
         defaultDraggableSettings: {
             cursor : "move",

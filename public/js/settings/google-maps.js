@@ -11,7 +11,7 @@
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
                 //change settings panel title
-                thePanel.find(".flexly-collapsable-title").text("New Settings Panel");
+                thePanel.find(".flexly-collapsable-title").text("Map Settings");
                 
                 var theInstance = this._template.clone();
                 

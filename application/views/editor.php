@@ -40,6 +40,8 @@
         <link rel="stylesheet" href="public/css/settings-common.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/gallery-image-list-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/google-maps.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/shadow-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/shadow.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -122,6 +124,7 @@
         <script type="text/javascript" src="public/js/layout-settings.js"></script>
         <script type="text/javascript" src="public/js/clipboard.js"></script>
         <script type="text/javascript" src="public/js/image-utils.js"></script>
+        <script type="text/javascript" src="public/js/shadow-manager.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -173,6 +176,7 @@
         <script type="text/javascript" src="public/js/settings/gallery-image-list.js"></script>
         <script type="text/javascript" src="public/js/settings/image-grid.js"></script>
         <script type="text/javascript" src="public/js/settings/google-maps.js"></script>
+        <script type="text/javascript" src="public/js/settings/shadow.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1115,7 +1119,13 @@
                 </div>
             </div>
 
+            <div class="shadow-settings">                
+                <div class="shadow-container">
+                    <div class="shadow-demo-box">
+                        <div class="shadow"></div>
+                    </div>
+                </div>                
+            </div>
         </div>
-
     </body>
 </html>

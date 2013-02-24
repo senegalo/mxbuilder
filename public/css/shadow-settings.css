@@ -1,0 +1,24 @@
+
+.shadow-settings .shadow-demo-box {
+    width: 210px;
+    height:50px;
+    line-height: 50px;
+    font-weight: bold;
+    border: 0px solid black;
+    position:relative;
+    background-color:grey;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.shadow-settings .shadow-container {
+    height: 250px;
+    width: 210px;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.shadow-settings .shadow-container .shadow-demo-box.selected {
+    background-color: #F15A24;
+}
