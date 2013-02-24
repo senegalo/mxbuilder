@@ -279,7 +279,7 @@
             },
             applyToSelection: function applyToSelection(controls,values){
                 if(typeof values === "undefined"){
-                    var theList = []
+                    values = [];
                     controls.listContainer.find(".list-item").each(function(){
                         var theItem = $(this);
                         var imgID = theItem.data("imgID");
@@ -297,12 +297,12 @@
                         } else if(theListObj.link.type == "page"){
                             theListObj.link.page = theItem.find("#linkto-pages-"+imgID).val();
                         }
-                        theList.push(theListObj);
+                        values.push(theListObj);
                     });
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                    this.setImageList(theList);
+                    this.setImageList(values);
                     this.rebuild();
                     this.revalidate();
                 });
