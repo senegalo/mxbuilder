@@ -35,11 +35,18 @@
                             var settings = element.data("slider-settings");
                             var handlePosition = theHandle.position();
                             var percentage = handlePosition.left/(elementWidth-theHandle.outerWidth());
-                            settings.value = Math.round((settings.max-settings.min)*percentage+settings.min);
-                            element.data("slider-settings",settings);
-                            settings.slide.call(element,event,{
-                                value: settings.value
-                            });
+                            
+                            var value = Math.round((settings.max-settings.min)*percentage+settings.min);
+                            
+                            if(value != settings.value){
+                                settings.value = value;
+                                element.data("slider-settings",settings).trigger("slide",{
+                                    value:settings.value
+                                });
+                                settings.slide.call(element,event,{
+                                    value: settings.value
+                                });
+                            }
                         }
                     });
                     
@@ -55,7 +62,7 @@
                         var percentage;
                         var settings = element.data("slider-settings");
                         percentage = value[0]/settings.max;
-                        theHandle.css("left",percentage*(element.width()-theHandle.outerWidth())); 
+                        theHandle.css("left",Math.round(percentage*(element.width()-theHandle.outerWidth()))); 
                         settings.value = value[0];
                         element.data("slider-settings",settings);
                     });

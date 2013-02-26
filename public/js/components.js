@@ -280,6 +280,7 @@
     mxBuilder.Component.prototype = {
         trashed: false,
         hasSettings: true,
+        _cachedStates: null,
         setContainer: function setContainer(container){
             this.container = container;
             this.element.appendTo(mxBuilder.layout[container]);
@@ -372,6 +373,7 @@
             };
         },
         init: function init(properties){
+            this._cachedStates = [];
             if(typeof properties.element == "undefined"){
                 if(properties.data.container == "footer"){
                     properties.css.top = mxBuilder.layout.footer.position().top+properties.css.top;
@@ -541,6 +543,23 @@
         removeShadow: function removeShadow(){
             delete this.shadow;
             this.element.find(".shadow").remove();
+        },
+        cacheState: function cacheState(){
+            this._cachedStates.push(this.save());
+        },
+        revertToLastState: function revertToLastState(){
+            var state = this._cachedStates.splice(0,1);
+            if(state.length > 0){
+                var wasSelected = mxBuilder.selection.isSelected(this.element);
+                if(wasSelected){
+                    mxBuilder.selection.removeFromSelection(this.element,true,true);
+                }
+                this.destroy();
+                var newInstance = mxBuilder.components.addComponent(state[0]);
+                if(wasSelected){
+                    mxBuilder.selection.addToSelection(newInstance.element, true);
+                }
+            }
         },
         defaultDraggableSettings: {
             cursor : "move",

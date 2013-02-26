@@ -1,199 +1,150 @@
 (function($){
-    
     $(function(){
         mxBuilder.layout.settingsPanels.border = {
+            //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-component-border-settings").remove(),
             getPanel: function(expand){
-                
-                var borderSettings = this;
-                var currentInstance = this._template.clone();
-                
+                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
+                var border = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
-                thePanel.find(".flexly-collapsable-title")
-                .text("Border")
-                .end();
                 
+                //change settings panel title
+                thePanel.find(".flexly-collapsable-title").text("Border Settings");
+                
+                var theInstance = this._template.clone();
+                
+                //fill in all the controls 
                 var controls = {
-                    widthSlider: currentInstance.find(".border-width-slider"),
-                    widthValue: currentInstance.find(".border-width-value"),
-                    simulator: currentInstance.find(".border-radius-simulator"),
-                    radiusValue: currentInstance.find(".border-radius-value"),
-                    picker: currentInstance.find(".picker")
-                }
-                controls.simulatorSliderTopLeft = controls.simulator.parent().find(".border-radius-slider-t-l");
+                    widthSlider: theInstance.find(".border-width-slider"),
+                    widthValue: theInstance.find(".border-width-value"),
+                    simulator: theInstance.find(".border-radius-simulator"),
+                    radiusValue: theInstance.find(".border-radius-value"),
+                    picker: theInstance.find(".picker"),
+                    symetricCheckbox: theInstance.find("#flexly-component-border-radius-sym")
+                };
+                controls.lastChangedRadiusSlider = controls.simulatorSliderTopLeft = controls.simulator.parent().find(".border-radius-slider-t-l");
                 controls.simulatorSliderTopRight = controls.simulator.parent().find(".border-radius-slider-t-r");
                 controls.simulatorSliderBottomLeft = controls.simulator.parent().find(".border-radius-slider-b-l");
                 controls.simulatorSliderBottomRight = controls.simulator.parent().find(".border-radius-slider-b-r");
                 
-                controls.picker.customColorpicker().on({
-                    pickerColorChanged: function pickerColorChanged(event,color){
-                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                this.setBorder({
-                                    borderColor: color.toString(),
-                                    borderStyle: "solid"
-                                });
-                            });
-                        } 
-                    }
+                
+                
+                //Configure the controls here
+                controls.picker.data("change-monitor",false).customColorpicker();
+                controls.symetricCheckbox.checkbox();
+                controls.simulatorSliderTopLeft.data("change-monitor",false).customSlider({
+                    max: 50,
+                    min: 0
+                });
+                controls.simulatorSliderBottomLeft.data("change-monitor",false).customSlider({
+                    max: 50,
+                    min: 0
+                });
+                controls.simulatorSliderTopRight.data("change-monitor",false).width(50).customSlider({
+                    max: 50,
+                    min: 0,
+                    value: 50
+                });
+                controls.simulatorSliderBottomRight.data("change-monitor",false).width(50).customSlider({
+                    max: 50,
+                    min: 0,
+                    value: 50
+                });
+                controls.widthSlider.data("change-monitor",false).customSlider({
+                    max: 50,
+                    min: 0
                 });
                 
-                //Simulator checkbox
-                currentInstance.find("#flexly-component-border-radius-sym").checkbox().on({
-                    change: function change(){
-                        controls.symmetricRadius = $(this).is(":checked");
-                        if(controls.symmetricRadius){
-                            borderSettings.setSimRadius(controls, "topLeft", controls.simulatorSliderTopLeft.customSlider("value"));
+                this.applyToSelectionOn(controls, "picker", "pickerColorChanged");
+                this.applyToSelectionOn(controls, "symetricCheckbox", "change", function(){
+                    controls.symmetricRadius = $(this).is(":checked");
+                    if(controls.symmetricRadius){
+                        var theValue = controls.simulatorSliderTopLeft.customSlider("value");
+                        border.setSimRadius(controls, "topLeft", theValue);
+                        controls.radiusValue.text(theValue + " Pixels");
+                    }
+                });
+                this.applyToSelectionOn(controls, "simulatorSliderTopLeft", "slide", function(event,ui){
+                    controls.lastChangedRadiusSlider = $(this);
+                    border.setSimRadius(controls, "topLeft",ui.value);
+                    controls.radiusValue.text(ui.value+" Pixels");
+                });
+                this.applyToSelectionOn(controls, "simulatorSliderBottomLeft", "slide", function(event,ui){
+                    controls.lastChangedRadiusSlider = $(this);
+                    border.setSimRadius(controls, "bottomLeft",ui.value);
+                    controls.radiusValue.text(ui.value+" Pixels");
+                });
+                this.applyToSelectionOn(controls, "simulatorSliderTopRight", "slide", function(event,ui){
+                    controls.lastChangedRadiusSlider = $(this);
+                    ui.value = 50-ui.value;
+                    border.setSimRadius(controls, "topRight",ui.value);
+                    controls.radiusValue.text(ui.value+" Pixels");
+                });
+                this.applyToSelectionOn(controls, "simulatorSliderBottomRight", "slide", function(event,ui){
+                    controls.lastChangedRadiusSlider = $(this);
+                    ui.value = 50-ui.value;
+                    border.setSimRadius(controls, "bottomRight",ui.value);
+                    controls.radiusValue.text(ui.value+" Pixels");
+                });
+                this.applyToSelectionOn(controls, "widthSlider", "slide");                
+                
+                
+                var originalSettings = {};
+                
+                //define component properties to add to the original settings object
+                var properties = [
+                "borderWidth",
+                "borderStyle",
+                "borderColor",
+                "borderTopLeftRadius",
+                "borderTopRightRadius",
+                "borderBottomLeftRadius",
+                "borderBottomRightRadius"];
+                
+                var firstPass = true;
+                mxBuilder.selection.each(function(){
+                    this.cacheState();
+                    var theSettings = this.getBorder();
+                    for(var p in properties){
+                        if(firstPass){
+                            originalSettings[properties[p]] = theSettings[properties[p]];
+                        }
+                        var data = theSettings[properties[p]];
+                        if (originalSettings[properties[p]] !== data){
+                            originalSettings[properties[p]] = false;
                         }
                     }
-                });
-                //Radius Sliders
-                //top left
-                controls.simulatorSliderTopLeft.customSlider({
-                    max: 50,
-                    min: 0,
-                    slide: function slide(event,ui){
-                        borderSettings.setSimRadius(controls, "topLeft",ui.value);
-                        controls.radiusValue.text(ui.value+" Pixels");
-                    }
-                });
-                //bottom left
-                controls.simulatorSliderBottomLeft.customSlider({
-                    max: 50,
-                    min: 0,
-                    slide: function slide(event,ui){
-                        borderSettings.setSimRadius(controls, "bottomLeft",ui.value);
-                        controls.radiusValue.text(ui.value+" Pixels");
-                    }
-                });
-                //top right
-                controls.simulatorSliderTopRight.width(50).customSlider({
-                    max: 50,
-                    min: 0,
-                    value: 50,
-                    slide: function slide(event,ui){
-                        ui.value = 50-ui.value;
-                        borderSettings.setSimRadius(controls,"topRight",ui.value);
-                        controls.radiusValue.text(ui.value+" Pixels");
-                    }
-                });
-                //bottom right
-                controls.simulatorSliderBottomRight.width(50).customSlider({
-                    max: 50,
-                    min: 0,
-                    value: 50,
-                    slide: function slide(event,ui){
-                        ui.value = 50-ui.value;
-                        borderSettings.setSimRadius(controls,"bottomRight",ui.value);
-                        controls.radiusValue.text(ui.value+" Pixels");
-                    }
+                    firstPass = false;
                 });
                 
-                
-                //Width Slider
-                controls.widthSlider.customSlider({
-                    max: 50,
-                    min: 0,
-                    slide: function slide(event,ui){
-                        controls.widthValue.text(ui.value+" Pixels");
-                        if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-//                            mxBuilder.selection.each(function(){
-//                                this.setBorder({
-//                                    borderWidth:ui.value+"px",
-//                                    borderStyle: "solid"
-//                                });
-//                            });
-                            borderSettings.applyValuesToSelection(controls);
-                            mxBuilder.selection.revalidateSelectionContainer();
-                        }
-                    }
-                });
+                this.setValues(controls,originalSettings);
                 
                 thePanel.on({
                     previewEnabled: function(){
-                        borderSettings.applyValuesToSelection(controls);
+                        border.applyToSelection(controls);
+                        mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function(){
-                        borderSettings.applyValuesToSelection(controls);
+                        border.applyToSelection(controls);
                         mxBuilder.menuManager.closeTab();
+                        mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        mxBuilder.selection.each(function(){
-                            this.setBorder(originalSettings);
-                        });
+                        border.revertToOriginalState();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        mxBuilder.selection.each(function(){
-                            this.setBorder(originalSettings);
-                        });
+                        border.revertToOriginalState();
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
-                })
+                });                
                 
-                thePanel.find(".flexly-collapsable-content")
-                .append(currentInstance);
-                
-                //Read the selection values and preset it 
-                var originalSettings = mxBuilder.layout.utils.readSelectionStyles(["border"]);
-                this.setValues(controls,originalSettings);
-                
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setSimRadius: function(controls,pos,val){
-                var cssRule;
-                if(controls.symmetricRadius){
-                    controls.simulator.css("border-radius",val);
-                    controls.simulator.parent().find(".border-radius-slider-l")
-                    .customSlider("value",val)
-                    .end()
-                    .find(".border-radius-slider-r")
-                    .customSlider("value",50-val);
-                    if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                        cssRule = {
-                            borderRadius:val+"px",
-                            borderStyle: "solid"
-                        }
-                    }
-                } else {
-                    controls.simulator.css('border'+pos.uppercaseFirst()+'Radius',val);
-                    cssRule = {
-                        borderStyle: "solid"
-                    }
-                    cssRule['border'+pos.uppercaseFirst()+'Radius'] = val;
-                }
-                if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
-                    mxBuilder.selection.each(function(){
-                        this.setBorder(cssRule);
-                    });
-                }
-            },
-            applyValuesToSelection: function(controls){
-                mxBuilder.selection.each(function(){
-                    var cssRules = {
-                        borderColor: controls.picker.customColorpicker("value").toString(),
-                        borderWidth: controls.widthSlider.customSlider("value")
-                    }
-                    if(controls.symmetricRadius){
-                        cssRules.borderRadius = controls.simulatorSliderTopLeft.customSlider("value");
-                    } else {
-                        var corners = ["TopLeft","BottomLeft","BottomRight","TopRight"];
-                        for(var c in corners){
-                            var borderRadius =  controls['simulatorSlider'+corners[c]].customSlider("value");
-                            if(c > 1){
-                                borderRadius = 50 - borderRadius;
-                            }
-                            cssRules['border'+corners[c]+'Radius'] = borderRadius;
-                        }
-                    }
-                    this.setBorder(cssRules);
-                });
-                
-                mxBuilder.selection.revalidateSelectionContainer();
-                
-            },
-            setValues: function(controls,values){
+            setValues: function(controls, values){    
+                //implement the setValue function
                 if(values.borderColor){
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.borderColor);
                     controls.picker.customColorpicker("value",colorObj);
@@ -211,9 +162,76 @@
                         this.setSimRadius(controls,corners[c], values["border"+corners[c]+"Radius"]);
                         controls["simulatorSlider"+corners[c]].customSlider("value",corners[c].match(/.*Right/)?50-values["border"+corners[c]+"Radius"]:values["border"+corners[c]+"Radius"]);
                     }
+                }  
+            },
+            setSimRadius: function(controls,pos,val){
+                if(controls.symmetricRadius){
+                    controls.simulator.css("border-radius",val);
+                    controls.simulator.parent().find(".border-radius-slider-l")
+                    .customSlider("value",val)
+                    .end()
+                    .find(".border-radius-slider-r")
+                    .customSlider("value",50-val);
+                } else {
+                    controls.simulator.css('border'+pos.uppercaseFirst()+'Radius',val);
                 }
+            },
+            applyToSelection: function applyToSelection(controls,values){
+                if(typeof values === "undefined"){
+                    //if no values passed how to do we get the values ?
+                    values = {
+                        borderStyle: "solid"
+                    };
+                    
+                    if(controls.widthSlider.data("change-monitor")){
+                        values.borderWidth = controls.widthSlider.customSlider("value");
+                    }
+                    if(controls.picker.data("change-monitor")){
+                        values.borderColor = controls.picker.customColorpicker("value").toString();
+                    }
+                    
+                    var val;
+                    if(controls.symmetricRadius){
+                        //yes this is intentional so it wont' go to the else statement
+                        if(controls.lastChangedRadiusSlider.data("change-monitor")){
+                            val = controls.lastChangedRadiusSlider.customSlider("value");   
+                            values["borderRadius"] = controls.lastChangedRadiusSlider.hasClass("border-radius-slider-r")?50-val:val;
+                        }
+                    } else {
+                        var corners = ["TopLeft","TopRight","BottomLeft","BottomRight"];
+                        for(var c in corners){
+                            if(controls["simulatorSlider"+corners[c]].data("change-monitor")){
+                                val = controls["simulatorSlider"+corners[c]].customSlider("value");   
+                                values["border"+corners[c]+"Radius"] = corners[c].match(/.*Right/)?50-val:val;
+                            }
+                        }
+                    }
+                }
+                
+                mxBuilder.selection.each(function(){
+                    //apply the values to the selection
+                    this.setBorder(values);
+                });
+                mxBuilder.selection.revalidateSelectionContainer();
+            },
+            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+                var border = this;
+                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
+                controls[controlKey].on(event,function(){
+                    controls[controlKey].data("change-monitor",true);
+                    if(settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        border.applyToSelection(controls);
+                    }
+                });
+            },
+            revertToOriginalState: function revertToOriginalState(){
+                mxBuilder.selection.each(function(){
+                    this.revertToLastState();
+                });
             }
         }
     });
-    
-}(jQuery));
+}(jQuery))
