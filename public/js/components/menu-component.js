@@ -253,7 +253,6 @@
             icon: "flexly-icon-box-component",
             title: "Main Menu",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     return $('<div style="width: 400px;height:30px;background-color:#fff;border:1px solid black;"/>').addClass("mx-helper")
                     .data("component","MenuComponent")

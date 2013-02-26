@@ -105,12 +105,9 @@
         return randomstring;
     }    
     
-    
-    mxBuilder.properties = {
-        gridSize: [5,5]
-    }
-    
     mxBuilder.dialogs = {};
+    
+    mxBuilder.systemEvents = {};
     
     /**
      * JQUERY UI RESIZABLE ASPECTRATIO PATCH

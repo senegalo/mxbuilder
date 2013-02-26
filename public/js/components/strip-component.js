@@ -68,7 +68,6 @@
             icon: "flexly-icon-strip-component",
             title: "Horizontal Strip",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.StripComponent.prototype.template.clone()
                     .addClass("mx-helper")

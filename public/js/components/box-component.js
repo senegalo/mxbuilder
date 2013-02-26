@@ -32,7 +32,6 @@
             icon: "flexly-icon-box-component",
             title: "Layout Box",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.BoxComponent.prototype.template.clone()
                     .addClass("mx-helper")

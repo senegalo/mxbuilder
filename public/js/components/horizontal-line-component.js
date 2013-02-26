@@ -36,7 +36,6 @@
         //Adding the whole thing to the menu
     
         $('<div class="hline-component menu-item mx-helper" style="cursor:move;">Horizontal line</div>').draggable({
-            grid: mxBuilder.properties.gridSize,
             helper: function(event){
                 var theContent = mxBuilder.HorizontalLineComponent.prototype.template.clone()
                 .css("zIndex",mxBuilder.config.newComponentHelperZIndex)

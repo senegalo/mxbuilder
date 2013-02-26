@@ -197,7 +197,8 @@
         layoutFooter: null,
         menu: null,
         templates: null,
-        settingsPanels: {}
+        settingsPanels: {},
+        globalSettingsPanels: {}
     } 
     
     $(function(){

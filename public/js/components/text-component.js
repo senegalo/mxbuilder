@@ -224,7 +224,6 @@
             icon: "flexly-icon-text-paragraph-component",
             title: "Paragraph",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.TextComponent.prototype.template.clone()
                     .addClass("mx-helper")
@@ -239,7 +238,6 @@
             icon: "flexly-icon-text-header-component",
             title: "Header Text",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.TextComponent.prototype.template.clone()
                     .addClass("mx-helper")

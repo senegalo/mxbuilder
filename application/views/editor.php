@@ -42,6 +42,7 @@
         <link rel="stylesheet" href="public/css/google-maps.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/shadow-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/shadow.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/global-settings.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -125,6 +126,7 @@
         <script type="text/javascript" src="public/js/clipboard.js"></script>
         <script type="text/javascript" src="public/js/image-utils.js"></script>
         <script type="text/javascript" src="public/js/shadow-manager.js"></script>
+        <script type="text/javascript" src="public/js/settings-manager.js"></script>
 
         <!--Loading Menu Tabs-->
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
@@ -136,6 +138,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/widgets.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/components-settings.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/themes.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/settings.js"></script>
 
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
@@ -157,6 +160,9 @@
         <script type="text/javascript" src="public/js/components/image-slider-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-grid-component.js"></script>
         <script type="text/javascript" src="public/js/components/google-maps-component.js"></script>
+
+        <!-- Loading Global Settings Panels -->
+        <script type="text/javascript" src="public/js/global-settings/snap.js"></script>
 
         <!-- Loading Settings Panels -->
         <script type="text/javascript" src="public/js/settings/border.js"></script>
@@ -1126,6 +1132,18 @@
                     </div>
                 </div>                
             </div>
+
+            <div class="flexly-menu-settings-tab form">
+                <div class="spacer"></div>
+            </div>
+
+            <div class="snap-global-settings">
+                <div>
+                    <input type="checkbox" id="snap-objects"/>
+                    <label for="snap-objects" class="settings-title">Snap to Objects</label>                
+                </div>
+            </div>
+
         </div>
     </body>
 </html>

@@ -24,7 +24,7 @@
                 var componentSettings = this;
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
-                mxBuilder.menuManager.tabTitle.text("Settings");
+                mxBuilder.menuManager.tabTitle.text("Component"+(mxBuilder.selection.getSelectionCount()>1?"s":"")+" Settings");
                 
                 var theContent = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 

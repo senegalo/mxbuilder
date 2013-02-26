@@ -138,7 +138,6 @@
             icon: "flexly-icon-box-component",
             title: "Google Plus Button",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = $('<div><img src="public/images/gplus.png"/></div>')
                     .addClass("mx-helper")

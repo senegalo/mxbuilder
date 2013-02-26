@@ -1,0 +1,10 @@
+.flexly-menu-settings-tab {
+    min-height: 100%;
+}
+.flexly-menu-settings-tab .spacer {
+    height: 1px;
+}
+
+.flexly-menu-settings-tab .flexly-collapsable-panel {
+    margin: 7px;
+}

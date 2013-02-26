@@ -18,7 +18,7 @@
                         setInterval(function(){
                             mxBuilder.recorder.saveIfRequired();
                         },5000);
-                        $(document.body).trigger("systemReady");
+                        $(mxBuilder.systemEvents).trigger("systemReady");
                     },
                     error: function(data){
                         mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");

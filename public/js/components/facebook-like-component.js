@@ -133,7 +133,6 @@
             icon: "flexly-icon-box-component",
             title: "Facebook Like Button",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = $('<div><img src="public/images/facebook.png"/></div>')
                     .addClass("mx-helper")

@@ -210,7 +210,6 @@
                 }
                 
                 $.extend(obj.resizable,{
-                    grid: mxBuilder.properties.gridSize,
                     handles: handles,
                     start: function start(event,ui){
                         mxBuilder.selection.clearSelection({
@@ -620,6 +619,7 @@
                     }
                     currentSelectionComponent.css(newPosition);
                 },true);
+                //console.log($(this).data().draggable.snapElements)
             },
             stop: function stop(){
                 mxBuilder.layout.revalidateLayoutWidth();

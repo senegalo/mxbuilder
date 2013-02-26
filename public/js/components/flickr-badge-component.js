@@ -157,7 +157,6 @@
             icon: "flexly-icon-box-component",
             title: "Flickr Badge",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = $('<div><img src="public/images/flickr-badge.png"/></div>')
                     .addClass("mx-helper")

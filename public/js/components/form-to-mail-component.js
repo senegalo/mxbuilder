@@ -155,7 +155,6 @@
             icon: "flexly-icon-box-component",
             title: "Form To Mail",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.FormToMailComponent.prototype.template.clone()
                     .addClass("mx-helper")

@@ -127,7 +127,6 @@
             icon: "flexly-icon-box-component",
             title: "Button Component",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = mxBuilder.ButtonsComponent.prototype.template.clone()
                     .find(".label")

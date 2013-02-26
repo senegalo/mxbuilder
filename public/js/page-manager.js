@@ -273,6 +273,7 @@
             },
             saveAll: function(){
                 var out = {
+                    gSettings: mxBuilder.settingsManager._settings,
                     pages: [],
                     pinned: [],
                     layoutHeights: {
@@ -381,6 +382,9 @@
             },
             restorePages: function(restore){                
                 //mxBuilder.layout.setLayout(restore.layoutHeights,true);
+                if(typeof restore.gSettings != "undefined"){
+                    mxBuilder.settingsManager._settings = restore.gSettings;
+                }
                 
                 var firstPage = null;
                 for(var p in restore.pages){

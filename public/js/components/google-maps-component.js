@@ -211,7 +211,6 @@
             icon: "flexly-icon-box-component",
             title: "Google Maps",
             draggableSettings: {
-                grid: mxBuilder.properties.gridSize,
                 helper: function(event){
                     var theContent = $('<div><img src="public/images/gmap.png"/></div>')
                     .addClass("mx-helper")

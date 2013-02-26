@@ -23,6 +23,8 @@
                     mxBuilder.menuManager.showTab("widgets");
                 } else if(element.hasClass("flexly-icon-publish")){
                     mxBuilder.publishManager.publish();
+                } else if(element.hasClass("flexly-icon-settings")){
+                    mxBuilder.menuManager.showTab("settings");
                 }
             }
         })
