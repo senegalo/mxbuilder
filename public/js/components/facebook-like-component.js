@@ -55,7 +55,6 @@
             },
             setCounterPosition: function setCounterPosition(pos){
                 this.counterPosition = pos == "horizontal" ? "button_count" : "box_count";
-                this.rebuild();
             },
             setAction: function setAction(action){
                 this.action = action;
