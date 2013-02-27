@@ -56,6 +56,8 @@
                 });
                 
                 this.applyToSelectionOn(controls, "picker", "pickerColorChanged");
+                this.applyToSelectionOn(controls, "picker", "pickerColorRest");
+                
                 this.applyToSelectionOn(controls, "symetricCheckbox", "change", function(){
                     controls.symmetricRadius = $(this).is(":checked");
                     if(controls.symmetricRadius){

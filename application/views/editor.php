@@ -580,7 +580,7 @@
                 <div class="spacer"></div>
             </div>
 
-            <div class="flexly-component-border-settings">
+            <div class="flexly-component-border-settings">                
                 <div class="border-color-title settings-title">Border Color</div>
                 <div class="picker">
                 </div>
@@ -607,14 +607,15 @@
             </div>
 
             <div class="flexly-component-background-settings">
+                
+                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+                <div class="opacity-slider" style="width:238px;"></div>
+                
                 <div class="settings-title">Background Color</div>
                 <div class="picker">
 
                 </div>
                 
-                
-                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
-                <div class="opacity-slider" style="width:238px;"></div>
 
                 <div class="settings-title">Pattern</div>
                 <div class="patterns">

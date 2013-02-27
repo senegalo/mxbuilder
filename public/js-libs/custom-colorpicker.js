@@ -42,7 +42,11 @@
                     theClearButton.on({
                         click: function click(){
                             var color = mxBuilder.colorsManager.createColorObjFromRGBA(0, 0, 0, 0);
-                            element.trigger("pickerColorReset",color);
+                            theInput.val(color.toHex()).css({
+                                backgroundColor:color.toHex(),
+                                color: color.getInverse().toHex()
+                            });
+                            element.trigger("pickerColorRest",color);
                         }
                     });
                     

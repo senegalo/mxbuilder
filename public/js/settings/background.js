@@ -64,6 +64,10 @@
                         controls.opacityValue.text("100%");
                     }
                 });
+                this.applyToSelectionOn(controls, "picker", "pickerColorRest", function(){
+                    controls.opacitySlider.customSlider("value",0);
+                    controls.opacityValue.text("0%");
+                });
                 this.applyToSelectionOn(controls, "scaleSlider", "slide", function(event,ui){
                     controls.scaleValue.text(ui.value+"px");                    
                 });
