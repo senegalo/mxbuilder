@@ -611,6 +611,10 @@
                 <div class="picker">
 
                 </div>
+                
+                
+                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+                <div class="opacity-slider" style="width:238px;"></div>
 
                 <div class="settings-title">Pattern</div>
                 <div class="patterns">
@@ -619,8 +623,6 @@
                 <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
                 <div class="scale-slider" style="width:238px;"></div>
 
-                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
-                <div class="opacity-slider" style="width:238px;"></div>
 
             </div>
 

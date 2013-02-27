@@ -30,6 +30,10 @@
                 
                 var displaySettings = this.getCommonSettingsPanels();
                 
+                mxBuilder.selection.each(function(){
+                    this.cacheState();
+                });
+                
                 for(var p in displaySettings){
                     var thePanel = displaySettings[p].panel.getPanel(displaySettings[p].params);
                         
@@ -42,7 +46,6 @@
                     } else {
                         theContent.append(thePanel);
                     }
-                    
                 }
                 
                 theContent.append('<div class="spacer"></div>').on({
@@ -57,6 +60,7 @@
                 //the cancel / savebutton 
                 $('<div class="flexly-icon flexly-icon-cancel-big-black flexly-component-settings-cancel"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
                     click: function(){
+                        componentSettings.revertToOriginalState();
                         theContent.children().trigger("cancel");
                     }
                 });
@@ -74,6 +78,7 @@
                             componentSettings._enablePreview = true;
                             theContent.children().trigger("previewEnabled");
                         } else {
+                            componentSettings.revertToOriginalState();
                             element.removeClass("flexly-icon-preview-enabled").addClass("flexly-icon-preview-disabled");
                             componentSettings._enablePreview = false;
                             theContent.children().trigger("previewDisabled");
@@ -112,6 +117,11 @@
             },
             isPreview: function(){
                 return this._enablePreview;
+            },
+            revertToOriginalState: function revertToOriginalState(){
+                mxBuilder.selection.each(function(){
+                    this.revertToLastState();
+                });
             }
         }
     });

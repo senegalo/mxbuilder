@@ -30,27 +30,27 @@
                 
                 
                 //Configure the controls here
-                controls.picker.data("change-monitor",false).customColorpicker();
+                controls.picker.customColorpicker();
                 controls.symetricCheckbox.checkbox();
-                controls.simulatorSliderTopLeft.data("change-monitor",false).customSlider({
+                controls.simulatorSliderTopLeft.customSlider({
                     max: 50,
                     min: 0
                 });
-                controls.simulatorSliderBottomLeft.data("change-monitor",false).customSlider({
+                controls.simulatorSliderBottomLeft.customSlider({
                     max: 50,
                     min: 0
                 });
-                controls.simulatorSliderTopRight.data("change-monitor",false).width(50).customSlider({
+                controls.simulatorSliderTopRight.width(50).customSlider({
                     max: 50,
                     min: 0,
                     value: 50
                 });
-                controls.simulatorSliderBottomRight.data("change-monitor",false).width(50).customSlider({
+                controls.simulatorSliderBottomRight.width(50).customSlider({
                     max: 50,
                     min: 0,
                     value: 50
                 });
-                controls.widthSlider.data("change-monitor",false).customSlider({
+                controls.widthSlider.customSlider({
                     max: 50,
                     min: 0
                 });
@@ -88,7 +88,7 @@
                 });
                 this.applyToSelectionOn(controls, "widthSlider", "slide");                
                 
-                
+                this.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -103,7 +103,6 @@
                 
                 var firstPass = true;
                 mxBuilder.selection.each(function(){
-                    this.cacheState();
                     var theSettings = this.getBorder();
                     for(var p in properties){
                         if(firstPass){
@@ -130,11 +129,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        border.revertToOriginalState();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        border.revertToOriginalState();
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -227,10 +224,10 @@
                     }
                 });
             },
-            revertToOriginalState: function revertToOriginalState(){
-                mxBuilder.selection.each(function(){
-                    this.revertToLastState();
-                });
+            monitorChangeOnControls: function(controls){
+                for(var c in controls){
+                    controls[c].data("change-monitor",false);
+                }
             }
         }
     });

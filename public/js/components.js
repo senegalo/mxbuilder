@@ -546,16 +546,19 @@
         },
         cacheState: function cacheState(){
             this._cachedStates.push(this.save());
+            if(this._cachedStates.length > 5){
+                this._cachedStates.splice(0,1);
+            }
         },
         revertToLastState: function revertToLastState(){
-            var state = this._cachedStates.splice(0,1);
-            if(state.length > 0){
+            var state = this._cachedStates.pop();
+            if(typeof state != "undefined"){
                 var wasSelected = mxBuilder.selection.isSelected(this.element);
                 if(wasSelected){
                     mxBuilder.selection.removeFromSelection(this.element,true,true);
                 }
                 this.destroy();
-                var newInstance = mxBuilder.components.addComponent(state[0]);
+                var newInstance = mxBuilder.components.addComponent(state);
                 if(wasSelected){
                     mxBuilder.selection.addToSelection(newInstance.element, true);
                 }
