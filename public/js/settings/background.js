@@ -169,7 +169,7 @@
                     });                        
                 }
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
                     values = {};
@@ -201,7 +201,7 @@
                     this.setBackground(values); 
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var background = this;
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){

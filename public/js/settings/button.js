@@ -18,18 +18,12 @@
                     label: theInstance.find("#button-label")
                 };
                 
-                //Configure the controls here
-                controls.label.on({
-                    input: function input(){
-                        if(settingsTab.isPreview()){
-                            var label = $(this).val();
-                            mxBuilder.selection.each(function(){
-                                this.setLabel(label);
-                            });
-                        }
-                    }
-                });
+                this.applyToSelectionOn(controls, "label", "input");
                 
+                
+                //Configure the controls here
+                
+                this.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -63,11 +57,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        button.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        button.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -83,9 +75,8 @@
                 } else {
                     controls.label.val('');
                 }
-                
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
                    values = {
@@ -94,8 +85,26 @@
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                        this.setLabel(values.label);
+                    this.setLabel(values.label);
                 });
+            },
+            applyToSelectionOn: function(controls,controlKey,event,extra){
+                var button = this;
+                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
+                controls[controlKey].on(event,function(){
+                    controls[controlKey].data("change-monitor",true);
+                    if(settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        button.applyToSelection(controls);
+                    }
+                });
+            },
+            monitorChangeOnControls: function(controls){
+                for(var c in controls){
+                    controls[c].data("change-monitor",false);
+                }
             }
         }
     });

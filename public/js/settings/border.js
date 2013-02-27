@@ -175,7 +175,7 @@
                     controls.simulator.css('border'+pos.uppercaseFirst()+'Radius',val);
                 }
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
                     values = {
@@ -213,7 +213,7 @@
                 });
                 mxBuilder.selection.revalidateSelectionContainer();
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var border = this;
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){

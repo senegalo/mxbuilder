@@ -16,7 +16,7 @@
             //applying the popped from the active stack behavior
             if(!obj.poppedFromActiveStack){
                 obj.poppedFromActiveStack = function(){
-                    mxBuilder.selection.removeFromSelection(obj.element);
+                    //mxBuilder.selection.removeFromSelection(obj.element);
                 }
             }
             obj.element.on({
@@ -387,7 +387,7 @@
         },
         trashComponent: function trashComponent(){
             this.trashed = true;
-            mxBuilder.selection.removeFromSelection(this.element);
+            mxBuilder.selection.removeFromSelection(this.element,false,true);
             this.element.removeClass("mx-selectable-component").hide();
         },
         archive: function archive(){
@@ -557,6 +557,11 @@
                 if(wasSelected){
                     mxBuilder.selection.removeFromSelection(this.element,true,true);
                 }
+                //keeping the current component position
+                var currentPos = this.element.position();
+                state.css.top = currentPos.top;
+                state.css.left = currentPos.left;
+                
                 this.destroy();
                 var newInstance = mxBuilder.components.addComponent(state);
                 if(wasSelected){
