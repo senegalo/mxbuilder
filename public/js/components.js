@@ -387,7 +387,7 @@
         },
         trashComponent: function trashComponent(){
             this.trashed = true;
-            mxBuilder.selection.removeFromSelection(this.element,false,true);
+            mxBuilder.selection.removeFromSelection(this.elements);
             this.element.removeClass("mx-selectable-component").hide();
         },
         archive: function archive(){
