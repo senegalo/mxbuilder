@@ -4,6 +4,21 @@
             var imageGridComponent = this;
             this.init(properties);
             
+            this.element.on({
+                mousedown: function mousedown(event){
+                    if(event.which == 3 && (mxBuilder.selection.getSelectionCount() == 0 || mxBuilder.selection.isAllSelectedSameType())){
+                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
+                            label: "Convert to a Slider Gallery",
+                            callback: function(){
+                                mxBuilder.selection.each(function(){
+                                    this.convertToSlider(); 
+                                });
+                            }
+                        });
+                    }
+                }
+            })
+            
             //Edit component behavious settings...
             mxBuilder.Component.apply(this,[{
                 type: "ImageGridComponent",
@@ -26,16 +41,6 @@
                 },
                 resize: function resize(){
                     imageGridComponent.revalidate();
-                },
-                mousedown: function mousedown(event){
-                    if(event.which == 3){
-                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
-                            label: "Convert to a Slider Gallery",
-                            callback: function(){
-                                imageGridComponent.convertToSlider();
-                            }
-                        }).stopPropagation();
-                    }
                 }
             }).droppable({
                 greedy: true,
@@ -235,7 +240,10 @@
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
-                out.data.gridSettings = this.gridSettings;
+                out.data.gridSettings = {
+                    cols: this.gridSettings.cols,
+                    spacing: this.gridSettings.spacing
+                };
                 out.data.list = this.list;
                 out.data.thumbSize = this.thumbSize;
                 out.data.border = this.border;
@@ -325,8 +333,15 @@
             getSettings: function getSettings(){
                 return this.gridSettings;
             },
-            setSettings: function setSettings(settings){
-                this.gridSettings = settings;
+            setSpacing: function setSpacing(spacing){
+                if(typeof spacing != "undefined"){
+                    this.gridSettings.spacing = spacing;
+                }
+            },
+            setColumns: function setColumns(cols){
+                if(typeof cols != "undefined"){
+                    this.gridSettings.cols = cols;
+                }
             },
             convertToSlider: function convertToSlider(){
                 var imageGrid = this;

@@ -1,16 +1,19 @@
 (function($){
     $(function(){
         mxBuilder.layout.settingsPanels.flickrBadge = {
+            //update the template variable
             _template: mxBuilder.layout.templates.find(".flickr-badge-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var flickrBadge = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
+                //change settings panel title
                 thePanel.find(".flexly-collapsable-title").text("Flickr Badge");
                 
                 var theInstance = this._template.clone();
                 
+                //fill in all the controls 
                 var controls = {
                     imgSize: theInstance.find(".flickr-badge-imgsize input"),
                     imgSizeSquare: theInstance.find("#flickr-badge-imgsize-s"),
@@ -24,7 +27,16 @@
                 };
                 
                 
+                //Configure the controls here
+                this.applyToSelectionOn(controls, "count", "change");
+                this.applyToSelectionOn(controls, "imgSize", "change");
+                this.applyToSelectionOn(controls, "display", "change");
+                this.applyToSelectionOn(controls, "user", "input");
+                
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
+                
+                //define component properties to add to the original settings object
                 var properties = ["count", "display","imgSize","user"];
                 
                 var firstPass = true;
@@ -44,39 +56,6 @@
                 
                 this.setValues(controls,originalSettings);
                 
-                controls.imgSize.on({
-                    change: function(){
-                        if(settingsTab.isPreview()){
-                            flickrBadge.applyToSelection(controls);
-                        }
-                    }
-                });
-                
-                controls.display.on({
-                    change: function(){
-                        if(settingsTab.isPreview()){
-                            flickrBadge.applyToSelection(controls);
-                        }
-                    }
-                });
-                
-                controls.count.on({
-                    change: function(){
-                        $(this).find("option.none").remove();
-                        if(settingsTab.isPreview()){
-                            flickrBadge.applyToSelection(controls);
-                        }
-                    }
-                });
-                
-                controls.user.on({
-                    input: function(){
-                        if(settingsTab.isPreview() && $(this).val().match(/\d+@N\d{2}/)!== null){
-                            flickrBadge.applyToSelection(controls);
-                        }
-                    }
-                })
-                
                 thePanel.on({
                     previewEnabled: function(){
                         flickrBadge.applyToSelection(controls);
@@ -88,11 +67,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        flickrBadge.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        flickrBadge.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -101,7 +78,8 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values){            
+            setValues: function(controls, values){ 
+                //implement the setValue function
                 if(values.count !== false){
                     controls.count.find('option[value="'+values.count+'"]').attr("selected","selected");
                 } else {
@@ -126,22 +104,42 @@
                 } else {
                     controls.imgSize.removeAttr("checked");
                 }
-                
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                    values = {
-                        count: controls.count.val(),
-                        user: controls.user.val(),
-                        display: controls.display.filter(":checked").val(),
-                        imgSize: controls.imgSize.filter(":checked").val()
-                    }
+                //if no values passed how to do we get the values ?
+                   values = {};
+                   if(this._settingsTab.hasChanged(controls.count)){
+                       values.count = controls.count.val();
+                   }
+                   if(this._settingsTab.hasChanged(controls.user)){
+                       values.user = controls.user.val();
+                   }
+                   if(this._settingsTab.hasChanged(controls.display)){
+                       values.display = controls.display.filter(":checked").val();
+                   }
+                   if(this._settingsTab.hasChanged(controls.imgSize)){
+                       values.imgSize = controls.imgSize.filter(":checked").val();
+                   }
                 }
                 mxBuilder.selection.each(function(){
+                    //apply the values to the selection
                     for(var p in values){
                         this[p] = values[p]
                     }
                     this.render();
+                });
+            },
+            applyToSelectionOn: function(controls,controlKey,event,extra){
+                var flickrBadge = this;
+                controls[controlKey].on(event,function(){
+                    flickrBadge._settingsTab.setChanged(controls[controlKey]);
+                    if(flickrBadge._settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        flickrBadge.applyToSelection(controls);
+                    }
                 });
             }
         }

@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.formToMail = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".form-to-mail-settings"),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var formToMail = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -64,7 +64,7 @@
                     controls.hideForm.attr("checked","checked");
                 });
                 
-                
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -98,11 +98,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        formToMail.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        formToMail.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -174,40 +172,53 @@
                     controls.afterSubmission.removeAttr("checked");
                 }
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
-                    values = {
-                        email: controls.email.val(),
-                        mode: controls.mode.filter(":checked").val(),
-                        afterSubmission: controls.afterSubmission.filter(":checked").val()
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.email)){
+                        values.email = controls.email.val();
                     }
-                    if(values.afterSubmission == "redirect"){
+                    if(this._settingsTab.hasChanged(controls.mode)){
+                        values.mode = controls.mode.filter(":checked").val();
+                    }
+                    if(this._settingsTab.hasChanged(controls.afterSubmission)){
+                        values.afterSubmission = controls.afterSubmission.filter(":checked").val();
+                    }
+                    if(values.afterSubmission == "redirect" && this._settingsTab.hasChanged(controls.redirectPage)){
                         values.redirectPage = controls.redirectPage.find("option:selected").val();
                     } else {
-                        $.extend(values,{
-                            message: controls.message.val(),
-                            hideForm : controls.hideForm.is(":checked"),
-                            redisplay : controls.redisplay.is(":checked"),
-                            redisplaySeconds : controls.redisplaySeconds.val()
-                        });
+                        if(this._settingsTab.hasChanged(controls.message)){
+                            values.message = controls.message.val();
+                        }
+                        if(this._settingsTab.hasChanged(controls.hideForm)){
+                            values.hideForm = controls.hideForm.is(":checked");
+                        }
+                        if(this._settingsTab.hasChanged(controls.redisplay)){
+                            values.redisplay = controls.redisplay.is(":checked");
+                        }
+                        if(this._settingsTab.hasChanged(controls.redisplaySeconds)){
+                            values.redisplaySeconds = controls.redisplaySeconds.val();
+                        }
                     }
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
                     for(var p in values){
-                        this.setMode(values.mode);
+                        if(typeof values.mode != "undefined"){
+                            this.setMode(values.mode);
+                        }
                         $.extend(this,values);
                     }
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var formToMail = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    if(settingsTab.isPreview()){
+                    formToMail._settingsTab.setChanged(controls[controlKey]);
+                    if(formToMail._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
-                            extra.call();
+                            extra.apply(this,arguments);
                         }
                         formToMail.applyToSelection(controls);
                     }

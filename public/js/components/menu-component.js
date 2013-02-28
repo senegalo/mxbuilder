@@ -245,6 +245,13 @@
             updateResizeHandles: function updateResizeHandles(orientation){
                 mxBuilder.Component.prototype.updateResizeHandles.call(this,orientation);
                 this.element.find(".component-resizable-handle").css("z-index",1000);
+            },
+            getSettings: function getSettings(){
+                return {
+                    orientation: this.orientation,
+                    moreLinkText: this.moreLinkText,
+                    theme: this.theme
+                }
             }
         });
         

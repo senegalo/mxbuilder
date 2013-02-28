@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.button = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".button-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var button = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -23,7 +23,7 @@
                 
                 //Configure the controls here
                 
-                this.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -79,8 +79,9 @@
             applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
-                   values = {
-                       label: controls.label.val()
+                   values = {}
+                   if(this._settingsTab.hasChanged(controls.label)){
+                       values.label = controls.label.val();
                    }
                 }
                 mxBuilder.selection.each(function(){
@@ -90,21 +91,15 @@
             },
             applyToSelectionOn: function(controls,controlKey,event,extra){
                 var button = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    controls[controlKey].data("change-monitor",true);
-                    if(settingsTab.isPreview()){
+                    button._settingsTab.setChanged(controls[controlKey]);
+                    if(button._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
                             extra.apply(this,arguments);
                         }
                         button.applyToSelection(controls);
                     }
                 });
-            },
-            monitorChangeOnControls: function(controls){
-                for(var c in controls){
-                    controls[c].data("change-monitor",false);
-                }
             }
         }
     });

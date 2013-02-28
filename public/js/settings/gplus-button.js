@@ -1,60 +1,54 @@
 (function($){
-    
     $(function(){
         mxBuilder.layout.settingsPanels.gplusButton = {
+            //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-gplus-button-settings"),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
-                var fbButton = this;
+                var gplusButton = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
+                //change settings panel title
                 thePanel.find(".flexly-collapsable-title").text("Google Plus Button");
                 
                 var theInstance = this._template.clone();
                 
+                //fill in all the controls 
                 var controls = {
                     sizeSelect: theInstance.find('#gplus-size'),
                     annotation: theInstance.find(".gplus-annotation input"),
                     annotationNone: theInstance.find("#gplus-annotation-none"),
                     annotationHr: theInstance.find("#gplus-annotation-hr"),
                     annotationVr: theInstance.find("#gplus-annotation-vr")
-                }
+                };
                 
-                controls.sizeSelect.on({
-                    change: function change(){
-                        var theVal = $(this).find("option:selected").val();
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                this.setSize(theVal);
-                            });
-                        }
+                
+                //Configure the controls here
+                this.applyToSelectionOn(controls, "sizeSelect", "change", function(){
+                    if(controls.sizeSelect.val() != "standard" && controls.annotationVr.is(":checked")){
+                        controls.annotationHr.attr("checked","checked");
+                    }
+                });
+                this.applyToSelectionOn(controls, "annotation", "change", function(){
+                    if(controls.annotationVr.is(":checked")){
+                        controls.sizeSelect.val("standard");
                     }
                 });
                 
-                controls.annotation.on({
-                    change: function change(){
-                        var theVal = $(this).filter(":checked").val();
-                        if(theVal == "vertical"){
-                            controls.sizeSelect.find('option[value="standard"]').attr("selected","selected");
-                        }
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                this.setCounterPosition(theVal);
-                            });
-                        }
-                    }
-                });
-                
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
+                //define component properties to add to the original settings object
                 var properties = ["size","counterPosition"];
+                
                 var firstPass = true;
                 mxBuilder.selection.each(function(){
+                    var theSettings = this.getSettings();
                     for(var p in properties){
                         if(firstPass){
-                            originalSettings[properties[p]] = this["get"+properties[p].uppercaseFirst()]();
+                            originalSettings[properties[p]] = theSettings[properties[p]];
                         }
-                        var data = this["get"+properties[p].uppercaseFirst()]();
+                        var data = theSettings[properties[p]];
                         if (originalSettings[properties[p]] !== data){
                             originalSettings[properties[p]] = false;
                         }
@@ -66,51 +60,83 @@
                 
                 thePanel.on({
                     previewEnabled: function(){
-                        fbButton.applyToSelection(controls);
+                        gplusButton.applyToSelection(controls);
+                        mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function(){
-                        fbButton.applyToSelection(controls);
+                        gplusButton.applyToSelection(controls);
                         mxBuilder.menuManager.closeTab();
+                        mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        fbButton.applyToSelection(controls,originalSettings);
+                        mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        fbButton.applyToSelection(controls,originalSettings);
+                        mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
-                });
+                });                
                 
-                return thePanel.find(".flexly-collapsable-content").append(theInstance).end();
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
+                return thePanel;
             },
-            setValues: function(controls,settings){
-                if(settings.counterPosition !== false){
-                    controls.annotation.filter('[value="'+settings.counterPosition+'"]').attr("checked","checked");
+            setValues: function(controls, values){    
+                //implement the setValue function
+                if(values.counterPosition !== false){
+                    controls.annotation.filter('[value="'+values.counterPosition+'"]').attr("checked","checked");
                 } else {
                     controls.annotation.removeAttr("checked");
                 }
-                if(settings.size !== false){
-                    if(settings.counterPosition == "vertical"){
-                        settings.size = "standard";
+                if(values.size !== false){
+                    if(values.counterPosition == "vertical"){
+                        values.size = "standard";
                     }
-                    controls.sizeSelect.find('[value="'+settings.size+'"]').attr("selected","selected");
+                    controls.sizeSelect.find('[value="'+values.size+'"]').attr("selected","selected");
                 } else {
-                    controls.sizeSelect.removeAttr("checked");
+                    controls.sizeSelect.removeAttr("checked")
+                    .append('<option class="no-choice">---</option>').one({
+                        change: function change(){
+                            $(this).find(".not-choice").remove();
+                        }
+                    });
                 }
             },
-             applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                    values  = {
-                        counterPosition: controls.annotation.filter(":checked").val(),
-                        size: controls.size.filter(":checked").val()
-                    };
+                    //if no values passed how to do we get the values ?
+                    values = {};
+                    var annotation = controls.annotation.filter(":checked").val();
+                    var size = controls.sizeSelect.val();
+                    if(this._settingsTab.hasChanged(controls.sizeSelect)){
+                        values.size = size;
+                    }
+                    if(this._settingsTab.hasChanged(controls.annotation)){
+                        values.counterPosition = annotation; 
+                    }
                 }
                 mxBuilder.selection.each(function(){
-                    this.setCounterPosition(values.counterPosition);
-                    this.setSize(values.size);
+                    //apply the values to the selection
+                    if(typeof values.size != "undefined"){
+                        this.setSize(values.size);
+                    }
+                    if(typeof values.counterPosition != "undefined"){
+                        this.setCounterPosition(values.counterPosition);
+                    }
+                    this.rebuild();
+                });
+            },
+            applyToSelectionOn: function(controls,controlKey,event,extra){
+                var gplusButton = this;
+                controls[controlKey].on(event,function(){
+                    gplusButton._settingsTab.setChanged(controls[controlKey]);
+                    if(gplusButton._settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        gplusButton.applyToSelection(controls);
+                    }
                 });
             }
         }
     });
-    
-}(jQuery));
+}(jQuery))

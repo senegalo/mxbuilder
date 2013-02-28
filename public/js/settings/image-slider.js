@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.imageSlider = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".image-gallery-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var imageSlider = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -23,11 +23,12 @@
                 };
                 
                 
-                //Configure the controls here 
+                //Configure the controls here
                 for(var c in controls){
                     this.applyToSelectionOn(controls, c, "change");
                 }
                 
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -61,11 +62,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        imageSlider.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        imageSlider.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -104,18 +103,27 @@
                     controls.navigation.filter('[value="'+values.navigation+'"]').attr("checked","checked");
                 } else {
                     controls.navigation.removeAttr("checked");
-                }                
+                }     
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                    values = {
-                        autoPlay: controls.autoPlay.filter(":checked").val() == "on" ? true : false,
-                        transitionSpeed: controls.transitionSpeed.filter(":checked").val(),
-                        indicator: controls.indicator.filter(":checked").val() == "on" ? true : false,
-                        action: controls.action.filter(":checked").val() == "on" ? true : false,
-                        navigation: controls.navigation.filter(":checked").val()
+                    //if no values passed how to do we get the values ?
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.autoPlay)){
+                        values.autoPlay = controls.autoPlay.filter(":checked").val() == "on" ? true : false;
                     }
-                   
+                    if(this._settingsTab.hasChanged(controls.transitionSpeed)){
+                        values.transitionSpeed = controls.transitionSpeed.filter(":checked").val();
+                    }
+                    if(this._settingsTab.hasChanged(controls.indicator)){
+                        values.indicator = controls.indicator.filter(":checked").val() == "on" ? true : false;
+                    }
+                    if(this._settingsTab.hasChanged(controls.action)){
+                        values.action = controls.action.filter(":checked").val() == "on" ? true : false;
+                    }
+                    if(this._settingsTab.hasChanged(controls.navigation)){
+                        values.navigation = controls.navigation.filter(":checked").val();
+                    }
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
@@ -123,13 +131,13 @@
                     this.revalidate();
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var imageSlider = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    if(settingsTab.isPreview()){
+                    imageSlider._settingsTab.setChanged(controls[controlKey]);
+                    if(imageSlider._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
-                            extra.call();
+                            extra.apply(this,arguments);
                         }
                         imageSlider.applyToSelection(controls);
                     }

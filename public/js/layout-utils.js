@@ -27,10 +27,12 @@
                 
                 thePanel.find(".flexly-collapsable-header").on({
                     click: function click(){
-                        var theHead = $(this);
-                        theContent.slideToggle(300,function(){
-                            updatePanel(theHead);
-                        });
+                        if(!thePanel.hasClass("flexly-collapsable-disabled")){
+                            var theHead = $(this);
+                            theContent.slideToggle(300,function(){
+                                updatePanel(theHead);
+                            });
+                        }
                     }
                 });
                 return thePanel;

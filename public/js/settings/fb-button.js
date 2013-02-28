@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.fbButton = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-fb-button-settings"),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var fbButton = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -28,7 +28,7 @@
                 this.applyToSelectionOn(controls, "counterPosition", "change");
                 this.applyToSelectionOn(controls, "action", "change");
                 
-                this.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -97,10 +97,10 @@
             applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     values  = { };
-                    if(controls.counterPosition.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.counterPosition)){
                         values.counterPosition = controls.counterPosition.filter(":checked").val();
                     }
-                    if(controls.action.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.action)){
                         values.action = controls.action.filter(":checked").val();
                     }
                 }
@@ -116,21 +116,15 @@
             },
             applyToSelectionOn: function(controls,controlKey,event,extra){
                 var fbButton = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    controls[controlKey].data("change-monitor",true);
-                    if(settingsTab.isPreview()){
+                    fbButton._settingsTab.setChanged(controls[controlKey]);
+                    if(fbButton._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
                             extra.apply(this,arguments);
                         }
                         fbButton.applyToSelection(controls);
                     }
                 });
-            },
-            monitorChangeOnControls: function(controls){
-                for(var c in controls){
-                    controls[c].data("change-monitor",false);
-                }
             }
         }
     });

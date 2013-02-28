@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.links = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".linkto").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(settings){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var links = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(settings&&settings.expand?settings.expand:false);
                 
@@ -26,26 +26,24 @@
                     lightboxContainer: theInstance.find(".lightbox")
                 };
                 
+                
                 //Configure the controls here
-                controls.linkType.on({
-                    change: function change(){
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                links.applyToSelection(controls);
-                            });
-                        }
+                this.applyToSelectionOn(controls, "linkType", "change");
+                this.applyToSelectionOn(controls, "newWindow", "change");
+                this.applyToSelectionOn(controls, "pages", "change");
+                this.applyToSelectionOn(controls, "externalLinkText", "input");
+                this.applyToSelectionOn(controls, "externalLinkProtocol", "change", function(){
+                    controls.linktoExternal.attr("checked","checked").trigger("change");
+                    controls.externalLinkText.focus();
+                });
+                
+                controls.externalLinkText.on({
+                    focus: function focus(){
+                        controls.linktoExternal.attr("checked","checked").trigger("change");
                     }
                 });
                 
-                controls.newWindow.checkbox().on({
-                    change: function change(){
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                links.applyToSelection(controls);
-                            });
-                        }
-                    }
-                });
+                controls.pages.append(mxBuilder.layout.utils.getOrderdPagesList());
                 
                 if(settings && settings.lightbox){
                     controls.lightboxContainer.show();
@@ -53,48 +51,7 @@
                     controls.lightboxContainer.hide();
                 }
                 
-//                var pages = mxBuilder.pages.getOrderedPages();
-//                for(var p in pages){
-//                    var text = pages[p].parent == "root" ? pages[p].title : "---"+pages[p].title
-//                    controls.pages.append('<option value="'+pages[p].id+'">'+text+'</option>');
-//                }
-                controls.pages.append(mxBuilder.layout.utils.getOrderdPagesList());
-                controls.pages.on({
-                    change: function change(){
-                        controls.linktoPage.attr("checked","checked").trigger("change");
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                links.applyToSelection(controls);
-                            });
-                        }
-                    }
-                });
-                
-                controls.externalLinkText.on({
-                    focus: function focus(){
-                        controls.linktoExternal.attr("checked","checked").trigger("change");
-                    },
-                    input: function input(){
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                links.applyToSelection(controls);
-                            });
-                        }
-                    }
-                });
-                controls.externalLinkProtocol.on({
-                    change: function change(){
-                        controls.linktoExternal.attr("checked","checked").trigger("change");
-                        controls.externalLinkText.focus();
-                        if(settingsTab.isPreview()){
-                            mxBuilder.selection.each(function(){
-                                links.applyToSelection(controls);
-                            });
-                        }
-                    }
-                });
-                
-                
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -102,7 +59,7 @@
                 
                 var firstPass = true;
                 mxBuilder.selection.each(function(){
-                    var theSettings = this.getSettings().linkObj;
+                    var theSettings = this.getSettings();
                     for(var p in properties){
                         if(firstPass){
                             originalSettings[properties[p]] = theSettings[properties[p]];
@@ -128,11 +85,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        links.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        links.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -170,25 +125,45 @@
                 
                 if(values.linkOpenIn !== false){
                     controls.newWindow.attr("checked","checked").trigger("change");
-                }                
+                }    
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
-                    values = {
-                        linkType: controls.linkType.filter(":checked").val(),
-                        linkOpenIn: controls.newWindow.is(":checked")?true:false
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.linkType)){
+                        values.linkType = controls.linkType.filter(":checked").val();
+                    }
+                    if(this._settingsTab.hasChanged(controls.newWindow)){
+                        values.linkOpenIn = controls.newWindow.is(":checked")?true:false;
                     }
                     if(values.linkType == "external"){
-                        values.linkURL = controls.externalLinkText.val();
-                        values.linkProtocol = controls.externalLinkProtocol.find("option:selected").val();
-                    } else if (values.linkType == "page"){
-                        values.linkURL = controls.pages.find("option:selected").val()
-                    }                    
+                        if(this._settingsTab.hasChanged(controls.externalLinkText)){
+                            values.linkURL = controls.externalLinkText.val();
+                        }
+                        if(this._settingsTab.hasChanged(controls.externalLinkProtocol)){
+                            values.linkProtocol = controls.externalLinkProtocol.find("option:selected").val();
+                        }
+                    } else if (values.linkType == "page" && this._settingsTab.hasChanged(controls.pages)){
+                        values.linkURL = controls.pages.find("option:selected").val();
+                    }  
                 }
+                
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
                     this.linkObj = values;
+                });
+            },
+            applyToSelectionOn: function(controls,controlKey,event,extra){
+                var links = this;
+                controls[controlKey].on(event,function(){
+                    links._settingsTab.setChanged(controls[controlKey]);
+                    if(links._settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        links.applyToSelection(controls);
+                    }
                 });
             }
         }

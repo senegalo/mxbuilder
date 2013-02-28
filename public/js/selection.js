@@ -229,7 +229,10 @@
                     }
                 });
             } else {
-                $("#editor-area").selectable("destroy");
+                var editorArea = $("#editor-area");
+                if(typeof editorArea.data("selectable") != "undefined"){
+                    editorArea.selectable("destroy");
+                }
             }
         },
         each: function(callback,includeSelectionContainerFlag){

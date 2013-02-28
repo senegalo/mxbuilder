@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.background = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-component-background-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var background = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -81,7 +81,7 @@
                 });
                 
                 
-                this.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -175,14 +175,14 @@
                     values = {};
                     
                     //Applying the background color
-                    if(controls.picker.data("change-monitor") || controls.opacitySlider.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.picker) || this._settingsTab.hasChanged(controls.opacitySlider)){
                         var backgroundColor = controls.picker.customColorpicker("value");
                         backgroundColor.a = controls.opacitySlider.customSlider("value")/100;
                         values.backgroundColor = backgroundColor.toString();
                     }
                 
                     //Applying the pattern
-                    if(controls.patterns.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.patterns)){
                         var pattern = controls.patterns.find(".selected");//.data("flexly-pattern-index");
                         if(pattern.length > 0 && pattern.data("flexly-pattern-index") != -1){
                             values.backgroundImage = 'url("public/images/patterns/pat'+(pattern.data("flexly-pattern-index")+1)+'.png")';
@@ -192,7 +192,7 @@
                     }
                 
                     //Applying the size
-                    if(controls.scaleSlider.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.scaleSlider)){
                         values.backgroundSize = controls.scaleSlider.customSlider("value");
                     }
                 }
@@ -203,21 +203,15 @@
             },
             applyToSelectionOn: function(controls,controlKey,event,extra){
                 var background = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    controls[controlKey].data("change-monitor",true);
-                    if(settingsTab.isPreview()){
+                    background._settingsTab.setChanged(controls[controlKey]);
+                    if(background._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
                             extra.apply(this,arguments);
                         }
                         background.applyToSelection(controls);
                     }
                 });
-            },
-            monitorChangeOnControls: function(controls){
-                for(var c in controls){
-                    controls[c].data("change-monitor",false);
-                }
             }
         }
     });

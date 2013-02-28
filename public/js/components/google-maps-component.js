@@ -8,13 +8,15 @@
             this.element.on({
                 mousedown: function mousedown(event){
                     if(event.which == 3){
-                        mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
-                            label: instance.editMode?instance.buttonOn:instance.buttonOff,
-                            callback: function(){
-                                instance.setEditMode(!instance.editMode);
-                                mxBuilder.menuManager.showTab("componentSettings");
-                            }
-                        });
+                        if(mxBuilder.selection.getSelectionCount() == 1){
+                            mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
+                                label: instance.editMode?instance.buttonOn:instance.buttonOff,
+                                callback: function(){
+                                    instance.setEditMode(!instance.editMode);
+                                    mxBuilder.menuManager.showTab("componentSettings");
+                                }
+                            });
+                        }
                     }
                 }
             });

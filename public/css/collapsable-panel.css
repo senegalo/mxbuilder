@@ -7,6 +7,10 @@
     min-height: 10px;
 }
 
+.flexly-collapsable-panel.flexly-collapsable-disabled {
+    opacity: 0.5;
+}
+
 .flexly-collapsable-header {
     /*width: 239px;*/
     cursor: pointer;

@@ -1047,7 +1047,7 @@
             </div>
 
             <div class="gallery-image-settings">
-                <div class="settings-title">Drag to order.<br/>Click to see individual settings</div>
+                <div class="settings-title alert-msg">Drag to order.<br/>Click to see individual settings</div>
                 <div class="items-container">
                     <div class="list-item">
                         <div class="image-name"></div>

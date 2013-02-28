@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.imageGrid = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".image-grid-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var imageGrid = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -24,6 +24,7 @@
                 this.applyToSelectionOn(controls, "columns", "input");
                 this.applyToSelectionOn(controls, "spacing", "input");
                 
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -57,11 +58,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        imageGrid.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        imageGrid.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -84,27 +83,33 @@
                     controls.spacing.val('');
                 }
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                   values = {
-                       cols: controls.columns.val(),
-                       spacing: controls.spacing.val()
-                   }
+                    //if no values passed how to do we get the values ?
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.columns)){
+                        //fill up the values array
+                        values.cols = controls.columns.val();
+                    }
+                    if(this._settingsTab.hasChanged(controls.spacing)){
+                        values.spacing = controls.spacing.val();
+                    }
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                    this.setSettings(values);
+                    this.setSpacing(values.spacing);
+                    this.setColumns(values.cols);
                     this.rebuild();
                     this.revalidate();
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var imageGrid = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    if(settingsTab.isPreview()){
+                    imageGrid._settingsTab.setChanged(controls[controlKey]);
+                    if(imageGrid._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
-                            extra.call();
+                            extra.apply(this,arguments);
                         }
                         imageGrid.applyToSelection(controls);
                     }

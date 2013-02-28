@@ -3,8 +3,8 @@
         mxBuilder.layout.settingsPanels.border = {
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-component-border-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var border = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -90,7 +90,7 @@
                 });
                 this.applyToSelectionOn(controls, "widthSlider", "slide");                
                 
-                this.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -182,24 +182,24 @@
                         borderStyle: "solid"
                     };
                     
-                    if(controls.widthSlider.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.widthSlider)){
                         values.borderWidth = controls.widthSlider.customSlider("value");
                     }
-                    if(controls.picker.data("change-monitor")){
+                    if(this._settingsTab.hasChanged(controls.picker)){
                         values.borderColor = controls.picker.customColorpicker("value").toString();
                     }
                     
                     var val;
                     if(controls.symmetricRadius){
                         //yes this is intentional so it wont' go to the else statement
-                        if(controls.lastChangedRadiusSlider.data("change-monitor")){
+                        if(this._settingsTab.hasChanged(controls.lastChangedRadiusSlider)){
                             val = controls.lastChangedRadiusSlider.customSlider("value");   
                             values["borderRadius"] = controls.lastChangedRadiusSlider.hasClass("border-radius-slider-r")?50-val:val;
                         }
                     } else {
                         var corners = ["TopLeft","TopRight","BottomLeft","BottomRight"];
                         for(var c in corners){
-                            if(controls["simulatorSlider"+corners[c]].data("change-monitor")){
+                            if(this._settingsTab.hasChanged(controls["simulatorSlider"+corners[c]])){
                                 val = controls["simulatorSlider"+corners[c]].customSlider("value");   
                                 values["border"+corners[c]+"Radius"] = corners[c].match(/.*Right/)?50-val:val;
                             }
@@ -215,21 +215,15 @@
             },
             applyToSelectionOn: function(controls,controlKey,event,extra){
                 var border = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    controls[controlKey].data("change-monitor",true);
-                    if(settingsTab.isPreview()){
+                    border._settingsTab.setChanged(controls[controlKey]);
+                    if(border._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
                             extra.apply(this,arguments);
                         }
                         border.applyToSelection(controls);
                     }
                 });
-            },
-            monitorChangeOnControls: function(controls){
-                for(var c in controls){
-                    controls[c].data("change-monitor",false);
-                }
             }
         }
     });

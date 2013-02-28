@@ -59,11 +59,9 @@
                         this.buttonSize = "standard";
                     }
                 }
-                this.rebuild();
             },
             setSize: function setSize(size){
                 this.buttonSize = size;
-                this.rebuild();
             },
             getSize: function getSize(){
                 return this.buttonSize;
@@ -130,6 +128,12 @@
                 out.data.annotation = this.annotation;
                 out.data.buttonSize = this.buttonSize;
                 return out;
+            },
+            getSettings: function getSettings(){
+                return {
+                    size: this.getSize(),
+                    counterPosition: this.getCounterPosition()
+                }
             }
         });
         

@@ -6,11 +6,14 @@
             
             this.element.on({
                 mousedown: function mousedown(event){
+                    //yes selection count is 0 !! because right clicking a component won't select it.. clicking it will !!
                     if(event.which == 3 && (mxBuilder.selection.getSelectionCount() == 0 || mxBuilder.selection.isAllSelectedSameType())){
                         mxBuilder.contextmenu.getMainCtx().addItem({
                             label: "Convert to Grid Gallery",
                             callback: function(){
-                                imageSlider.convertToGrid();
+                                mxBuilder.selection.each(function(){
+                                    this.convertToGrid();
+                                });
                             }
                         });
                     }
@@ -236,17 +239,6 @@
                     }
                 });
             },
-            isEqualSettings: function isEqualSettings (obj){
-                if(obj.caption === this.caption &&
-                    obj.title === this.title &&
-                    obj.link.type === this.link.type &&
-                    obj.link.protocole === this.link.protocole &&
-                    obj.link.url === this.link.url &&
-                    obj.link.page === this.link.page){
-                    return true;
-                }
-                return false;
-            },
             convertToGrid: function convertToGrid(){
                 var imageSlider = this;
                 var properties = this.save();
@@ -322,7 +314,8 @@
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
-                out.data.sliderSettings = this.sliderSettings;
+                out.data.sliderSettings = {};
+                $.extend(out.data.sliderSettings,this.sliderSettings);
                 out.data.list = this.list;
                 return out;
             },

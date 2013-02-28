@@ -5,8 +5,8 @@
             _template: mxBuilder.layout.templates.find(".google-maps-settings"),
             buttonOn: mxBuilder.GoogleMapsComponent.prototype.buttonOn,
             buttonOff: mxBuilder.GoogleMapsComponent.prototype.buttonOff,
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var googleMaps = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -30,25 +30,15 @@
                     }
                 });
                 
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
-                //define component properties to add to the original settings object
-                var properties = ["editMode"];
-                
-                var firstPass = true;
-                mxBuilder.selection.each(function(){
-                    var theSettings = this.getSettings();
-                    for(var p in properties){
-                        if(firstPass){
-                            originalSettings[properties[p]] = theSettings[properties[p]];
-                        }
-                        var data = theSettings[properties[p]];
-                        if (originalSettings[properties[p]] !== data){
-                            originalSettings[properties[p]] = false;
-                        }
-                    }
-                    firstPass = false;
-                });
+                if(mxBuilder.selection.getSelectionCount() > 1){
+                    thePanel.find(".flexly-collapsable-header").trigger("click");
+                    thePanel.addClass("flexly-collapsable-disabled");
+                } else {
+                    originalSettings = mxBuilder.components.getComponent(mxBuilder.selection.getSelection()).getSettings();
+                }
                 
                 this.setValues(controls,originalSettings);
                 
@@ -63,11 +53,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        googleMaps.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        googleMaps.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -77,32 +65,34 @@
                 return thePanel;
             },
             setValues: function(controls, values){    
+                //implement the setValue function
                 if(values.editMode){
                     controls.editButton.addClass("on").text(this.buttonOn);
                 } else {
                     controls.editButton.text(this.buttonOff);
                 }
-                
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
-                   values = {
-                       editMode: controls.editButton.hasClass("on")
-                   }
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.editButton)){
+                        //fill up the values array
+                        values.editMode = controls.editButton.hasClass("on");
+                    }
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
                     this.setEditMode(values.editMode);
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var googleMaps = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    if(settingsTab.isPreview()){
+                    googleMaps._settingsTab.setChanged(controls[controlKey]);
+                    if(googleMaps._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
-                            extra.call();
+                            extra.apply(this,arguments);
                         }
                         googleMaps.applyToSelection(controls);
                     }

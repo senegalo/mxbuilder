@@ -86,7 +86,7 @@
                     }
                 });
             },
-            getCommonSettingsPanels: function getCommonSettingsPanels(){
+            getCommonSettingsPanels: function(){
                 var panels = {};
                 
                 mxBuilder.selection.each(function(){
@@ -118,10 +118,21 @@
             isPreview: function(){
                 return this._enablePreview;
             },
-            revertToOriginalState: function revertToOriginalState(){
+            revertToOriginalState: function(){
                 mxBuilder.selection.each(function(){
                     this.revertToLastState();
                 });
+            },
+            monitorChangeOnControls: function(controls){
+                for(var c in controls){
+                    controls[c].data("change-monitor",false);
+                }
+            },
+            hasChanged: function(control){
+                return control.data("change-monitor") ? true:false;
+            },
+            setChanged: function(control){
+                control.data("change-monitor",true);
             }
         }
     });
