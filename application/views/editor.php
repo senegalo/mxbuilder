@@ -971,6 +971,9 @@
                         </div>
                     </li>
                 </ul>
+                <div class="loading-overlay">
+                    <img src="public/images/loading.gif"/>
+                </div>
             </div>
 
             <div class="image-gallery-settings">
@@ -1102,6 +1105,9 @@
                 <table>
 
                 </table>
+                <div class="loading-overlay">
+                    <img src="public/images/loading.gif"/>
+                </div>
             </div>
 
             <div class="image-grid-settings">

@@ -13,7 +13,7 @@
         }
         
         $.extend(mxBuilder.FlickerAdapterComponent.prototype,new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".flexly-flicker-adapter"),
+            template: mxBuilder.layout.templates.find(".flexly-flicker-adapter").remove(),
             init: function init(properties){
                 var self = this;
                 mxBuilder.Component.prototype.init.call(this,properties);

@@ -18,3 +18,22 @@
 .image-grid-component-instance .image-title, .image-grid-component-instance .image-caption {
     padding: 10px 20px;
 }
+
+.image-grid-component-instance .loading-overlay {
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(100,100,100,0.3);
+    display:none;
+}
+
+.image-grid-component-instance .loading-overlay img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -37px;
+    margin-left: -37px;
+}

@@ -78,6 +78,36 @@
                             imageGridComponent.rebuild();
                             imageGridComponent.revalidate();
                             return false;
+                        } else if(component == "FlickerAdapterComponent"){
+                            imageGridComponent.element.find(".loading-overlay").show();
+                            var flickrObj = ui.helper.data("extra").flickerObj;
+                            if(!Array.isArray(imageGridComponent._flickrImageCount)){
+                                imageGridComponent._flickrImageCount = [];
+                            }
+                            imageGridComponent._flickrImageCount.push(true);
+                            mxBuilder.api.assets.addFlickerImage({
+                                flickerObj: flickrObj,
+                                success: function(data){
+                                    mxBuilder.assets.add(data.asset, true);
+                                    imageGridComponent.list.push({
+                                        id: data.asset.id,
+                                        caption: true,
+                                        title: true,
+                                        link: {}
+                                    });
+                                    imageGridComponent.rebuild();
+                                    imageGridComponent.revalidate();
+                                },
+                                error: function(){
+                                    mxBuilder.dialogs.alertDialog.show("Couldn't add the image to your assets...<br/>Please try again later");
+                                },
+                                complete: function(){
+                                    imageGridComponent._flickrImageCount.pop();
+                                    if(imageGridComponent._flickrImageCount.length == 0){
+                                        imageGridComponent.element.find(".loading-overlay").hide();
+                                    }
+                                }
+                            });
                         }
                     }
                 }
@@ -309,7 +339,7 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-//                delete out.background;
+                //                delete out.background;
                 
                 out.gridGallerySettings = {
                     panel: mxBuilder.layout.settingsPanels.imageGrid
