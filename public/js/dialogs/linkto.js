@@ -4,7 +4,7 @@
         
         var theDialog = mxBuilder.layout.templates.find(".linkto-dialog").appendTo(mxBuilder.layout.selectionSafe).dialog({
             title: "Link To",
-            zIndex: 10000008,
+            zIndex: 40000000,
             resizable: false,
             width: 400,
             dialogClass: "link-to-dialog prevents-editor-close",
@@ -74,7 +74,7 @@
                 cancelCallback = obj && obj.cancel ? obj.cancel : null;
                 closeCallback = obj && obj.close ? obj.close : null;
                 
-                theDialog.find('select[name="page"]').empty().append(mxBuilder.layout.pagesSelect.children().clone());
+                theDialog.find('select[name="page"]').empty().append(mxBuilder.layout.utils.getOrderdPagesList());
                 
                 if(obj.imageBox){
                     theDialog.find(".lightbox").show()
