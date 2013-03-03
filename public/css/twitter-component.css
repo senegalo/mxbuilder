@@ -19,6 +19,6 @@
     height: auto;
 }
 
-.flexly-tweet-button-settings .tweet-button-url {
+.flexly-tweet-button-settings .tweet-url input.tweet-button-url {
     width: 203px;
 }

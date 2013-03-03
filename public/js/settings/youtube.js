@@ -1,47 +1,34 @@
 (function($){
     $(function(){
         mxBuilder.layout.settingsPanels.youtube = {
+            //update the template variable
             _template: mxBuilder.layout.templates.find(".youtube-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var youtube = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
+                //change settings panel title
                 thePanel.find(".flexly-collapsable-title").text("Youtube Video Settings");
                 
                 var theInstance = this._template.clone();
                 
+                //fill in all the controls 
                 var controls = {
                     videoID: theInstance.find("#youtube-video-id"),
                     autoplay: theInstance.find("#youtube-video-autoplay")
                 };
                 
-                controls.autoplay.checkbox().on({
-                    change: function change(){
-                        if(settingsTab.isPreview()){
-                            var element = $(this);
-                            mxBuilder.selection.each(function(){
-                                this.autoplay = element.is(":checked");
-                                this.rebuild();
-                            });
-                        }
-                    }
-                });
+                this.applyToSelectionOn(controls, "autoplay", "change");
+                this.applyToSelectionOn(controls, "videoID", "input");
                 
-                controls.videoID.on({
-                    input: function input(){
-                        var element = $(this);
-                        if(settingsTab.isPreview() && element.val().match(/[a-zA-Z0-9_-]{11}/) !== null){
-                            mxBuilder.selection.each(function(){
-                                this.videoID = element.val();
-                                this.rebuild();
-                            });
-                        }
-                    }
-                });
                 
+                //Configure the controls here
+                
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
+                //define component properties to add to the original settings object
                 var properties = ["videoID","autoplay"];
                 
                 var firstPass = true;
@@ -72,11 +59,9 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        youtube.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        youtube.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
@@ -85,7 +70,8 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values){            
+            setValues: function(controls, values){    
+                //implement the setValue function
                 if(values.videoID !== false){
                     controls.videoID.val(values.videoID);
                 } else {
@@ -97,20 +83,37 @@
                 } else {
                     controls.autoplay.removeAttr("checked");
                 }
-                
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                   values = {
-                       videoID: controls.videoID.val(),
-                       autoplay: controls.autoplay.is(":checked")
-                   }
+                    //if no values passed how to do we get the values ?
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.videoID)){
+                        //fill up the values array
+                        values.videoID = controls.videoID.val();
+                    }
+                    if(this._settingsTab.hasChanged(controls.autoplay)){
+                        values.autoplay = controls.autoplay;
+                    }
                 }
                 mxBuilder.selection.each(function(){
-                    for(var p in values){
+                    //apply the values to the selection
+                     for(var p in values){
                         this[p] = values[p]; 
                     }
                     this.rebuild();
+                });
+            },
+            applyToSelectionOn: function(controls,controlKey,event,extra){
+                var youtube = this;
+                controls[controlKey].on(event,function(){
+                    youtube._settingsTab.setChanged(controls[controlKey]);
+                    if(youtube._settingsTab.isPreview()){
+                        if(typeof extra != "undefined"){
+                            extra.apply(this,arguments);
+                        }
+                        youtube.applyToSelection(controls);
+                    }
                 });
             }
         }

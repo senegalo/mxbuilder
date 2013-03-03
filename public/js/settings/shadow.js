@@ -4,8 +4,8 @@
             //update the template variable
             _shadowTemplate: mxBuilder.layout.templates.find(".shadow-settings").find(".shadow-demo-box").remove(),
             _template: mxBuilder.layout.templates.find(".shadow-settings").remove(),
+            _settingsTab : mxBuilder.menuManager.menus.componentSettings,
             getPanel: function(expand){
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var shadow = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
                 
@@ -16,7 +16,8 @@
                 
                 //fill in all the controls 
                 var controls = {
-                    shadowContainer: theInstance.find(".shadow-container")
+                    shadowContainer: theInstance.find(".shadow-container"),
+                    shadowBoxes: $()
                 };
                 
                 
@@ -38,17 +39,14 @@
                         id: this.id,
                         element: shadowDemo.find(".shadow")
                     });
+                    controls.shadowBoxes = controls.shadowBoxes.add(shadowDemo);
                 });
                 
-                controls.shadowContainer.jqueryScrollbar().on({
-                    click: function click(){
-                        controls.shadowContainer.find(".selected").removeClass("selected");
-                        $(this).addClass("selected");
-                        if(settingsTab.isPreview()){
-                            shadow.applyToSelection(controls);
-                        }
-                    }
-                },".shadow-demo-box");
+                this.applyToSelectionOn(controls, "shadowBoxes", "click", function(){
+                    controls.shadowContainer.find(".selected").removeClass("selected");
+                    $(this).addClass("selected");
+                });
+                controls.shadowContainer.jqueryScrollbar();
                 
                 thePanel.on({
                     panelOpen: function(){
@@ -56,6 +54,7 @@
                     }
                 });
                 
+                this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
                 
                 //define component properties to add to the original settings object
@@ -84,19 +83,19 @@
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     previewDisabled: function(){
-                        shadow.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     cancel: function(){
-                        shadow.applyToSelection(controls,originalSettings);
                         mxBuilder.selection.revalidateSelectionContainer();
                         mxBuilder.menuManager.closeTab();
                     }
                 });                
                 
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values){  
+            setValues: function(controls, values){    
+                //implement the setValue function
                 var klass;
                 if(values.shadow && values.shadow != "none") {
                     klass = ".shadow-"+values.shadow;
@@ -105,29 +104,35 @@
                 }
                 controls.shadowContainer.find(klass).addClass("selected")
             },
-            applyToSelection: function applyToSelection(controls,values){
+            applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
-                    values = {
-                        shadow: controls.shadowContainer.find(".selected").data("id")
-                    };
+                    //if no values passed how to do we get the values ?
+                    values = {};
+                    if(this._settingsTab.hasChanged(controls.shadowBoxes)){
+                        //fill up the values array
+                        values.shadow= controls.shadowContainer.find(".selected").data("id");
+                    }
                 }
-                if(values.shadow && values.shadow != "none"){
-                    mxBuilder.selection.each(function(){
-                        this.setShadow(values.shadow);
-                    });
-                } else {
-                    mxBuilder.selection.each(function(){
-                        this.removeShadow();
-                    });
-                }
+                mxBuilder.selection.each(function(){
+                    //apply the values to the selection
+                    if(values.shadow && values.shadow != "none"){
+                        mxBuilder.selection.each(function(){
+                            this.setShadow(values.shadow);
+                        });
+                    } else {
+                        mxBuilder.selection.each(function(){
+                            this.removeShadow();
+                        });
+                    }
+                });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls,controlKey,event,extra){
+            applyToSelectionOn: function(controls,controlKey,event,extra){
                 var shadow = this;
-                var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 controls[controlKey].on(event,function(){
-                    if(settingsTab.isPreview()){
+                    shadow._settingsTab.setChanged(controls[controlKey]);
+                    if(shadow._settingsTab.isPreview()){
                         if(typeof extra != "undefined"){
-                            extra.call();
+                            extra.apply(this,arguments);
                         }
                         shadow.applyToSelection(controls);
                     }

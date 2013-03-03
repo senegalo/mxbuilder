@@ -366,6 +366,7 @@
                 return out;
             },
             init: function init(properties){
+                this._cachedStates = [];
                 $.extend(this,properties.data);
                 if(typeof properties.element == "undefined"){
                     var obj = this.getImageObj();
