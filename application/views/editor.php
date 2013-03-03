@@ -693,6 +693,10 @@
             </div>
 
             <div class="flexly-component-layout-background-settings">
+                
+                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+                <div class="opacity-slider" style="width:238px;"></div>
+                
                 <div class="settings-title">Background Color</div>
                 <div class="picker">
 
@@ -704,9 +708,6 @@
 
                 <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
                 <div class="scale-slider" style="width:238px;"></div>
-
-                <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
-                <div class="opacity-slider" style="width:238px;"></div>
 
             </div>
 
