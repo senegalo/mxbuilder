@@ -155,7 +155,7 @@
     display: inline-block;
 }
 
-.image-gallery-slider .loading-overlay {
+.image-slider-component-instance .loading-overlay {
     height: 100%;
     width: 100%;
     z-index: 100;
@@ -166,7 +166,7 @@
     display:none;
 }
 
-.image-gallery-slider .loading-overlay img {
+.image-slider-component-instance .loading-overlay img {
     position: absolute;
     top: 50%;
     left: 50%;

@@ -955,6 +955,10 @@
             </div>
 
             <div class="image-slider-component-instance">
+                
+                <div class="loading-overlay">
+                    <img src="public/images/loading.gif"/>
+                </div>
             </div>
 
             <div class="image-gallery-slider">
@@ -971,9 +975,6 @@
                         </div>
                     </li>
                 </ul>
-                <div class="loading-overlay">
-                    <img src="public/images/loading.gif"/>
-                </div>
             </div>
 
             <div class="image-gallery-settings">

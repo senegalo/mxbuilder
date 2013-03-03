@@ -121,7 +121,6 @@
                                         link: {}
                                     });
                                     imageSlider.rebuild();
-                                    imageSlider.revalidate();
                                 },
                                 error: function(){
                                     mxBuilder.dialogs.alertDialog.show("Couldn't add the image to your assets...<br/>Please try again later");
