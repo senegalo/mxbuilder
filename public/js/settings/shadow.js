@@ -23,12 +23,14 @@
                 
                 //Configure the controls here
                 
-                this._shadowTemplate.clone().data({
+                var noneShadow = this._shadowTemplate.clone().data({
                     id: "none"
                 })
                 .text("No Shadow")
                 .addClass("shadow-none")
                 .appendTo(controls.shadowContainer);
+                
+                controls.shadowBoxes = controls.shadowBoxes.add(noneShadow);
                 
                 mxBuilder.shadowManager.each(function(){
                     var shadowDemo = shadow._shadowTemplate.clone()
