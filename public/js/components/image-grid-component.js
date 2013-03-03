@@ -309,7 +309,7 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
-                delete out.background;
+//                delete out.background;
                 
                 out.gridGallerySettings = {
                     panel: mxBuilder.layout.settingsPanels.imageGrid
