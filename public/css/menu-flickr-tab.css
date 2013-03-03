@@ -1,0 +1,14 @@
+/* 
+    Document   : menu-flicr-tab
+    Created on : Mar 3, 2013, 3:01:40 PM
+    Author     : senegalo
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.flickr-searching {
+    bottom: 0px !important;
+}
+.flickr-searching img {
+    height: 26px;
+}

@@ -43,6 +43,7 @@
         <link rel="stylesheet" href="public/css/shadow-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/shadow.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/global-settings.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/menu-flickr-tab.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />

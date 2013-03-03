@@ -48,6 +48,12 @@
                 this._theList = this._template.clone().appendTo(mxBuilder.menuManager.contentTab);
                 this._leftList = this._theList.find(".right-column ul");
                 this._rightList = this._theList.find(".left-column ul");
+                
+                if(this._currentSearchResults){
+                    this._lastDisplayedIndex = 0;
+                    this.infinitScroll();
+                }
+                
             },
             search: function(doNotAddOnSuccess){
                 var flicker = this;
@@ -59,11 +65,24 @@
                     flicker._leftList.empty();
                     flicker._rightList.empty();
                     mxBuilder.menuManager.revalidateScrollbar();
+                    mxBuilder.menuManager.tabButtonsMain
+                    .find(".flexly-icon-search-light")
+                    .hide();
+                    
+                    var searching = $('<div class="flickr-searching"><img src="public/images/loader.gif"/></div>')
+                    .prependTo(mxBuilder.menuManager.tabButtonsMain);
+                    
                     searchBox.attr("disabled","disabled");
                     mxBuilder.api.flicker.search({
                         keyword: theValue,
                         success: function(data){
+                            
+                            searching.remove();
                             searchBox.removeAttr("disabled");
+                            mxBuilder.menuManager.tabButtonsMain
+                            .find(".flexly-icon-search-light")
+                            .show();
+                            
                             flicker._currentSearchResults = data;
                             if(doNotAddOnSuccess !== false){
                                 flicker.infinitScroll();
@@ -74,21 +93,23 @@
                 }
             },
             infinitScroll: function(){
-                var p = this._lastDisplayedIndex+1;
-                var heightBefore = this._theList.height();
-                var breakPointHeight = 2*mxBuilder.menuManager.contentTab.height();
-                for(var cnt=this._currentSearchResults.photos.photo.length;p<cnt;p++){
-                    if(typeof this._currentSearchResults.photos.photo[p].originalsecret == "undefined"){
-                        continue;
-                    }
+                if(mxBuilder.menuManager.currentTab == "photosFlicker"){
+                    var p = this._lastDisplayedIndex+1;
+                    var heightBefore = this._theList.height();
+                    var breakPointHeight = 2*mxBuilder.menuManager.contentTab.height();
+                    for(var cnt=this._currentSearchResults.photos.photo.length;p<cnt;p++){
+                        if(typeof this._currentSearchResults.photos.photo[p].originalsecret == "undefined"){
+                            continue;
+                        }
                     
-                    this.addItem(this._currentSearchResults.photos.photo[p]);
-                    if(this._theList.height()-heightBefore > breakPointHeight){
-                        break;
+                        this.addItem(this._currentSearchResults.photos.photo[p]);
+                        if(this._theList.height()-heightBefore > breakPointHeight){
+                            break;
+                        }
                     }
+                    mxBuilder.menuManager.revalidateScrollbar();
+                    this._lastDisplayedIndex = p;
                 }
-                mxBuilder.menuManager.revalidateScrollbar();
-                this._lastDisplayedIndex = p;
             },
             clearInfinitScroll: function(){
                 this._lastDisplayedIndex = 0;

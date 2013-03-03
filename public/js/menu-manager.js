@@ -59,6 +59,7 @@
             menus: {},
             currentTab: "",
             showTab: function(tabID,extraData){
+                this.currentTab = tabID;
                 if(theMenuContainer.width() < 70){
                     theMenuContainer.animate({
                         width: 380
@@ -69,7 +70,6 @@
                 } else {
                     mxBuilder.menuManager.displayTabContent(tabID,extraData);
                 }
-                this.currentTab = tabID;
             },
             displayTabContent: function(tabID,extraData){
                 this.contentTab.empty();
@@ -153,6 +153,5 @@
                 .appendTo(this.tabFooter);
             }
         }
-        
     });
 }(jQuery))
