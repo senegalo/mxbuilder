@@ -115,14 +115,16 @@
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                    if(values.shadow && values.shadow != "none"){
-                        mxBuilder.selection.each(function(){
-                            this.setShadow(values.shadow);
-                        });
-                    } else {
-                        mxBuilder.selection.each(function(){
-                            this.removeShadow();
-                        });
+                    if(values.shadow){
+                        if(values.shadow != "none"){
+                            mxBuilder.selection.each(function(){
+                                this.setShadow(values.shadow);
+                            });
+                        } else {
+                            mxBuilder.selection.each(function(){
+                                this.removeShadow();
+                            });
+                        }
                     }
                 });
             },
