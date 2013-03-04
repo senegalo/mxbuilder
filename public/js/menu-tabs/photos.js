@@ -25,7 +25,11 @@
                 });
                 
                 mxBuilder.menuManager.addButtonTo("flexly-icon-photos-light photos-tab-icon photos-current", "aux");
-                mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light photos-tab-icon", "aux");
+                mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light photos-tab-icon", "aux").on({
+                    click: function click(){
+                        mxBuilder.menuManager.showTab("photosClipart");
+                    }
+                });
                 mxBuilder.menuManager.addButtonTo("flexly-icon-flicker-light photos-tab-icon", "aux").on({
                     click: function click(){
                         mxBuilder.menuManager.showTab("photosFlicker");

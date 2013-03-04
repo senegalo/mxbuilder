@@ -44,18 +44,6 @@
                         mxBuilder.menuManager.revalidateScrollbar();
                     }
                 });
-                
-                //the cancel / savebutton 
-//                $('<div class="flexly-icon flexly-icon-cancel-big-black flexly-component-settings-cancel"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
-//                    click: function(){
-//                        theContent.children().trigger("cancel");
-//                    }
-//                });
-//                $('<div class="flexly-icon flexly-icon-save-big-black flexly-component-settings-save"/>').appendTo(mxBuilder.menuManager.tabFooter).on({
-//                    click: function(){
-//                        theContent.children().trigger("save");
-//                    }
-//                });
             }
         }
     });

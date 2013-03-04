@@ -44,6 +44,8 @@
         <link rel="stylesheet" href="public/css/shadow.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/global-settings.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-flickr-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/photos-clipart-tab.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/clipart-component.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -133,6 +135,7 @@
         <script type="text/javascript" src="public/js/menu-tabs/pages.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/pages-add-edit.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos.js"></script>
+        <script type="text/javascript" src="public/js/menu-tabs/photos-clipart.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photo-settings.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-search.js"></script>
         <script type="text/javascript" src="public/js/menu-tabs/photos-flicker.js"></script>
@@ -161,6 +164,7 @@
         <script type="text/javascript" src="public/js/components/image-slider-component.js"></script>
         <script type="text/javascript" src="public/js/components/image-grid-component.js"></script>
         <script type="text/javascript" src="public/js/components/google-maps-component.js"></script>
+        <script type="text/javascript" src="public/js/components/clipart-component.js"></script>
 
         <!-- Loading Global Settings Panels -->
         <script type="text/javascript" src="public/js/global-settings/snap.js"></script>
@@ -184,6 +188,7 @@
         <script type="text/javascript" src="public/js/settings/image-grid.js"></script>
         <script type="text/javascript" src="public/js/settings/google-maps.js"></script>
         <script type="text/javascript" src="public/js/settings/shadow.js"></script>
+        <script type="text/javascript" src="public/js/settings/color.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1156,6 +1161,22 @@
                 </div>
             </div>
 
+            <div class="flexly-menu-photos-clipart-tab">
+                <ul>
+                    <li class="clipart"></li>
+                </ul>
+            </div>
+            
+            <div class="clipart-component-instance">
+                <div class="clipart"></div>
+            </div>
+            
+            <div class="color-settings">
+                <div class="picker">
+
+                </div>
+            </div>
+            
         </div>
     </body>
 </html>
