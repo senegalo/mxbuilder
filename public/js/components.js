@@ -1,4 +1,5 @@
 (function($){
+    var helper = 
     mxBuilder.Component = function Component(obj){
         if(obj){
             
@@ -16,7 +17,7 @@
             //applying the popped from the active stack behavior
             if(!obj.poppedFromActiveStack){
                 obj.poppedFromActiveStack = function(){
-                    //mxBuilder.selection.removeFromSelection(obj.element);
+                //mxBuilder.selection.removeFromSelection(obj.element);
                 }
             }
             obj.element.on({
@@ -41,11 +42,152 @@
                         var sameType = mxBuilder.selection.isAllSelectedSameType();
                         
                         var showSettings = true;
+                        var imgComponents = [];
+                        var galleryComponents = [];
+                        var otherComponents = [];
                         mxBuilder.selection.each(function(){
                             if(!this.hasSettings){
                                 showSettings = false;
                             }
+                            switch(this.type){
+                                case "ImageComponent":
+                                    imgComponents.push(this);
+                                    break;
+                                case "ImageGridComponent":
+                                case "ImageSliderComponent":
+                                    galleryComponents.push(this);
+                                    break;
+                                default:
+                                    otherComponents.push(this);
+                                    break;
+                            }
                         });
+                        
+                        if(otherComponents.length == 0){
+                            if(galleryComponents.length == 1 && imgComponents.length >= 1){
+                                ctx.addItem({
+                                    label: "Merge images into the gallery",
+                                    callback: function(){
+                                        for(var i in imgComponents){
+                                            galleryComponents[0].addToList({
+                                                id: imgComponents[i].extra.originalAssetID
+                                            });
+                                            imgComponents[i].destroy();
+                                        }
+                                        galleryComponents[0].rebuild();
+                                        galleryComponents[0].revalidate();
+                                    }
+                                });
+                            } else if (galleryComponents.length > 1 && imgComponents.length >= 1){
+                                ctx.addSubgroup({
+                                    label: "Merge all to"
+                                }).addItem({
+                                    label: "Grid Gallery",
+                                    callback: function(){
+                                        var theList = {};
+                                        var properties = {
+                                            css: {
+                                                left: 10000000,
+                                                top: 10000000,
+                                                width: 600,
+                                                height: 350
+                                            },
+                                            data: {}
+                                        };
+                                        var elementPosition;
+                                        for(var i in imgComponents){
+                                            theList[imgComponents[i].extra.originalAssetID] = {
+                                                id: imgComponents[i].extra.originalAssetID,
+                                                caption: true,
+                                                title: true,
+                                                link: {}
+                                            };
+                                            elementPosition = imgComponents[i].element.position();
+                                            if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+                                                properties.css.left = elementPosition.left;
+                                                properties.css.top = elementPosition.top;
+                                                properties.data.container = imgComponents[i].container;
+                                                properties.data.page = imgComponents[i].page
+                                            }
+                                            imgComponents[i].destroy();
+                                        }
+                                        for(i in galleryComponents){
+                                            for(var e in galleryComponents[i].list){
+                                                var listItem = galleryComponents[i].list[e];
+                                                theList[listItem.id] = listItem;
+                                            }
+                                            elementPosition = galleryComponents[i].element.position();
+                                            if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+                                                properties.css.left = elementPosition.left;
+                                                properties.css.top = elementPosition.top;
+                                                properties.data.container = galleryComponents[i].container;
+                                                properties.data.page = galleryComponents[i].page
+                                            }
+                                            galleryComponents[i].destroy();
+                                        }
+                                        var finalList = [];
+                                        for(i in theList){
+                                            finalList.push(theList[i]);
+                                        }
+                                        properties.data.type = "ImageGridComponent";
+                                        properties.data.list = finalList;
+                                        mxBuilder.components.addComponent(properties);
+                                    }
+                                }).addItem({
+                                    label: "Slider Gallery",
+                                    callback: function(){
+                                        var theList = {};
+                                        var properties = {
+                                            css: {
+                                                left: 10000000,
+                                                top: 10000000,
+                                                width: 600,
+                                                height: 350
+                                            },
+                                            data: {}
+                                        };
+                                        var elementPosition;
+                                        for(var i in imgComponents){
+                                            theList[imgComponents[i].extra.originalAssetID] = {
+                                                id: imgComponents[i].extra.originalAssetID,
+                                                caption: true,
+                                                title: true,
+                                                link: {}
+                                            };
+                                            elementPosition = imgComponents[i].element.position();
+                                            if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+                                                properties.css.left = elementPosition.left;
+                                                properties.css.top = elementPosition.top;
+                                                properties.data.container = imgComponents[i].container;
+                                                properties.data.page = imgComponents[i].page
+                                            }
+                                            imgComponents[i].destroy();
+                                        }
+                                        for(i in galleryComponents){
+                                            for(var e in galleryComponents[i].list){
+                                                var listItem = galleryComponents[i].list[e];
+                                                theList[listItem.id] = listItem;
+                                            }
+                                            elementPosition = galleryComponents[i].element.position();
+                                            if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+                                                properties.css.left = elementPosition.left;
+                                                properties.css.top = elementPosition.top;
+                                                properties.data.container = galleryComponents[i].container;
+                                                properties.data.page = galleryComponents[i].page
+                                            }
+                                            galleryComponents[i].destroy();
+                                        }
+                                        var finalList = [];
+                                        for(i in theList){
+                                            finalList.push(theList[i]);
+                                        }
+                                        properties.data.type = "ImageSliderComponent";
+                                        properties.data.list = finalList;
+                                        mxBuilder.components.addComponent(properties);
+                                    }
+                                }).end()
+                            }
+                        }
                     
                         if(showSettings && mxBuilder.menuManager.menus.componentSettings.getCommonSettingsPanels().length > 0){
                             ctx.addItem({
@@ -646,7 +788,7 @@
                     }
                     currentSelectionComponent.css(newPosition);
                 },true);
-                //console.log($(this).data().draggable.snapElements)
+            //console.log($(this).data().draggable.snapElements)
             },
             stop: function stop(){
                 mxBuilder.layout.revalidateLayoutWidth();

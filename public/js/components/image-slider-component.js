@@ -43,20 +43,10 @@
                     //otherwise it's coming stright from the photo list so we generate the missing
                     //properties
                     if(this.extra[i].id){
-                        var listItem = {
-                            id: this.extra[i].id,
-                            caption: true,
-                            title: true,
-                            link: {}
-                        }
-                        $.extend(listItem,this.extra[i]);
-                        this.list.push(listItem);
+                        this.addToList(this.extra[i]);
                     } else {
-                        this.list.push({
-                            id: this.extra[i],
-                            caption: true,
-                            title: true,
-                            link: {}
+                        this.addToList({
+                            id: this.extra[i]
                         });
                     }
                 }
@@ -509,6 +499,21 @@
                 } else {
                     caption.show();
                 }
+            },
+            addToList: function addToList(item){
+                if(typeof item == "number" || typeof item == "string"){
+                    item = {
+                        id: item
+                    };
+                }
+                var listItem = {
+                    id: 0,
+                    caption: true,
+                    title: true,
+                    link: {}
+                }
+                $.extend(listItem,item);
+                this.list.push(listItem);
             }
         });
        
