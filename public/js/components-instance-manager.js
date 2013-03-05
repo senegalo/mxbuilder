@@ -2,9 +2,11 @@
     mxBuilder.components = {
         __components: {},
         addComponent: function(properties){
+            //fix footer if required
             if(properties.fixFooter && properties.data.container == "footer"){
                 properties.css.top = properties.css.top- mxBuilder.layout.footer.position().top;
             }
+            
             var component = new mxBuilder[properties.data.type](properties);
             var guid = mxBuilder.utils.assignGUID(component.element);
             
@@ -15,8 +17,16 @@
             if(typeof properties.data.container != "undefined"){
                 component.setContainer(properties.data.container);
             }
-            this.__components[guid].element.trigger("componentInit");
-            return this.__components[guid];
+            //adding a component on this same page !? if not cache it on the specified page if it's available
+            var page = properties.data.page;
+            var pageObj = mxBuilder.pages.getPageObj(page);
+            if(page && pageObj && !mxBuilder.pages.isCurrentPage(page)){
+                pageObj.components[component.getID()] = component.save();
+                component.archive();
+            } else {
+                this.__components[guid].element.trigger("componentInit");
+                return this.__components[guid];
+            }
         },
         getComponent: function(obj){
             if(typeof obj == "string"){

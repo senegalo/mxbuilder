@@ -234,8 +234,7 @@
                 }
             },
             attachComponentToPage: function(component){
-                //var pageID = component.page ? component.page : this.__currentPage;
-                var pageID = this.__currentPage;
+                var pageID = component.page ? component.page : this.__currentPage;
                 component.page = pageID;
                 this.__pages[pageID].components[component.getID()] = component;
             },

@@ -18,19 +18,18 @@
                 var self = this;
                 mxBuilder.Component.prototype.init.call(this,properties);
                 try{
-                    var flickerObj = properties.data.extra.flickerObj;
                     mxBuilder.api.assets.addFlickerImage({
-                        flickerObj: flickerObj,
+                        flickerObj: properties.data.extra.flickerObj,
                         success: function(data){
                             mxBuilder.assets.add(data.asset, true);
-                            var adapterPosition = self.element.position();
                             mxBuilder.components.addComponent({
                                 fixFooter: true,
                                 css: {
-                                    left: adapterPosition.left,
-                                    top: adapterPosition.top
+                                    left: properties.css.left,
+                                    top: properties.css.top
                                 },
-                                data:{ 
+                                data:{
+                                    page: self.page,
                                     container: self.container,
                                     type: "ImageComponent",
                                     extra: {
@@ -44,7 +43,7 @@
                             mxBuilder.dialogs.alertDialog.show("Couldn't add the image to your assets...<br/>Please try again later");
                         },
                         complete: function(){
-                            properties.element.trigger("destroy");
+                            self.destroy();
                         }
                     });
                 } catch(e){

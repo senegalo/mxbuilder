@@ -425,12 +425,13 @@
         trashed: false,
         hasSettings: true,
         _cachedStates: null,
+        _id: null,
         setContainer: function setContainer(container){
             this.container = container;
             this.element.appendTo(mxBuilder.layout[container]);
         },
         getID: function getID(){
-            return mxBuilder.utils.getElementGUID(this.element);
+            return this._id?this._id:mxBuilder.utils.getElementGUID(this.element);
         },
         bringToFront: function bringToFront(){
             mxBuilder.zIndexManager.moveUp(this);
@@ -470,11 +471,13 @@
             this.pinned = true;
         },
         unpin: function unpin(){
-            mxBuilder.pages.unpinComponent(this);
-            this.pinned = false;
+            if(this.isPinned()){
+                mxBuilder.pages.unpinComponent(this);
+                this.pinned = false;
+            }
         },
         isPinned: function isPinned(){
-            return this.pinned;
+            return this.pinned?true:false;
         },
         save: function save(){
             var out = {
@@ -527,6 +530,12 @@
             }
             $.extend(this,properties.data);
             this.element = properties.element;
+            var instance = this;
+            this.element.one({
+                componentInit: function(){
+                    instance._id = instance.getID();
+                }
+            })
             this.revalidateShadow();
         },
         trashComponent: function trashComponent(){
@@ -542,9 +551,11 @@
         destroy: function destroy(){
             this.unpin();
             mxBuilder.pages.detachComponentFromPage(this);
-            mxBuilder.selection.removeFromSelection(this.element);
-            mxBuilder.components.removeComponent(this.element);
-            this.element.remove();
+            if(mxBuilder.pages.isCurrentPage(this.page)){
+                mxBuilder.selection.removeFromSelection(this.element);
+                mxBuilder.components.removeComponent(this.element);
+                this.element.remove();
+            }
         },
         getBorder: function getBorder(element){
             element = element ? element : this.element;
@@ -811,9 +822,9 @@
                 
                 var componentType =  ui.helper.data("component");
                 if(componentType){
-//                    if(container == "footer"){
-//                        ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
-//                    }
+                    //                    if(container == "footer"){
+                    //                        ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
+                    //                    }
                     var theComponent = mxBuilder.components.addComponent({
                         fixFooter: true,
                         css: {
