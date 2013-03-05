@@ -366,49 +366,46 @@
                 return out;
             },
             init: function init(properties){
-                this._cachedStates = [];
-                $.extend(this,properties.data);
-                if(typeof properties.element == "undefined"){
-                    var obj = this.getImageObj();
+                mxBuilder.Component.prototype.init.call(this,properties);
+                
+                var obj = this.getImageObj();
                     
-                    $.extend({
-                        height: 300/obj.ratio,
-                        width: 300
-                    },properties.css)
+                $.extend({
+                    height: 300/obj.ratio,
+                    width: 300
+                },properties.css)
                     
-                    if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
-                        if(obj.ratio > 1){
-                            properties.css.width = 300;
-                            properties.css.height = 300/obj.ratio;
-                        } else {
-                            properties.css.height = 300;
-                            properties.css.width = 300/obj.ratio;
-                        }
-                    }
-                    
-                    properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
-                    
-                    this.element = properties.element = this.template.clone().find("img")
-                    .attr({
-                        src: obj.location+"/"+obj[properties.data.__currentSize],
-                        title: obj.title
-                    })
-                    .css({
-                        width: properties.css.width,
-                        height: properties.css.height
-                    })
-                    .end()
-                    .css(properties.css)
-                    .appendTo(mxBuilder.layout[properties.data.container]);
-                    
-                    this.theImage = this.element.find("img");
-                    this.theImageContainer = this.element.find(".image");
-                    
-                    if(properties.data.border){
-                        this.setBorder(properties.data.border);
+                if(typeof properties.css.width == "undefined" || typeof properties.css.height == "undefined"){
+                    if(obj.ratio > 1){
+                        properties.css.width = 300;
+                        properties.css.height = 300/obj.ratio;
+                    } else {
+                        properties.css.height = 300;
+                        properties.css.width = 300/obj.ratio;
                     }
                 }
-                this.revalidateShadow();
+                    
+                properties.data.__currentSize = properties.data.__currentSize ? properties.data.__currentSize : this.getClosestSize("small");
+                    
+                this.element.find("img")
+                .attr({
+                    src: obj.location+"/"+obj[properties.data.__currentSize],
+                    title: obj.title
+                })
+                .css({
+                    width: properties.css.width,
+                    height: properties.css.height
+                })
+                .end()
+                .css(properties.css);
+                    
+                this.theImage = this.element.find("img");
+                this.theImageContainer = this.element.find(".image");
+                    
+                if(properties.data.border){
+                    this.setBorder(properties.data.border);
+                }
+                
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this)
