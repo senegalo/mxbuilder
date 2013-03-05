@@ -16,9 +16,7 @@
                         mxBuilder.pages.restorePages(theWebsite);
                         mxBuilder.dialogs.progressDialog.hide(); 
                         setInterval(function(){
-                            console.time("Saving");
                             mxBuilder.recorder.saveIfRequired();
-                            console.timeEnd("Saving");
                         },2000);
                         $(mxBuilder.systemEvents).trigger("systemReady");
                     },

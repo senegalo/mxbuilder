@@ -299,7 +299,7 @@
                     out.pages.push(copy);
                 }
                 for(c in this.__pinned){
-                    if(this.__pinned[c].trashed){
+                    if(!this.__pinned[c].trashed){
                         out.pinned.push(this.__pinned[c].save());
                     }
                 }
