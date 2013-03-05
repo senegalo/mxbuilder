@@ -87,6 +87,7 @@
             },
             createGalleryFromSelected: function(galleryType){
                 var properties = {
+                    fixFooter: true,
                     data: {
                         type: galleryType,
                         extra: []

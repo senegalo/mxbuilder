@@ -131,6 +131,7 @@
                                         }
                                         properties.data.type = "ImageGridComponent";
                                         properties.data.list = finalList;
+                                        properties.fixFooter = true;
                                         mxBuilder.components.addComponent(properties);
                                     }
                                 }).addItem({
@@ -183,6 +184,7 @@
                                         }
                                         properties.data.type = "ImageSliderComponent";
                                         properties.data.list = finalList;
+                                        properties.fixFooter = true;
                                         mxBuilder.components.addComponent(properties);
                                     }
                                 }).end()
@@ -705,6 +707,7 @@
                 state.css.left = currentPos.left;
                 
                 this.destroy();
+                state.fixFooter = true;
                 var newInstance = mxBuilder.components.addComponent(state);
                 if(wasSelected){
                     mxBuilder.selection.addToSelection(newInstance.element, true);
@@ -808,10 +811,11 @@
                 
                 var componentType =  ui.helper.data("component");
                 if(componentType){
-                    if(container == "footer"){
-                        ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
-                    }
+//                    if(container == "footer"){
+//                        ui.position.top = ui.position.top- mxBuilder.layout.footer.position().top;
+//                    }
                     var theComponent = mxBuilder.components.addComponent({
+                        fixFooter: true,
                         css: {
                             left: ui.position.left,
                             top: ui.position.top

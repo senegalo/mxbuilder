@@ -5,10 +5,6 @@
             var self = this;
         
             self.init(properties);
-            
-            this.element.on({
-                
-                });
         
             mxBuilder.Component.apply(this,[{
                 type: "ImageComponent",
