@@ -78,7 +78,7 @@
                                         galleryComponents[0].revalidate();
                                     }
                                 });
-                            } else if (galleryComponents.length > 1 && imgComponents.length >= 1){
+                            } else if (galleryComponents.length > 1 && imgComponents.length >= 0){
                                 ctx.addSubgroup({
                                     label: "Merge all to"
                                 }).addItem({
