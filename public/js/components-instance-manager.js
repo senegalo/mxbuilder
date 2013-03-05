@@ -2,6 +2,9 @@
     mxBuilder.components = {
         __components: {},
         addComponent: function(properties){
+            if(properties.fixFooter && properties.data.container == "footer"){
+                properties.css.top = properties.css.top- mxBuilder.layout.footer.position().top;
+            }
             var component = new mxBuilder[properties.data.type](properties);
             var guid = mxBuilder.utils.assignGUID(component.element);
             

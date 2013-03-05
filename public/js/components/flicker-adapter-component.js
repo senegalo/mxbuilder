@@ -25,6 +25,7 @@
                             mxBuilder.assets.add(data.asset, true);
                             var adapterPosition = self.element.position();
                             mxBuilder.components.addComponent({
+                                fixFooter: true,
                                 css: {
                                     left: adapterPosition.left,
                                     top: adapterPosition.top
@@ -37,6 +38,7 @@
                                     }
                                 }
                             });
+                            mxBuilder.layout.revalidateLayout();
                         },
                         error: function(){
                             mxBuilder.dialogs.alertDialog.show("Couldn't add the image to your assets...<br/>Please try again later");

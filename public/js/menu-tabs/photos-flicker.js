@@ -93,7 +93,7 @@
                 }
             },
             infinitScroll: function(){
-                if(mxBuilder.menuManager.currentTab == "photosFlicker"){
+                if(this._currentSearchResults !== null && mxBuilder.menuManager.currentTab == "photosFlicker"){
                     var p = this._lastDisplayedIndex+1;
                     var heightBefore = this._theList.height();
                     var breakPointHeight = 2*mxBuilder.menuManager.contentTab.height();
