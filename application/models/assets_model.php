@@ -77,7 +77,7 @@ class Assets_Model extends CI_Model {
                 $extras['is_flicker'] = 1;
             }
             
-            $this->db->set("extra", serialize($extras))
+            $this->db->set("extra", base64_encode(serialize($extras)))
                     ->where("id", $asset_id)
                     ->update("assets");
         } else {
@@ -204,7 +204,7 @@ class Assets_Model extends CI_Model {
 
             $upload_path = $this->get_upload_path($row->upload_date);
             if ($row->type == "image") {
-                $image_data = unserialize($row->extra);
+                $image_data = unserialize(base64_decode($row->extra));
                 $filename = $this->get_filename($row->id);
                 $extension = $row->extension;
 
@@ -244,7 +244,10 @@ class Assets_Model extends CI_Model {
                 $asset["location"] = base_url('/public/uploads') . "/" . $this->get_asset_upload_folder($row->upload_date);
                 $asset["name"] = $row->name;
                 if ($row->type == "image") {
-                    $image_data = unserialize($row->extra);
+                    $image_data = unserialize(base64_decode($row->extra));
+                    if(!is_array($image_data['sizes'])){
+                        print_r($row);
+                    }
                     $asset["ratio"] = $image_data["ratio"];
                     $asset["title"] = $image_data["title"];
                     $asset["caption"] = $image_data["caption"];
@@ -280,7 +283,7 @@ class Assets_Model extends CI_Model {
             $extra = unserialize($row->extra);
             $extra["caption"] = $args['caption'];
             $extra["title"] = $args['title'];
-            $extra = serialize($extra);
+            $extra = base64_encode(serialize($extra));
             $this->db->where("id", $image_id)
                     ->where("user_id", $user['id'])
                     ->set("name", $args['name'])
