@@ -88,7 +88,9 @@
                     border.setSimRadius(controls, "bottomRight",ui.value);
                     controls.radiusValue.text(ui.value+" Pixels");
                 });
-                this.applyToSelectionOn(controls, "widthSlider", "slide");                
+                this.applyToSelectionOn(controls, "widthSlider", "slide", function(event, ui){
+                    controls.widthValue.text(ui.value + " Pixels");
+                });                
                 
                 this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
