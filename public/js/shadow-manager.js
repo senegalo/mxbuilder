@@ -70,6 +70,8 @@
                 
                 settings.width = typeof settings.width == "undefined"?settings.parent.width():settings.width;
                 
+                
+                var parentOffset = (settings.parent.outerWidth(true)-settings.parent.width())/2;
                 var width = settings.width-settings.rightRadius-settings.leftRadius;
                 var height = width/this._shadows[settings.id].r;
                 height = height<12?12:height;
@@ -77,7 +79,7 @@
                     backgroundImage: 'url("public/images/shadows/'+this._shadows[settings.id].name+'")',
                     backgroundSize: width+"px "+height+"px",
                     height: height,
-                    bottom: -1*height,
+                    bottom: -1*(height+parentOffset),
                     width: width,
                     left: settings.leftRadius
                 });
