@@ -28,6 +28,17 @@ hr {
     outline: 1px dashed #444 !important;
 }
 
+.mx-layout-resize-indicator {
+    width:100%;
+    height: 1px;
+    border-bottom: 1px dashed #444;
+    position:absolute;
+    bottom:0px;
+    left:0;
+    display:none;
+}
+
+
 #selection-container{
     outline: 1px solid orange;
     cursor: move !important;
@@ -46,6 +57,23 @@ hr {
     left:50%;
     margin-left: -490px;
 }
+
+.ui-layout-resize:before {
+    content: "\f0dc";
+}
+
+.ui-layout-resize {
+    z-index:1000000;
+    background-color:#00dbff;
+    left: auto;
+    right: 30px;
+    width: 28px;
+    height: 12px;
+    font-family: FontAwesome;
+    font-size: 10px;
+    text-align: center;
+}
+
 
 .form {
     background-color: rgba(204,204,204,0.9);

@@ -282,14 +282,14 @@
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
-            <div id="header" style="height: 200px;width:100%;z-index:10;">
-
+            <div id="header" style="height: 200px;width:100%;z-index:10;position: relative;">
+                <div class="mx-layout-resize-indicator"></div>
             </div>
-            <div id="body" style="height: 300px;width:100%;z-index:9;">
-
+            <div id="body" style="height: 300px;width:100%;z-index:9;;position: relative;">
+                <div class="mx-layout-resize-indicator"></div>
             </div>
-            <div id="footer" style="height: 200px;width:100%;z-index:8;">
-
+            <div id="footer" style="height: 200px;width:100%;z-index:8;position: relative;">
+                <div class="mx-layout-resize-indicator"></div>
             </div>
             <div id="container">
                 <div id="header-content">

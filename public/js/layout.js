@@ -224,15 +224,22 @@
             footerOutline: mxBuilder.layout.footer.find(".footer-outline")
         });
         
-        var bodyWidth = mxBuilder.layout.body.width();
-        var handle = $('<div style="z-index:1000000;background-color:#00dbff;"/>');
+//        var bodyWidth = mxBuilder.layout.body.width();
+        var handle = $('<div class="ui-layout-resize ui-resizable-handle"/>');
         var makeResizable = function makeResizable(container,alsoResize){
             container.resizable({
-                minWidth: bodyWidth,
-                maxWidth: bodyWidth,
+//                minWidth: bodyWidth,
+//                maxWidth: bodyWidth,
                 alsoResize: alsoResize,
                 handles: {
-                    s: handle.clone().appendTo(container).addClass("ui-resizable-handle ui-resizable-s")
+                    s: handle.clone().appendTo(container).addClass("ui-resizable-s").on({
+                        mouseenter: function mouseover(){
+                            container.find(".mx-layout-resize-indicator").show();
+                        },
+                        mouseout: function mouseout(){
+                            container.find(".mx-layout-resize-indicator").hide();
+                        }
+                    })
                 },
                 start: function(event,ui){
                     var that = $(ui.element);
@@ -251,7 +258,7 @@
                     that.data("lastheight",that.height());
                 },
                 resize: function(event,ui) {
-                    var that = $(ui.element);
+                    var that = $(ui.element).css("width","100%");
                     
                     if(that.height() < mxBuilder.config.minContainerHeight){
                         that.height(mxBuilder.config.minContainerHeight);
@@ -288,11 +295,11 @@
                             body.scrollTop(body.scrollTop()+10);
                         }
                     }
-                    
+                    container.find(".mx-layout-resize-indicator").show();
                     mxBuilder.selection.revalidateSelectionContainer();
                 },
                 stop: function(event,ui){
-                    
+                    container.find(".mx-layout-resize-indicator").hide();
                     //if it's the body we are resizing update the content hight
                     if(this === mxBuilder.layout.layoutBody.get(0)){
                         mxBuilder.pages.setContentHeight(mxBuilder.layout.layoutBody.height());
