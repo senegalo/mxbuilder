@@ -842,7 +842,7 @@
                         <option value="http://">http://</option>
                         <option value="https://">https://</option>
                     </select>
-                    <input type="text" id="linkto-external-link" class="link-input"/>
+                    <input type="text" id="linkto-external-link" class="link-input" style="width:156px;"/>
                 </div>
 
                 <div>
@@ -1168,7 +1168,7 @@
             </div>
             
             <div class="clipart-component-instance">
-                <div class="clipart"></div>
+                <div class="clipart" style="cursor: move;"></div>
             </div>
             
             <div class="color-settings">

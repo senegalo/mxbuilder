@@ -30,7 +30,9 @@
                 //Configure the controls here
                 this.applyToSelectionOn(controls, "linkType", "change");
                 this.applyToSelectionOn(controls, "newWindow", "change");
-                this.applyToSelectionOn(controls, "pages", "change");
+                this.applyToSelectionOn(controls, "pages", "change", function(){
+                    controls.linktoPage.attr("checked","checked");
+                });
                 this.applyToSelectionOn(controls, "externalLinkText", "input");
                 this.applyToSelectionOn(controls, "externalLinkProtocol", "change", function(){
                     controls.linktoExternal.attr("checked","checked").trigger("change");
@@ -39,7 +41,7 @@
                 
                 controls.externalLinkText.on({
                     focus: function focus(){
-                        controls.linktoExternal.attr("checked","checked").trigger("change");
+                        controls.linktoExternal.attr("checked","checked");
                     }
                 });
                 
@@ -133,25 +135,32 @@
                     values = {};
                     if(this._settingsTab.hasChanged(controls.linkType)){
                         values.linkType = controls.linkType.filter(":checked").val();
-                    }
-                    if(this._settingsTab.hasChanged(controls.newWindow)){
-                        values.linkOpenIn = controls.newWindow.is(":checked")?true:false;
-                    }
-                    if(values.linkType == "external"){
-                        if(this._settingsTab.hasChanged(controls.externalLinkText)){
+                        if(values.linkType == "external"){
                             values.linkURL = controls.externalLinkText.val();
-                        }
-                        if(this._settingsTab.hasChanged(controls.externalLinkProtocol)){
                             values.linkProtocol = controls.externalLinkProtocol.find("option:selected").val();
+                        } else if (values.linkType == "page"){
+                            values.linkURL = controls.pages.find("option:selected").val();
                         }
-                    } else if (values.linkType == "page" && this._settingsTab.hasChanged(controls.pages)){
-                        values.linkURL = controls.pages.find("option:selected").val();
-                    }  
+                    } else {
+                        if(this._settingsTab.hasChanged(controls.newWindow)){
+                            values.linkOpenIn = controls.newWindow.is(":checked")?true:false;
+                        }
+                        if(values.linkType == "external"){
+                            if(this._settingsTab.hasChanged(controls.externalLinkText)){
+                                values.linkURL = controls.externalLinkText.val();
+                            }
+                            if(this._settingsTab.hasChanged(controls.externalLinkProtocol)){
+                                values.linkProtocol = controls.externalLinkProtocol.find("option:selected").val();
+                            }
+                        } else if (values.linkType == "page" && this._settingsTab.hasChanged(controls.pages)){
+                            values.linkURL = controls.pages.find("option:selected").val();
+                        }  
+                    }
                 }
                 
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                    this.linkObj = values;
+                    $.extend(this.linkObj,values);
                 });
             },
             applyToSelectionOn: function(controls,controlKey,event,extra){

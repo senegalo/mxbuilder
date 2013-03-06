@@ -35,21 +35,57 @@
         $.extend(mxBuilder.ClipartComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".clipart-component-instance").remove(),
             clipartContainer: null,
+            linkObj: null,
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 
                 out.data.clipartID = this.clipartID;
+                out.data.linkObj = this.linkObj;
                 
                 return out;
             },
             publish: function publish(){
-                return mxBuilder.Component.prototype.publish.call(this);
+                var out = mxBuilder.Component.prototype.publish.call(this);
+                
+                if(this.linkObj){
+                    out.css({
+                        cursor: "pointer"
+                    }).find(".clipart").css("cursor","");
+                
+                    var extras = this.linkObj.linkOpenIn?' target = "_blank"':"";
+                
+                    extras += ' style="width:100%;height:100%;display:block"';
+                
+                    switch(this.linkObj.linkType){
+                        case "external":
+                            if(typeof this.linkObj.protocol == "undefined"){
+                                this.linkObj.protocol = "http://";
+                            }
+                            if(typeof this.linkObj.linkOpenIn == "undefined"){
+                                this.linkObj.linkOpenIn = true;
+                            }
+                            out.find(".clipart").wrap('<a href="'+this.linkObj.protocol+this.linkObj.linkURL+'"'+extras+'/>');
+                            break;
+                        case "page":
+                            var page = mxBuilder.pages.getPageObj(this.linkObj.linkURL);
+                            if(page.address){
+                                out.find(".clipart").wrap('<a href="./'+page.address+'.html"'+extras+'/>');
+                            }
+                            break;
+                    }
+                }
+                
+                return out;
             },
             getHeadIncludes: function getHeadIncludes(){
-                return mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                var out = mxBuilder.Component.prototype.getHeadIncludes.call(this);
+                
+                out.css.clipart = "public/css-published/clipart.css";
+                
+                return out;
             },
             init: function init(properties){
-                mxBuilder.Component.prototype.init.call(this,properties);
+                mxBuilder.Component.prototype.init.call(this,properties);                
                 if(properties.data.extra){
                     this.clipartID = properties.data.extra;
                 }
@@ -82,18 +118,27 @@
                 delete out.shadow;
                 delete out.background;
                 
-                 out.color = {
+                out.color = {
                     panel: mxBuilder.layout.settingsPanels.color,
                     params: {
                         expand: true
                     }
                 };
                 
+                out.linkto = {
+                    panel: mxBuilder.layout.settingsPanels.links,
+                    params: false
+                };
+                
                 return out;
             },
             getSettings: function getSettings(){
                 return {
-                    color: this.clipartContainer.css("color")
+                    color: this.clipartContainer.css("color"),
+                    linkType: this.linkObj.linkType,
+                    linkURL: this.linkObj.linkURL,
+                    linkProtocol: this.linkObj.protocol,
+                    linkOpenIn: this.linkObj.linkOpenIn
                 };
             },
             setColor: function setColor(color){
