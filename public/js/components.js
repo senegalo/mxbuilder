@@ -906,12 +906,18 @@
             },
             keydown: function keydown(event){
                 if(event.keyCode >= 37 && event.keyCode <=40){
-                    mxBuilder.selection.each(function(){
-                        this.nudgeComponent(event.keyCode, event.shiftKey);
-                    });
-                    mxBuilder.layout.revalidateLayout();
-                    mxBuilder.selection.revalidateSelectionContainer();
-                    event.preventDefault();
+                    var firstComponent = mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
+                    if(mxBuilder.selection.getSelectionCount() == 1 && firstComponent.type == "TextComponent" && firstComponent.isEditMode()){
+                        return;
+                    } else {
+                        mxBuilder.selection.each(function(){
+                            this.nudgeComponent(event.keyCode, event.shiftKey);
+                        });
+                        mxBuilder.layout.revalidateLayout();
+                        mxBuilder.selection.revalidateSelectionContainer();
+                        event.preventDefault();
+                        return;
+                    }
                 }
             }
         });
