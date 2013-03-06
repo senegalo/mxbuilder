@@ -24,6 +24,10 @@ hr {
     outline: 0px solid transparent;
 }
 
+.mx-component-over {
+    outline: 1px dashed #444 !important;
+}
+
 #selection-container{
     outline: 1px solid orange;
     cursor: move !important;

@@ -1,8 +1,6 @@
 (function($){
-    var helper = 
     mxBuilder.Component = function Component(obj){
         if(obj){
-            
             this.element = obj.element;
             
             //storing the size and position
@@ -24,9 +22,7 @@
                 poppedFromActiveStack: obj.poppedFromActiveStack
             });
             
-            
-                
-            //Context Menus
+            //Context Menus & hover effect
             obj.element.on({
                 mousedown: function mousedown(event){
                     var ctx = mxBuilder.contextmenu.getMainCtx();
@@ -317,6 +313,12 @@
                         }
                         ctx.stopPropagation();
                     } 
+                },
+                mouseenter: function mouseenter(){
+                    obj.element.addClass("mx-component-over");
+                },
+                mouseout: function mouseout(){
+                    obj.element.removeClass("mx-component-over");
                 }
             });
                 
