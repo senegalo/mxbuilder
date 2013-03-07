@@ -91,6 +91,9 @@
                 }
                 this.clipartContainer = this.element.find(".clipart").append("&#"+this.clipartID+";");
                 this.revalidate();
+                if(this.linkObj === null){
+                    this.linkObj = {};
+                }
             },
             revalidate: function revalidate(){
                 var height = this.element.height();
