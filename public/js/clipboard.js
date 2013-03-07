@@ -24,12 +24,16 @@
                 });
             },
             paste: function(container, x, y){
+                var currentPage = mxBuilder.pages.getPageObj();
                 mxBuilder.selection.clearSelection();
                 for(var c in this._heap){
                     var cmpObj = {};
                     $.extend(true,cmpObj,this._heap[c]);
-                    cmpObj.css.top = cmpObj.css.top-this._refPoints.top+y;
-                    cmpObj.css.left = cmpObj.css.left-this._refPoints.left-mxBuilder.layout.header.offset().left+x;
+                    if(this._heap[c].data.page == currentPage.id){
+                        cmpObj.css.top = cmpObj.css.top-this._refPoints.top+y;
+                        cmpObj.css.left = cmpObj.css.left-this._refPoints.left-mxBuilder.layout.header.offset().left+x;
+                    }
+                    delete cmpObj.data.page;
                     var theComponent = mxBuilder.components.addComponent(cmpObj);
                     theComponent.setContainer(container);
                     mxBuilder.selection.addToSelection(theComponent.element);
