@@ -167,7 +167,7 @@
                 })
                 .end().imageSlider("options",this.getSliderSettings()).imageSlider("revalidate");
             },
-            rebuild: function rebuild(returnFlag,withLinks){
+            rebuild: function rebuild(returnFlag,publishing){
                 var slider = this.sliderTemplate.clone();
                 var sliderContainer = slider.find("ul");
                 var slide = slider.find("li").remove();
@@ -185,9 +185,11 @@
                         break;
                     }
                     
-                    var theImage = $('<img src="'+imgObj.location+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>');
+                    var imgLocation = publishing ? "images" : imgObj.location;
                     
-                    if(withLinks && this.list[i].link.type != "none"){
+                    var theImage = $('<img src="'+imgLocation+'/'+imgObj[mxBuilder.imageUtils.getClosestImageSize(this.list[i].id, this.thumbSize, false)]+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>');
+                    
+                    if(publishing && this.list[i].link.type != "none"){
                         if(this.list[i].link.type == "external"){
                             link = this.list[i].link.protocol+this.list[i].link.url;
                         } else if(this.list[i].link.type == "page") {
@@ -201,7 +203,7 @@
                     .append(theImage)
                     .end()
                     .find(".thumb")
-                    .append('<img src="'+imgObj.location+'/'+imgObj.thumb+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
+                    .append('<img src="'+imgLocation+'/'+imgObj.thumb+'" data-id="'+imgObj.id+'" data-oitar="'+imgObj.ratio+'"/>')
                     .end()
                     .addClass("slide-"+this.list[i].id);
                     
@@ -510,10 +512,22 @@
                     id: 0,
                     caption: true,
                     title: true,
-                    link: {}
+                    link: {
+                        type: "none"
+                    }
                 }
                 $.extend(listItem,item);
                 this.list.push(listItem);
+            },
+            getUsedAssets: function getUsedAssets(){
+                var out = {};
+                for(var i in this.list){
+                    out[this.list[i].id] = ["thumb"];
+                    if(this.thumbSize != "thumb"){
+                        out[this.list[i].id].push(this.thumbSize);
+                    }
+                }
+                return out;
             }
         });
        
