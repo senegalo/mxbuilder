@@ -727,6 +727,9 @@
                 }
             }
         },
+        getUsedAssets: function getUsedAssets(){
+            return {};
+        },
         defaultDraggableSettings: {
             cursor : "move",
             start: function start(){

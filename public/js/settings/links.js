@@ -141,6 +141,9 @@
                         } else if (values.linkType == "page"){
                             values.linkURL = controls.pages.find("option:selected").val();
                         }
+                        if(this._settingsTab.hasChanged(controls.newWindow)){
+                            values.linkOpenIn = controls.newWindow.is(":checked")?true:false;
+                        }
                     } else {
                         if(this._settingsTab.hasChanged(controls.newWindow)){
                             values.linkOpenIn = controls.newWindow.is(":checked")?true:false;

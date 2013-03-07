@@ -7,13 +7,13 @@
             self.init(properties);
         
             mxBuilder.Component.apply(this,[{
-                type: "ImageComponent",
-                draggable: {},
-                resizable: {},
-                editableZIndex: true,
-                selectable: true,
-                element: properties.element
-            }]);
+                    type: "ImageComponent",
+                    draggable: {},
+                    resizable: {},
+                    editableZIndex: true,
+                    selectable: true,
+                    element: properties.element
+                }]);
             self.theImage.css({
                 position: 'absolute'
             });
@@ -30,7 +30,7 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 dblclick: function dblclick(){
-                //                    mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
+                    //                    mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
                 },
                 resize: function resize(event,ui){
                     var wDiv = self.element.width();
@@ -135,31 +135,18 @@
                                 });
                             }
                         }).end()
-                        .addItem({
-                            label: "Change image title...",
-                            callback: function(){
-                                mxBuilder.dialogs.imageComponentChangeTitle.show(mxBuilder.selection.getSelection());
-                            }
-                        }).addItem({
-                            label: "Link To...",
-                            callback: function(){
-                                var currentLinkObj = self.getLinkObj();
-                                mxBuilder.dialogs.linkTo.show({
-                                    link: function(urlObj){
-                                        mxBuilder.selection.each(function(){
-                                            this.setLinkObj(urlObj);
-                                        });
-                                    },
-                                    unlink: function(){
-                                        mxBuilder.selection.each(function(){
-                                            this.setLinkObj(null);
-                                        });
-                                    },
-                                    imageBox: true,
-                                    urlObj: currentLinkObj
-                                });
-                            }
-                        });
+                        
+                        if(mxBuilder.selection.getSelectionCount() == 1){
+                            ctx.addItem({
+                                label: "Change image title...",
+                                callback: function(){
+                                    mxBuilder.selection.each(function(){
+                                        mxBuilder.menuManager.showTab("photoSettings",this.getImageObj().id);
+                                    });
+                                }
+                            });
+                        }
+                        
                         if(mxBuilder.selection.getSelectionCount() > 1){
                             ctx.addSubgroup({
                                 label: "Transform to"
@@ -189,12 +176,18 @@
             template: mxBuilder.layout.templates.find(".image-component-instance").remove(),
             theImage:  null,
             theImageContainer: null,
+            linkObj: null,
             getSettings: function getSettings(){
                 var imgObj = this.getImageObj();
+                var linkObj = this.getLinkObj();
                 return {
                     name: imgObj.name,
                     title: imgObj.title,
-                    caption: imgObj.caption
+                    caption: imgObj.caption,
+                    linkType: linkObj.linkType,
+                    linkURL: linkObj.linkURL,
+                    linkProtocol: linkObj.protocol,
+                    linkOpenIn: linkObj.linkOpenIn
                 };
             },
             getImageObj: function getImageObj(){
@@ -402,6 +395,10 @@
                     this.setBorder(properties.data.border);
                 }
                 
+                if(this.linkObj === null){
+                    this.linkObj = {};
+                }
+                
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this)
@@ -411,17 +408,23 @@
                 var linkObj = this.getLinkObj();
                 if(linkObj){
                     var url = "";
-                    if(linkObj.type !== "lightbox"){
-                        switch(linkObj.type){
+                    if(linkObj.linkType !== "lightbox"){
+                        if(typeof this.linkObj.linkOpenIn == "undefined"){
+                            this.linkObj.linkOpenIn = true;
+                        }
+                        switch(linkObj.linkType){
                             case "external":
-                                url = linkObj.url;
+                                if(typeof this.linkObj.protocol == "undefined"){
+                                    this.linkObj.protocol = "http://";
+                                }
+                                url = linkObj.protocol+linkObj.linkURL;
                                 break;
                             case "page":
-                                var pageObj = mxBuilder.pages.getPageObj(linkObj.pageID);
+                                var pageObj = mxBuilder.pages.getPageObj(linkObj.linkURL);
                                 url = pageObj.address+".html";
                                 break;
                         }
-                        img.wrap('<a href="'+url+'" '+(linkObj.newWindow?'target="_blank"':'')+'/>');
+                        img.wrap('<a href="'+url+'" '+(linkObj.linkOpenIn?'target="_blank"':'')+'/>');
                     } else {
                         img.wrap('<a href="images/'+obj[this.getBiggestSize()]+'" class="lightbox"/>');
                     }
@@ -432,6 +435,25 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 delete out.background;
+                
+                out.linkto = {
+                    panel: mxBuilder.layout.settingsPanels.links,
+                    params: {
+                        expand: false,
+                        lightbox: true
+                    }
+                };
+                
+                return out;
+            },
+            getUsedAssets: function getUsedAssets(){
+                var obj = this.getImageObj();
+                var out = {};
+                out[obj.id] = [this.getImageSize()]; 
+                
+                if(this.linkObj && this.linkObj.linkType == "lightbox"){
+                    out[obj.id].push(mxBuilder.imageUtils.getBiggestImageSize(obj.id));
+                }                
                 return out;
             }
         });

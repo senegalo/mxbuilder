@@ -357,14 +357,22 @@
                         if(components[c].trashed){
                             continue;
                         }
-                        if(components[c].type == "ImageComponent"){
-                            assetID = components[c].getAssetID();
-                            out.assets[assetID] = [components[c].getImageSize()];
-                            var linkObj = components[c].getLinkObj();
-                            if(linkObj && linkObj.type == "lightbox"){
-                                out.assets[assetID].push(components[c].getClosestSize("full"));
+                        
+                        //merging required component assets
+                        var componentAssets = components[c].getUsedAssets();
+                        for(var a in componentAssets){
+                            if(out.assets[a]){
+                                $.merge(out.assets[a],componentAssets[a]);
+                                out.assets[a] = out.assets[a].filter(function(element, index, that){
+                                    return that.indexOf(element) == index;
+                                });
+                            } else {
+                                out.assets[a] = componentAssets[a];
                             }
-                        } else if (components[c].type == "FormToMailComponent"){
+                        }
+                        
+                        
+                        if (components[c].type == "FormToMailComponent"){
                             out.hasForms = 1;
                         }
                         page.components[components[c].container].push(components[c].publish().get(0).outerHTML);
