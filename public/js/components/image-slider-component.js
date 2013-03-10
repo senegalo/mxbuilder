@@ -342,7 +342,7 @@
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this);
-                
+                out.find(".loading-overlay").remove();
                 var slider = this.rebuild(true,true);
                 
                 slider.attr({
@@ -530,6 +530,5 @@
                 return out;
             }
         });
-       
     });
 }(jQuery))

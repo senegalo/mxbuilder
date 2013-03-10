@@ -271,9 +271,17 @@
             },
             publish: function publish(){
                 var out = mxBuilder.Component.prototype.publish.call(this);
+                out.find(".loading-overlay").remove();
                 
                 for(var i in this.list){
                     var theTD = out.find("td.slide-"+this.list[i].id);
+                    
+                    //fixing image path
+                    var imgObj = mxBuilder.assets.get(this.list[i].id);
+                    theTD.attr({
+                        "data-relurl": 'images/'+imgObj[this.thumbSize]
+                    }).css("backgroundImage","");
+                    
                     if(this.list[i].link.type && this.list[i].link.type != "none"){
                         var theLink = $('<a></a>');
                         
@@ -287,10 +295,9 @@
                             } else {
                                 attr.href = mxBuilder.pages.address;
                             }
-                        } else if( this.list[i].link.type == "lightbox"){
-                            var imgObj = mxBuilder.assets.get(this.list[i].id);
+                        } else if(this.list[i].link.type == "lightbox"){
                             theLink.addClass("lightbox");
-                            attr.href = imgObj.location+"/"+imgObj[mxBuilder.imageUtils.getBiggestImageSize(imgObj.id)];
+                            attr.href = "images"+"/"+imgObj[mxBuilder.imageUtils.getBiggestImageSize(imgObj.id)];
                         }
                         theLink.css({
                             width: "100%",
@@ -307,6 +314,7 @@
                 var out =  mxBuilder.Component.prototype.getHeadIncludes.call(this);
                 out.css.gridGallery = "public/css/image-grid.css";
                 out.scripts.lightbox = "public/js-libs/lightbox/jquery.lightbox-0.5.pack.js";
+                out.scripts.gridGalleryHelper = "public/js-published/image-grid-gallery.js";
                 return out;
             },
             init: function init(properties){
@@ -498,6 +506,13 @@
                 }
                 $.extend(listItem,item);
                 this.list.push(listItem);
+            },
+            getUsedAssets: function getUsedAssets(){
+                var out = {};
+                for(var i in this.list){
+                    out[this.list[i].id] = [this.thumbSize,mxBuilder.imageUtils.getBiggestImageSize(this.list[i].id)];
+                }
+                return out;
             }
         });
     });

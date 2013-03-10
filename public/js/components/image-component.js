@@ -401,7 +401,7 @@
                 
             },
             publish: function publish(){
-                var out = mxBuilder.Component.prototype.publish.call(this)
+                var out = mxBuilder.Component.prototype.publish.call(this);
                 var obj = this.getImageObj();
                 var img = out.find("img").attr("src","images/"+obj[this.getImageSize()]);
                 
@@ -429,7 +429,6 @@
                         img.wrap('<a href="images/'+obj[this.getBiggestSize()]+'" class="lightbox"/>');
                     }
                 }
-                
                 return out;
             },
             getSettingsPanels: function getSettingsPanels(){
