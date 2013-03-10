@@ -163,7 +163,7 @@
             
             //restoring components
             for(i in components){
-                if(this.__components[i]){
+                if(components[i].data.trashed || typeof this.__components[i] != "undefined"){
                     continue;
                 }
                 this.addComponent(components[i]);
