@@ -20,10 +20,11 @@
             //adding a component on this same page !? if not cache it on the specified page if it's available
             var page = properties.data.page;
             var pageObj = mxBuilder.pages.getPageObj(page);
-            if(page && pageObj && !mxBuilder.pages.isCurrentPage(page)){
+            if(page && pageObj && !mxBuilder.pages.isCurrentPage(page) && (typeof properties.forceKeep == "undefined" || !properties.forceKeep)){
                 pageObj.components[component.getID()] = component.save();
                 component.archive();
             } else {
+                delete properties.forceKeep;
                 this.__components[guid].element.trigger("componentInit");
                 return this.__components[guid];
             }

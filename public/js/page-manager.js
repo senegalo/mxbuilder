@@ -411,6 +411,7 @@
                 mxBuilder.layout.setLayout(restore.layoutHeights,true);
                 
                 for(var c in restore.pinned){
+                    restore.pinned[c].forceKeep = true;
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
                 
