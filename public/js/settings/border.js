@@ -20,14 +20,13 @@
                     simulator: theInstance.find(".border-radius-simulator"),
                     radiusValue: theInstance.find(".border-radius-value"),
                     picker: theInstance.find(".picker"),
-                    symetricCheckbox: theInstance.find("#flexly-component-border-radius-sym")
+                    symetricCheckbox: theInstance.find("#flexly-component-border-radius-sym"),
+			  simulatorSliderTopLeft: theInstance.find(".border-radius-slider-t-l"),
+			  simulatorSliderTopRight: theInstance.find(".border-radius-slider-t-r"),
+			  simulatorSliderBottomLeft: theInstance.find(".border-radius-slider-b-l"),
+			  simulatorSliderBottomRight: theInstance.find(".border-radius-slider-b-r")
                 };
-                controls.lastChangedRadiusSlider = controls.simulatorSliderTopLeft = controls.simulator.parent().find(".border-radius-slider-t-l");
-                controls.simulatorSliderTopRight = controls.simulator.parent().find(".border-radius-slider-t-r");
-                controls.simulatorSliderBottomLeft = controls.simulator.parent().find(".border-radius-slider-b-l");
-                controls.simulatorSliderBottomRight = controls.simulator.parent().find(".border-radius-slider-b-r");
-                
-                
+                controls.lastChangedRadiusSlider = controls.simulatorSliderTopLeft;
                 
                 //Configure the controls here
                 controls.picker.customColorpicker();

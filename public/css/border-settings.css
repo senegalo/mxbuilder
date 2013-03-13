@@ -1,3 +1,12 @@
+.flexly-component-border-settings .border-radius-shadow{
+	border: 2px solid #cfcfcf;
+	position: absolute;
+	height: 100px;
+	width: 232px;
+	top: 2px;
+	left: 0px;
+	z-index: 0;
+}
 .flexly-component-border-settings .border-radius-simulator {
     width: 232px;
     height: 100px;
