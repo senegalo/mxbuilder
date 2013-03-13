@@ -1,0 +1,10 @@
+.position-settings div label{
+    display:inline-block;
+    margin-right: 6px;
+}
+.position-settings div input[type="text"] {
+    width: 50px;
+}
+.position-settings .disabled {
+    opacity: 0.3;
+}

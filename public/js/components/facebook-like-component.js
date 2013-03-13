@@ -47,6 +47,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 return {
+                    position: {
+                        panel: mxBuilder.layout.settingsPanels.position,
+                        params: false
+                    },
                     fbButton: {
                         panel:mxBuilder.layout.settingsPanels.fbButton,
                         params: true
@@ -114,10 +118,12 @@
                 mxBuilder.selection.revalidateSelectionContainer();
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     counterPosition: this.counterPosition,
                     action: this.action
-                }
+                });
+                return out;
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);

@@ -115,10 +115,12 @@
                 this.element.trigger("resize");
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out, {
                     label: this.label,
                     linkObj: this.linkObj
-                }
+                });
+                return out;
             }
         });
         

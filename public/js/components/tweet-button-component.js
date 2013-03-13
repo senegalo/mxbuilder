@@ -57,7 +57,10 @@
                 return out;
             },
             getSettingsPanels: function getSettingsPanels(){
-                return { 
+                return {
+                    position: {
+                        panel: mxBuilder.layout.settingsPanels.position
+                    },
                     tweetButton: {
                         panel: mxBuilder.layout.settingsPanels.tweetButton,
                         params: true
@@ -102,11 +105,13 @@
                 element.width(theWidth);
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     count: this.count,
                     text: this.text,
                     url: this.url
-                }
+                });
+                return out;
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);

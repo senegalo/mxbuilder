@@ -41,6 +41,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 return {
+                    position: {
+                        panel: mxBuilder.layout.settingsPanels.position,
+                        params: false
+                    },
                     gplusButton: {
                         panel: mxBuilder.layout.settingsPanels.gplusButton,
                         params: true
@@ -130,10 +134,12 @@
                 return out;
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     size: this.getSize(),
                     counterPosition: this.getCounterPosition()
-                }
+                });
+                return out;
             }
         });
         

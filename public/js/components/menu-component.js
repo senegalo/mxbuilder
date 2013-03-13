@@ -173,6 +173,10 @@
             },
             getSettingsPanels: function getSettingsPanel(){
                 return {
+                    position: {
+                        panel: mxBuilder.layout.settingsPanels.position,
+                        params: false
+                    },
                     mainMenu: {
                         panel: mxBuilder.layout.settingsPanels.mainMenu,
                         params: true
@@ -247,11 +251,17 @@
                 this.element.find(".component-resizable-handle").css("z-index",1000);
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     orientation: this.orientation,
                     moreLinkText: this.moreLinkText,
                     theme: this.theme
-                }
+                });
+                return out;
+            },
+            setWidth: function setWidth(val){
+                mxBuilder.Component.prototype.setWidth.call(this,val);
+                this.revalidate();
             }
         });
         

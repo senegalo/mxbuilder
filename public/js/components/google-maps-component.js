@@ -172,12 +172,10 @@
             },
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
-                
                 out.googleMaps = {
                     panel: mxBuilder.layout.settingsPanels.googleMaps,
                     params: true
                 };
-                
                 return out;
             },
             setEditMode: function setEditMode(flag){
@@ -194,9 +192,11 @@
                 }
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     editMode: this.editMode
-                };
+                });
+                return out;
             },
             destroy: function destroy(){
                 mxBuilder.Component.prototype.destroy.call(this);

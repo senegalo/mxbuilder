@@ -36,7 +36,7 @@
             hideForm: false,
             redisplay: false,
             redisplaySeconds: 10,
-            setMode: function(mode){
+            setMode: function setMode(mode){
                 this.mode = mode;
                 if(mode == "normal"){
                     this.theForm.find(".form-split-one").css({
@@ -129,6 +129,10 @@
             getSettingsPanels: function getSettingsPanels(){
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 
+                out.position = {
+                    panel: mxBuilder.layout.settingsPanels.position
+                };
+                
                 out.form = {
                     panel: mxBuilder.layout.settingsPanels.formToMail,
                     params: true
@@ -137,7 +141,8 @@
                 return out;
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     email: this.email,
                     mode: this.mode,
                     afterSubmission: this.afterSubmission,
@@ -146,7 +151,8 @@
                     hideForm : this.hideForm,
                     redisplay : this.redisplay,
                     redisplaySeconds : this.redisplaySeconds
-                };
+                });
+                return out;
             }
         });
         

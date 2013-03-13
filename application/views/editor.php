@@ -46,6 +46,7 @@
         <link rel="stylesheet" href="public/css/menu-flickr-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/photos-clipart-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/clipart-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/position.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -189,6 +190,7 @@
         <script type="text/javascript" src="public/js/settings/google-maps.js"></script>
         <script type="text/javascript" src="public/js/settings/shadow.js"></script>
         <script type="text/javascript" src="public/js/settings/color.js"></script>
+        <script type="text/javascript" src="public/js/settings/position.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1177,6 +1179,32 @@
                 </div>
             </div>
             
+            <div class="position-settings">
+                <div class="settings-title">Position</div>
+                <div class="component-x">
+                    <label for="component-x-position">X:</label>
+                    <input type="text" id="component-x-position"/>
+                </div>
+                <div class="component-y">
+                    <label for="component-y-position">Y:</label>
+                    <input type="text" id="component-y-position"/>
+                </div>
+                <div class="component-zindex">
+                    <label for="component-z-position">Z:</label>
+                    <input type="text" id="component-z-position"/>
+                </div>
+                
+                <div class="settings-title">Dimensions</div>
+                
+                <div class="component-width">
+                    <label for="component-width">Width:</label>
+                    <input type="text" id="component-width"/>
+                </div>
+                <div class="component-height">
+                    <label for="component-height">Height:</label>
+                    <input type="text" id="component-height"/>
+                </div>
+            </div>
         </div>
     </body>
 </html>

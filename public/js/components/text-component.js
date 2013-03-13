@@ -10,7 +10,7 @@
                 },
                 editableZIndex: true,
                 selectable: true,
-                hasSettings: false,
+                hasSettings: true,
                 element: properties.element,
                 poppedFromActiveStack: function poppedFromActiveStack(){
                     var theComponent = mxBuilder.components.getComponent($(this));
@@ -27,10 +27,9 @@
                     var content  = properties.element.find(".content");
                     var height = content.height();
                     var instHeight = properties.element.height();
-                    var out = true;
                     properties.element.height(height);
                     properties.element.resizable("option","minHeight",height).data("minheight",instHeight);
-                    return out;
+                    return true;
                 },
                 resizestop: function resizestop(){
                     properties.element.css("height","auto");
@@ -193,7 +192,12 @@
                 return out;
             },
             getSettingsPanels: function(){
-                return {}
+                return {
+                    position: {
+                        panel: mxBuilder.layout.settingsPanels.position,
+                        params: true
+                    }
+                }
             },
             nudgeComponent: function nudgeComponent(directionKey,shiftKey){
                 if(!this.isEditMode()){
@@ -216,6 +220,13 @@
                     }
                 }).get(0).outerHTML;
                 return saveObj;
+            },
+            getSettings: function getSettings(){
+                return mxBuilder.Component.prototype.getSettings.call(this);
+            },
+            setWidth: function setWidth(value){
+                mxBuilder.Component.prototype.setWidth.call(this,value);
+                this.element.height(this.element.find(".content").height());
             }
         });
         

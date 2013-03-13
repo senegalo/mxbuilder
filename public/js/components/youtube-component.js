@@ -22,11 +22,7 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function(){
-                    instance.videoContainer.find("iframe").attr({
-                        width: instance.element.width(),
-                        height: instance.element.height()
-                    });
-                    instance.element.find(".overlay").height(instance.element.height()-39);
+                    instance.revalidate();
                 }
             });
             
@@ -46,6 +42,13 @@
                     +'" frameborder="0" allowfullscreen></iframe>')
                 this.element.find(".overlay").height(this.element.height()-39);
                 mxBuilder.selection.revalidateSelectionContainer();
+            },
+            revalidate: function revalidate(){
+                this.videoContainer.find("iframe").attr({
+                    width: this.element.width(),
+                    height: this.element.height()
+                });
+                this.element.find(".overlay").height(this.element.height()-39);
             },
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
@@ -86,10 +89,20 @@
                 return out;
             },
             getSettings: function getSettings(){
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out,{
                     videoID: this.videoID,
                     autoplay: this.autoplay
-                };
+                });
+                return out;
+            },
+            setWidth: function setWidth(val){
+                mxBuilder.Component.prototype.setWidth.call(this,val);
+                this.revalidate();
+            },
+            setHeight: function setHeight(val){
+                mxBuilder.Component.prototype.setHeight.call(this,val);
+                this.revalidate();
             }
         });
         
