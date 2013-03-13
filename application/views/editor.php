@@ -70,7 +70,8 @@
         <title>Builder</title>
         <!-- Loading Libs -->
         <script type="text/javascript" src="public/js-libs/jquery-1.8.3.js"></script>
-        <script type="text/javascript" src="public/js-libs/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="public/js-libs/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="public/js-libs/jquery.ui.resizable.snap.ext.v1.7.min"></script>
         <script type="text/javascript" src="public/js-libs/ckeditor/ckeditor.js"></script>
         <script type="text/javascript">
             CKEDITOR.disableAutoInline = true;

@@ -41,14 +41,14 @@
                 if(mxBuilder.settingsManager.getSetting("snap", "objects")){
                     controls.snapObjects.attr("checked","checked");
                 } else {
-                    controls.snapObjects.removeAttr("checked")
+                    controls.snapObjects.removeAttr("checked");
                 }
             },
             applySettings: function applySettings(controls,values){
                 if(typeof values == "undefined"){
                     values = {
                         snapObjects: controls.snapObjects.is(":checked")
-                    }
+                    };
                 }
                 
                 mxBuilder.settingsManager.setObjectSnap(values.snapObjects);            
@@ -62,6 +62,6 @@
                     snap.applySettings(controls);
                 });
             }
-        }    
+        };
     });
-}(jQuery))
+}(jQuery));

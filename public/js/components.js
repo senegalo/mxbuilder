@@ -6,7 +6,7 @@
 			//storing the size and position
 			this.size = {
 				width: obj.element.width(),
-height: obj.element.height()
+				height: obj.element.height()
 			};
 
 			this.position = obj.element.position();
@@ -48,14 +48,14 @@ height: obj.element.height()
 							switch(this.type){
 								case "ImageComponent":
 									imgComponents.push(this);
-									break;
+								break;
 								case "ImageGridComponent":
-								case "ImageSliderComponent":
+									case "ImageSliderComponent":
 									galleryComponents.push(this);
-									break;
+								break;
 								default:
 									otherComponents.push(this);
-									break;
+								break;
 							}
 						});
 
@@ -85,20 +85,20 @@ height: obj.element.height()
 										var properties = {
 											css: {
 												left: 10000000,
-									top: 10000000,
-									width: 600,
-									height: 350
+												top: 10000000,
+												width: 600,
+												height: 350
 											},
-									data: {}
+											data: {}
 										};
 										var elementPosition;
 										var i,cnt;
 										for(i=0,cnt=imgComponents.length;i<cnt;i++){
 											theList[imgComponents[i].extra.originalAssetID] = {
 												id: imgComponents[i].extra.originalAssetID,
-									caption: true,
-									title: true,
-									link: {}
+												caption: true,
+												title: true,
+												link: {}
 											};
 											elementPosition = imgComponents[i].element.position();
 											if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
@@ -120,7 +120,7 @@ height: obj.element.height()
 												properties.css.left = elementPosition.left;
 												properties.css.top = elementPosition.top;
 												properties.data.container = galleryComponents[i].container;
-												properties.data.page = galleryComponents[i].page
+												properties.data.page = galleryComponents[i].page;
 											}
 											galleryComponents[i].destroy();
 										}
@@ -135,57 +135,57 @@ height: obj.element.height()
 									}
 								}).addItem({
 									label: "Slider Gallery",
-								callback: function(){
-									var theList = {};
-									var properties = {
-										css: {
-											left: 10000000,
-								top: 10000000,
-								width: 600,
-								height: 350
-										},
-								data: {}
-									};
-									var elementPosition;
-									for(var i in imgComponents){
-										theList[imgComponents[i].extra.originalAssetID] = {
-											id: imgComponents[i].extra.originalAssetID,
-								caption: true,
-								title: true,
-								link: {}
+									callback: function(){
+										var theList = {};
+										var properties = {
+											css: {
+												left: 10000000,
+												top: 10000000,
+												width: 600,
+												height: 350
+											},
+											data: {}
 										};
-										elementPosition = imgComponents[i].element.position();
-										if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
-											properties.css.left = elementPosition.left;
-											properties.css.top = elementPosition.top;
-											properties.data.container = imgComponents[i].container;
-											properties.data.page = imgComponents[i].page
+										var elementPosition;
+										for(var i in imgComponents){
+											theList[imgComponents[i].extra.originalAssetID] = {
+												id: imgComponents[i].extra.originalAssetID,
+												caption: true,
+												title: true,
+												link: {}
+											};
+											elementPosition = imgComponents[i].element.position();
+											if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+												properties.css.left = elementPosition.left;
+												properties.css.top = elementPosition.top;
+												properties.data.container = imgComponents[i].container;
+												properties.data.page = imgComponents[i].page
+											}
+											imgComponents[i].destroy();
 										}
-										imgComponents[i].destroy();
-									}
-									for(i in galleryComponents){
-										for(var e in galleryComponents[i].list){
-											var listItem = galleryComponents[i].list[e];
-											theList[listItem.id] = listItem;
+										for(i in galleryComponents){
+											for(var e in galleryComponents[i].list){
+												var listItem = galleryComponents[i].list[e];
+												theList[listItem.id] = listItem;
+											}
+											elementPosition = galleryComponents[i].element.position();
+											if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
+												properties.css.left = elementPosition.left;
+												properties.css.top = elementPosition.top;
+												properties.data.container = galleryComponents[i].container;
+												properties.data.page = galleryComponents[i].page
+											}
+											galleryComponents[i].destroy();
 										}
-										elementPosition = galleryComponents[i].element.position();
-										if(elementPosition.left < properties.css.left && elementPosition.top < properties.css.left){
-											properties.css.left = elementPosition.left;
-											properties.css.top = elementPosition.top;
-											properties.data.container = galleryComponents[i].container;
-											properties.data.page = galleryComponents[i].page
+										var finalList = [];
+										for(i in theList){
+											finalList.push(theList[i]);
 										}
-										galleryComponents[i].destroy();
+										properties.data.type = "ImageSliderComponent";
+										properties.data.list = finalList;
+										properties.fixFooter = true;
+										mxBuilder.components.addComponent(properties);
 									}
-									var finalList = [];
-									for(i in theList){
-										finalList.push(theList[i]);
-									}
-									properties.data.type = "ImageSliderComponent";
-									properties.data.list = finalList;
-									properties.fixFooter = true;
-									mxBuilder.components.addComponent(properties);
-								}
 								}).end()
 							}
 						}
@@ -214,19 +214,19 @@ height: obj.element.height()
 									}
 								}).addItem({
 									label: "Bring to back",
-								callback: function(){
-									theComponent.bringToBack();
-								}
+									callback: function(){
+										theComponent.bringToBack();
+									}
 								}).addItem({
 									label: "Bring to top",
-								callback: function(){
-									theComponent.bringToTop();
-								}
+									callback: function(){
+										theComponent.bringToTop();
+									}
 								}).addItem({
 									label: "Bring to bottom",
-								callback: function(){
-									theComponent.bringToBottom();
-								}
+									callback: function(){
+										theComponent.bringToBottom();
+									}
 								}).end().addItem({
 									type: "sep"
 								});
@@ -239,42 +239,42 @@ height: obj.element.height()
 								label: "Alignment"
 							}).addItem({
 								label: "Align Left",
-							callback: function(){
-								mxBuilder.components.alignment.alignLeft();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.alignLeft();
+								}
 							}).addItem({
 								label: "Align Right",
-							callback: function(){
-								mxBuilder.components.alignment.alignRight();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.alignRight();
+								}
 							}).addItem({
 								label: "Align Top",
-							callback: function(){
-								mxBuilder.components.alignment.alignTop();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.alignTop();
+								}
 							}).addItem({
 								label: "Align Bottom",
-							callback: function(){
-								mxBuilder.components.alignment.alignBottom();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.alignBottom();
+								}
 							}).addItem({
 								label: "Center Vertically",
-							callback: function(){
-								mxBuilder.components.alignment.centerVertically();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.centerVertically();
+								}
 							}).addItem({
 								label: "Center Horizontally",
-							callback: function(){
-								mxBuilder.components.alignment.centerHorizontally();
-							}
+								callback: function(){
+									mxBuilder.components.alignment.centerHorizontally();
+								}
 							}).end();
 						}
 
 						ctx.addItem({
 							label: "Copy",
-						callback: function(){
-							mxBuilder.clipboard.copySelected();
-						}
+							callback: function(){
+								mxBuilder.clipboard.copySelected();
+							}
 						});
 
 						if(obj.pinnable !== false){
@@ -307,9 +307,9 @@ height: obj.element.height()
 								callback: function(){
 									mxBuilder.dialogs.deleteDialog({
 										msg: "Are you sure you want to delete the selected component(s) ?",
-									callback: function(){
-										mxBuilder.selection.getSelection().trigger("destroy"); 
-									}
+										callback: function(){
+											mxBuilder.selection.getSelection().trigger("destroy"); 
+										}
 									});
 								}
 							});
@@ -317,12 +317,12 @@ height: obj.element.height()
 						ctx.stopPropagation();
 					} 
 				},
-					mouseenter: function mouseenter(){
-						obj.element.addClass("mx-component-over");
-					},
-					mouseout: function mouseout(){
-						obj.element.removeClass("mx-component-over");
-					}
+				mouseenter: function mouseenter(){
+					obj.element.addClass("mx-component-over");
+				},
+				mouseout: function mouseout(){
+					obj.element.removeClass("mx-component-over");
+				}
 			});
 
 			//Making it draggable
@@ -360,22 +360,22 @@ height: obj.element.height()
 
 				$.extend(obj.resizable,{
 					handles: handles,
-				start: function start(event,ui){
-					mxBuilder.selection.clearSelection({
-						exclude: $(this)
-					});
-					mxBuilder.layout.outline(mxBuilder.components.getComponent($(this)).container);
-				},
-				resize: function resize(event,ui){
-					mxBuilder.components.getComponent($(this)).revalidateShadow();
-					mxBuilder.selection.revalidateSelectionContainer();
-				},
-				stop: function(){
-					var that = $(this);
-					var theComponent = mxBuilder.components.getComponent(that);
-					mxBuilder.layout.clearOutline(theComponent.container);
-					mxBuilder.layout.revalidateLayout();
-				}
+					start: function start(event,ui){
+						mxBuilder.selection.clearSelection({
+							exclude: $(this)
+						});
+						mxBuilder.layout.outline(mxBuilder.components.getComponent($(this)).container);
+					},
+					resize: function resize(event,ui){
+						mxBuilder.components.getComponent($(this)).revalidateShadow();
+						mxBuilder.selection.revalidateSelectionContainer();
+					},
+					stop: function(){
+						var that = $(this);
+						var theComponent = mxBuilder.components.getComponent(that);
+						mxBuilder.layout.clearOutline(theComponent.container);
+						mxBuilder.layout.revalidateLayout();
+					}
 				});
 				obj.element.resizable(obj.resizable);
 			}
@@ -514,9 +514,9 @@ height: obj.element.height()
 		},
 		publish: function publish(){
 			return this.element.clone().find(".component-resizable-handle")
-				.remove()
-				.end()
-				.removeClass("ui-draggable ui-resizable ui-selected mx-selectable-component");
+			.remove()
+			.end()
+			.removeClass("ui-draggable ui-resizable ui-selected mx-selectable-component");
 		},
 		getHeadIncludes: function getHeadIncludes(){
 			return {
@@ -565,17 +565,17 @@ height: obj.element.height()
 		getBorder: function getBorder(element){
 			element = element ? element : this.element;
 			var styles = ["borderWidth",
-			    "borderStyle",
-			    "borderColor",
-			    "borderTopLeftRadius",
-			    "borderTopRightRadius",
-			    "borderBottomLeftRadius",
-			    "borderBottomRightRadius"];
-			var out = {};
-			for(var s in styles){
-				out[styles[s]] = element.css(styles[s]);
-			}
-			return out;
+				"borderStyle",
+				"borderColor",
+				"borderTopLeftRadius",
+				"borderTopRightRadius",
+				"borderBottomLeftRadius",
+				"borderBottomRightRadius"];
+				var out = {};
+				for(var s in styles){
+					out[styles[s]] = element.css(styles[s]);
+				}
+				return out;
 		},
 		setBorder: function setBorder(obj){
 			this.element.css(obj);
@@ -584,13 +584,13 @@ height: obj.element.height()
 		getBackground: function getBackground(element){
 			element = element ? element : this.element;
 			var styles = ["backgroundColor",
-			    "backgroundImage",
-			    "backgroundSize"];
-			var out = {};
-			for(var s in styles){
-				out[styles[s]] = element.css(styles[s]);
-			}
-			return out;
+				"backgroundImage",
+				"backgroundSize"];
+				var out = {};
+				for(var s in styles){
+					out[styles[s]] = element.css(styles[s]);
+				}
+				return out;
 		},
 		setBackground: function setBackground(obj){
 			this.element.css(obj);
@@ -599,10 +599,10 @@ height: obj.element.height()
 			var position = this.element.position();
 			return {
 				x: position.left,
-					y: position.top,
-					z: this.element.css("z-index")-1000,
-					width: this.element.outerWidth(),
-					height: this.element.outerHeight()
+				y: position.top,
+				z: this.element.css("z-index")-1000,
+				width: this.element.outerWidth(),
+				height: this.element.outerHeight()
 			};
 		},
 		getSettingsPanels: function getSettingsPanels(){
@@ -702,7 +702,7 @@ height: obj.element.height()
 		applyShadow: function applyShadow(id, element){
 			mxBuilder.shadowManager.applyShadow({
 				id: id,
-			element: element
+				element: element
 			});
 		},
 		revalidateShadow: function revalidateShadow(){
@@ -877,12 +877,12 @@ height: obj.element.height()
 						fixFooter: true,
 						css: {
 							left: ui.position.left,
-						top: ui.position.top
+							top: ui.position.top
 						},
 						data:{ 
 							container: container,
-						type: componentType,
-						extra: ui.helper.data("extra")
+							type: componentType,
+							extra: ui.helper.data("extra")
 						}
 					});
 					if(container == "header" || container == "footer"){
@@ -950,22 +950,22 @@ height: obj.element.height()
 					}
 				}
 			},
-				keydown: function keydown(event){
-					if(event.keyCode >= 37 && event.keyCode <=40){
-						var firstComponent = mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
-						if(mxBuilder.selection.getSelectionCount() == 1 && firstComponent.type == "TextComponent" && firstComponent.isEditMode()){
-							return;
-						} else {
-							mxBuilder.selection.each(function(){
-								this.nudgeComponent(event.keyCode, event.shiftKey);
-							});
-							mxBuilder.layout.revalidateLayout();
-							mxBuilder.selection.revalidateSelectionContainer();
-							event.preventDefault();
-							return;
-						}
+			keydown: function keydown(event){
+				if(event.keyCode >= 37 && event.keyCode <=40){
+					var firstComponent = mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
+					if(mxBuilder.selection.getSelectionCount() == 1 && firstComponent.type == "TextComponent" && firstComponent.isEditMode()){
+						return;
+					} else {
+						mxBuilder.selection.each(function(){
+							this.nudgeComponent(event.keyCode, event.shiftKey);
+						});
+						mxBuilder.layout.revalidateLayout();
+						mxBuilder.selection.revalidateSelectionContainer();
+						event.preventDefault();
+						return;
 					}
 				}
+			}
 		});
 
 	});
