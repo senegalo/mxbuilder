@@ -12,13 +12,12 @@
                 thePanel.find(".flexly-collapsable-title").text("Border Settings");
                 
                 var theInstance = this._template.clone();
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 
                 //fill in all the controls 
                 var controls = {
                     widthSlider: theInstance.find(".border-width-slider"),
-                    widthValue: theInstance.find(".border-width-value"),
                     simulator: theInstance.find(".border-radius-simulator"),
-                    radiusValue: theInstance.find(".border-radius-value"),
                     picker: theInstance.find(".picker"),
                     symetricCheckbox: theInstance.find("#flexly-component-border-radius-sym"),
 			  simulatorSliderTopLeft: theInstance.find(".border-radius-slider-t-l"),
@@ -33,25 +32,30 @@
                 controls.symetricCheckbox.checkbox();
                 controls.simulatorSliderTopLeft.customSlider({
                     max: 50,
-                    min: 0
+                    min: 0,
+			  suffix: "px"
                 });
                 controls.simulatorSliderBottomLeft.customSlider({
                     max: 50,
-                    min: 0
+                    min: 0,
+			  suffix: "px"
                 });
                 controls.simulatorSliderTopRight.width(50).customSlider({
                     max: 50,
                     min: 0,
-                    value: 50
+                    invert: true,
+			  suffix: "px"
                 });
                 controls.simulatorSliderBottomRight.width(50).customSlider({
                     max: 50,
                     min: 0,
-                    value: 50
+                    invert: true,
+			  suffix: "px"
                 });
                 controls.widthSlider.customSlider({
                     max: 50,
-                    min: 0
+                    min: 0,
+			  suffix: "px"
                 });
                 
                 this.applyToSelectionOn(controls, "picker", "pickerColorChanged");
@@ -62,34 +66,25 @@
                     if(controls.symmetricRadius){
                         var theValue = controls.simulatorSliderTopLeft.customSlider("value");
                         border.setSimRadius(controls, "topLeft", theValue);
-                        controls.radiusValue.text(theValue + " Pixels");
                     }
                 });
                 this.applyToSelectionOn(controls, "simulatorSliderTopLeft", "slide", function(event,ui){
                     controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius(controls, "topLeft",ui.value);
-                    controls.radiusValue.text(ui.value+" Pixels");
                 });
                 this.applyToSelectionOn(controls, "simulatorSliderBottomLeft", "slide", function(event,ui){
                     controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius(controls, "bottomLeft",ui.value);
-                    controls.radiusValue.text(ui.value+" Pixels");
                 });
                 this.applyToSelectionOn(controls, "simulatorSliderTopRight", "slide", function(event,ui){
                     controls.lastChangedRadiusSlider = $(this);
-                    ui.value = 50-ui.value;
                     border.setSimRadius(controls, "topRight",ui.value);
-                    controls.radiusValue.text(ui.value+" Pixels");
                 });
                 this.applyToSelectionOn(controls, "simulatorSliderBottomRight", "slide", function(event,ui){
                     controls.lastChangedRadiusSlider = $(this);
-                    ui.value = 50-ui.value;
                     border.setSimRadius(controls, "bottomRight",ui.value);
-                    controls.radiusValue.text(ui.value+" Pixels");
                 });
-                this.applyToSelectionOn(controls, "widthSlider", "slide", function(event, ui){
-                    controls.widthValue.text(ui.value + " Pixels");
-                });                
+                this.applyToSelectionOn(controls, "widthSlider", "slide");                
                 
                 this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
@@ -140,7 +135,6 @@
                     }
                 });                
                 
-                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
             setValues: function(controls, values){    
@@ -151,7 +145,6 @@
                 }
                 if(values.borderWidth){
                     values.borderWidth = parseInt(values.borderWidth.replace("px",""),10);
-                    controls.widthValue.text(values.borderWidth+" Pixel");
                     controls.widthSlider.customSlider("value",values.borderWidth);
                 }
                 
@@ -160,7 +153,7 @@
                     if(values["border"+corners[c]+"Radius"]){
                         values["border"+corners[c]+"Radius"] = parseInt(values["border"+corners[c]+"Radius"].replace("px",""),10);
                         this.setSimRadius(controls,corners[c], values["border"+corners[c]+"Radius"]);
-                        controls["simulatorSlider"+corners[c]].customSlider("value",corners[c].match(/.*Right/)?50-values["border"+corners[c]+"Radius"]:values["border"+corners[c]+"Radius"]);
+                        controls["simulatorSlider"+corners[c]].customSlider("value",values["border"+corners[c]+"Radius"]);
                     }
                 }  
             },
@@ -171,7 +164,7 @@
                     .customSlider("value",val)
                     .end()
                     .find(".border-radius-slider-r")
-                    .customSlider("value",50-val);
+                    .customSlider("value",val);
                 } else {
                     controls.simulator.css('border'+pos.uppercaseFirst()+'Radius',val);
                 }
@@ -202,7 +195,7 @@
                         for(var c in corners){
                             if(this._settingsTab.hasChanged(controls["simulatorSlider"+corners[c]])){
                                 val = controls["simulatorSlider"+corners[c]].customSlider("value");   
-                                values["border"+corners[c]+"Radius"] = corners[c].match(/.*Right/)?50-val:val;
+                                values["border"+corners[c]+"Radius"] = val;
                             }
                         }
                     }

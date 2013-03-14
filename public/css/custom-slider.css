@@ -1,0 +1,49 @@
+.slider {
+	height: 3px;
+	border: none;
+	background-color: #999999;
+	border-radius: 4px;
+	position: relative;
+}
+
+.slider .slider-handle {
+	height:8px;
+	width:8px;
+	border-radius: 7px;
+	border: 2px solid #f15a24;
+	display:inline-block;
+	top: -5px;
+	background: none;
+	background-color: #f2f2f2;
+	outline: none;
+	margin: 0;
+	z-index: 2;
+	position:relative;
+}
+.slider .slider-valuebox {
+	z-index: 3;
+	font-size: 10px;
+	width: 34px;
+	text-align: center;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+div.slider div.slider-valuebox input {
+	border: 1px solid grey;
+	border-radius: 6px;
+	background-color: #fff;
+	width: 14px;
+	font-size: 10px;
+	padding: 1px;
+	text-align: center;
+	margin-right: 3px;
+}
+
+div.slider .slider-valuebox .suffix {
+	font-size: 12px;
+	color: #4a4a4a;
+}
+

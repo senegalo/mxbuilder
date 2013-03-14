@@ -13,14 +13,14 @@
                 
                 var theInstance = this._template.clone();
                 
+		    thePanel.find(".flexly-collapsable-content").append(theInstance);
+
                 //fill in all the controls 
                 var controls = {
                     opacitySlider: theInstance.find(".opacity-slider"),
-                    opacityValue: theInstance.find(".opacity-value"),
                     patterns: theInstance.find(".patterns"),
                     picker: theInstance.find(".picker"),
                     scaleSlider: theInstance.find(".scale-slider"),
-                    scaleValue: theInstance.find(".scale-value"),
                     thePanel: thePanel
                 };
                 
@@ -30,12 +30,14 @@
                 controls.scaleSlider.customSlider({
                     min:10,
                     max:200,
-                    step: 10
+                    step: 10,
+			  suffix: "px"
                 });
                 controls.opacitySlider.customSlider({
                     min: 0,
                     max: 100,
-                    value: 100
+                    value: 100,
+			  suffix: "%"
                 });
                 
                 controls.samples = $('<div class="pattern-sample pattern-image-none pattern-sample-0">No Pattern</div>')
@@ -61,19 +63,13 @@
                     if(sliderVal == 0){
                         sliderVal = 100;
                         controls.opacitySlider.customSlider("value",100);
-                        controls.opacityValue.text("100%");
                     }
                 });
                 this.applyToSelectionOn(controls, "picker", "pickerColorRest", function(){
                     controls.opacitySlider.customSlider("value",0);
-                    controls.opacityValue.text("0%");
                 });
-                this.applyToSelectionOn(controls, "scaleSlider", "slide", function(event,ui){
-                    controls.scaleValue.text(ui.value+"px");                    
-                });
-                this.applyToSelectionOn(controls, "opacitySlider", "slide", function(event,ui){
-                    controls.opacityValue.text(ui.value+"%");                    
-                });
+                this.applyToSelectionOn(controls, "scaleSlider", "slide");
+                this.applyToSelectionOn(controls, "opacitySlider", "slide");
                 this.applyToSelectionOn(controls, "samples", "click", function(){
                     var element = $(this);
                     controls.patterns.data("change-monitor",true).find(".selected").removeClass("selected");
@@ -125,7 +121,7 @@
                     }
                 });                
                 
-                thePanel.find(".flexly-collapsable-content").append(theInstance);
+                
                 return thePanel;
             },
             setValues: function(controls, values){
@@ -139,7 +135,6 @@
                     //setting the opacity slider
                     var opacity = Math.round(colorObj.a*100);
                     controls.opacitySlider.customSlider("value",opacity);
-                    controls.opacityValue.text(opacity+"%");
                 }
                 if(values.backgroundSize){
                     if(values.backgroundSize == "auto" || values.backgroundSize == "100% 100%"){
@@ -153,7 +148,6 @@
                         }
                     }
                     controls.scaleSlider.customSlider("value",scale);
-                    controls.scaleValue.text((scale)+"px");
                 }
                 if(values.backgroundImage){
                     var matches = values.backgroundImage.match(/(\d*)(?=\.png)/im);

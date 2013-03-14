@@ -28,7 +28,10 @@
                 //cloning the template and updating the object properties
                 var currentInstance = this._template.clone();
                 
-                var controls = {
+		    //appending the cloned template to the panel
+                thePanel.find(".flexly-collapsable-content").append(currentInstance);
+                
+		    var controls = {
                     opacitySlider: currentInstance.find(".opacity-slider"),
                     opacityValue: currentInstance.find(".opacity-value"),
                     patterns: currentInstance.find(".patterns"),
@@ -37,7 +40,7 @@
                     scaleValue: currentInstance.find(".scale-value"),
                     thePanel: thePanel,
                     layoutPart: layoutPart
-                }         
+                };        
                 
                 //initiating the color picker
                 controls.picker.customColorpicker().on({
@@ -71,6 +74,7 @@
                     min:10,
                     max:200,
                     step: 10,
+			  suffix: "px",
                     slide: function slide(event, ui){
                         controls.scaleValue.text(ui.value+"px");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
@@ -86,6 +90,7 @@
                     min: 0,
                     max: 100,
                     value: 100,
+			  suffix: "%",
                     slide: function slide(event,ui){
                         controls.opacityValue.text(ui.value+"%");
                         if(mxBuilder.menuManager.menus.componentSettings.isPreview()){
@@ -165,9 +170,7 @@
                     }
                 })
                 
-                //appending the cloned template to the panel
-                controls.thePanel.find(".flexly-collapsable-content")
-                .append(currentInstance);
+                
                 
                 //if we fetch the panel expanded.. we trigger the panelOpen event...
                 

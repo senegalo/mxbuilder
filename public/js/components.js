@@ -929,6 +929,9 @@
 
 		$(document).on({
 			keyup: function keyup(event){
+				if($(event.srcElement).parents(".flexly-main-bar").length != 0){
+					return;
+				}
 				if(event.keyCode == 46){
 					var selectionCount = mxBuilder.selection.getSelectionCount();
 					if(selectionCount == 1){
@@ -951,6 +954,9 @@
 				}
 			},
 			keydown: function keydown(event){
+				if($(event.srcElement).parents(".flexly-main-bar").length != 0){
+					return;
+				}
 				if(event.keyCode >= 37 && event.keyCode <=40){
 					var firstComponent = mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
 					if(mxBuilder.selection.getSelectionCount() == 1 && firstComponent.type == "TextComponent" && firstComponent.isEditMode()){

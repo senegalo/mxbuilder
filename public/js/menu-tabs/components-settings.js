@@ -21,6 +21,7 @@
             _display: [],
             _enablePreview: true,
             init: function(extra){
+			console.time("Settings Panel");
                 var componentSettings = this;
                 mxBuilder.menuManager.hideTabButtons();
                 mxBuilder.menuManager.tabFooterWrapper.height(66).show();
@@ -85,6 +86,7 @@
                         }
                     }
                 });
+		    console.timeEnd("Settings Panel");
             },
             getCommonSettingsPanels: function(){
                 var panels = {};

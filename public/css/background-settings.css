@@ -1,54 +1,67 @@
-#flexly-component-background-color {
-    border: 2px solid #999999;
-    border-radius: 6px;
-    float: left;
-    height: 29px;
-    width: 51px;
-    margin-right: 11px;
-}
-
 .pattern-image-none {
-    font-weight: bold;
-    text-align: center;
-    line-height: 60px;
+	font-weight: bold;
+	text-align: center;
+	line-height: 60px;
 }
 
 .patterns {
-    width: 214px;
-    height: 104px;
-    position: relative;
-    top: 2px;
-    left: 2px;
+	width: 214px;
+	height: 104px;
+	position: relative;
+	top: 2px;
+	left: 2px;
 }
 
 .patterns .jquery-scrollbar-container {
-    border: 2px solid #999;
-    border-radius: 6px;
+	border: 2px solid #999;
+	border-radius: 6px;
 }
 
 .patterns .jquery-scrollbar-vertical { 
-    top: 2px;
-    right: -12px;
+	top: 2px;
+	right: -12px;
 }
 
 .patterns-container {
-    position:relative;
+	position:relative;
 }
 
 .pattern-sample {
-    width: 214px;
-    height: 60px;
+	width: 214px;
+	height: 60px;
 }
 
 .pattern-sample:not(:last-child){
-    border-bottom: 1px solid #999;
+	border-bottom: 1px solid #999;
 }
 
 .pattern-sample.selected {
-    background-color: #F15A24;
+	background-color: #F15A24;
 }
 
 .pattern-sample.pattern-image {
-    background-image: url("../images/patterns.png");
-    background-position-x: 0px;
+	background-image: url("../images/patterns.png");
+	background-position-x: 0px;
 }
+
+div.opacity-slider, div.scale-slider {
+	margin-top: 12px;
+}
+
+div.opacity-slider .slider-valuebox {
+	bottom: 12px;
+	left: 52px;
+	width: 40px
+}
+
+div.opacity-slider .slider-valuebox .value, div.scale-slider .slider-valuebox .value {
+	width: 22px;
+} 
+
+div.scale-slider .slider-valuebox {
+	bottom: 12px;
+	left: 40px;
+	width: 42px;
+} 
+
+
