@@ -11,7 +11,7 @@
                     return "rgba("+this.r+", "+this.g+", "+this.b+" , "+this.a+")";
                 },
                 toHex: function toHex(){
-                    return "#" + ((1 << 24) + (parseInt(this.r,10) << 16) + (parseInt(this.g,10) << 8) + parseInt(this.b)).toString(16).slice(1);
+                    return "#" + ((1 << 24) + (parseInt(this.r,10) << 16) + (parseInt(this.g,10) << 8) + parseInt(this.b,10)).toString(16).slice(1);
                 },
                 getInverse: function getInverse(){
                     var out = {};

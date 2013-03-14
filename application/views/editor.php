@@ -590,7 +590,6 @@ mxBuilder.uploaderSettings = {
 		</div>
 
 		<div class="flexly-component-border-settings">                
-		    <div class="border-color-title settings-title">Border Color</div>
 		    <div class="picker">
 		    </div>
 		    <div class="border-radius-title settings-title">Border Radius</div>
@@ -617,15 +616,11 @@ mxBuilder.uploaderSettings = {
 		</div>
 
 		<div class="flexly-component-background-settings">
+		    
+		    <div class="picker"></div>
 
 		    <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
 		    <div class="opacity-slider" style="width:238px;"></div>
-
-		    <div class="settings-title">Background Color</div>
-		    <div class="picker">
-
-		    </div>
-
 
 		    <div class="settings-title">Pattern</div>
 		    <div class="patterns">
@@ -1206,6 +1201,19 @@ endfor;
 			  <label for="component-height">Height:</label>
 			  <input type="text" id="component-height"/>
 		    </div>
+		</div>
+		<div class="flexly-colorpicker">
+			<div class="first-row">
+				<div class="settings-title colorpicker-label">
+					Color:
+				</div>
+				<div class="color-input">
+					<input type="text"/>
+				</div>
+				<div class="color-monitor"></div>
+				<div class="color-clear" title="No Color"></div>
+			</div>
+			<canvas class="color-canvas" height="103" width="235"></canvas>
 		</div>
 	  </div>
     </body>
