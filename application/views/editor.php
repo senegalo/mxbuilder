@@ -47,6 +47,7 @@
 	  <link rel="stylesheet" href="public/css/photos-clipart-tab.css" type="text/css"/>
 	  <link rel="stylesheet" href="public/css/clipart-component.css" type="text/css"/>
 	  <link rel="stylesheet" href="public/css/position.css" type="text/css"/>
+	  <link rel="stylesheet" href="public/css/custom-slider.css" type="text/css"/>
 
 	  <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
 	  <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -593,10 +594,9 @@ mxBuilder.uploaderSettings = {
 		    <div class="picker">
 		    </div>
 		    <div class="border-radius-title settings-title">Border Radius</div>
-		    <div style="position:relative;">
-			  <div class="border-radius-value">0 Pixels</div>
-			  <div class="border-radius-slider-l border-radius-slider-t-l" style="width: 50px;"></div>
-			  <div class="border-radius-slider-r border-radius-slider-t-r" style="width: 50px;"></div>
+		    <div class="border-simulator-container">
+			  <div class="border-radius-slider-l border-radius-slider-t border-radius-slider-t-l" style="width: 50px;"></div>
+			  <div class="border-radius-slider-r border-radius-slider-t border-radius-slider-t-r" style="width: 50px;"></div>
 			<div class="border-radius-shadow"></div>
 			<div class="border-radius-simulator">
 				<div class="border-radius-sym">
@@ -604,13 +604,12 @@ mxBuilder.uploaderSettings = {
 				    <label for="flexly-component-border-radius-sym">Symmetric</label>
 				</div>
 			  </div>
-			  <div class="border-radius-slider-l border-radius-slider-b-l" style="width: 50px;"></div>
-			  <div class="border-radius-slider-r border-radius-slider-b-r" style="width: 50px;"></div>
+			  <div class="border-radius-slider-l border-radius-slider-b border-radius-slider-b-l" style="width: 50px;"></div>
+			  <div class="border-radius-slider-r border-radius-slider-b border-radius-slider-b-r" style="width: 50px;"></div>
 		    </div>
-		    <div class="border-width-title settings-title">Border Width</div>
-		    <div>
-			  <div class="border-width-slider" style="width:190px;"></div>
-			  <div class="border-width-value">0 Pixels</div>
+		    <div class="border-width-title settings-title">Border Width:</div>
+		    <div class="border-width-slider-container">
+			  <div class="border-width-slider" style="width:238px;"></div>
 			  <div style="clear:both;"></div>
 		    </div>
 		</div>
@@ -619,14 +618,14 @@ mxBuilder.uploaderSettings = {
 		    
 		    <div class="picker"></div>
 
-		    <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+		    <div class="settings-title">Opacity:</div>
 		    <div class="opacity-slider" style="width:238px;"></div>
 
 		    <div class="settings-title">Pattern</div>
 		    <div class="patterns">
 		    </div>
 
-		    <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
+		    <div class="settings-title">Scale:</div>
 		    <div class="scale-slider" style="width:238px;"></div>
 
 
@@ -699,7 +698,7 @@ mxBuilder.uploaderSettings = {
 
 		<div class="flexly-component-layout-background-settings">
 
-		    <div class="settings-title">Opacity: <span class="opacity-value">100%</span></div>
+		    <div class="settings-title">Opacity:</div>
 		    <div class="opacity-slider" style="width:238px;"></div>
 
 		    <div class="settings-title">Background Color</div>
@@ -711,7 +710,7 @@ mxBuilder.uploaderSettings = {
 		    <div class="patterns">
 		    </div>
 
-		    <div class="settings-title">Scale: <span class="scale-value">10px</span></div>
+		    <div class="settings-title">Scale:</div>
 		    <div class="scale-slider" style="width:238px;"></div>
 
 		</div>
