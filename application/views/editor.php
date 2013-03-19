@@ -1171,9 +1171,10 @@
             </div>
 
             <div class="color-settings">
-                <div class="picker">
-
-                </div>
+                <div class="picker"></div>
+                
+                <div class="settings-title">Opacity:</div>
+                <div class="opacity-slider" style="width:238px;"></div>
             </div>
 
             <div class="position-settings">

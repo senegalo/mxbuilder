@@ -13,16 +13,35 @@
                 
                 var theInstance = this._template.clone();
                 
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
+                
                 //fill in all the controls 
                 var controls = {
+                    opacitySlider: theInstance.find(".opacity-slider"),
                     colorPicker: theInstance.find(".picker")
                 };
                 
                 
                 //Configure the controls here
                 controls.colorPicker.customColorpicker();
-                this.applyToSelectionOn(controls, "colorPicker", "pickerColorChanged");
-                this.applyToSelectionOn(controls, "colorPicker", "pickerColorRest");
+                controls.opacitySlider.customSlider({
+                    min: 0,
+                    max: 100,
+                    value: 100,
+			  suffix: "%"
+                });
+                
+                this.applyToSelectionOn(controls, "colorPicker", "pickerColorChanged", function(event,color){
+                    var sliderVal = controls.opacitySlider.customSlider("value");
+                    if(sliderVal === 0){
+                        sliderVal = 100;
+                        controls.opacitySlider.customSlider("value",100);
+                    }
+                });
+                this.applyToSelectionOn(controls, "colorPicker", "pickerColorRest", function(){
+                    controls.opacitySlider.customSlider("value",0);
+                });
+                this.applyToSelectionOn(controls, "opacitySlider", "slide");
                 
                 this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
@@ -65,8 +84,6 @@
                         mxBuilder.menuManager.closeTab();
                     }
                 });                
-                
-                thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
             setValues: function(controls, values){    
@@ -74,21 +91,26 @@
                 if(values.color){
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.color);
                     controls.colorPicker.customColorpicker("value",colorObj);
+                    
+                     //setting the opacity slider
+                    var opacity = Math.round(colorObj.a*100);
+                    controls.opacitySlider.customSlider("value",opacity);
                 }
             },
             applyToSelection: function(controls,values){
                 if(typeof values === "undefined"){
                     //if no values passed how to do we get the values ?
                     values = {};
-                    if(this._settingsTab.hasChanged(controls.colorPicker)){
+                    if(this._settingsTab.hasChanged(controls.colorPicker) || this._settingsTab.hasChanged(controls.opacitySlider)){
                         //fill up the values array
-                        values.color = controls.colorPicker.customColorpicker("value").toString();
+                        values.color = controls.colorPicker.customColorpicker("value");
+                        values.color.a = controls.opacitySlider.customSlider("value")/100;
                     }
                 }
                 mxBuilder.selection.each(function(){
                     //apply the values to the selection
-                    if(typeof values.color != "undefined"){
-                        this.setColor(values.color);
+                    if(typeof values.color !== "undefined"){
+                        this.setColor(values.color.toString());
                     }
                 });
             },
@@ -97,13 +119,13 @@
                 controls[controlKey].on(event,function(){
                     color._settingsTab.setChanged(controls[controlKey]);
                     if(color._settingsTab.isPreview()){
-                        if(typeof extra != "undefined"){
+                        if(typeof extra !== "undefined"){
                             extra.apply(this,arguments);
                         }
                         color.applyToSelection(controls);
                     }
                 });
             }
-        }
+        };
     });
-}(jQuery))
+}(jQuery));
