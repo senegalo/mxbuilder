@@ -30,13 +30,16 @@
                 for (var c in this._heap) {
                     var cmpObj = {};
                     $.extend(true, cmpObj, this._heap[c]);
-                    if (this._heap[c].data.page === currentPage.id) {
+                    if(typeof x  === "undefined" || typeof y === "undefined"){
+                        cmpObj.css.top = cmpObj.css.top + 0.1*cmpObj.css.height;
+                        cmpObj.css.left = cmpObj.css.left + 0.1*cmpObj.css.left;
+                    } else if (this._heap[c].data.page === currentPage.id) {
                         cmpObj.css.top = cmpObj.css.top - this._refPoints.top + y;
                         cmpObj.css.left = cmpObj.css.left - this._refPoints.left - mxBuilder.layout.header.offset().left + x;
                     }
                     delete cmpObj.data.page;
                     var theComponent = mxBuilder.components.addComponent(cmpObj);
-                    theComponent.setContainer(container);
+                    theComponent.setContainer(typeof container === "undefined" ? cmpObj.data.container : container);
                     mxBuilder.selection.addToSelection(theComponent.element);
                     history.push(theComponent);
                 }

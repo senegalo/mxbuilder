@@ -933,7 +933,7 @@
                         mxBuilder.selection.addToSelection(theComponent.element);
                     }
                     theComponent.element.trigger('componentDropped');
-                    mxBuilder.historyManager.setRestorePoint([theComponent],"delete");
+                    mxBuilder.historyManager.setRestorePoint([theComponent], "delete");
                 } else {
                     mxBuilder.selection.getSelection().each(function() {
                         mxBuilder.components.getComponent($(this)).setContainer(container);
@@ -1011,10 +1011,15 @@
                         return;
                     }
                 }
-                if (event.ctrlKey && event.keyCode === 90) {
+                else if (event.ctrlKey && event.keyCode === 90) {
                     if (mxBuilder.historyManager.hasUndo()) {
                         mxBuilder.historyManager.undo();
                     }
+                }
+                else if (event.ctrlKey && event.keyCode === 67) {
+                    mxBuilder.clipboard.copySelected();
+                } else if (event.ctrlKey && event.keyCode === 86){
+                    mxBuilder.clipboard.paste();
                 }
             }
         });
