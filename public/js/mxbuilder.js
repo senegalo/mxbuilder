@@ -31,13 +31,13 @@
                 }  
             }  
             return -1;  
-        }  
+        }; 
     }
     
     //Adding the isArray function if it does not exsist
     if(!Array.isArray) {  
         Array.isArray = function (arg) {  
-            return Object.prototype.toString.call(arg) == '[object Array]';  
+            return Object.prototype.toString.call(arg) === '[object Array]';  
         };  
     }
 
@@ -49,7 +49,7 @@
             } else { 
                 return this.toUpperCase();
             }
-        }
+        };
     }
     
     
@@ -63,7 +63,7 @@
             } else {
                 return this.toString();
             }
-        }
+        };
     }
     
     /**
@@ -74,10 +74,10 @@
     if(!String.prototype.trim){
         String.prototype.trim = function(){
             return this.replace(/^\s+|\s+$/g,"");
-        }
+        };
     }
     
-    if(typeof mxBuilder == "undefined"){
+    if(typeof mxBuilder === "undefined"){
         mxBuilder = {};
     }
         
@@ -89,21 +89,6 @@
         type: "post",
         cache: false       
     });
-        
-    /**
-     * Generates a random String
-     * @param string_length an integer with how long it should be
-     * @return string the random string
-     */
-    mxBuilder.getRandString = function(string_length){
-        var chars = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-        var randomstring = '';
-        for (var i=0; i<string_length; i++) {
-            var rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars.substring(rnum,rnum+1);
-        }
-        return randomstring;
-    }    
     
     mxBuilder.dialogs = {};
     
@@ -128,13 +113,13 @@
      */
     
     mxBuilder.dumpSelected = function(){
-        mxBuilder.selection.each(function(){console.log(this.save())})
-    }
+        mxBuilder.selection.each(function(){console.log(this.save());});
+    };
     
     mxBuilder.getSelected = function(){
         var out;
         mxBuilder.selection.each(function(){out = this; });
         return out;
-    }
+    };
     
 }(jQuery));

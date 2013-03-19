@@ -194,16 +194,16 @@
             }
         },
         updateCornerPoints: function(obj) {
-            if (obj.top < this.__corners.y1 || this.__selectionCount == 1) {
+            if (obj.top < this.__corners.y1 || this.__selectionCount === 1) {
                 this.__corners.y1 = obj.top;
             }
-            if (obj.top + obj.height > this.__corners.y2 || this.__selectionCount == 1) {
+            if (obj.top + obj.height > this.__corners.y2 || this.__selectionCount === 1) {
                 this.__corners.y2 = obj.top + obj.height;
             }
-            if (obj.left < this.__corners.x1 || this.__selectionCount == 1) {
+            if (obj.left < this.__corners.x1 || this.__selectionCount === 1) {
                 this.__corners.x1 = obj.left;
             }
-            if (obj.left + obj.width > this.__corners.x2 || this.__selectionCount == 1) {
+            if (obj.left + obj.width > this.__corners.x2 || this.__selectionCount === 1) {
                 this.__corners.x2 = obj.left + obj.width;
             }
             if (obj.zIndex < this.__corners.smallestZIndex) {
@@ -236,7 +236,7 @@
 
                         if (oldSelectionLength === currentSelectionLength) {
                             var voidEvent;
-                            
+
                             //if both old and new selection are empty .. void the event
                             if (oldSelectionLength === 0) {
                                 voidEvent = true;
@@ -281,5 +281,5 @@
                 callback.call(mxBuilder.components.getComponent($(this)), $(this));
             });
         }
-    }
+    };
 }(jQuery));

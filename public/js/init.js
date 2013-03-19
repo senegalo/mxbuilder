@@ -1,7 +1,7 @@
 (function($){
     $(function(){
         
-        mxBuilder.dialogs.progressDialog.show("Loading website please wait...")
+        mxBuilder.dialogs.progressDialog.show("Loading website please wait...");
         
         //loading the assets first
         mxBuilder.api.assets.get({
@@ -19,6 +19,7 @@
                             mxBuilder.recorder.saveIfRequired();
                         },2000);
                         $(mxBuilder.systemEvents).trigger("systemReady");
+                        mxBuilder.systemReady = true;
                     },
                     error: function(data){
                         mxBuilder.dialogs.progressDialog.msg("Couldn't load your website, maybe you haven't built one yet !");
@@ -31,7 +32,7 @@
                             address: "home_page",
                             desc: "",
                             keywords: ""
-                        })
+                        });
                         setTimeout(function(){
                             mxBuilder.dialogs.progressDialog.hide(); 
                         },2000);

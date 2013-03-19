@@ -5,7 +5,7 @@
             var heights = {
                 header: this.header.height(),
                 body: this.body.height()
-            }
+            };
             
             //the -6 to compensate for the resize handler
             var documentHeight = $(window).height();
@@ -46,7 +46,7 @@
             //first we get the maximum component height
             var maxHeight = this.getMaxComponentHeight(container);
             
-            if(container == "body"){
+            if(container === "body"){
                 //if revalidating the body compare the content height with the page content height
                 var contentHeight = mxBuilder.pages.getContentHeight();
 
@@ -109,10 +109,10 @@
         offsetComponents: function(container, offsetHeight){
             var selector = $();
             //select everything beneath the current container
-            if(container == "header"){
+            if(container === "header"){
                 selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
                 selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
-            } else if(container == "body"){
+            } else if(container === "body"){
                 selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
             }
                     
@@ -127,9 +127,9 @@
         setBackgroundImage: function(container, image){
             var className = container+"-background-image";
             
-            if(container == "header"){
+            if(container === "header"){
                 container = this.layoutHeader;
-            } else if (container == "body") {
+            } else if (container === "body") {
                 container = $(document.body);
             } else {
                 container = this.layoutFooter;
@@ -137,7 +137,7 @@
             
             container.find("."+className).remove();
             
-            var theDiv = $('<div style="position:'+(className == "body-background-image"?"fixed":"absolute")+';top:0;left:0;width:100%;height:100%;z-index:1" class="'+className+' flexly-background-image" data-id="'+image.id+'"></div>')
+            var theDiv = $('<div style="position:'+(className === "body-background-image"?"fixed":"absolute")+';top:0;left:0;width:100%;height:100%;z-index:1" class="'+className+' flexly-background-image" data-id="'+image.id+'"></div>')
             .appendTo(container);
                                     
             var theImg = $('<img src="'+image.location+"/"+image[mxBuilder.imageUtils.getBiggestImageSize(image.id)]+'"/>')
@@ -178,9 +178,9 @@
             });
         },
         getBackgroundImage: function(container){
-            if(typeof container == "string" && container != "body"){
+            if(typeof container === "string" && container !== "body"){
                 return mxBuilder.layout['layout'+container.uppercaseFirst()].children(".flexly-background-image");
-            } else if(typeof container == "string"){
+            } else if(typeof container === "string"){
                 return $(document.body).children(".flexly-background-image");
             } else {
                 return container.children(".flexly-background-image");
@@ -199,7 +199,7 @@
         templates: null,
         settingsPanels: {},
         globalSettingsPanels: {}
-    } 
+    };
     
     $(function(){
         
@@ -309,7 +309,7 @@
                     $(document.body).css("height","");
                 }
             });
-        }
+        };
         
         makeResizable(mxBuilder.layout.layoutBody,mxBuilder.layout.body);
         makeResizable(mxBuilder.layout.layoutHeader,mxBuilder.layout.header);
