@@ -31,7 +31,7 @@
             
         //Extra Initializtion actions...
             
-        }
+        };
         $.extend(mxBuilder.ClipartComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".clipart-component-instance").remove(),
             clipartContainer: null,
@@ -39,6 +39,7 @@
             save: function save(){
                 var out = mxBuilder.Component.prototype.save.call(this);
                 
+                out.css.color = this.element.css("color");
                 out.data.clipartID = this.clipartID;
                 out.data.linkObj = this.linkObj;
                 
@@ -58,10 +59,10 @@
                 
                     switch(this.linkObj.linkType){
                         case "external":
-                            if(typeof this.linkObj.protocol == "undefined"){
+                            if(typeof this.linkObj.protocol === "undefined"){
                                 this.linkObj.protocol = "http://";
                             }
-                            if(typeof this.linkObj.linkOpenIn == "undefined"){
+                            if(typeof this.linkObj.linkOpenIn === "undefined"){
                                 this.linkObj.linkOpenIn = true;
                             }
                             out.find(".clipart").wrap('<a href="'+this.linkObj.protocol+this.linkObj.linkURL+'"'+extras+'/>');
@@ -137,7 +138,7 @@
             },
             getSettings: function getSettings(){
                 return {
-                    color: this.clipartContainer.css("color"),
+                    color: this.element.css("color"),
                     linkType: this.linkObj.linkType,
                     linkURL: this.linkObj.linkURL,
                     linkProtocol: this.linkObj.protocol,
@@ -145,10 +146,10 @@
                 };
             },
             setColor: function setColor(color){
-                this.clipartContainer.css("color",color);
+                this.element.css("color",color);
             }
         });
         
         
     });
-}(jQuery))
+}(jQuery));
