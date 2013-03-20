@@ -33,71 +33,7 @@
                     //                    mxBuilder.dialogs.imageComponentChangeTitle.show(self.element);
                 },
                 resize: function resize(event, ui) {
-                    var wDiv = self.element.width();
-                    var hDiv = self.element.height();
-
-                    var ratioDiv = wDiv / hDiv;
-
-                    var imgSource = self.getResizeMethod() === "crop" ? self.theImageContainer : self.theImage;
-
-                    var wImg = imgSource.outerWidth(true);
-                    var hImg = imgSource.outerHeight(true);
-                    var imageOuterLength = wImg - imgSource.width();
-                    var ratioImg = self.getImageObj().ratio;
-
-                    //Implementing different resize methods
-                    switch (self.getResizeMethod()) {
-                        case "crop":
-                            if (ratioDiv < ratioImg) {
-                                hImg = hDiv;
-                                wImg = hDiv * ratioImg;
-                            } else if (ratioDiv > ratioImg) {
-                                wImg = wDiv;
-                                hImg = wDiv / ratioImg;
-                            } else {
-                                wImg = wDiv;
-                                hImg = hDiv;
-                            }
-                            break;
-                        case "center":
-                            if (ratioDiv > ratioImg) {
-                                hImg = hDiv;
-                                wImg = hDiv * ratioImg;
-                            } else if (ratioDiv < ratioImg) {
-                                wImg = wDiv;
-                                hImg = wDiv / ratioImg;
-                            } else {
-                                wImg = wDiv;
-                                hImg = hDiv;
-                            }
-                            break;
-                        case "ratio":
-                        case "stretch":
-                            wImg = wDiv - imageOuterLength;
-                            hImg = hDiv - imageOuterLength;
-                    }
-
-                    self.theImage.width(wImg);
-                    self.theImage.height(hImg);
-
-                    if (self.getResizeMethod() !== "crop") {
-                        self.theImage.css({
-                            top: ((hDiv - hImg - imageOuterLength) / 2) + 'px',
-                            left: ((wDiv - wImg - imageOuterLength) / 2) + 'px'
-                        });
-                    } else {
-                        self.theImageContainer.css({
-                            backgroundPosition: ((wDiv - wImg - imageOuterLength) / 2) + "px " + ((hDiv - hImg - imageOuterLength) / 2) + "px",
-                            backgroundSize: wImg + "px " + hImg + "px"
-                        });
-                        self.theImageContainer.outerHeight(self.element.height());
-                        self.theImageContainer.outerWidth(self.element.width());
-                    }
-
-                    //Change source if necessary
-                    var size = mxBuilder.imageUtils.getImageSource(self.getImageSize(), self.element);
-                    self.setImageSize(size, wImg, hImg);
-
+                    self.revalidate();
                 },
                 mousedown: function mousedown(event) {
                     if (event.which === 3 && mxBuilder.selection.isAllSelectedSameType()) {
@@ -177,10 +113,78 @@
             theImage: null,
             theImageContainer: null,
             linkObj: null,
+            revalidate: function revalidate() {
+                var wDiv = this.element.width();
+                var hDiv = this.element.height();
+
+                var ratioDiv = wDiv / hDiv;
+
+                var imgSource = this.getResizeMethod() === "crop" ? this.theImageContainer : this.theImage;
+
+                var wImg = imgSource.outerWidth(true);
+                var hImg = imgSource.outerHeight(true);
+                var imageOuterLength = wImg - imgSource.width();
+                var ratioImg = this.getImageObj().ratio;
+
+                //Implementing different resize methods
+                switch (this.getResizeMethod()) {
+                    case "crop":
+                        if (ratioDiv < ratioImg) {
+                            hImg = hDiv;
+                            wImg = hDiv * ratioImg;
+                        } else if (ratioDiv > ratioImg) {
+                            wImg = wDiv;
+                            hImg = wDiv / ratioImg;
+                        } else {
+                            wImg = wDiv;
+                            hImg = hDiv;
+                        }
+                        break;
+                    case "center":
+                        if (ratioDiv > ratioImg) {
+                            hImg = hDiv;
+                            wImg = hDiv * ratioImg;
+                        } else if (ratioDiv < ratioImg) {
+                            wImg = wDiv;
+                            hImg = wDiv / ratioImg;
+                        } else {
+                            wImg = wDiv;
+                            hImg = hDiv;
+                        }
+                        break;
+                    case "ratio":
+                    case "stretch":
+                        wImg = wDiv - imageOuterLength;
+                        hImg = hDiv - imageOuterLength;
+                }
+
+                this.theImage.width(wImg);
+                this.theImage.height(hImg);
+
+                if (this.getResizeMethod() !== "crop") {
+                    this.theImage.css({
+                        top: ((hDiv - hImg - imageOuterLength) / 2) + 'px',
+                        left: ((wDiv - wImg - imageOuterLength) / 2) + 'px'
+                    });
+                } else {
+                    this.theImageContainer.css({
+                        backgroundPosition: ((wDiv - wImg - imageOuterLength) / 2) + "px " + ((hDiv - hImg - imageOuterLength) / 2) + "px",
+                        backgroundSize: wImg + "px " + hImg + "px"
+                    });
+                    this.theImageContainer.outerHeight(this.element.height());
+                    this.theImageContainer.outerWidth(this.element.width());
+                }
+
+                //Change source if necessary
+                var size = mxBuilder.imageUtils.getImageSource(this.getImageSize(), this.element);
+                this.setImageSize(size, wImg, hImg);
+            },
             getSettings: function getSettings() {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+
                 var imgObj = this.getImageObj();
                 var linkObj = this.getLinkObj();
-                return {
+                $.extend(out, {
                     name: imgObj.name,
                     title: imgObj.title,
                     caption: imgObj.caption,
@@ -188,7 +192,8 @@
                     linkURL: linkObj.linkURL,
                     linkProtocol: linkObj.protocol,
                     linkOpenIn: linkObj.linkOpenIn
-                };
+                });
+                return out;
             },
             getImageObj: function getImageObj() {
                 var obj = mxBuilder.assets.get(this.extra.originalAssetID);
@@ -454,6 +459,14 @@
                     out[obj.id].push(mxBuilder.imageUtils.getBiggestImageSize(obj.id));
                 }
                 return out;
+            },
+            setWidth: function(val) {
+                mxBuilder.Component.prototype.setWidth.call(this, val);
+                this.revalidate();
+            },
+            setHeight: function(val) {
+                mxBuilder.Component.prototype.setHeight.call(this, val);
+                this.revalidate();
             }
         });
     });
