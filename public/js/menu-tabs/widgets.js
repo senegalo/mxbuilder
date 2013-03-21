@@ -22,7 +22,7 @@
                 var theList = template.clone();
                 var appendTo;
                 for(var c in this.__widgets){
-                    if(this.__widgets[c].title != "root" && this.__widgets[c].components.length > 0){
+                    if(this.__widgets[c].title !== "root" && this.__widgets[c].components.length > 0){
                         var categoryRow = templateRow.clone()
                         .find(".flexly-menu-widget-icon")
                         .remove()
@@ -38,6 +38,13 @@
                         appendTo = theList;
                     }
                     for(var w in this.__widgets[c].components){
+                        
+                        if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                            this.__widgets[c].components[w].draggableSettings.snap = mxBuilder.settingsManager.getSnapSelector();
+                        } else {
+                            this.__widgets[c].components[w].draggableSettings.snap = false;
+                        }
+                        
                         templateRow.clone()
                         .find(".flexly-menu-widget-icon .flexly-icon")
                         .addClass(this.__widgets[c].components[w].icon)
@@ -46,7 +53,11 @@
                         .text(this.__widgets[c].components[w].title)
                         .end()
                         .draggable(this.__widgets[c].components[w].draggableSettings)
-                        .appendTo(appendTo);
+                        .on({
+                            dragstart: function(){
+                                mxBuilder.selection.clearSelection();
+                            }
+                        }).appendTo(appendTo);
                     }
                 }
                 
@@ -59,11 +70,11 @@
                     top: 10
                 };
                 for(var c in this.__widgets){
-                    if(this.__widgets[c].title == category){
+                    if(this.__widgets[c].title === category){
                         this.__widgets[c].components.push(obj);
                     }
                 }
             }
-        } 
+        };
     });
-}(jQuery))
+}(jQuery));

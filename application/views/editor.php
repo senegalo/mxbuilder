@@ -570,7 +570,7 @@
             <button id="photos-select-files" style="display:none;"></button>
 
             <ul class="flexly-menu-widgets-list">
-                <li class="mx-helper">
+                <li class="component-widget">
                     <div class="flexly-menu-widget-icon">
                         <div class="flexly-icon"></div>
                     </div>

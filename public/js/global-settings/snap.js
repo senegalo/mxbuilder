@@ -45,7 +45,7 @@
                 }
             },
             applySettings: function applySettings(controls,values){
-                if(typeof values == "undefined"){
+                if(typeof values === "undefined"){
                     values = {
                         snapObjects: controls.snapObjects.is(":checked")
                     };
@@ -56,7 +56,7 @@
             applySettingsOn: function applySettingsOn(controls,controlKey,event,extra){
                 var snap = this;
                 controls[controlKey].on(event,function(){
-                    if(typeof extra != "undefined"){
+                    if(typeof extra !== "undefined"){
                         extra.call();
                     }
                     snap.applySettings(controls);

@@ -344,6 +344,9 @@
             //Making it draggable
             if (typeof obj.draggable !== "undefined") {
                 $.extend(obj.draggable, mxBuilder.Component.prototype.defaultDraggableSettings);
+                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                    obj.draggable.snap = mxBuilder.settingsManager.getSnapSelector();
+                }
                 obj.element.draggable(obj.draggable);
             }
 
@@ -952,7 +955,7 @@
         for (var i in layoutSections) {
             (function(section) {
                 mxBuilder.layout["layout" + section.uppercaseFirst()].droppable({
-                    accept: ".mx-helper,.mx-component, #selection-container",
+                    accept: ".mx-helper, .mx-component, .component-widget, #selection-container",
                     drop: dropOnContainer(section),
                     over: function over() {
                         mxBuilder.layout.outline(section);
