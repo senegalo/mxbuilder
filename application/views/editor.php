@@ -194,6 +194,7 @@
         <script type="text/javascript" src="public/js/settings/shadow.js"></script>
         <script type="text/javascript" src="public/js/settings/color.js"></script>
         <script type="text/javascript" src="public/js/settings/position.js"></script>
+        <script type="text/javascript" src="public/js/settings/image-opacity.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -1216,6 +1217,12 @@
                 </div>
                 <canvas class="color-canvas" height="103" width="235"></canvas>
             </div>
+            
+            <div class="image-opacity-settings">
+                <div class="settings-title">Opacity:</div>
+                <div class="opacity-slider" style="width:238px;"></div>
+            </div>
+            
         </div>
     </body>
 </html>

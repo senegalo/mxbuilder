@@ -113,6 +113,7 @@
             theImage: null,
             theImageContainer: null,
             linkObj: null,
+            opacity: 1,
             revalidate: function revalidate() {
                 var wDiv = this.element.width();
                 var hDiv = this.element.height();
@@ -191,7 +192,8 @@
                     linkType: linkObj.linkType,
                     linkURL: linkObj.linkURL,
                     linkProtocol: linkObj.protocol,
-                    linkOpenIn: linkObj.linkOpenIn
+                    linkOpenIn: linkObj.linkOpenIn,
+                    imageOpacity: this.theImage.css("opacity")
                 });
                 return out;
             },
@@ -357,6 +359,7 @@
                     originalAssetID: this.extra.originalAssetID
                 };
                 out.data.border = this.getBorder();
+                out.data.opacity = this.opacity;
                 return out;
             },
             init: function init(properties) {
@@ -403,6 +406,8 @@
                 if (this.linkObj === null) {
                     this.linkObj = {};
                 }
+                
+                this.setImageOpacity(this.opacity);
 
             },
             publish: function publish() {
@@ -439,7 +444,9 @@
             getSettingsPanels: function getSettingsPanels() {
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
                 delete out.background;
-
+                out.imageOpacity = {
+                    panel: mxBuilder.layout.settingsPanels.imageOpacity
+                };
                 out.linkto = {
                     panel: mxBuilder.layout.settingsPanels.links,
                     params: {
@@ -467,6 +474,10 @@
             setHeight: function(val) {
                 mxBuilder.Component.prototype.setHeight.call(this, val);
                 this.revalidate();
+            },
+            setImageOpacity: function(val) {
+                this.theImage.css("opacity",val);
+                this.opacity = val;
             }
         });
     });
