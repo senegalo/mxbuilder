@@ -1,6 +1,6 @@
 (function($){
     $(function(){
-        var theMenuContainer = $(".flexly-main-bar");
+        var theMenuContainer = $(".flexly-main-bar").disableSelection();
         var theMenuTab = theMenuContainer.find(".flexly-tab");
         var theMenuTabButtons = theMenuContainer.find(".flexly-tab-buttons");
         
