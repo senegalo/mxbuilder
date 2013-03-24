@@ -33,11 +33,20 @@
                 var displaySettings = this.getCommonSettingsPanels();
 
                 this._componentsRevertIDS = {};
+                var hasClipart = false;
                 mxBuilder.selection.each(function() {
                     componentSettings._componentsRevertIDS[this.getID()] = this.cacheState();
+                    if(this.type === "ClipartComponent"){
+                        hasClipart = true;
+                    }
                 });
 
                 for (var p in displaySettings) {
+                    
+                    if(hasClipart && displaySettings[p].panel === mxBuilder.layout.settingsPanels.background){
+                        displaySettings[p].params.hidePattern = true;
+                    }
+                    
                     var thePanel = displaySettings[p].panel.getPanel(displaySettings[p].params);
 
                     //patching webkit bug: scrollTop reset on parent/zindex change

@@ -623,13 +623,14 @@
                 <div class="settings-title">Opacity:</div>
                 <div class="opacity-slider" style="width:238px;"></div>
 
-                <div class="settings-title">Pattern</div>
-                <div class="patterns">
+                <div class="pattern-settings">
+                    <div class="settings-title">Pattern</div>
+                    <div class="patterns">
+                    </div>
+
+                    <div class="settings-title">Scale:</div>
+                    <div class="scale-slider" style="width:238px;"></div>
                 </div>
-
-                <div class="settings-title">Scale:</div>
-                <div class="scale-slider" style="width:238px;"></div>
-
 
             </div>
 
@@ -1173,7 +1174,7 @@
 
             <div class="color-settings">
                 <div class="picker"></div>
-                
+
                 <div class="settings-title">Opacity:</div>
                 <div class="opacity-slider" style="width:238px;"></div>
             </div>
@@ -1217,12 +1218,12 @@
                 </div>
                 <canvas class="color-canvas" height="103" width="235"></canvas>
             </div>
-            
+
             <div class="image-opacity-settings">
                 <div class="settings-title">Opacity:</div>
                 <div class="opacity-slider" style="width:238px;"></div>
             </div>
-            
+
         </div>
     </body>
 </html>

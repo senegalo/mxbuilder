@@ -344,7 +344,7 @@
             //Making it draggable
             if (typeof obj.draggable !== "undefined") {
                 $.extend(obj.draggable, mxBuilder.Component.prototype.defaultDraggableSettings);
-                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                if (mxBuilder.settingsManager.getSetting("snap", "objects")) {
                     obj.draggable.snap = mxBuilder.settingsManager.getSnapSelector();
                 }
                 obj.element.draggable(obj.draggable);
@@ -645,7 +645,8 @@
                 panel: mxBuilder.layout.settingsPanels.border
             };
             out.background = {
-                panel: mxBuilder.layout.settingsPanels.background
+                panel: mxBuilder.layout.settingsPanels.background,
+                params: {}
             };
             out.shadow = {
                 panel: mxBuilder.layout.settingsPanels.shadow
@@ -1021,7 +1022,7 @@
                 }
                 else if (event.ctrlKey && event.keyCode === 67) {
                     mxBuilder.clipboard.copySelected();
-                } else if (event.ctrlKey && event.keyCode === 86){
+                } else if (event.ctrlKey && event.keyCode === 86) {
                     mxBuilder.clipboard.paste();
                 }
             }
