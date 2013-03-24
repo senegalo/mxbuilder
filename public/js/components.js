@@ -336,7 +336,7 @@
                 mouseenter: function mouseenter() {
                     obj.element.addClass("mx-component-over");
                 },
-                mouseout: function mouseout() {
+                mouseleave: function mouseleave() {
                     obj.element.removeClass("mx-component-over");
                 }
             });
