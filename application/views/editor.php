@@ -708,13 +708,18 @@
                 <div class="picker">
 
                 </div>
-
+                
                 <div class="settings-title">Pattern</div>
                 <div class="patterns">
                 </div>
 
                 <div class="settings-title">Scale:</div>
                 <div class="scale-slider" style="width:238px;"></div>
+                
+                <div class="settings-title">Clear Background Images</div>
+                <div>
+                    <button class="clear-background-image">Clear Images</button>
+                </div>
 
             </div>
 
@@ -1229,7 +1234,6 @@
                     <p>Header Title</p>
                 </div>
             </div>
-
         </div>
     </body>
 </html>
