@@ -151,6 +151,7 @@
         <!--Loading Components-->
         <!--<script type="text/javascript" src="public/js/components/simple-div-component.js"></script>-->
         <script type="text/javascript" src="public/js/components/text-component.js"></script>
+        <script type="text/javascript" src="public/js/components/title-component.js"></script>
         <script type="text/javascript" src="public/js/components/box-component.js"></script>
         <script type="text/javascript" src="public/js/components/horizontal-line-component.js"></script>
         <script type="text/javascript" src="public/js/components/vertical-line-component.js"></script>
@@ -495,7 +496,6 @@
             <div class="strip-component-instance" style="width:900px;height:100px;background-color:rgba(0,0,0,1)"></div>
             <div class="text-component-instance" style="width:300px;padding:5px;">
                 <div class="content" style="word-wrap: break-word;">
-                    <h2>Paragraph title</h2>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin congue nisi at turpis elementum convallis. Aenean congue mauris ac dolor rutrum bibendum. Fusce ornare euismod dignissim. Vestibulum posuere ultrices mi, id volutpat velit aliquet ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eleifend condimentum adipiscing. Sed gravida, tellus id molestie tincidunt, odio velit facilisis metus, eu accumsan eros sapien vehicula enim.
                     </p>
@@ -1222,6 +1222,12 @@
             <div class="image-opacity-settings">
                 <div class="settings-title">Opacity:</div>
                 <div class="opacity-slider" style="width:238px;"></div>
+            </div>
+            
+            <div class="header-component-instance" style="width:300px;padding:5px;">
+                <div class="content" style="word-wrap: break-word;">
+                    <p>Header Title</p>
+                </div>
             </div>
 
         </div>

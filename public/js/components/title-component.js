@@ -1,16 +1,21 @@
 (function($) {
     $(function() {
-        mxBuilder.TextComponent = function TextComponent(properties) {
+        mxBuilder.TitleComponent = function TitleComponent(properties) {
+            var instance = this;
             this.init(properties);
+
+            //Edit component behavious settings...
             mxBuilder.Component.apply(this, [{
-                    type: "TextComponent",
+                    type: "TitleComponent",
                     draggable: {},
                     resizable: {
                         orientation: "h"
                     },
                     editableZIndex: true,
-                    selectable: true,
+                    pinnable: true,
+                    deletable: true,
                     hasSettings: true,
+                    selectable: true,
                     element: properties.element,
                     poppedFromActiveStack: function poppedFromActiveStack() {
                         var theComponent = mxBuilder.components.getComponent($(this));
@@ -22,13 +27,10 @@
                     }
                 }]);
 
+            //Add element events...
             properties.element.on({
                 resize: function resize() {
-                    var content = properties.element.find(".content");
-                    var height = content.height();
-                    var instHeight = properties.element.height();
-                    properties.element.height(height);
-                    properties.element.resizable("option", "minHeight", height).data("minheight", instHeight);
+                    instance.revalidate();
                     return true;
                 },
                 resizestop: function resizestop() {
@@ -88,11 +90,36 @@
                             var position = properties.element.position();
 
                             theComponent.editor = CKEDITOR.inline(theContent, {
+                                toolbar: "header",
                                 on: {
                                     instanceReady: function(evt) {
                                         $(theContent).focus();
                                     }
                                 }
+                            });
+
+//                            theComponent.editor.on("key", function(evt) {
+//                                theComponent.revalidate();
+//                                console.log("key event triggered");
+//                            });
+
+                            theComponent.editor.on("afterCommandExec", function(evt) {
+                                theComponent.revalidate();
+                            });
+
+                            theComponent.editor.on("saveSnapshot", function(evt) {
+                                theComponent.revalidate();
+                            });
+
+                            theComponent.editor.on("contentDom", function() {
+                                theComponent.editor.document.on("keydown", function() {
+                                    setTimeout(function() {
+                                        theComponent.revalidate();
+                                    }, 1);
+                                });
+                                theComponent.editor.document.on("keypress", function() {
+                                        theComponent.revalidate();
+                                });
                             });
                         }
 
@@ -143,9 +170,31 @@
                     }
                 }
             });
+
+            //Extra Initializtion actions...
         };
-        $.extend(mxBuilder.TextComponent.prototype, new mxBuilder.Component(), {
-            template: mxBuilder.layout.templates.find(".text-component-instance").remove(),
+        $.extend(mxBuilder.TitleComponent.prototype, new mxBuilder.Component(), {
+            template: mxBuilder.layout.templates.find(".header-component-instance").remove(),
+            fontSize: 8,
+            revalidate: function() {
+                var content = this.element.find(".content");
+
+                if (content.width() < this.element.width()) {
+                    while (content.width() < this.element.width() && this.fontSize < 200) {
+                        content.css("fontSize", ++this.fontSize);
+                    }
+                    while (content.width() > this.element.width()) {
+                        content.css("fontSize", --this.fontSize);
+                    }
+                } else {
+                    while (content.width() > this.element.width() && this.fontSize > 9) {
+                        content.css("fontSize", --this.fontSize);
+                    }
+                }
+                //fix height
+                var height = content.height();
+                this.element.height(height);
+            },
             destroy: function destroy() {
                 var theComponent = mxBuilder.components.getComponent($(this.element));
                 if (theComponent.editor) {
@@ -153,19 +202,14 @@
                 }
                 mxBuilder.Component.prototype.destroy.call(this);
             },
+            isEditMode: function isEditMode() {
+                return this.editMode ? true : false;
+            },
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.text = this.element.find(".content").html();
+                out.data.fontSize = this.fontSize;
                 return out;
-            },
-            init: function init(properties) {
-                mxBuilder.Component.prototype.init.call(this, properties);
-                if (properties.data.text) {
-                    properties.element.find(".content").html(properties.data.text);
-                }
-            },
-            isEditMode: function isEditMode() {
-                return this.editMode ? true : false;
             },
             publish: function publish() {
                 var out = mxBuilder.Component.prototype.publish.call(this);
@@ -191,7 +235,33 @@
                 });
                 return out;
             },
-            getSettingsPanels: function() {
+            getHeadIncludes: function getHeadIncludes() {
+                return mxBuilder.Component.prototype.getHeadIncludes.call(this);
+            },
+            init: function init(properties) {
+                mxBuilder.Component.prototype.init.call(this, properties);
+                var content = this.element.find(".content").css({
+                    display: "inline-block",
+                    whiteSpace: "nowrap"
+                });
+                if (properties.data.text) {
+                    content.html(properties.data.text);
+                }
+                this.revalidate();
+            },
+            getBorder: function getBorder(element) {
+                return mxBuilder.Component.prototype.getBorder.call(this, element);
+            },
+            setBorder: function setBorder(obj) {
+                mxBuilder.Component.prototype.setBorder.call(this, obj);
+            },
+            getBackground: function getBackground(element) {
+                return mxBuilder.Component.prototype.getBackground.call(this, element);
+            },
+            setBackground: function setBackground(obj) {
+                mxBuilder.Component.prototype.setBackground.call(this, obj);
+            },
+            getSettingsPanels: function getSettingsPanels() {
                 return {
                     position: {
                         panel: mxBuilder.layout.settingsPanels.position,
@@ -199,30 +269,13 @@
                     }
                 };
             },
+            getSettings: function getSettings() {
+                return mxBuilder.Component.prototype.getSettings.call(this);
+            },
             nudgeComponent: function nudgeComponent(directionKey, shiftKey) {
                 if (!this.isEditMode()) {
                     mxBuilder.Component.prototype.nudgeComponent.call(this, directionKey, shiftKey);
                 }
-            },
-            cleanDeadLinks: function cleanDeadLinks(pageID) {
-                this.element.find(".inline-links").each(function() {
-                    var that = $(this);
-                    if (that.data("type") === "page" && that.data("url") === pageID) {
-                        that.replaceWith(that.contents());
-                    }
-                });
-            },
-            cleanDeadLinksFromSaveObj: function cleanDeadLinksFromSaveObj(saveObj, pageID) {
-                saveObj.data.text = $(saveObj.data.text).find(".inline-links").each(function() {
-                    var that = $(this);
-                    if (that.data("type") === "page" && that.data("url") === pageID) {
-                        that.replaceWith(that.contents());
-                    }
-                }).get(0).outerHTML;
-                return saveObj;
-            },
-            getSettings: function getSettings() {
-                return mxBuilder.Component.prototype.getSettings.call(this);
             },
             setWidth: function setWidth(value) {
                 mxBuilder.Component.prototype.setWidth.call(this, value);
@@ -230,21 +283,21 @@
             }
         });
 
+
+        //Change widget name and icon
         var widgets = mxBuilder.menuManager.menus.widgets;
         widgets.addComponent("Text Widgets", {
-            icon: "flexly-icon-text-paragraph-component",
-            title: "Paragraph",
+            icon: "flexly-icon-box-component",
+            title: "Header Text",
             draggableSettings: {
                 helper: function(event) {
-                    var theContent = mxBuilder.TextComponent.prototype.template.clone()
+                    var theContent = mxBuilder.TitleComponent.prototype.template.clone()
                             .addClass("mx-helper")
-                            .data("component", "TextComponent");
-                    theContent.appendTo(mxBuilder.layout.container);
+                            .data("component", "TitleComponent")
+                            .appendTo(mxBuilder.layout.container);
                     return theContent;
                 }
             }
         });
-
     });
-
 }(jQuery));

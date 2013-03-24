@@ -982,6 +982,9 @@
                         if (theSelectedComponent.type === "TextComponent" && theSelectedComponent.isEditMode()) {
                             return;
                         }
+                        if (theSelectedComponent.type === "TitleComponent" && theSelectedComponent.isEditMode()) {
+                            return;
+                        }
                     }
                     if (selectionCount > 0) {
                         mxBuilder.dialogs.deleteDialog({
@@ -1003,9 +1006,10 @@
                 }
                 if (event.keyCode >= 37 && event.keyCode <= 40) {
                     var firstComponent = mxBuilder.components.getComponent(mxBuilder.selection.getSelection());
-                    if (mxBuilder.selection.getSelectionCount() === 1 && firstComponent.type === "TextComponent" && firstComponent.isEditMode()) {
+                    var isTextComponent = firstComponent.type === "TextComponent" || firstComponent.type === "TitleComponent";
+                    if (mxBuilder.selection.getSelectionCount() === 1 && isTextComponent && firstComponent.isEditMode()) {
                         return;
-                    } else {
+                    }  else {
                         mxBuilder.selection.each(function() {
                             this.nudgeComponent(event.keyCode, event.shiftKey);
                         });
