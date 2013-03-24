@@ -398,6 +398,9 @@
                         mxBuilder.layout.revalidateLayout();
                     }
                 });
+                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                    obj.resizable.snap = mxBuilder.settingsManager.getSnapSelector();
+                }
                 obj.element.resizable(obj.resizable);
             }
 
