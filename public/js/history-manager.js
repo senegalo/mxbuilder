@@ -31,9 +31,7 @@
                 }
 
                 //Checking if the pointer is in the middle of
-                if (!this.isPointingToLast()) {
-                    this.spliceHash(this._currentPointer);
-                }
+                this.fixPointer();
 
                 this._currentPointer = mxBuilder.utils.GUID();
                 this._hash[this._currentPointer] = restorePoint;
@@ -42,6 +40,33 @@
             setRestorePointFromSelection: function(tags) {
                 var components = mxBuilder.components.getComponents(mxBuilder.selection.getSelection());
                 this.setRestorePoint(components, tags);
+            },
+            setLayoutRestorePoint: function() {
+                var restorePoint = {
+                    type: "layout",
+                    layout: {
+                        header: mxBuilder.layout.header.height(),
+                        body: mxBuilder.layout.body.height(),
+                        footer: mxBuilder.layout.footer.height()
+                    },
+                    contents: []
+                };
+
+                var save;
+                var components = mxBuilder.components.getComponents();
+                for (var c in components) {
+                    if (components.hasOwnProperty(c)) {
+                        save = components[c].save();
+                        save.data._id = components[c].getID();
+                        restorePoint.contents.push(save);
+                    }
+                }
+
+                this.fixPointer();
+
+                this._currentPointer = mxBuilder.utils.GUID();
+                this._hash[this._currentPointer] = restorePoint;
+                this._hashList.push(this._currentPointer);
             },
             spliceHash: function(id) {
                 var index = this.getPointerIndex(id);
@@ -76,6 +101,16 @@
             },
             restorePoint: function(index) {
                 var restorePoint = this._hash[this._hashList[index]];
+                switch (restorePoint.type) {
+                    case "components":
+                        this.restoreComponents(restorePoint);
+                        break;
+                    case "layout":
+                        this.restoreLayout(restorePoint);
+                        break;
+                }
+            },
+            restoreComponents: function(restorePoint) {
                 for (var c = 0, cnt = restorePoint.contents.length; c < cnt; c++) {
                     var component = mxBuilder.components.getComponent(restorePoint.contents[c].data._id);
                     if (restorePoint.contents[c].tags === "delete" && typeof component !== "undefined") {
@@ -102,6 +137,13 @@
                     }
                 }
             },
+            restoreLayout: function(restorePoint) {
+                mxBuilder.layout.header.height(restorePoint.layout.header);
+                mxBuilder.layout.body.height(restorePoint.layout.body);
+                mxBuilder.layout.footer.height(restorePoint.layout.footer);
+                this.restoreComponents(restorePoint);
+                mxBuilder.layout.revalidateLayout(true);
+            },
             getPointerIndex: function(pointer) {
                 pointer = typeof pointer === "undefined" ? this._currentPointer : pointer;
                 for (var r = this._hashList.length - 1; r >= 0; r--) {
@@ -110,6 +152,11 @@
                     }
                 }
                 return null;
+            },
+            fixPointer: function() {
+                if (!this.isPointingToLast()) {
+                    this.spliceHash(this._currentPointer);
+                }
             },
             hasUndo: function() {
                 return this._currentPointer !== null && this._hashList[0] !== this._currentPointer;

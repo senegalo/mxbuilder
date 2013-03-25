@@ -256,6 +256,7 @@
                     }
                     that.data("elements",selector);
                     that.data("lastheight",that.height());
+                    mxBuilder.historyManager.setLayoutRestorePoint();
                 },
                 resize: function(event,ui) {
                     var that = $(ui.element).css("width","100%");
