@@ -935,10 +935,6 @@
                     }
 
                     theComponent.setContainer(container);
-                    mxBuilder.selection.clearSelection();
-                    if (theComponent.selectable !== false) {
-                        mxBuilder.selection.addToSelection(theComponent.element);
-                    }
                     theComponent.element.trigger('componentDropped');
                     mxBuilder.historyManager.setRestorePoint([theComponent], "delete");
                 } else {
