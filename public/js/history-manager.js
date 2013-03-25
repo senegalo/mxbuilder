@@ -14,7 +14,10 @@
             setRestorePoint: function(components, tags) {
                 this._init = true;
 
-                var restorePoint = [];
+                var restorePoint = {
+                    type: "components",
+                    contents: []
+                };
                 var save;
                 for (var c in components) {
                     if (components.hasOwnProperty(c)) {
@@ -23,7 +26,7 @@
                         if (typeof tags !== "undefined") {
                             save.tags = tags;
                         }
-                        restorePoint.push(save);
+                        restorePoint.contents.push(save);
                     }
                 }
 
@@ -73,13 +76,13 @@
             },
             restorePoint: function(index) {
                 var restorePoint = this._hash[this._hashList[index]];
-                for (var c = 0, cnt = restorePoint.length; c < cnt; c++) {
-                    var component = mxBuilder.components.getComponent(restorePoint[c].data._id);
-                    if (restorePoint[c].tags === "delete" && typeof component !== "undefined") {
+                for (var c = 0, cnt = restorePoint.contents.length; c < cnt; c++) {
+                    var component = mxBuilder.components.getComponent(restorePoint.contents[c].data._id);
+                    if (restorePoint.contents[c].tags === "delete" && typeof component !== "undefined") {
                         component.destroy();
                     } else {
                         var restore = {};
-                        $.extend(true, restore, restorePoint[c]);
+                        $.extend(true, restore, restorePoint.contents[c]);
                         if (typeof component !== "undefined") {
                             var wasSelected = mxBuilder.selection.isSelected(component.element);
                             if (wasSelected) {
@@ -87,7 +90,7 @@
                             }
 
                             component.destroy();
-                            restorePoint[c].fixFooter = true;
+                            restorePoint.contents[c].fixFooter = true;
                             var newInstance = mxBuilder.components.addComponent(restore);
 
                             if (wasSelected) {
