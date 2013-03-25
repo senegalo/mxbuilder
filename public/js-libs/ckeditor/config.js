@@ -24,10 +24,9 @@ CKEDITOR.editorConfig = function(config) {
     config.removePlugins = "link";
 
     config.toolbar = [/*['Styles'], */
-        ['TextColor', 'Font', 'FontSize'],
+        ['TextColor', 'Font', 'FontSize'],['NumberedList', 'BulletedList', '-', '-', 'LinkExtra', 'UnlinkExtra'], '/',
         ['Bold', 'Italic', 'Underline', '-', 'RemoveFormat'],
-        ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl'],
-        ['NumberedList', 'BulletedList', '-', '-', 'LinkExtra', 'UnlinkExtra']];
+        ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']];
 
     config.toolbar_header = [
         ['Bold', 'Italic', 'Underline', '-','TextColor', '-', 'RemoveFormat'],['Font']

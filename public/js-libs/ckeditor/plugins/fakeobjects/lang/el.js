@@ -1,0 +1,1 @@
+﻿CKEDITOR.plugins.setLang("fakeobjects","el",{anchor:"Εισαγωγή/επεξεργασία Άγκυρας",flash:"Ταινία Flash",hiddenfield:"Κρυφό πεδίο",iframe:"IFrame",unknown:"Άγνωστο Αντικείμενο"});

@@ -1,0 +1,1 @@
+﻿CKEDITOR.plugins.setLang("fakeobjects","fr-ca",{anchor:"Insérer/modifier l'ancre",flash:"Flash Animation",hiddenfield:"Champ caché",iframe:"IFrame",unknown:"Unknown Object"});

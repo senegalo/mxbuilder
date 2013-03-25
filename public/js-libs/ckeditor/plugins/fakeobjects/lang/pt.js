@@ -1,0 +1,1 @@
+﻿CKEDITOR.plugins.setLang("fakeobjects","pt",{anchor:" Inserir/Editar Âncora",flash:"Flash Animation",hiddenfield:"Campo Escondido",iframe:"IFrame",unknown:"Unknown Object"});
