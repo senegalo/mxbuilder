@@ -514,22 +514,9 @@
                 css: {},
                 data: {}
             };
-            var position = this.element.position();
 
-            out.css.top = this.container === "footer" ? position.top - mxBuilder.layout.footer.position().top : position.top;
-            out.css.left = position.left;
-            out.css.height = this.element.height();
-            out.css.width = this.element.width();
-            out.css.zIndex = this.element.css("zIndex");
-            out.css.border = this.element.css("border");
-            var corners = ["TopLeft", "BottomLeft", "BottomRight", "TopRight"];
-            for (var c in corners) {
-                out.css['border' + corners[c] + 'Radius'] = this.element.css("border" + corners[c] + "Radius");
-            }
-            var background = ["image", "size", "color"];
-            for (c in background) {
-                out.css["background-" + background[c]] = this.element.css("background-" + background[c]);
-            }
+            out.css = mxBuilder.layout.utils.getInlineElementStyles(this.element);
+            
             out.data.container = this.container;
             out.data.type = this.type;
             out.data.page = this.page;

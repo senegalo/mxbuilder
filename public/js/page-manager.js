@@ -474,9 +474,9 @@
             },
             getLayoutBackground: function() {
                 return {
-                    header: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutHeader),
-                    body: mxBuilder.utils.getElementBackgroundObj($(document.body)),
-                    footer: mxBuilder.utils.getElementBackgroundObj(mxBuilder.layout.layoutFooter),
+                    header: mxBuilder.layout.utils.getInlineElementStyles(mxBuilder.layout.layoutHeader),
+                    body: mxBuilder.layout.utils.getInlineElementStyles($(document.body)),
+                    footer: mxBuilder.layout.utils.getInlineElementStyles(mxBuilder.layout.layoutFooter),
                     headerImage: mxBuilder.layout.getBackgroundImage("header").data("id"),
                     bodyImage: mxBuilder.layout.getBackgroundImage("body").data("id"),
                     footerImage: mxBuilder.layout.getBackgroundImage("footer").data("id")

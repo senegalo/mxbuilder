@@ -32,6 +32,8 @@
         <link rel="stylesheet" href="public/css/themes-tab.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/flickr-badge.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/youtube-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/box-component.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/strip-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/button.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/form-to-mail.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/image-grid.css" type="text/css"/>
@@ -67,6 +69,7 @@
 
 
         <link rel="stylesheet" href="public/css/main.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/themes.css" type="text/css"/>
 
         <title>Builder</title>
         <!-- Loading Libs -->
@@ -196,6 +199,7 @@
         <script type="text/javascript" src="public/js/settings/color.js"></script>
         <script type="text/javascript" src="public/js/settings/position.js"></script>
         <script type="text/javascript" src="public/js/settings/image-opacity.js"></script>
+        <script type="text/javascript" src="public/js/settings/themes.js"></script>
 
         <!--Loading Dialogs-->
         <script type="text/javascript" src="public/js/dialogs/linkto.js"></script>
@@ -491,9 +495,9 @@
                 </ul>
 
             </div>
-            <div class="box-component-instance" style="width:300px;height:200px;background-color:rgba(0,0,0,1);border-radius:6px;"></div>
+            <div class="box-component-instance"></div>
             <div class="hline-component-instance" style="width:300px;height:1px;background-color:black;"></div>
-            <div class="strip-component-instance" style="width:900px;height:100px;background-color:rgba(0,0,0,1)"></div>
+            <div class="strip-component-instance"></div>
             <div class="text-component-instance" style="width:300px;padding:5px;">
                 <div class="content" style="word-wrap: break-word;">
                     <p>
@@ -1232,6 +1236,17 @@
             <div class="header-component-instance" style="width:300px;padding:5px;">
                 <div class="content" style="word-wrap: break-word;">
                     <p>Header Title</p>
+                </div>
+            </div>
+            
+            <div class="themes-settings">
+                <div class="settings-title">Themes</div>
+                <div>
+                    <select class="themes-switcher">
+                        <option value="">None</option>
+                        <option value="theme1">Theme 1</option>
+                        <option value="theme2">Theme 2</option>
+                    </select>
                 </div>
             </div>
         </div>

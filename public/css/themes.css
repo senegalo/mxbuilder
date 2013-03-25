@@ -1,0 +1,23 @@
+/* First Theme */
+
+.theme1 {
+    background-color: #003399;
+}
+
+.theme1 #header {
+    background-color: #00dbff;
+}
+
+.theme1 #footer {
+    background-color: #000;
+}
+
+.theme1 .mx-component.box-component-instance {
+    background-color: #003399;
+    border: 2px solid #478500;
+    border-radius: 30px;
+}
+
+.theme1 .mx-component.strip-component-instance {
+    background-color: #003399;
+}

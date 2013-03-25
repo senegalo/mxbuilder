@@ -18,6 +18,10 @@
                 if (element.hasClass("flexly-icon-page")) {
                     mxBuilder.menuManager.showTab("pages");
                 } else if (element.hasClass("flexly-icon-photos")) {
+
+                } else if(element.hasClass("flexly-icon-wizard")){
+                    mxBuilder.menuManager.showTab("themes");
+                } else if(element.hasClass("flexly-icon-photos")){
                     mxBuilder.menuManager.showTab("photos");
                 } else if (element.hasClass("flexly-icon-widgets")) {
                     mxBuilder.menuManager.showTab("widgets");
