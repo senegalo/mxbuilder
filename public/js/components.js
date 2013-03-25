@@ -1004,7 +1004,7 @@
                 }
             },
             keydown: function keydown(event) {
-                if ($(event.srcElement).parents(".flexly-main-bar").length !== 0) {
+                if (mxBuilder.menuManager.isOpened() && $(event.srcElement).parents(".flexly-main-bar").length !== 0) {
                     return;
                 }
                 if (event.keyCode >= 37 && event.keyCode <= 40) {

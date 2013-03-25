@@ -45,11 +45,11 @@
                 return false;
             }
         });
-        
+
         //auto close tabs if selection changes and we are not in the components tab
         $(mxBuilder.systemEvents).on({
-            selectionChanged: function(){
-                if(mxBuilder.menuManager.currentTab !== "componentSettings"){
+            selectionChanged: function() {
+                if (mxBuilder.menuManager.currentTab !== "componentSettings") {
                     mxBuilder.menuManager.closeTab();
                 }
             }
@@ -67,9 +67,10 @@
             tabFooter: theMenuTab.find(".flexly-tab-footer-container"),
             menus: {},
             currentTab: "",
+            opened: false,
             showTab: function(tabID, extraData) {
                 this.currentTab = tabID;
-                if(tabID !== "componentSettings"){
+                if (tabID !== "componentSettings") {
                     mxBuilder.selection.clearSelection({
                         muteGlobalEvent: true
                     });
@@ -84,6 +85,7 @@
                 } else {
                     mxBuilder.menuManager.displayTabContent(tabID, extraData);
                 }
+                this.opened = true;
             },
             displayTabContent: function(tabID, extraData) {
                 this.contentTab.empty();
@@ -108,6 +110,7 @@
                         width: 68
                     }, 300, "linear");
                 });
+                this.opened = false;
             },
             revalidate: function() {
                 //hiding everything
@@ -165,6 +168,9 @@
             addFooterSaveButton: function() {
                 return $('<div class="flexly-icon flexly-icon-save-button" style="position:absolute;top:5px;right:20px;"/>')
                         .appendTo(this.tabFooter);
+            },
+            isOpened: function() {
+                return this.opened;
             }
         };
     });
