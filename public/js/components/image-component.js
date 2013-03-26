@@ -101,6 +101,27 @@
                         ctx.stopPropagation();
                     }
                 }
+            }).droppable({
+                accept: ".asset-image.mx-helper",
+                tolerance: "fit",
+                drop: function(event, ui) {
+                    var saveObj = self.save();
+                    saveObj.data.extra = ui.helper.data("extra");
+                    saveObj.fixFooter = true;
+
+                    self.destroy();
+
+                    mxBuilder.components.addComponent(saveObj);
+                },
+                over: function(event, ui) {
+                    ui.helper.data("deny-drop", true);
+                    self.element.addClass("replace-outline");
+                },
+                out: function(event, ui) {
+
+                    ui.helper.data("deny-drop", false);
+                    self.element.removeClass("replace-outline");
+                }
             });
 
             this.setResizeMethod(this.__currentResizeMethod);
@@ -406,7 +427,7 @@
                 if (this.linkObj === null) {
                     this.linkObj = {};
                 }
-                
+
                 this.setImageOpacity(this.opacity);
 
             },
@@ -476,7 +497,7 @@
                 this.revalidate();
             },
             setImageOpacity: function(val) {
-                this.theImage.css("opacity",val);
+                this.theImage.css("opacity", val);
                 this.opacity = val;
             }
         });

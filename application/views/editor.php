@@ -48,6 +48,7 @@
         <link rel="stylesheet" href="public/css/clipart-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/position.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/custom-slider.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/image-component.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
