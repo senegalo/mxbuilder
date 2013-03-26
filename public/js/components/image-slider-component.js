@@ -462,13 +462,15 @@
                 $.extend(this.sliderSettings, obj);
             },
             getSettings: function getSettings() {
-                return {
+                var out = mxBuilder.Component.prototype.getSettings.call(this);
+                $.extend(out, {
                     autoPlay: this.sliderSettings.autoPlay,
                     transitionSpeed: this.getSpeed(),
                     indicator: this.sliderSettings.indicator,
                     action: this.sliderSettings.action,
                     navigation: this.sliderSettings.navigation
-                };
+                });
+                return out;
             },
             updateLink: function updateLink(id, link) {
                 for (var i in this.list) {
@@ -528,6 +530,14 @@
                     }
                 }
                 return out;
+            },
+            setWidth: function(val) {
+                mxBuilder.Component.prototype.setWidth.call(this,val);
+                this.revalidate();
+            },
+            setHeight: function(val) {
+                mxBuilder.Component.prototype.setHeight.call(this,val);
+                this.revalidate();
             }
         });
     });
