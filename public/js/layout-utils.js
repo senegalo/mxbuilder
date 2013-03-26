@@ -64,6 +64,17 @@
                 }
                 return out;
             }
+            ,
+            getOrderdRootPagesList: function() {
+                var pages = mxBuilder.pages.getOrderedPages();
+                var out = $();
+                for (var p in pages) {
+                    if(pages[p].parent !== "root")
+                        continue;
+                    out = out.add($('<option value="' + pages[p].id + '">' + pages[p].title + '</option>'));
+                }
+                return out;
+            }
         };
     });
 

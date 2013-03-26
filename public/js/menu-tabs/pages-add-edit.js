@@ -71,6 +71,8 @@
                         .end()
                         .find('input[type="checkbox"]').checkbox();
 
+                this._instance.find("#page-parent").append(mxBuilder.layout.utils.getOrderdRootPagesList());
+
 
                 if (data) {
                     this._pageID = data.id;
@@ -95,6 +97,7 @@
                 this._instance.find("#page-address").val(data.address).data("address-cache", data.address);
                 this._instance.find("#page-desc").val(data.desc);
                 this._instance.find("#page-keywords").val(data.keywords);
+                this._instance.find("#page-parent").val(data.parent);
                 if (typeof data.showInMenu === "undefined" || data.showInMenu === true) {
                     this._instance.find("#page-show-in-menu").attr("checked", "checked").trigger("change");
                 } else {
@@ -128,6 +131,7 @@
                 theAddress = theAddress.val() === "index" && theAddress.data("address-cache") ? theAddress.data("address-cache") : theAddress.val();
                 return {
                     title: this._instance.find("#page-title").val(),
+                    parent: this._instance.find("#page-parent").val(),
                     htmlTitle: this._instance.find("#page-html-title").val(),
                     showInMenu: this._instance.find("#page-show-in-menu").is(":checked"),
                     homepage: this._instance.find("#page-as-homepage").is(":checked"),

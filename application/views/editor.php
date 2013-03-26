@@ -462,6 +462,12 @@
                         <input type="text" id="page-title"/>
                     </li>
                     <li>
+                        <label>Parent</label>
+                        <select id="page-parent">
+                            <option value="root">Root</option>
+                        </select>
+                    </li>
+                    <li>
                         <label for="page-html-title">Title bar Text</label>
                         <input type="text" id="page-html-title"/>
                     </li>
