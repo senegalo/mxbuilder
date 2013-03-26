@@ -1237,7 +1237,7 @@
             </div>
             
             <div class="header-component-instance" style="width:300px;padding:5px;">
-                <div class="content" style="word-wrap: break-word;">
+                <div class="content cke-font-size" style="word-wrap: break-word;">
                     <p>Header Title</p>
                 </div>
             </div>
