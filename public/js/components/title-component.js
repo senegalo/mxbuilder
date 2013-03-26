@@ -52,39 +52,11 @@
                                     .focus()
                                     .get(0);
 
-                            var originalHeight = properties.element.height();
-                            var cachedHeight = originalHeight;
-                            var refreshInterval = setInterval(function() {
-                                var metrics = theComponent.getMetrics();
-                                if (metrics.height !== cachedHeight) {
-                                    if (theComponent.editor) {
-                                        (new CKEDITOR.dom.window(window)).fire("resize");
-                                    }
-                                    if (metrics.height >= originalHeight) {
-                                        var displacment = metrics.height - cachedHeight;
-                                        var components = mxBuilder.components.detectCollision([theComponent], displacment < 0 ? -1 * displacment + 40 : 20);
-                                        for (var c in components) {
-                                            var element = components[c].element;
-                                            var position = element.position();
-                                            element.css({
-                                                top: position.top + displacment + "px",
-                                                left: position.left
-                                            });
-                                        }
-                                    }
-                                    mxBuilder.selection.revalidateSelectionContainer();
-                                    mxBuilder.layout.revalidateLayout();
-                                    cachedHeight = metrics.height;
-                                }
-                            }, 100);
-
                             mxBuilder.selection.enableMultiComponentSelect(false);
-                            //mxBuilder.activeStack.push(properties.element);
 
                             properties.element.css({
-                                //minHeight: height+"px",
                                 height: "auto"
-                            }).data("refreshinterval", refreshInterval).data("minheight", originalHeight);
+                            });
 
                             theComponent.editor = CKEDITOR.inline(theContent, {
                                 toolbar: "header",
@@ -130,22 +102,10 @@
                 poppedFromActiveStack: function poppedFromActiveStack() {
                     var theComponent = mxBuilder.components.getComponent(properties.element);
                     if (theComponent.editor !== null && typeof theComponent.editor !== "undefined") {
-                        clearInterval(properties.element.data("refreshinterval"));
 
                         theComponent.editor.destroy();
                         theComponent.editor = null;
                         mxBuilder.selection.enableMultiComponentSelect(true);
-
-                        var cachedMinHeight = properties.element.data("minheight");
-                        var contentHeight = instance.contentContainer.height();
-
-                        var height;
-                        if (cachedMinHeight > contentHeight) {
-                            instance.contentContainer.height(height);
-                            height = cachedMinHeight;
-                        } else {
-                            height = contentHeight;
-                        }
 
                         properties.element.draggable("enable").css({
                             minHeight: "",
