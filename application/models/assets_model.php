@@ -280,7 +280,7 @@ class Assets_Model extends CI_Model {
     public function update_photo_properties($user, $image_id, $args) {
         $row = $this->get_asset_by_id($user, $image_id);
         if ($row !== false) {
-            $extra = unserialize($row->extra);
+            $extra = unserialize(base64_decode($row->extra));
             $extra["caption"] = $args['caption'];
             $extra["title"] = $args['title'];
             $extra = base64_encode(serialize($extra));
