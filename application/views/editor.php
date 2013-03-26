@@ -4,7 +4,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
         <link rel="stylesheet" href="public/css/smoothness/jquery-ui-1.9.2.custom.css" type="text/css"/>
-        <link rel="stylesheet" href="public/css/reset.css" type="text/css" />
+        <!--<link rel="stylesheet" href="public/css/reset.css" type="text/css" />-->
+        <link rel="stylesheet" href="public/css/bootstrap.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/menu-layout.css" type="text/css" />
         <link rel="stylesheet" href="public/css/icons.css" type="text/css" />
         <link rel="stylesheet" href="public/css/context-menu.css" type="text/css"/>

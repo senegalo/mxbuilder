@@ -247,6 +247,7 @@ class Assets_Model extends CI_Model {
                     $image_data = unserialize(base64_decode($row->extra));
                     if(!is_array($image_data['sizes'])){
                         print_r($row);
+                        print_r($image_data);
                     }
                     $asset["ratio"] = $image_data["ratio"];
                     $asset["title"] = $image_data["title"];
