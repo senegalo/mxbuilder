@@ -29,7 +29,7 @@ CKEDITOR.editorConfig = function(config) {
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']];
 
     config.toolbar_header = [
-        ['Bold', 'Italic', 'Underline', '-','TextColor', '-', 'RemoveFormat'],['Font']
+        ['Bold', 'Italic', 'Underline', '-','TextColor', '-', 'RemoveFormat'],['Font'],['FontSize']
     ];
     
 
