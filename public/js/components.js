@@ -409,7 +409,7 @@
                 obj.element.addClass("mx-selectable-component").on({
                     click: function click(event) {
                         if (event.which === 1) {
-                            if (event.ctrlKey) {
+                            if (event.ctrlKey || event.shiftKey) {
                                 mxBuilder.selection.toggle(obj.element);
                             } else {
                                 if (!mxBuilder.selection.isSelected(obj.element)) {
