@@ -35,10 +35,15 @@
                 controls.height.spinner({numberFormat: "n"});
 
                 this.applyToSelectionOn(controls, "x", "spin");
+                this.applyToSelectionOn(controls, "x", "input", this.validateInteger(controls.x));
                 this.applyToSelectionOn(controls, "y", "spin");
+                this.applyToSelectionOn(controls, "y", "input", this.validateInteger(controls.y));
                 this.applyToSelectionOn(controls, "z", "spin");
+                this.applyToSelectionOn(controls, "z", "input", this.validateInteger(controls.z));
                 this.applyToSelectionOn(controls, "width", "spin");
+                this.applyToSelectionOn(controls, "width", "input", this.validateInteger(controls.width));
                 this.applyToSelectionOn(controls, "height", "spin");
+                this.applyToSelectionOn(controls, "height", "input", this.validateInteger(controls.height));
 
                 this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = {};
@@ -57,8 +62,7 @@
                 };
                 mxBuilder.selection.each(function() {
                     var theSettings = this.getSettings();
-                    var p;
-                    for (p = 0, cnt = properties.length; p < cnt; p++) {
+                    for (var p = 0, cnt = properties.length; p < cnt; p++) {
                         if (firstPass) {
                             originalSettings[properties[p]] = theSettings[properties[p]];
                         }
@@ -240,6 +244,14 @@
                         position.applyToSelection(controls);
                     }
                 });
+            },
+            validateInteger: function(control) {
+                return function() {
+                    var value = control.spinner("value");
+                    if (value === null) {
+                        control.spinner("value", 0);
+                    }
+                };
             }
         };
     });
