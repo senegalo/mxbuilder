@@ -3,8 +3,8 @@
     $(function() {
 
         mxBuilder.menuManager.menus.photosFlicker = {
-            _template: mxBuilder.menuManager.menus.photos.__template.clone(),
-            _templateImage: mxBuilder.menuManager.menus.photos.__templateImage.clone().find(".photo-delete,.photo-properties").remove().end(),
+            _template: mxBuilder.menuManager.menus.photos._template.clone(),
+            _templateImage: mxBuilder.menuManager.menus.photos._templateImage.clone().find(".photo-delete,.photo-properties").remove().end(),
             _theList: null,
             _leftList: null,
             _rightList: null,
