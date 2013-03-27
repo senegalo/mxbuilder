@@ -58,6 +58,11 @@
                 }
             }
             delete this.__assets[id];
+        },
+        removeBatch: function(ids){
+            for(var i=0,cnt=ids.length;i<cnt;i++){
+                this.remove(ids[i]);
+            }
         }
     };
 }(jQuery));

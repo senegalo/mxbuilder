@@ -113,21 +113,25 @@
                                     mxBuilder.dialogs.deleteDialog({
                                         msg: "Are you sure you want to delete the selected image(s) ? <br/>If any of the images are used anywhere it will be automatically removed",
                                         callback: function callback() {
-
+                                            var del = [];
+                                            photos.each(function() {
+                                                del.push(this.data("assetid"));
+                                            });
                                             mxBuilder.api.assets.remove({
-                                                assetID: theItem.data("assetid"),
+                                                ids: del,
                                                 success: function success() {
-                                                    mxBuilder.assets.remove(theItem.data("assetid"));
-                                                    theItem.css({
-                                                        height: theItem.outerHeight(),
-                                                        width: theItem.outerWidth(),
-                                                        padding: 0
-                                                    }).contents()
-                                                            .remove()
-                                                            .end().animate({
-                                                        height: 0
-                                                    }, 300, "linear", function() {
-                                                        mxBuilder.menuManager.menus.photos.revalidate();
+                                                    mxBuilder.assets.removeBatch(del);
+                                                    photos.each(function() {
+                                                        this.css({
+                                                            height: theItem.outerHeight(),
+                                                            width: theItem.outerWidth(),
+                                                            padding: 0
+                                                        });
+                                                        this.contents().remove().end().animate({
+                                                            height: 0
+                                                        }, 300, "linear", function() {
+                                                            mxBuilder.menuManager.menus.photos.revalidate();
+                                                        });
                                                     });
                                                 }
                                             });

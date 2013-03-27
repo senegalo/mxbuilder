@@ -70,13 +70,13 @@ class Assets_Model extends CI_Model {
                 "title" => "",
                 "is_flicker" => 0
             );
-            
-            if(isset($file['flicker_obj'])){
+
+            if (isset($file['flicker_obj'])) {
                 $extras['owner_name'] = $file['flicker_obj']['ownername'];
                 $extras['flicker_id'] = $file['flicker_obj']['id'];
                 $extras['is_flicker'] = 1;
             }
-            
+
             $this->db->set("extra", base64_encode(serialize($extras)))
                     ->where("id", $asset_id)
                     ->update("assets");
@@ -198,27 +198,28 @@ class Assets_Model extends CI_Model {
         }
     }
 
-    public function delete_asset($user, $asset_id) {
-        $row = $this->get_asset_by_id($user, $asset_id);
-        if ($row !== false) {
+    public function delete_assets($user, $assets_ids) {
+        $out = array();
+        foreach ($assets_ids as $asset_id) {
+            $row = $this->get_asset_by_id($user, $asset_id);
+            if ($row !== false) {
+                $upload_path = $this->get_upload_path($row->upload_date);
+                if ($row->type == "image") {
+                    $image_data = unserialize(base64_decode($row->extra));
+                    $filename = $this->get_filename($row->id);
+                    $extension = $row->extension;
 
-            $upload_path = $this->get_upload_path($row->upload_date);
-            if ($row->type == "image") {
-                $image_data = unserialize(base64_decode($row->extra));
-                $filename = $this->get_filename($row->id);
-                $extension = $row->extension;
-
-                array_map(function($str) use ($filename, $extension, $upload_path) {
-                            unlink($upload_path . "/" . $filename . "-" . $str . "." . $extension);
-                        }, $image_data['sizes']);
-            } else {
-                unlink($upload_path . "/" . $this->get_filename($row->id) . "." . $row->extension);
+                    array_map(function($str) use ($filename, $extension, $upload_path) {
+                                unlink($upload_path . "/" . $filename . "-" . $str . "." . $extension);
+                            }, $image_data['sizes']);
+                } else {
+                    unlink($upload_path . "/" . $this->get_filename($row->id) . "." . $row->extension);
+                }
+                $this->db->where("user_id", $user['id'])->where("id", $asset_id)->delete("assets");
+                $out[] = $asset_id;
             }
-
-            $this->db->where("user_id", $user['id'])->where("id", $asset_id)->delete("assets");
-            return true;
         }
-        return Assets_Model::ASSET_NOT_FOUND;
+        return $out;
     }
 
     public function get_asset_upload_folder($upload_date) {
@@ -245,7 +246,7 @@ class Assets_Model extends CI_Model {
                 $asset["name"] = $row->name;
                 if ($row->type == "image") {
                     $image_data = unserialize(base64_decode($row->extra));
-                    if(!is_array($image_data['sizes'])){
+                    if (!is_array($image_data['sizes'])) {
                         print_r($row);
                     }
                     $asset["ratio"] = $image_data["ratio"];

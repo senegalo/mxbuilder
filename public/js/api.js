@@ -64,7 +64,7 @@
                     success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete,
                     data: {
-                        "asset_id": args.assetID
+                        "asset_ids": args.ids
                     }
                 });
             },
