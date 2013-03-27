@@ -532,11 +532,11 @@
                 return out;
             },
             setWidth: function(val) {
-                mxBuilder.Component.prototype.setWidth.call(this,val);
+                mxBuilder.Component.prototype.setWidth.call(this, val);
                 this.revalidate();
             },
             setHeight: function(val) {
-                mxBuilder.Component.prototype.setHeight.call(this,val);
+                mxBuilder.Component.prototype.setHeight.call(this, val);
                 this.revalidate();
             }
         });
