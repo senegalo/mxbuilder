@@ -16,6 +16,7 @@
                     }
                 }, {
                     label: "OK",
+                    isDefaultAction: true,
                     klass: "flexly-icon-check-big-black",
                     click: function click(event) {
                         currentCallback.call(this, event);
