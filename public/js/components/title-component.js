@@ -60,6 +60,9 @@
 
                             theComponent.editor = CKEDITOR.inline(theContent, {
                                 toolbar: "header",
+                                keystrokes: [
+                                    [13, 'donothing']
+                                ],
                                 on: {
                                     instanceReady: function(evt) {
                                         $(theContent).focus();
@@ -82,7 +85,7 @@
                                     }, 1);
                                 });
                                 theComponent.editor.document.on("keypress", function() {
-                                        theComponent.revalidateWidth();
+                                    theComponent.revalidateWidth();
                                 });
                             });
                         }

@@ -19,7 +19,7 @@ CKEDITOR.editorConfig = function(config) {
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
-    config.extraPlugins = "customlink";
+    config.extraPlugins = "customlink,donothing";
 
     config.removePlugins = "link";
 
@@ -53,5 +53,4 @@ CKEDITOR.editorConfig = function(config) {
                 element: 'font', attributes: {'size': null}
             }]
     };
-
 };
