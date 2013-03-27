@@ -240,7 +240,7 @@
                 return out;
             },
             updateImagesInfo: function updateImagesInfo() {
-                this.element.find("img").each(function() {
+                this.element.find("li img").each(function() {
                     var theImage = $(this);
                     var theSlide = theImage.parents('li:first');
                     var imageObj = mxBuilder.assets.get(theImage.data("id"));
