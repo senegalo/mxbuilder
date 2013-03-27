@@ -1,48 +1,48 @@
-(function($){
+(function($) {
     $.ajaxSetup({
         type: "post",
         dataType: "json",
         cache: false
     });
-    
-    $(document).ajaxError(function(){
+
+    $(document).ajaxError(function() {
         mxBuilder.dialogs.alertDialog.show("Something went wrong... couldn't reach the server");
     });
-    
+
     mxBuilder.api = {
-        __genericSuccess: function(args){
-            return function(data){
-                if(data && data.success && args.success){
+        _genericSuccess: function(args) {
+            return function(data) {
+                if (data && data.success && args.success) {
                     args.success(data);
-                } else if(args.error){
+                } else if (args.error) {
                     args.error(data);
                 }
-            }
+            };
         },
         website: {
-            save: function save(args){
+            save: function save(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/websites/save",
+                    url: mxBuilder.config.baseURL + "/websites/save",
                     data: {
                         "website_content": args.websiteData
                     },
-                    success: mxBuilder.api.__genericSuccess(args),
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete
                 });
             },
-            get: function get(args){
+            get: function get(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/websites/get",
-                    success: mxBuilder.api.__genericSuccess(args),
+                    url: mxBuilder.config.baseURL + "/websites/get",
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete
                 });
             },
-            publish: function publish(args){
+            publish: function publish(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/websites/publish",
-                    success: mxBuilder.api.__genericSuccess(args),
+                    url: mxBuilder.config.baseURL + "/websites/publish",
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete,
-                    data:  {
+                    data: {
                         pages: args.pages,
                         layout: args.layout,
                         assets: args.assets,
@@ -52,37 +52,37 @@
             }
         },
         assets: {
-            get: function get(args){
+            get: function get(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/assets/get",
-                    success: mxBuilder.api.__genericSuccess(args)
+                    url: mxBuilder.config.baseURL + "/assets/get",
+                    success: mxBuilder.api._genericSuccess(args)
                 });
             },
-            remove: function remove(args){
+            remove: function remove(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/assets/delete",
-                    success: mxBuilder.api.__genericSuccess(args),
+                    url: mxBuilder.config.baseURL + "/assets/delete",
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete,
                     data: {
                         "asset_id": args.assetID
                     }
                 });
             },
-            changeAssetName: function changeAssetName(args){
+            changeAssetName: function changeAssetName(args) {
                 $.ajax({
-                   url: mxBuilder.config.baseURL+"/assets/change_asset_name",
-                   success: mxBuilder.api.__genericSuccess(args),
-                   complete: args.complete,
-                   data: {
-                       "asset_id": args.assetID,
-                       "new_name": args.newName
-                   }
+                    url: mxBuilder.config.baseURL + "/assets/change_asset_name",
+                    success: mxBuilder.api._genericSuccess(args),
+                    complete: args.complete,
+                    data: {
+                        "asset_id": args.assetID,
+                        "new_name": args.newName
+                    }
                 });
             },
-            updatePhotoProperties: function updatePhotoProperties(args){
+            updatePhotoProperties: function updatePhotoProperties(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/assets/update_photo_properties",
-                    success: mxBuilder.api.__genericSuccess(args),
+                    url: mxBuilder.config.baseURL + "/assets/update_photo_properties",
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete,
                     data: {
                         "asset_id": args.assetID,
@@ -92,10 +92,10 @@
                     }
                 });
             },
-            addFlickerImage: function addFlickerImage(args){
+            addFlickerImage: function addFlickerImage(args) {
                 $.ajax({
-                    url: mxBuilder.config.baseURL+"/assets/add_flicker_image",
-                    success: mxBuilder.api.__genericSuccess(args),
+                    url: mxBuilder.config.baseURL + "/assets/add_flicker_image",
+                    success: mxBuilder.api._genericSuccess(args),
                     complete: args.complete,
                     data: {
                         flicker_obj: args.flickerObj
@@ -109,7 +109,7 @@
                 format: "json",
                 nojsoncallback: 1
             },
-            search: function search(obj){
+            search: function search(obj) {
                 var data = {
                     text: obj.keyword,
                     method: "flickr.photos.search",
@@ -117,34 +117,34 @@
                     sort: "relevance",
                     per_page: 500,
                     extras: "o_dims,original_format,owner_name"
-                }
+                };
                 $.extend(data, this.defaults);
                 $.ajax({
                     url: "http://api.flickr.com/services/rest/",
                     data: data,
-                    success: function(data){
-                        if(data.stat == "ok"){
-                            if(obj.success){
+                    success: function(data) {
+                        if (data.stat === "ok") {
+                            if (obj.success) {
                                 obj.success(data);
                             }
                         } else {
-                            if(obj.error){
+                            if (obj.error) {
                                 obj.error(data);
                             }
                         }
                     },
-                    error: function(){
-                        if(obj.error){
+                    error: function() {
+                        if (obj.error) {
                             obj.error();
                         }
                     },
-                    complete: function(){
-                        if(obj.complete){
+                    complete: function() {
+                        if (obj.complete) {
                             obj.complete();
                         }
                     }
                 });
             }
         }
-    }
+    };
 }(jQuery));
