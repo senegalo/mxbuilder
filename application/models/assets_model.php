@@ -42,7 +42,7 @@ class Assets_Model extends CI_Model {
 
         if (isset($file['flicker_obj'])) {
             file_put_contents($upload_dir . "/" . $asset_filename, $file['data']);
-        } else if (!is_dir($upload_dir . "/" . $asset_filename) || !move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
+        } else if (is_dir($upload_dir) && !move_uploaded_file($file['tmp_name'], $upload_dir . "/" . $asset_filename)) {
             $this->db->where("id", $asset_id)->delete("assets");
             return Assets_Model::UPLOAD_ERROR;
         }
