@@ -17,7 +17,7 @@
                 mxBuilder.menuManager.tabTitle.text("Photos");
 
                 //adding the buttons
-                var uploadButton = mxBuilder.menuManager.addButtonTo("flexly-icon-upload-light", "main");
+                var uploadButton = mxBuilder.menuManager.addButtonTo("flexly-icon-upload-light", "main").attr("id","photos-select-files");;
                 mxBuilder.menuManager.addButtonTo("flexly-icon-search-light", "main").on({
                     click: function click() {
                         mxBuilder.menuManager.showTab("photosSearch");
@@ -168,8 +168,9 @@
                 mxBuilder.menuManager.revalidateScrollbar();
             },
             initUploader: function initUploader(uploadButton) {
+                var instance = this;
+                
                 var uploader = new plupload.Uploader(mxBuilder.uploaderSettings);
-                var uploaderBrowserButton = mxBuilder.layout.templates.find("#photos-select-files").appendTo(document.body);
 
                 //activating the cancel button on the notification canvas
                 $("#flexly-notification-container").on({
@@ -183,33 +184,10 @@
                 });
 
                 var queueSize = 0;
-                //                var uploaderNotification = mxBuilder.layout.templates.find(".photo-upload-notification")
-                //                .find('.progress')
-                //                .progressbar({
-                //                    max: 100,
-                //                    varlue: 0
-                //                })
-                //                .end()
-                //                .appendTo(document.body)
-                //                .hide();
-
-
-                uploadButton.on({
-                    click: function click() {
-                        uploaderBrowserButton.trigger("click");
-                    }
-                });
 
                 uploader.init();
 
                 uploader.bind('FilesAdded', function(up, files) {
-                    //                    uploaderNotification.find(".progress")
-                    //                    .progressbar('option','value',0)
-                    //                    .end()
-                    //                    .find(".info")
-                    //                    .text("0%")
-                    //                    .end()
-                    //                    .show();
                     queueSize += files.length;
                     mxBuilder.notifications.uploadProgress(0, 0, files.length);
 
@@ -218,18 +196,11 @@
                 });
 
                 uploader.bind('UploadProgress', function(up, file) {
-                    //                    uploaderNotification.find(".progress")
-                    //                    .progressbar('option','value', up.total.percent)
-                    //                    .end()
-                    //                    .find(".info")
-                    //                    .text(up.total.percent+"%");
                     mxBuilder.notifications.uploadProgress(up.total.percent, queueSize - up.total.queued, queueSize);
                 });
 
                 uploader.bind('Error', function(up, err) {
-
                     mxBuilder.dialogs.alertDialog.show("Can't upload " + (err.file ? "the file '" + err.file.name + "' " : "") + "for the following reason: <br/>" + err.message);
-
                     up.refresh(); // Reposition Flash/Silverlight
                 });
 
@@ -272,4 +243,5 @@
             }
         };
     });
+
 }(jQuery));
