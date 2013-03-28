@@ -971,7 +971,7 @@
 
         $(document).on({
             keyup: function keyup(event) {
-                if ($(event.srcElement).parents(".flexly-main-bar").length !== 0) {
+                if (mxBuilder.menuManager.isOpened() && $(event.srcElement).parents(".flexly-main-bar").length !== 0) {
                     return;
                 }
                 if (event.keyCode === 46) {
