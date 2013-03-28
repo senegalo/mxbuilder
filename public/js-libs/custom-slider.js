@@ -27,7 +27,7 @@
                     element.data("slider-settings", settings);
 
                     //Creating the value box
-                    var handle = $('<a class="slider-handle" href="#"></a>').appendTo(element);
+                    var handle = $('<a class="slider-handle" href="javascript:void(0);"></a>').appendTo(element);
                     $(document).on({
                         mouseup: function() {
                             handle.data("init-sliding", false);
