@@ -5,7 +5,7 @@
             var self = this;
 
             self.init(properties);
-
+            
             mxBuilder.Component.apply(this, [{
                     type: "ImageComponent",
                     draggable: {},

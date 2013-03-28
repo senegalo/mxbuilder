@@ -40,7 +40,7 @@
         getComponentsByAssetID: function(assetID) {
             var out = {};
             for (var c in this._components) {
-                if (this._components[c].type === "ImageComponent" && this._components[c].extra.originalAssetID === assetID) {
+                if (this._components[c].type === "ImageComponent" && this._components[c].extra.originalAssetID == assetID) {
                     out[c] = this._components[c];
                 }
             }
@@ -56,13 +56,13 @@
             return out;
         },
         getComponents: function(jQueryObj) {
-            if(typeof jQueryObj !== "undefined" && jQueryObj.length !== 0){
+            if (typeof jQueryObj !== "undefined" && jQueryObj.length !== 0) {
                 var out = {};
-                jQueryObj.each(function(){
-                   var cmp = mxBuilder.components.getComponent(this); 
-                   if(typeof cmp !== "undefined"){
-                       out[cmp.getID()] = cmp;
-                   }
+                jQueryObj.each(function() {
+                    var cmp = mxBuilder.components.getComponent(this);
+                    if (typeof cmp !== "undefined") {
+                        out[cmp.getID()] = cmp;
+                    }
                 });
             } else {
                 out = this._components;
