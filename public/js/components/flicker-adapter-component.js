@@ -37,6 +37,11 @@
                                     }
                                 }
                             });
+                            
+                            if(mxBuilder.menuManager.currentTab === "photos"){
+                                mxBuilder.menuManager.menus.photos.revalidate();
+                            }
+                            
                             mxBuilder.layout.revalidateLayout();
                         },
                         error: function() {
