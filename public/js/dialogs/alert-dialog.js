@@ -8,6 +8,7 @@
             title: "Alert",
             buttons: [{
                     label: "OK",
+                    isDefaultAction: true,
                     klass: "flexly-icon-check-big-black",
                     click: function() {
                         $(this).dialog("close");
