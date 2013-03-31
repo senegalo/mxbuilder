@@ -128,15 +128,15 @@
             });
 
             //restricting the resize 
-            if (this.element.width() < 535 || this.element.height() < 222) {
+            if (this.element.width() < this.minWidth || this.element.height() < this.minHeight) {
                 this.element.css({
                     height: 300,
                     width: 600
                 });
             }
 
-            this.element.resizable("option", "minWidth", 535)
-                    .resizable("option", "minHeight", 222);
+            this.element.resizable("option", "minWidth", this.minWidth)
+                    .resizable("option", "minHeight", this.minHeight);
 
             this.rebuild();
 
@@ -154,6 +154,8 @@
             },
             list: null,
             thumbSize: "full",
+            minWidth: 535,
+            minHeight: 222,
             revalidate: function revalidate() {
                 var instance = this;
                 this.thumbSize = mxBuilder.imageUtils.getImageSource(this.thumbSize, this.element);
@@ -532,11 +534,11 @@
                 return out;
             },
             setWidth: function(val) {
-                mxBuilder.Component.prototype.setWidth.call(this, val);
+                mxBuilder.Component.prototype.setWidth.call(this, val<this.minWidth?this.minWidth:val);
                 this.revalidate();
             },
             setHeight: function(val) {
-                mxBuilder.Component.prototype.setHeight.call(this, val);
+                mxBuilder.Component.prototype.setHeight.call(this, val<this.minHeight?this.minHeight:val);
                 this.revalidate();
             }
         });
