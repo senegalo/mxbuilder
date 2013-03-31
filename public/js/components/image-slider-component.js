@@ -540,6 +540,16 @@
             setHeight: function(val) {
                 mxBuilder.Component.prototype.setHeight.call(this, val<this.minHeight?this.minHeight:val);
                 this.revalidate();
+            },
+            getWidthBounds: function() {
+                var out = mxBuilder.Component.prototype.getWidthBounds.call(this);
+                out.min = this.minWidth;
+                return out;
+            },
+            getHeightBounds: function(){
+                var out = mxBuilder.Component.prototype.getHeightBounds.call(this);
+                out.min = this.minHeight;
+                return out;
             }
         });
     });
