@@ -62,23 +62,23 @@
                                     spinstop: position.refreshValues(controls)
                                 });
                                 break;
-                                default:
-                                    break;
+                            default:
+                                break;
                         }
                     }
                 }
-                
+
                 //refresh on drag/resize and reorder if necaissairy
-                if(mxBuilder.selection.getSelectionCount() === 1){
-                    mxBuilder.selection.each(function(){
-                       this.element.off(".settings-event").on({
-                           "drag.settings-event": position.refreshValues(controls),
-                           "resize.settings-event": position.refreshValues(controls),
-                           "zIndexChange.settings-event": position.refreshValues(controls),
-                           "deselected.settings-event": function(){
-                               $(this).off(".settings-event");
-                           }
-                       });
+                if (mxBuilder.selection.getSelectionCount() === 1) {
+                    mxBuilder.selection.each(function() {
+                        this.element.off(".settings-event").on({
+                            "drag.settings-event": position.refreshValues(controls),
+                            "resize.settings-event": position.refreshValues(controls),
+                            "zIndexChange.settings-event": position.refreshValues(controls),
+                            "deselected.settings-event": function() {
+                                $(this).off(".settings-event");
+                            }
+                        });
                     });
                 }
 
@@ -227,27 +227,29 @@
                 }
 
             },
-            applyToSelection: function(controls, values) {
-                if (typeof values === "undefined") {
-                    //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.x)) {
-                        //fill up the values array
-                        values.x = controls.x.spinner("value");
-                    }
-                    if (this._settingsTab.hasChanged(controls.y)) {
-                        values.y = controls.y.spinner("value");
-                    }
-                    if (this._settingsTab.hasChanged(controls.z)) {
+            applyToSelection: function(controls, sourceEvent, ui) {
+                var values = {};
+                if (this._settingsTab.hasChanged(controls.x)) {
+                    //fill up the values array
+                    values.x = controls.x.spinner("value");
+                }
+                if (this._settingsTab.hasChanged(controls.y)) {
+                    values.y = controls.y.spinner("value");
+                }
+                if (this._settingsTab.hasChanged(controls.z)) {
+                    if ($(sourceEvent.srcElement).parents(".ui-spinner:first").get(0) === controls.z.parent().get(0) && typeof ui !== "undefined") {
+                        values.z = ui.value+1000;
+                    } else {
                         values.z = parseInt(controls.z.spinner("value"), 10) + 1000;
                     }
-                    if (this._settingsTab.hasChanged(controls.width)) {
-                        values.width = controls.width.spinner("value");
-                    }
-                    if (this._settingsTab.hasChanged(controls.height)) {
-                        values.height = controls.height.spinner("value");
-                    }
                 }
+                if (this._settingsTab.hasChanged(controls.width)) {
+                    values.width = controls.width.spinner("value");
+                }
+                if (this._settingsTab.hasChanged(controls.height)) {
+                    values.height = controls.height.spinner("value");
+                }
+
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
                     for (var v in values) {
@@ -276,13 +278,13 @@
             },
             applyToSelectionOn: function(controls, controlKey, event, extra) {
                 var position = this;
-                controls[controlKey].on(event, function() {
+                controls[controlKey].on(event, function(event, ui) {
                     position._settingsTab.setChanged(controls[controlKey]);
                     if (position._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        position.applyToSelection(controls);
+                        position.applyToSelection(controls, event, ui);
                     }
                 });
             },
