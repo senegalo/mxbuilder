@@ -57,12 +57,14 @@
             if (index + 1 < this.__componentsArray.length) {
                 this.flip(index, index + 1);
             }
+            component.element.trigger("zIndexChange");
         },
         moveDown: function moveDown(component) {
             var index = this.getComponentAtZIndex(component.element.css("zIndex"));
             if (index > 0) {
                 this.flip(index, index - 1);
             }
+            component.element.trigger("zIndexChange");
         },
         moveToTop: function moveToTop(component) {
             var newZIndex = this.getNextZIndex();
@@ -76,7 +78,7 @@
             });
 
             //update the component
-            component.element.css("zIndex", newZIndex);
+            component.element.css("zIndex", newZIndex).trigger("zIndexChange");
         },
         moveToBottom: function moveToBottom(component) {
             var newZIndex = this.__componentsArray[0].zIndex - 1;
@@ -90,7 +92,7 @@
             });
 
             //update the component
-            component.element.css("zIndex", newZIndex);
+            component.element.css("zIndex", newZIndex).trigger("zIndexChange");
         },
         getNextZIndex: function getNextZIndex() {
             return this.__nextZIndex++;

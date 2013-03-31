@@ -67,6 +67,20 @@
                         }
                     }
                 }
+                
+                //refresh on drag/resize and reorder if necaissairy
+                if(mxBuilder.selection.getSelectionCount() === 1){
+                    mxBuilder.selection.each(function(){
+                       this.element.off(".settings-event").on({
+                           "drag.settings-event": position.refreshValues(controls),
+                           "resize.settings-event": position.refreshValues(controls),
+                           "zIndexChange.settings-event": position.refreshValues(controls),
+                           "deselected.settings-event": function(){
+                               $(this).off(".settings-event");
+                           }
+                       });
+                    });
+                }
 
                 this._settingsTab.monitorChangeOnControls(controls);
                 var originalSettings = this.getCurrentValues(controls);
