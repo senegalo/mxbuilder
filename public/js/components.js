@@ -380,9 +380,6 @@
                 $.extend(obj.resizable, {
                     handles: handles,
                     start: function start(event, ui) {
-                        mxBuilder.selection.clearSelection({
-                            exclude: $(this)
-                        });
                         var theComponent = mxBuilder.components.getComponent($(this));
                         mxBuilder.layout.outline(theComponent.container);
                         mxBuilder.historyManager.setRestorePoint([theComponent]);
