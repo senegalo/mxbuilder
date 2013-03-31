@@ -36,18 +36,66 @@
 
                 this.applyToSelectionOn(controls, "x", "spin");
                 this.applyToSelectionOn(controls, "x", "input", this.validateInteger(controls.x));
+
                 this.applyToSelectionOn(controls, "y", "spin");
                 this.applyToSelectionOn(controls, "y", "input", this.validateInteger(controls.y));
+
                 this.applyToSelectionOn(controls, "z", "spin");
                 this.applyToSelectionOn(controls, "z", "input", this.validateInteger(controls.z));
+
                 this.applyToSelectionOn(controls, "width", "spin");
                 this.applyToSelectionOn(controls, "width", "input", this.validateInteger(controls.width));
+
                 this.applyToSelectionOn(controls, "height", "spin");
                 this.applyToSelectionOn(controls, "height", "input", this.validateInteger(controls.height));
 
-                this._settingsTab.monitorChangeOnControls(controls);
-                var originalSettings = {};
+                //refresh values on spinstop
+                for (var c in controls) {
+                    if (controls.hasOwnProperty(c)) {
+                        switch (c) {
+                            case "x":
+                            case "y":
+                            case "z":
+                            case "width":
+                            case "height":
+                                controls[c].on({
+                                    spinstop: position.refreshValues(controls)
+                                });
+                                break;
+                                default:
+                                    break;
+                        }
+                    }
+                }
 
+                this._settingsTab.monitorChangeOnControls(controls);
+                var originalSettings = this.getCurrentValues(controls);
+
+                this.setValues(controls, originalSettings);
+
+                thePanel.on({
+                    previewEnabled: function() {
+                        position.applyToSelection(controls);
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    },
+                    save: function() {
+                        position.applyToSelection(controls);
+                        mxBuilder.menuManager.closeTab();
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    },
+                    previewDisabled: function() {
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    },
+                    cancel: function() {
+                        mxBuilder.selection.revalidateSelectionContainer();
+                        mxBuilder.menuManager.closeTab();
+                    }
+                });
+
+                thePanel.find(".flexly-collapsable-content").append(theInstance);
+                return thePanel;
+            },
+            getCurrentValues: function(controls) {
                 //define component properties to add to the original settings object
                 var properties = ["x", "y", "z", "width", "height"];
 
@@ -60,16 +108,17 @@
                     max: 1000000000,
                     min: 0
                 };
+                var out = {};
                 mxBuilder.selection.each(function() {
                     var theSettings = this.getSettings();
                     for (var p = 0, cnt = properties.length; p < cnt; p++) {
                         if (firstPass) {
-                            originalSettings[properties[p]] = theSettings[properties[p]];
+                            out[properties[p]] = theSettings[properties[p]];
                         }
                         var data = theSettings[properties[p]];
 
-                        if (originalSettings[properties[p]] !== data) {
-                            originalSettings[properties[p]] = false;
+                        if (out[properties[p]] !== data) {
+                            out[properties[p]] = false;
                         }
                     }
 
@@ -95,49 +144,26 @@
                     controls.height.spinner("option", "max", heightBounds.max);
 
                     if (typeof this.resizable === "undefined" || !this.resizable) {
-                        originalSettings.width = null;
-                        originalSettings.height = null;
+                        out.width = null;
+                        out.height = null;
                     } else if (this.resizable.orientation === "h") {
-                        originalSettings.height = null;
+                        out.height = null;
                     } else if (this.resizable.orientation === "v") {
-                        originalSettings.width = null;
+                        out.width = null;
                     }
 
                     if (typeof this.draggable === "undefined" || !this.draggable) {
-                        originalSettings.x = null;
-                        originalSettings.y = null;
+                        out.x = null;
+                        out.y = null;
                     } else if (this.draggable.axis === "y") {
-                        originalSettings.x = null;
+                        out.x = null;
                     } else if (this.draggable.axis === "x") {
-                        originalSettings.y = null;
+                        out.y = null;
                     }
 
                     firstPass = false;
                 });
-
-                this.setValues(controls, originalSettings);
-
-                thePanel.on({
-                    previewEnabled: function() {
-                        position.applyToSelection(controls);
-                        mxBuilder.selection.revalidateSelectionContainer();
-                    },
-                    save: function() {
-                        position.applyToSelection(controls);
-                        mxBuilder.menuManager.closeTab();
-                        mxBuilder.selection.revalidateSelectionContainer();
-                    },
-                    previewDisabled: function() {
-                        mxBuilder.selection.revalidateSelectionContainer();
-                    },
-                    cancel: function() {
-                        mxBuilder.selection.revalidateSelectionContainer();
-                        mxBuilder.menuManager.closeTab();
-                    }
-                });
-
-                thePanel.find(".flexly-collapsable-content").append(theInstance);
-                return thePanel;
+                return out;
             },
             setValues: function(controls, values) {
                 //implement the setValue function
@@ -232,6 +258,7 @@
                     }
                     mxBuilder.selection.revalidateSelectionContainer();
                 });
+                this.setValues(controls, this.getCurrentValues(controls));
             },
             applyToSelectionOn: function(controls, controlKey, event, extra) {
                 var position = this;
@@ -251,6 +278,12 @@
                     if (value === null) {
                         control.spinner("value", 0);
                     }
+                };
+            },
+            refreshValues: function(controls) {
+                var position = this;
+                return function() {
+                    position.setValues(controls, position.getCurrentValues(controls));
                 };
             }
         };
