@@ -21,6 +21,10 @@ ul.flexly-menu-photos-list li:not(:last-child){
 /*    position: relative;*/
 }
 
+.flexly-menu-photos li {
+    list-style: none;
+}
+
 .flexly-menu-photos .left-column {
     width: 138px;
     float:left;
@@ -97,4 +101,3 @@ ul.flexly-menu-photos-list li:not(:last-child){
 .photos-selected {
     
 }
-
