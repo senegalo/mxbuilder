@@ -51,24 +51,27 @@ class websites extends MX_Controller {
         $pages = $this->input->post("pages");
         $layout = $this->input->post("layout");
         $assets = $this->input->post("assets");
+        $has_form = $this->input->post("has_forms") == 1;
 
         //copy required assets
-        if (is_array($assets)) {
+        if ($has_form) {
             mkdir($user_dir . "/images");
-            $this->assets_model->move_assets_to_publish_dir($this->user, $assets, $user_dir . "/images");
+            if (is_array($assets)) {
+                $this->assets_model->move_assets_to_publish_dir($this->user, $assets, $user_dir . "/images");
+            }
         }
 
         foreach ($pages as $page) {
             touch($user_dir . "/" . $page['address'] . ".html");
-            if(!isset($page['components'])){
+            if (!isset($page['components'])) {
                 $page['components'] = array();
             }
-            $page['components'] = array_merge(array("header"=>array(),"body"=>array(),"footer"=>array()),$page['components']);
+            $page['components'] = array_merge(array("header" => array(), "body" => array(), "footer" => array()), $page['components']);
             $merge = array_merge($layout, $page);
             $content = $this->load->view('publish_template', $merge, true);
             file_put_contents($user_dir . "/" . $page['address'] . ".html", $content);
         }
-        if($this->input->post("has_forms") == 1){
+        if ($has_form) {
             file_put_contents($user_dir . "/mail.php", $this->websites_model->get_mail_page($this->user['email']));
             copy("public/images/loading.gif", $user_dir . "/images/loading.gif");
         }
