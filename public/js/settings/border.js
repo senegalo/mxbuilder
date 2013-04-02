@@ -149,13 +149,25 @@
                 }
                 
                 var corners = ["TopLeft","TopRight","BottomLeft","BottomRight"];
+                var isSymetric = true;
+                var testCorners = null;
                 for(var c in corners){
                     if(values["border"+corners[c]+"Radius"]){
+                        if(testCorners === null){
+                            testCorners = values["border"+corners[c]+"Radius"];
+                        } else if(testCorners !== values["border"+corners[c]+"Radius"]) {
+                            isSymetric = false;
+                        }
                         values["border"+corners[c]+"Radius"] = parseInt(values["border"+corners[c]+"Radius"].replace("px",""),10);
                         this.setSimRadius(controls,corners[c], values["border"+corners[c]+"Radius"]);
                         controls["simulatorSlider"+corners[c]].customSlider("value",values["border"+corners[c]+"Radius"]);
+                    } else {
+                        isSymetric = false;
                     }
-                }  
+                }
+                if(isSymetric){
+                    controls.symetricCheckbox.attr("checked","checked").trigger("change");
+                }
             },
             setSimRadius: function(controls,pos,val){
                 if(controls.symmetricRadius){

@@ -19,19 +19,19 @@ CKEDITOR.editorConfig = function(config) {
     // config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
-    config.extraPlugins = "customlink";
+    config.extraPlugins = "customlink,donothing";
 
     config.removePlugins = "link";
 
     config.toolbar = [/*['Styles'], */
-        ['TextColor', 'Font', 'FontSize'],['NumberedList', 'BulletedList', '-', '-', 'LinkExtra', 'UnlinkExtra'], '/',
+        ['TextColor', 'Font', 'FontSize'], ['NumberedList', 'BulletedList', '-', '-', 'LinkExtra', 'UnlinkExtra'], '/',
         ['Bold', 'Italic', 'Underline', '-', 'RemoveFormat'],
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']];
 
     config.toolbar_header = [
-        ['Bold', 'Italic', 'Underline', '-','TextColor', '-', 'RemoveFormat'],['Font']
+        ['Bold', 'Italic', 'Underline', '-', 'TextColor', '-', 'RemoveFormat'], ['Font'], ['FontSize']
     ];
-    
+
 
 //    config.stylesSet = "mx_styles";
 
@@ -45,4 +45,12 @@ CKEDITOR.editorConfig = function(config) {
 
     config.clipboard_defaultContentType = 'text';
 
+    config.fontSize_style = {
+        element: 'p',
+        attributes: {class: 'cke-font-size'},
+        styles: {'font-size': '#(size)'},
+        overrides: [{
+                element: 'font', attributes: {'size': null}
+            }]
+    };
 };

@@ -24,16 +24,20 @@
                 });
             },
             paste: function(container, x, y) {
+
+                if (typeof x === "undefined" || typeof y === "undefined") {
+                    var selContainer = mxBuilder.selection.getSelectionContainer();
+                    x =  this._refPoints.left+ mxBuilder.layout.header.offset().left + selContainer.width() * 0.1;
+                    y =  this._refPoints.top + selContainer.height() * 0.1;
+                }
+
                 var currentPage = mxBuilder.pages.getPageObj();
                 mxBuilder.selection.clearSelection();
                 var history = [];
                 for (var c in this._heap) {
                     var cmpObj = {};
                     $.extend(true, cmpObj, this._heap[c]);
-                    if(typeof x  === "undefined" || typeof y === "undefined"){
-                        cmpObj.css.top = cmpObj.css.top + 0.1*cmpObj.css.height;
-                        cmpObj.css.left = cmpObj.css.left + 0.1*cmpObj.css.left;
-                    } else if (this._heap[c].data.page === currentPage.id) {
+                    if (this._heap[c].data.page === currentPage.id) {
                         cmpObj.css.top = cmpObj.css.top - this._refPoints.top + y;
                         cmpObj.css.left = cmpObj.css.left - this._refPoints.left - mxBuilder.layout.header.offset().left + x;
                     }

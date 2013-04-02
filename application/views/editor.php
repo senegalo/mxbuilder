@@ -49,6 +49,7 @@
         <link rel="stylesheet" href="public/css/clipart-component.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/position.css" type="text/css"/>
         <link rel="stylesheet" href="public/css/custom-slider.css" type="text/css"/>
+        <link rel="stylesheet" href="public/css/image-component.css" type="text/css"/>
 
         <link href="public/css/menu/dropdown/dropdown.css" media="screen" rel="stylesheet" type="text/css" />
         <link href="public/css/menu/dropdown/dropdown.vertical.css" media="screen" rel="stylesheet" type="text/css" />
@@ -461,6 +462,12 @@
                     <li>
                         <label for="page-title">Page Title</label>
                         <input type="text" id="page-title"/>
+                    </li>
+                    <li>
+                        <label>Parent</label>
+                        <select id="page-parent">
+                            <option value="root">Root</option>
+                        </select>
                     </li>
                     <li>
                         <label for="page-html-title">Title bar Text</label>
@@ -1231,7 +1238,7 @@
             </div>
             
             <div class="header-component-instance" style="width:300px;padding:5px;">
-                <div class="content" style="word-wrap: break-word;">
+                <div class="content cke-font-size" style="word-wrap: break-word;">
                     <p>Header Title</p>
                 </div>
             </div>

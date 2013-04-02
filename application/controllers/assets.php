@@ -61,15 +61,19 @@ class Assets extends MX_Controller {
     }
 
     public function delete() {
-        $asset_id = $this->input->post("asset_id");
-        if ($asset_id === false) {
+        $asset_ids = $this->input->post("asset_ids");
+        if ($asset_ids === false) {
             error(Constance::INVALID_PARAMETERS, "asset_id is missing.");
         } else {
             $this->load->model("assets_model");
-            if ($this->assets_model->delete_asset($this->user, $asset_id) !== Assets_Model::ASSET_NOT_FOUND) {
+            $out = $this->assets_model->delete_assets($this->user, $asset_ids);
+            
+            $diff = array_diff($asset_ids, $out);
+            
+            if (count($diff) === 0) {
                 success();
             } else {
-                error(Assets_Model::ASSET_NOT_FOUND, "asset_id provided is not found or you don't have access to it.");
+                error(Assets_Model::ASSET_NOT_FOUND, "assets (".implode(", ", $diff)." are not found or you are not allowed to access them.");
             }
         }
     }

@@ -395,7 +395,13 @@
 
                 var firstPage = null;
                 for (var p in restore.pages) {
-                    var components = restore.pages[p].components;
+                    var components = {};
+                    for (var c in restore.pages[p].components) {
+                        if (restore.pages[p].components[c].data.type === "FlickerAdapterComponent") {
+                            continue;
+                        }
+                        components[c] = restore.pages[p].components[c];
+                    }
                     var newPage = this.addPage(restore.pages[p], true);
 
                     this.__currentPage = newPage.id;
@@ -411,6 +417,9 @@
                 mxBuilder.layout.setLayout(restore.layoutHeights, true);
 
                 for (var c in restore.pinned) {
+                    if (restore.pinned[c].data.type === "FlickerAdapterComponent") {
+                        continue;
+                    }
                     restore.pinned[c].forceKeep = true;
                     mxBuilder.components.addComponent(restore.pinned[c]).pin();
                 }
@@ -426,7 +435,7 @@
                     if (typeof restore.layoutBackground.footer !== "undefined") {
                         mxBuilder.layout.layoutFooter.css(restore.layoutBackground.footer);
                     }
-                    
+
                     //images
                     var image;
                     var container = ["header", "body", "footer"];

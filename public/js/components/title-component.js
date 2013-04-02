@@ -52,45 +52,17 @@
                                     .focus()
                                     .get(0);
 
-                            var originalHeight = properties.element.height();
-                            var cachedHeight = originalHeight;
-                            var refreshInterval = setInterval(function() {
-                                var metrics = theComponent.getMetrics();
-                                if (metrics.height !== cachedHeight) {
-                                    if (theComponent.editor) {
-                                        (new CKEDITOR.dom.window(window)).fire("resize");
-                                    }
-                                    if (metrics.height >= originalHeight) {
-                                        var displacment = metrics.height - cachedHeight;
-                                        var components = mxBuilder.components.detectCollision([theComponent], displacment < 0 ? -1 * displacment + 40 : 20);
-                                        for (var c in components) {
-                                            var element = components[c].element;
-                                            var position = element.position();
-                                            element.css({
-                                                top: position.top + displacment + "px",
-                                                left: position.left
-                                            });
-                                        }
-                                    }
-                                    mxBuilder.selection.revalidateSelectionContainer();
-                                    mxBuilder.layout.revalidateLayout();
-                                    cachedHeight = metrics.height;
-                                }
-                            }, 100);
-
                             mxBuilder.selection.enableMultiComponentSelect(false);
-                            //mxBuilder.activeStack.push(properties.element);
 
                             properties.element.css({
-                                //minHeight: height+"px",
                                 height: "auto"
-                            }).data("refreshinterval", refreshInterval).data("minheight", originalHeight);
-
-
-                            var position = properties.element.position();
+                            });
 
                             theComponent.editor = CKEDITOR.inline(theContent, {
                                 toolbar: "header",
+                                keystrokes: [
+                                    [13, 'donothing']
+                                ],
                                 on: {
                                     instanceReady: function(evt) {
                                         $(theContent).focus();
@@ -98,27 +70,22 @@
                                 }
                             });
 
-//                            theComponent.editor.on("key", function(evt) {
-//                                theComponent.revalidate();
-//                                console.log("key event triggered");
-//                            });
-
                             theComponent.editor.on("afterCommandExec", function(evt) {
-                                theComponent.revalidate();
+                                theComponent.revalidateWidth();
                             });
 
                             theComponent.editor.on("saveSnapshot", function(evt) {
-                                theComponent.revalidate();
+                                theComponent.revalidateWidth();
                             });
 
                             theComponent.editor.on("contentDom", function() {
                                 theComponent.editor.document.on("keydown", function() {
                                     setTimeout(function() {
-                                        theComponent.revalidate();
+                                        theComponent.revalidateWidth();
                                     }, 1);
                                 });
                                 theComponent.editor.document.on("keypress", function() {
-                                        theComponent.revalidate();
+                                    theComponent.revalidateWidth();
                                 });
                             });
                         }
@@ -138,33 +105,20 @@
                 poppedFromActiveStack: function poppedFromActiveStack() {
                     var theComponent = mxBuilder.components.getComponent(properties.element);
                     if (theComponent.editor !== null && typeof theComponent.editor !== "undefined") {
-                        console.log("Editor popped from stack...");
-                        clearInterval(properties.element.data("refreshinterval"));
 
                         theComponent.editor.destroy();
                         theComponent.editor = null;
                         mxBuilder.selection.enableMultiComponentSelect(true);
 
-                        var cachedMinHeight = properties.element.data("minheight");
-                        var content = properties.element.find(".content");
-                        var contentHeight = content.height();
-
-                        var height;
-                        if (cachedMinHeight > contentHeight) {
-                            content.height(height);
-                            height = cachedMinHeight;
-                        } else {
-                            height = contentHeight;
-                        }
-
                         properties.element.draggable("enable").css({
                             minHeight: "",
-                            height: theComponent.element.find(".content").height()
-                        }).off(".focus-editor").off(".editor-consume").find(".content").removeAttr("contenteditable");
+                            height: theComponent.contentContainer.height()
+                        }).off(".focus-editor").off(".editor-consume");
+                        instance.contentContainer.removeAttr("contenteditable");
 
                         theComponent.editMode = false;
 
-                        if (content.text().replace(/(\s\n|\n\s|\s\n\r|\n\r\s)/, "") === "") {
+                        if (instance.contentContainer.text().replace(/(\s\n|\n\s|\s\n\r|\n\r\s)/, "") === "") {
                             theComponent.destroy();
                         }
                     }
@@ -176,24 +130,28 @@
         $.extend(mxBuilder.TitleComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".header-component-instance").remove(),
             fontSize: 8,
+            contentContainer: null,
             revalidate: function() {
-                var content = this.element.find(".content");
-
-                if (content.width() < this.element.width()) {
-                    while (content.width() < this.element.width() && this.fontSize < 200) {
-                        content.css("fontSize", ++this.fontSize);
+                var applyTo = this.element.find(".cke-font-size");
+                if (this.contentContainer.width() < this.element.width()) {
+                    while (this.contentContainer.width() < this.element.width() && this.fontSize < 200) {
+                        applyTo.css("fontSize", ++this.fontSize);
                     }
-                    while (content.width() > this.element.width()) {
-                        content.css("fontSize", --this.fontSize);
+                    while (this.contentContainer.width() > this.element.width()) {
+                        applyTo.css("fontSize", --this.fontSize);
                     }
                 } else {
-                    while (content.width() > this.element.width() && this.fontSize > 9) {
-                        content.css("fontSize", --this.fontSize);
+                    while (this.contentContainer.width() > this.element.width() && this.fontSize > 9) {
+                        applyTo.css("fontSize", --this.fontSize);
                     }
                 }
                 //fix height
-                var height = content.height();
+                var height = this.contentContainer.height();
                 this.element.height(height);
+            },
+            revalidateWidth: function() {
+                this.element.width(this.contentContainer.width());
+                mxBuilder.selection.revalidateSelectionContainer();
             },
             destroy: function destroy() {
                 var theComponent = mxBuilder.components.getComponent($(this.element));
@@ -207,7 +165,7 @@
             },
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
-                out.data.text = this.element.find(".content").html();
+                out.data.text = this.contentContainer.html();
                 out.data.fontSize = this.fontSize;
                 return out;
             },
@@ -240,12 +198,12 @@
             },
             init: function init(properties) {
                 mxBuilder.Component.prototype.init.call(this, properties);
-                var content = this.element.find(".content").css({
+                this.contentContainer = this.element.find(".content").css({
                     display: "inline-block",
                     whiteSpace: "nowrap"
                 });
                 if (properties.data.text) {
-                    content.html(properties.data.text);
+                    this.contentContainer.html(properties.data.text);
                 }
                 this.revalidate();
             },
@@ -279,7 +237,7 @@
             },
             setWidth: function setWidth(value) {
                 mxBuilder.Component.prototype.setWidth.call(this, value);
-                this.element.height(this.element.find(".content").height());
+                this.element.height(this.contentContainer.height());
             }
         });
 
