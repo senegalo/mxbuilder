@@ -15,10 +15,12 @@
 
                 //fill in all the controls 
                 var controls = {
-                    label: theInstance.find("#button-label")
+                    label: theInstance.find("#button-label"),
+                    type: theInstance.find("#button-type")
                 };
 
                 this.applyToSelectionOn(controls, "label", "input");
+                this.applyToSelectionOn(controls, "type", "change");
 
 
                 //Configure the controls here
@@ -27,7 +29,7 @@
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
-                var properties = ["label"];
+                var properties = ["label", "type"];
 
                 var firstPass = true;
                 mxBuilder.selection.each(function() {
@@ -75,6 +77,15 @@
                 } else {
                     controls.label.val('');
                 }
+                if (values.type !== false){
+                    controls.type.val(values.type);
+                } else {
+                    controls.label.append('<option value="none" class="none-option">------</option>').one({
+                        change: function(){
+                            $(this).find(".none-option").remove();
+                        }
+                    });
+                }
             },
             applyToSelection: function(controls, values) {
                 if (typeof values === "undefined") {
@@ -83,10 +94,18 @@
                     if (this._settingsTab.hasChanged(controls.label)) {
                         values.label = controls.label.val();
                     }
+                    if (this._settingsTab.hasChanged(controls.type)){
+                        values.type = controls.type.val();
+                    }
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    this.setLabel(values.label);
+                    if(typeof values.label !== "undefined"){
+                        this.setLabel(values.label);
+                    }
+                    if(typeof values.type !== "undefined"){
+                        this.setType(values.type);
+                    }
                 });
             },
             applyToSelectionOn: function(controls, controlKey, event, extra) {

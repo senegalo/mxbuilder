@@ -880,7 +880,7 @@
             </div>
 
             <div class="button-component-instance">
-                <div class="label">Button</div>
+                <a class="btn btn-block btn"><span>Button</span></a>
             </div>
 
             <div class="button-settings">

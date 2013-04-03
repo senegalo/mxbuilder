@@ -17,7 +17,7 @@
                     element: properties.element
                 }]);
 
-            this.labelContainer = this.element.find(".label");
+            this.labelContainer = this.element.find("span");
 
             this.setLabel(this.label);
 
@@ -26,8 +26,8 @@
                     mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function() {
-                    instance.labelContainer.css({
-                        marginTop: "-" + (instance.labelContainer.height() / 2) + "px"
+                    instance.element.find("a").css({
+                        lineHeight: instance.element.height() + "px"
                     });
                 }
             }).trigger("resize");
@@ -36,8 +36,8 @@
             template: mxBuilder.layout.templates.find(".button-component-instance").remove(),
             labelContainer: null,
             label: "Button",
-            linkObj: {
-            },
+            buttonType: null,
+            linkObj: null,
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.linkObj = this.linkObj;
@@ -47,25 +47,25 @@
             publish: function publish() {
                 var out = mxBuilder.Component.prototype.publish.call(this);
 
-                out.css({
-                    cursor: "pointer"
-                });
-
-                var extras = this.linkObj.linkOpenIn ? ' target = "_blank"' : "";
-
-                extras += ' style="width:100%;height:100%;display:block"';
-
+                var button = out.find("a");
+                var attrs = {};
+                
+                if(this.linkObj.linkOpenIn){
+                    attrs.target = "_blank";
+                }
+                
                 switch (this.linkObj.linkType) {
                     case "external":
-                        out.find(".label").wrap('<a href="' + this.linkObj.linkURL + '"' + extras + '/>');
+                        attrs.href = this.linkObj.linkProtocol+this.linkObj.linkURL;
                         break;
                     case "page":
                         var page = mxBuilder.pages.getPageObj(this.linkObj.linkURL);
                         if (page.address) {
-                            out.find(".label").wrap('<a href="./' + page.address + '.html"' + extras + '/>');
+                            attrs.href = page.address + '.html';
                         }
                         break;
                 }
+                button.attr(attrs);
 
                 return out;
             },
@@ -74,28 +74,30 @@
             },
             init: function init(properties) {
                 mxBuilder.Component.prototype.init.call(this, properties);
-                this.element.find(".label").css({
-                    position: "absolute",
-                    top: "50%",
-                    width: "100%",
-                    textAlign: "center",
-                    display: "inline-block"
-                });
             },
             getBorder: function getBorder(element) {
-                return mxBuilder.Component.prototype.getBorder.call(this, element);
+                return mxBuilder.Component.prototype.getBorder.call(this, this.element.find("a"));
             },
             setBorder: function setBorder(obj) {
-                mxBuilder.Component.prototype.setBorder.call(this, obj);
+                //mxBuilder.Component.prototype.setBorder.call(this, obj);
+                this.element.find("a").css(obj);
             },
             getBackground: function getBackground(element) {
-                return mxBuilder.Component.prototype.getBackground.call(this, element);
+                return mxBuilder.Component.prototype.getBackground.call(this, this.element.find("a"));
             },
             setBackground: function setBackground(obj) {
-                mxBuilder.Component.prototype.setBackground.call(this, obj);
+                //mxBuilder.Component.prototype.setBackground.call(this, obj);
+                this.element.find("a").css(obj);
             },
             getSettingsPanels: function getSettingsPanels() {
                 var out = mxBuilder.Component.prototype.getSettingsPanels.call(this);
+
+                delete out.border;
+                out.background.params.hidePattern = true;
+                
+                out.color = {
+                    panel: mxBuilder.layout.settingsPanels.color
+                };
 
                 out.linkto = {
                     panel: mxBuilder.layout.settingsPanels.links,
@@ -116,10 +118,12 @@
             getSettings: function getSettings() {
                 var out = mxBuilder.Component.prototype.getSettings.call(this);
                 $.extend(out, {
-                    label: this.label,
-                    linkObj: this.linkObj
-                });
+                    label: this.label
+                },this.linkObj);
                 return out;
+            },
+            setColor: function(color){
+                this.element.find("a").css("color",color);
             }
         });
 
