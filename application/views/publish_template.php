@@ -6,7 +6,7 @@
         <title><?php print $title; ?></title>
 
         <link rel="stylesheet" href="<?php print base_url("public/css/smoothness/jquery-ui-1.9.2.custom.css"); ?>" type="text/css"/>
-        <link rel="stylesheet" href="<?php print base_url("public/css/reset.css"); ?>" type="text/css" />
+        <link rel="stylesheet" href="<?php print base_url("public/css/bootstrap.css"); ?>" type="text/css" />
 
         <style>
             html {

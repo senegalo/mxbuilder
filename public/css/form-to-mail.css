@@ -20,3 +20,17 @@
 .form-to-mail-settings div label{
     display:inline-block;
 }
+
+.form-to-mail-component-instance textarea {
+    width: 276px;
+}
+
+.form-to-mail-component-instance .form-message-float {
+    position: absolute;
+    top: 10px;
+    left: 244px;
+}
+
+.form-to-mail-component-instance .form-message-float textarea {
+    height: 68px;
+}

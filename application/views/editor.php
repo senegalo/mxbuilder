@@ -716,14 +716,14 @@
                 <div class="picker">
 
                 </div>
-                
+
                 <div class="settings-title">Pattern</div>
                 <div class="patterns">
                 </div>
 
                 <div class="settings-title">Scale:</div>
                 <div class="scale-slider" style="width:238px;"></div>
-                
+
                 <div class="settings-title">Clear Background Images</div>
                 <div>
                     <button class="clear-background-image">Clear Images</button>
@@ -892,29 +892,30 @@
 
             <div class="form-to-mail-component-instance">
                 <div class="after-submit-message" style="display:none;"></div>
-                <form>
-                    <div class="form-split-one">
-                        <div>
-                            <label>Name:</label>
-                            <input type="text" class="form-name" name="name"/>
-                        </div>
-                        <div>
-                            <label>Email:</label>
-                            <input type="text" class="form-email" name="email"/>
-                        </div>
-                        <div>
-                            <label>Subject:</label>
-                            <input type="text" class="form-subject" name="subject"/>
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        <label class="control-label">Name:</label>
+                        <div class="controls">
+                            <input type="text" class="form-name" name="name" data-placeholder="Name"/>
                         </div>
                     </div>
-                    <div class="form-split-two">
-                        <div>
-                            <textarea class="form-message" name="message"></textarea>
+                    <div class="control-group">
+                        <label class="control-label">Email:</label>
+                        <div class="controls">
+                            <input type="text" class="form-email" name="email" data-placeholder="Email"/>
                         </div>
                     </div>
-                    <div style="clear:both;"></div>
-                    <div>
-                        <input type="button" value="Send"/>
+                    <div class="control-group">
+                        <label class="control-label">Subject:</label>
+                        <div class="controls">
+                            <input type="text" class="form-subject" name="subject" data-placeholder="Subject"/>
+                        </div>
+                    </div>
+                    <div class="control-group form-message-container">
+                        <textarea class="form-message" rows="6" name="message"></textarea>
+                    </div>
+                    <div class="control-group">
+                    <button class="btn btn-primary" type="button">Send</button>
                     </div>
                 </form>
                 <div class="overlay"></div>
@@ -1236,7 +1237,7 @@
                 <div class="settings-title">Opacity:</div>
                 <div class="opacity-slider" style="width:238px;"></div>
             </div>
-            
+
             <div class="header-component-instance" style="width:300px;padding:5px;">
                 <div class="content cke-font-size" style="word-wrap: break-word;">
                     <p>Header Title</p>
