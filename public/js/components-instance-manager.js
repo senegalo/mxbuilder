@@ -180,7 +180,11 @@
                 if (components[i].data.trashed || typeof this._components[i] !== "undefined") {
                     continue;
                 }
-                this.addComponent(components[i]);
+                try {
+                    this.addComponent(components[i]);
+                } catch (e) {
+                    console.log(e,components[i], "Failed to add component");
+                }
             }
         },
         each: function(callback) {

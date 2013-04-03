@@ -421,7 +421,11 @@
                         continue;
                     }
                     restore.pinned[c].forceKeep = true;
-                    mxBuilder.components.addComponent(restore.pinned[c]).pin();
+                    try{
+                        var id = mxBuilder.components.addComponent(restore.pinned[c]).pin();
+                    } catch (e){ 
+                        console.log(e,restore.pinned[c],"Failed to add pinned component");
+                    }
                 }
 
                 if (restore.layoutBackground) {
