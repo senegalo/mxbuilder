@@ -4,7 +4,8 @@
         syncContentHeight: function() {
             var heights = {
                 header: this.header.height(),
-                body: this.body.height()
+                body: this.body.height(),
+                footer: this.footer.height()
             };
 
             //the -6 to compensate for the resize handler
@@ -17,15 +18,33 @@
                 heights.footer = this.footer.height();
             }
 
-            //the Layout sections
-            this.layoutHeader.height(heights.header);
-            this.layoutBody.height(heights.body);
-            this.layoutFooter.height(heights.footer);
+            var containers = ["header", "body", "footer"];
+            for (var c = 0; c < 3; c++) {
+                //the Layout sections
+                this["layout" + containers[c].uppercaseFirst()].height(heights[containers[c]]);
 
-            //the Ouline Divs
-            this.headerOutline.outerHeight(heights.header);
-            this.bodyOutline.outerHeight(heights.body);
-            this.footerOutline.outerHeight(heights.footer);
+                //the Ouline Divs
+                this[containers[c] + "Outline"].outerHeight(heights[containers[c]]);
+            }
+
+            this.syncResizer();
+        },
+        syncResizer: function() {
+            var heights = {
+                header: this.header.height(),
+                body: this.body.height(),
+                footer: this.footer.height()
+            };
+            //place resizers
+            this.headerResizer.css({
+                top: heights.header - 6
+            });
+            this.bodyResizer.css({
+                top: heights.header + heights.body - 6
+            });
+            this.footerResizer.css({
+                top: heights.header + heights.body + heights.footer - 6
+            });
         },
         getMaxComponentHeight: function(container) {
             var max = 0;
@@ -195,6 +214,9 @@
         layoutBody: null,
         layoutHeader: null,
         layoutFooter: null,
+        headerResizer: null,
+        bodyResizer: null,
+        footerResizer: null,
         menu: null,
         templates: null,
         settingsPanels: {},
@@ -215,7 +237,10 @@
             pagesSelect: $("#website-pages"),
             templates: $("#templates").remove(),
             selectionSafe: $("#selection-safe"),
-            editorArea: $("#editor-area")
+            editorArea: $("#editor-area"),
+            headerResizer: $("#header-resizer"),
+            bodyResizer: $("#body-resizer"),
+            footerResizer: $("#footer-resizer")
         });
 
         $.extend(mxBuilder.layout, {
@@ -244,7 +269,6 @@
                     if (that.get(0) === mxBuilder.layout.layoutHeader.get(0)) {
                         selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
                         selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
-                        //that.resizable("option","minHeight",mxBuilder.layout.getMaxComponentHeight("header"));
                     } else if (that.get(0) === mxBuilder.layout.layoutBody.get(0)) {
                         selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
                         that.resizable("option", "minHeight", mxBuilder.layout.getMaxComponentHeight("body"));
@@ -309,8 +333,99 @@
             });
         };
 
-        makeResizable(mxBuilder.layout.layoutBody, mxBuilder.layout.body);
-        makeResizable(mxBuilder.layout.layoutHeader, mxBuilder.layout.header);
-        makeResizable(mxBuilder.layout.layoutFooter, mxBuilder.layout.footer);
+        //makeResizable(mxBuilder.layout.layoutBody, mxBuilder.layout.body);
+        //makeResizable(mxBuilder.layout.layoutHeader, mxBuilder.layout.header);
+        //makeResizable(mxBuilder.layout.layoutFooter, mxBuilder.layout.footer);
+
+        var makeResizableRevenge = function(container) {
+            $("#" + container + "-resizer").draggable({
+                containment: "body",
+                scrollSensitivity: 100,
+                start: function() {
+                    var handle = $(this);
+                    var selector = $();
+                    if (container === "header") {
+                        selector = selector.add(mxBuilder.layout.body.children(".mx-component"));
+                        selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                    } else if (container === "body") {
+                        selector = selector.add(mxBuilder.layout.footer.children(".mx-component"));
+                        handle.data("min-height", mxBuilder.layout.getMaxComponentHeight("body"));
+                    } else {
+                        handle.data("min-height", mxBuilder.layout.getMaxComponentHeight("footer"));
+                    }
+                    handle.data("elements", selector);
+                    handle.data("last-height", mxBuilder.layout[container].height());
+                    mxBuilder.historyManager.setLayoutRestorePoint();
+                },
+                drag: function(event) {
+                    var element = $(this);
+                    var position = element.position();
+
+                    //Adjusting the position
+                    if (container === "body") {
+                        position.top -= mxBuilder.layout.layoutHeader.height();
+                    } else if (container === "footer") {
+                        position.top -= mxBuilder.layout.layoutBody.height() + mxBuilder.layout.layoutHeader.height();
+                    }
+
+                    //resizing the layouts
+                    mxBuilder.layout["layout" + container.uppercaseFirst()]
+                            .add(mxBuilder.layout[container])
+                            .add(mxBuilder.layout[container + "Outline"]).outerHeight(position.top + 6);
+
+
+                    //checking for max component height breach
+                    var minHeight = element.data("min-height");
+                    if(typeof minHeight !== "undefined" && mxBuilder.layout[container].height() < minHeight){
+                        mxBuilder.layout[container].height(minHeight);
+                        mxBuilder.layout.syncContentHeight();
+                        return false;
+                    }
+
+                    //checking for min height breach
+                    if (position.top < mxBuilder.config.minContainerHeight) {
+                        mxBuilder.layout[container].height(mxBuilder.config.minContainerHeight + 10);
+                        mxBuilder.layout.syncContentHeight();
+                        return false;
+                    }
+
+                    //Moving Components Below
+                    var lastHeight = element.data("last-height");
+                    var currentHeight = mxBuilder.layout[container].height();
+                    var components = element.data("elements");
+                    var offsetHeight = currentHeight - lastHeight;
+
+                    components.each(function() {
+                        var that = $(this);
+                        var thePosition = that.position();
+                        thePosition.top += offsetHeight;
+                        that.css("top", thePosition.top);
+                    });
+
+                    element.data("last-height", currentHeight);
+
+                    //revalidating the layout
+                    mxBuilder.layout[container].find(".mx-layout-resize-indicator").show();
+                    mxBuilder.selection.revalidateSelectionContainer();
+                    mxBuilder.layout.syncContentHeight();
+                },
+                stop: function() {
+                    mxBuilder.layout[container].find(".mx-layout-resize-indicator").hide();
+
+                    //if it's the body we are resizing update the content hight
+                    if (container === "body") {
+                        mxBuilder.pages.setContentHeight(mxBuilder.layout.layoutBody.height());
+                    }
+
+                    mxBuilder.layout.syncContentHeight();
+                    $(document.body).css("height", "");
+                }
+            });
+        };
+
+        makeResizableRevenge("header");
+        makeResizableRevenge("body");
+        makeResizableRevenge("footer");
+
     });
 }(jQuery));
