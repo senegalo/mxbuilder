@@ -10,7 +10,7 @@
  *
  * @author senegalo
  */
-class Constance {
+class Constants {
     const INVALID_PARAMETERS = "INVALID_PARAMETERS";
 }
 

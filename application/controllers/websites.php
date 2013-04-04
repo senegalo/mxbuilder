@@ -23,7 +23,7 @@ class websites extends MX_Controller {
         $website_content = $this->input->post("website_content");
 
         if ($website_content == false) {
-            error(Constance::INVALID_PARAMETERS, "Missing website_content variable.");
+            error(Constants::INVALID_PARAMETERS, "Missing website_content variable.");
         } else {
             $this->websites_model->update($this->user, $website_content);
             success();

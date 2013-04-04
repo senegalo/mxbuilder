@@ -12,7 +12,7 @@ class Users extends MX_Controller {
         $password = $this->input->post("password");
 
         if ($username === false || $password === false) {
-            error(Constance::INVALID_PARAMETERS, "Username or password is missing from the parameters list");
+            error(Constants::INVALID_PARAMETERS, "Username or password is missing from the parameters list");
         } else {
             $out = $this->users_model->login($username, $password);
             if ($out == Users_Model::USER_NOT_FOUND) {
