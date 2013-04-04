@@ -63,7 +63,7 @@ class Assets extends MX_Controller {
     public function delete() {
         $asset_ids = $this->input->post("asset_ids");
         if ($asset_ids === false) {
-            error(Constance::INVALID_PARAMETERS, "asset_id is missing.");
+            error(Constants::INVALID_PARAMETERS, "asset_id is missing.");
         } else {
             $this->load->model("assets_model");
             $out = $this->assets_model->delete_assets($this->user, $asset_ids);
@@ -85,7 +85,7 @@ class Assets extends MX_Controller {
         $asset_id = $this->input->post("asset_id");
 
         if ($name === false || $asset_id === false || $caption === false || $title === false) {
-            error(Constance::INVALID_PARAMETERS, "A required parameter is missing");
+            error(Constants::INVALID_PARAMETERS, "A required parameter is missing");
         } else {
             $this->load->model("assets_model");
             $this->assets_model->update_photo_properties($this->user, $asset_id, array("caption" => $caption, "title" => $title, "name" => $name));
@@ -97,7 +97,7 @@ class Assets extends MX_Controller {
         $new_name = $this->input->post("new_name");
         $asset_id = $this->input->post("asset_id");
         if ($new_name === false || $asset_id === false || $caption === false || $title === false) {
-            error(Constance::INVALID_PARAMETERS, "A required parameter is missing");
+            error(Constants::INVALID_PARAMETERS, "A required parameter is missing");
         } else {
             $this->load->model("assets_model");
             $this->assets_model->change_asset_name($this->user, $asset_id, $new_name);

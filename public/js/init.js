@@ -15,9 +15,7 @@
                         var theWebsite = JSON.parse(data.content);
                         mxBuilder.pages.restorePages(theWebsite);
                         mxBuilder.dialogs.progressDialog.hide(); 
-                        setInterval(function(){
-                            mxBuilder.recorder.saveIfRequired();
-                        },2000);
+                        mxBuilder.recorder.initSaveInterval(2000);
                         $(mxBuilder.systemEvents).trigger("systemReady");
                         mxBuilder.systemReady = true;
                     },

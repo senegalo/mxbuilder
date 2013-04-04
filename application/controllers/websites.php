@@ -23,11 +23,16 @@ class websites extends MX_Controller {
         $website_content = $this->input->post("website_content");
 
         if ($website_content == false) {
-            error(Constance::INVALID_PARAMETERS, "Missing website_content variable.");
-        } else {
-            $this->websites_model->update($this->user, $website_content);
-            success();
+            error(Constants::INVALID_PARAMETERS, "Missing website_content variable.");
         }
+
+        //is it a valid json !?
+        if (json_decode($website_content) === null) {
+            error(Constants::INVALID_PARAMETERS, "Unable to parse the given json string...");
+        }
+
+        $this->websites_model->update($this->user, $website_content);
+        success();
     }
 
     public function get() {
