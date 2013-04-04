@@ -4,6 +4,7 @@
         _forceSave: false,
         _saving: false,
         _queue: [],
+        _saveInterval: null,
         saveIfRequired: function() {
             var savedObj = mxBuilder.pages.saveAll();
             var currentState = JSON.stringify(savedObj);
@@ -21,16 +22,25 @@
                 mxBuilder.api.website.save({
                     websiteData: str,
                     success: function(data) {
-                        mxBuilder.recorder.tooltip.text("Saved Successfully...");
-                        setTimeout(function() {
-                            mxBuilder.recorder.tooltip.hide();
-                        }, 2000);
+                        if (data.success) {
+                            mxBuilder.recorder.tooltip.text("Saved Successfully...");
+                            setTimeout(function() {
+                                mxBuilder.recorder.tooltip.hide();
+                            }, 2000);
+                        } else {
+                            mxBuilder.recorder.tooltip.text("Error: Please refresh the page...");
+                            mxBuilder.recorder.clearInterval();
+                        }
                     },
                     complete: function() {
                         that._saving = false;
                         if (that._queue.length > 0) {
                             that.save(that._queue.splice(0, 1)[0]);
                         }
+                    },
+                    error: function() {
+                        mxBuilder.recorder.tooltip.text("Error: Please refresh the page...");
+                        mxBuilder.recorder.clearInterval();
                     }
                 });
             } else {
@@ -42,6 +52,14 @@
         },
         forceSave: function forceSave() {
             this._forceSave = true;
+        },
+        initSaveInterval: function(time) {
+            this._saveInterval = setInterval(function() {
+                mxBuilder.recorder.saveIfRequired();
+            }, time);
+        },
+        clearInterval: function() {
+            clearInterval(this._saveInterval);
         }
     };
 

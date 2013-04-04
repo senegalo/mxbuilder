@@ -24,10 +24,15 @@ class websites extends MX_Controller {
 
         if ($website_content == false) {
             error(Constants::INVALID_PARAMETERS, "Missing website_content variable.");
-        } else {
-            $this->websites_model->update($this->user, $website_content);
-            success();
         }
+
+        //is it a valid json !?
+        if (json_decode($website_content) === null) {
+            error(Constants::INVALID_PARAMETERS, "Unable to parse the given json string...");
+        }
+
+        $this->websites_model->update($this->user, $website_content);
+        success();
     }
 
     public function get() {
@@ -60,15 +65,15 @@ class websites extends MX_Controller {
 
         foreach ($pages as $page) {
             touch($user_dir . "/" . $page['address'] . ".html");
-            if(!isset($page['components'])){
+            if (!isset($page['components'])) {
                 $page['components'] = array();
             }
-            $page['components'] = array_merge(array("header"=>array(),"body"=>array(),"footer"=>array()),$page['components']);
+            $page['components'] = array_merge(array("header" => array(), "body" => array(), "footer" => array()), $page['components']);
             $merge = array_merge($layout, $page);
             $content = $this->load->view('publish_template', $merge, true);
             file_put_contents($user_dir . "/" . $page['address'] . ".html", $content);
         }
-        if($this->input->post("has_forms") == 1){
+        if ($this->input->post("has_forms") == 1) {
             file_put_contents($user_dir . "/mail.php", $this->websites_model->get_mail_page($this->user['email']));
             copy("public/images/loading.gif", $user_dir . "/images/loading.gif");
         }
