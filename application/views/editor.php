@@ -291,6 +291,11 @@
         </div>
 
         <div id="editor-area" style="width: 100%;height:100%;">
+            
+            <div id="header-resizer" class="ui-layout-resize ui-resizable-s" style="z-index: 1000000000;position:absolute;"></div>
+            <div id="body-resizer" class="ui-layout-resize ui-resizable-s" style="z-index: 1000000000;position:absolute;"></div>
+            <div id="footer-resizer" class="ui-layout-resize ui-resizable-s" style="z-index: 1000000000;position:absolute;"></div>
+            
             <div id="header" style="height: 200px;width:100%;z-index:10;position: relative;">
                 <div class="mx-layout-resize-indicator"></div>
             </div>
@@ -300,6 +305,8 @@
             <div id="footer" style="height: 200px;width:100%;z-index:8;position: relative;">
                 <div class="mx-layout-resize-indicator"></div>
             </div>
+            
+            
             <div id="container">
                 <div id="header-content">
                     <div class="header-outline" style="position:relative;border:6px solid orange;height:100%;overflow: hidden;display:none;z-index:2000000;"></div>
