@@ -24,10 +24,12 @@
 
             this.rebuild(properties.element, true);
         };
+
+        var template = mxBuilder.layout.templates.find(".flexly-main-menu-component-instance").remove();
+        var listTemplate = template.find("ul").remove();
+        var listElementTemplate = listTemplate.find("li").remove();
         $.extend(mxBuilder.MenuComponent.prototype, new mxBuilder.Component(), {
-            listItemTemplate: mxBuilder.layout.templates.find(".menu-component-instance").find("li").remove(),
-            listTemplate: mxBuilder.layout.templates.find(".menu-component-instance").find("ul").remove(),
-            template: mxBuilder.layout.templates.find(".menu-component-instance").remove(),
+            template: template,
             orientation: "h",
             moreLinkText: "More...",
             theme: "default",
@@ -35,69 +37,74 @@
             init: function init(properties) {
                 mxBuilder.Component.prototype.init.call(this, properties);
             },
-            rebuild: function() {
-                //getting the pages
+            rebuild: function rebuild(element) {
+                element = element ? element : this.element;
+                element.children("ul, div.clearer").remove();
+                var theList = listTemplate.clone().find("li").remove().end().appendTo(element);
+
+                this.setOrientation(this.orientation);
+                this.setTheme(this.theme);
+                this.setMoreLink(this.moreLinkText);
+
                 var pages = mxBuilder.pages.getOrderedPages();
-
-                //creating the main list
-                var mainList = this.listTemplate.clone();
-
                 for (var p in pages) {
-                    var currPage = pages[p];
-                    if (!pages.hasOwnProperty(p) || currPage.showInMenu !== true) {
+                    if (pages[p].showInMenu !== true) {
                         continue;
                     }
-
-                    //if root element and not created.. create it !
-                    if (currPage.parent === "root" && mainList.find(".page-" + currPage.id).length === 0) {
-                        mainList.append(this.createElement(currPage));
-                    } else if (currPage.parent !== "root") {
-                        //get parent list
-                        var parentList = mainList.find(".page-" + currPage.parent);
-
-                        //is this parent element created !? 
-                        if (parentList.length === 0) {
-                            console.error("Can't find parent list");
-                            continue;
+                    if (pages[p].parent === "root" && element.find(".main-menu-cat-" + pages[p].id).length === 0) {
+                        var theListElement = this.getListElement(pages[p]);
+                        theList.append(theListElement);
+                    } else if (pages[p].parent !== "root" && mxBuilder.pages.getPageObj(pages[p].parent).showInMenu === true) {
+                        //Check if we created the parent element
+                        var theParentList = element.find(".main-menu-cat-" + pages[p].parent);
+                        var parentPageObj = mxBuilder.pages.getPageObj(pages[p].parent);
+                        if (theParentList.length === 0) {
+                            theParentList = this.getListElement(parentPageObj).appendTo(theList);
                         }
 
-                        //if we didn't style the parent to have children ... let's do it now !
-                        var subList = parentList.find("ul.dropdown-menu");
-                        if (subList.length === 0) {
-                            parentList.addClass("dropdown").find("a").addClass("dropdown-toggle").append('<b class="caret"></b>');
-                            subList = $('<ul class="dropdown-menu"></ul>').appendTo(parentList);
-                        }
+                        //Checking if we created the list of siblings
+                        var theParentSiblings = theParentList.find("ul.main-menu-cat-child");
 
-                        subList.append(this.createElement(currPage));
+                        if (theParentSiblings.length === 0) {
+                            theParentSiblings = this.getList(parentPageObj);
+                            theParentList.append(theParentSiblings);
+                            theParentList.find("a").wrapInner('<div class="dir"/>');
+                        }
+                        //finally append the element
+                        theParentSiblings.append(this.getListElement(pages[p]));
+
                     }
                 }
-
-                this.element.find(".navbar-inner").empty().append(mainList);
-                
-                mainList.children("li").each(function() {
+                theList.customMenu();
+                theList.children("li").each(function() {
                     var element = $(this);
                     element.data("true-dimensions", {
                         width: element.width(),
                         height: element.height()
                     });
                 });
-
-                this.element.find('ul.nav li.dropdown').hover(function() {
-                    $(this).find('.dropdown-menu').stop(true, true).fadeIn(200);
-                }, function() {
-                    $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
-                });
-
+                this.setOrientation(this.orientation);
+                this.setTheme(this.theme);
+                mxBuilder.selection.revalidateSelectionContainer();
             },
-            createElement: function(obj) {
-                return this.listItemTemplate.clone().addClass("page-" + obj.id)
-                        .find("a").append(obj.title).end();
+            getList: function getList(obj) {
+                return listTemplate.clone()
+                        .addClass("main-menu-cat-child main-menu-cat-" + obj.id)
+                        .removeClass("main-menu-container");
+            },
+            getListElement: function getListElement(obj) {
+                return listElementTemplate.clone()
+                        .addClass("main-menu-cat main-menu-cat-" + obj.id)
+                        .find("a")
+                        .attr("data-id", obj.id)
+                        .text(obj.title)
+                        .end();
             },
             revalidate: function revalidate(element) {
                 element = element ? element : this.element;
 
                 var length = this.orientation === "h" || this.orientation === "hu" ? "width" : "height";
-                var theUl = element.find("ul.nav");
+                var theUl = element.children("ul");
                 var moreListElement = theUl.find(".main-menu-more");
                 var moreListElementChilds = moreListElement.find(">ul").children("li");
                 var elementLength = element[length]();
@@ -135,17 +142,15 @@
 
                     //Do we have a more list element !??
                     if (moreListElement.length === 0) {
-                        moreListElement = this.listItemTemplate.clone()
+                        moreListElement = listElementTemplate.clone()
+                                .addClass("main-menu-cat main-menu-more")
                                 .appendTo(theUl)
                                 .find("a")
-                                .html(this.moreLinkText + ' <b class="caret"></b>')
-                                .attr("data-toggle","dropdown")
-                                .addClass("dropdown-toggle")
+                                .html('<div class="dir">' + this.moreLinkText + '</div>')
                                 .end();
-                        this.listTemplate.clone()
-                                .addClass("dropdown-menu")
-                                .removeClass("nav")
-                                .appendTo(moreListElement);
+                        listTemplate.clone().appendTo(moreListElement)
+                                .addClass("main-menu-cat-child")
+                                .removeClass("main-menu-container");
                         sumListElementLength += moreListElement[length]() + extraSpace;
                     }
                     var x = 0;
