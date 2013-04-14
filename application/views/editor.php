@@ -606,7 +606,7 @@
                 <div class="spacer"></div>
             </div>
 
-            <div class="flexly-component-border-settings">                
+            <div class="flexly-component-border-settings">
                 <div class="picker">
                 </div>
                 <div class="border-radius-title settings-title">Border Radius</div>

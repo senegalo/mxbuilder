@@ -22,3 +22,17 @@
     float:right;
     margin-right: 17px;
 }
+
+.settings-picker {
+    font-family: "FontAwesome";
+    font-size: 13px;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+    z-index: 1000000000;
+}
+
+.settings-picker.picker-pressed {
+    color: green;
+}

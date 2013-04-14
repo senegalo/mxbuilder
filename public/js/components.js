@@ -1,6 +1,7 @@
 (function($) {
     mxBuilder.Component = function Component(obj) {
         if (obj) {
+            var instance = this;
             this.element = obj.element;
 
             //storing the size and position
@@ -11,6 +12,34 @@
 
             this.position = obj.element.position();
 
+
+            //watching out for settings picker drop
+            obj.element.droppable({
+                accept: ".settings-picker",
+                drop: function(event,ui){
+                    var panelObj = ui.helper.data("settings-picker");
+                    
+                    //does this component support this panel !?
+                    var panels = instance.getSettingsPanels();
+                    var found = false;
+                    for(var p in panels){
+                        if(!panels.hasOwnProperty(p)){
+                            continue;
+                        }
+                        if(panels[p].panel === panelObj){
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if(found){
+                        var settings = panelObj.getValues(true);
+                        mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
+                        instance.setSettings(settings);
+                    }
+                    
+                }
+            });
 
             //applying the popped from the active stack behavior
             if (!obj.poppedFromActiveStack) {
@@ -395,7 +424,7 @@
                         mxBuilder.layout.revalidateLayout();
                     }
                 });
-                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                if (mxBuilder.settingsManager.getSetting("snap", "objects")) {
                     obj.resizable.snap = mxBuilder.settingsManager.getSnapSelector();
                 }
                 obj.element.resizable(obj.resizable);
@@ -635,6 +664,26 @@
                 width: this.element.outerWidth(),
                 height: this.element.outerHeight()
             };
+        },
+        setSettings: function(obj) {
+            if(typeof obj.x !== "undefined"){
+                this.setLeftPosition(obj.x);
+            }
+            if(typeof obj.y !== "undefined"){
+                this.setTopPosition(obj.y);
+            }
+            if(typeof obj.z !== "undefined"){
+                this.setZIndexTo(obj.z);
+            }
+            if(typeof obj.width !== "undefined"){
+                this.setWidth(obj.width);
+            }
+            if(typeof obj.height !== "undefined"){
+                this.setHeight(obj.height);
+            }
+            if(typeof obj.border !== "undefined"){
+                this.setBorder(obj.border);
+            }
         },
         getSettingsPanels: function getSettingsPanels() {
             var out = {};
@@ -1005,7 +1054,7 @@
                     var isTextComponent = firstComponent.type === "TextComponent" || firstComponent.type === "TitleComponent";
                     if (mxBuilder.selection.getSelectionCount() === 1 && isTextComponent && firstComponent.isEditMode()) {
                         return;
-                    }  else {
+                    } else {
                         mxBuilder.selection.each(function() {
                             this.nudgeComponent(event.keyCode, event.shiftKey);
                         });

@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-component-border-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var border = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -15,7 +17,7 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     widthSlider: theInstance.find(".border-width-slider"),
                     simulator: theInstance.find(".border-radius-simulator"),
                     picker: theInstance.find(".picker"),
@@ -25,68 +27,68 @@
                     simulatorSliderBottomLeft: theInstance.find(".border-radius-slider-b-l"),
                     simulatorSliderBottomRight: theInstance.find(".border-radius-slider-b-r")
                 };
-                controls.lastChangedRadiusSlider = controls.simulatorSliderTopLeft;
+                this._controls.lastChangedRadiusSlider = this._controls.simulatorSliderTopLeft;
 
                 //Configure the controls here
-                controls.picker.customColorpicker();
-                controls.symetricCheckbox.checkbox();
-                controls.simulatorSliderTopLeft.customSlider({
+                this._controls.picker.customColorpicker();
+                this._controls.symetricCheckbox.checkbox();
+                this._controls.simulatorSliderTopLeft.customSlider({
                     max: 50,
                     min: 0,
                     suffix: "px"
                 });
-                controls.simulatorSliderBottomLeft.customSlider({
+                this._controls.simulatorSliderBottomLeft.customSlider({
                     max: 50,
                     min: 0,
                     suffix: "px"
                 });
-                controls.simulatorSliderTopRight.width(50).customSlider({
-                    max: 50,
-                    min: 0,
-                    invert: true,
-                    suffix: "px"
-                });
-                controls.simulatorSliderBottomRight.width(50).customSlider({
+                this._controls.simulatorSliderTopRight.width(50).customSlider({
                     max: 50,
                     min: 0,
                     invert: true,
                     suffix: "px"
                 });
-                controls.widthSlider.customSlider({
+                this._controls.simulatorSliderBottomRight.width(50).customSlider({
+                    max: 50,
+                    min: 0,
+                    invert: true,
+                    suffix: "px"
+                });
+                this._controls.widthSlider.customSlider({
                     max: 50,
                     min: 0,
                     suffix: "px"
                 });
 
-                this.applyToSelectionOn(controls, "picker", "pickerColorChanged");
-                this.applyToSelectionOn(controls, "picker", "pickerColorRest");
+                this.applyToSelectionOn("picker", "pickerColorChanged");
+                this.applyToSelectionOn("picker", "pickerColorRest");
 
-                this.applyToSelectionOn(controls, "symetricCheckbox", "change", function() {
-                    controls.symmetricRadius = $(this).is(":checked");
-                    if (controls.symmetricRadius) {
-                        var theValue = controls.simulatorSliderTopLeft.customSlider("value");
-                        border.setSimRadius(controls, "topLeft", theValue);
+                this.applyToSelectionOn("symetricCheckbox", "change", function() {
+                    border._controls.symmetricRadius = $(this).is(":checked");
+                    if (border._controls.symmetricRadius) {
+                        var theValue = border._controls.simulatorSliderTopLeft.customSlider("value");
+                        border.setSimRadius("topLeft", theValue);
                     }
                 });
-                this.applyToSelectionOn(controls, "simulatorSliderTopLeft", "slide", function(event, ui) {
-                    controls.lastChangedRadiusSlider = $(this);
-                    border.setSimRadius(controls, "topLeft", ui.value);
+                this.applyToSelectionOn("simulatorSliderTopLeft", "slide", function(event, ui) {
+                    border._controls.lastChangedRadiusSlider = $(border);
+                    border.setSimRadius("topLeft", ui.value);
                 });
-                this.applyToSelectionOn(controls, "simulatorSliderBottomLeft", "slide", function(event, ui) {
-                    controls.lastChangedRadiusSlider = $(this);
-                    border.setSimRadius(controls, "bottomLeft", ui.value);
+                this.applyToSelectionOn("simulatorSliderBottomLeft", "slide", function(event, ui) {
+                    border._controls.lastChangedRadiusSlider = $(border);
+                    border.setSimRadius("bottomLeft", ui.value);
                 });
-                this.applyToSelectionOn(controls, "simulatorSliderTopRight", "slide", function(event, ui) {
-                    controls.lastChangedRadiusSlider = $(this);
-                    border.setSimRadius(controls, "topRight", ui.value);
+                this.applyToSelectionOn("simulatorSliderTopRight", "slide", function(event, ui) {
+                    border._controls.lastChangedRadiusSlider = $(border);
+                    border.setSimRadius("topRight", ui.value);
                 });
-                this.applyToSelectionOn(controls, "simulatorSliderBottomRight", "slide", function(event, ui) {
-                    controls.lastChangedRadiusSlider = $(this);
-                    border.setSimRadius(controls, "bottomRight", ui.value);
+                this.applyToSelectionOn("simulatorSliderBottomRight", "slide", function(event, ui) {
+                    border._controls.lastChangedRadiusSlider = $(border);
+                    border.setSimRadius("bottomRight", ui.value);
                 });
-                this.applyToSelectionOn(controls, "widthSlider", "slide");
+                this.applyToSelectionOn("widthSlider", "slide");
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -114,15 +116,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        border.applyToSelection(controls);
+                        border.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        border.applyToSelection(controls);
+                        border.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -137,15 +139,15 @@
 
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.borderColor) {
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.borderColor);
-                    controls.picker.customColorpicker("value", colorObj);
+                    this._controls.picker.customColorpicker("value", colorObj);
                 }
                 if (values.borderWidth) {
                     values.borderWidth = parseInt(values.borderWidth.replace("px", ""), 10);
-                    controls.widthSlider.customSlider("value", values.borderWidth);
+                    this._controls.widthSlider.customSlider("value", values.borderWidth);
                 }
 
                 var corners = ["TopLeft", "TopRight", "BottomLeft", "BottomRight"];
@@ -159,75 +161,77 @@
                             isSymetric = false;
                         }
                         values["border" + corners[c] + "Radius"] = parseInt(values["border" + corners[c] + "Radius"].replace("px", ""), 10);
-                        this.setSimRadius(controls, corners[c], values["border" + corners[c] + "Radius"]);
-                        controls["simulatorSlider" + corners[c]].customSlider("value", values["border" + corners[c] + "Radius"]);
+                        this.setSimRadius(corners[c], values["border" + corners[c] + "Radius"]);
+                        this._controls["simulatorSlider" + corners[c]].customSlider("value", values["border" + corners[c] + "Radius"]);
                     } else {
                         isSymetric = false;
                     }
                 }
                 if (isSymetric) {
-                    controls.symetricCheckbox.attr("checked", "checked").trigger("change");
+                    this._controls.symetricCheckbox.attr("checked", "checked").trigger("change");
                 }
             },
-            setSimRadius: function(controls, pos, val) {
-                if (controls.symmetricRadius) {
-                    controls.simulator.css("border-radius", val);
-                    controls.simulator.parent().find(".border-radius-slider-l")
+            getValues: function(all) {
+                //if no values passed how to do we get the values ?
+                var values = {
+                    borderStyle: "solid"
+                };
+
+                if (all || this._settingsTab.hasChanged(this._controls.widthSlider)) {
+                    values.borderWidth = this._controls.widthSlider.customSlider("value");
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.picker)) {
+                    values.borderColor = this._controls.picker.customColorpicker("value").toString();
+                }
+
+                var val;
+                if (this._controls.symmetricRadius) {
+                    //yes this is intentional so it wont' go to the else statement
+                    if (all || this._settingsTab.hasChanged(this._controls.lastChangedRadiusSlider)) {
+                        val = this._controls.lastChangedRadiusSlider.customSlider("value");
+                        values["borderRadius"] = this._controls.lastChangedRadiusSlider.hasClass("border-radius-slider-r") ? 50 - val : val;
+                    }
+                } else {
+                    var corners = ["TopLeft", "TopRight", "BottomLeft", "BottomRight"];
+                    for (var c in corners) {
+                        if (all || this._settingsTab.hasChanged(this._controls["simulatorSlider" + corners[c]])) {
+                            val = this._controls["simulatorSlider" + corners[c]].customSlider("value");
+                            values["border" + corners[c] + "Radius"] = val;
+                        }
+                    }
+                }
+                return { border: values }; 
+            },
+            setSimRadius: function(pos, val) {
+                if (this._controls.symmetricRadius) {
+                    this._controls.simulator.css("border-radius", val);
+                    this._controls.simulator.parent().find(".border-radius-slider-l")
                             .customSlider("value", val)
                             .end()
                             .find(".border-radius-slider-r")
                             .customSlider("value", val);
                 } else {
-                    controls.simulator.css('border' + pos.uppercaseFirst() + 'Radius', val);
+                    this._controls.simulator.css('border' + pos.uppercaseFirst() + 'Radius', val);
                 }
             },
-            applyToSelection: function(controls, values) {
-                if (typeof values === "undefined") {
-                    //if no values passed how to do we get the values ?
-                    values = {
-                        borderStyle: "solid"
-                    };
-
-                    if (this._settingsTab.hasChanged(controls.widthSlider)) {
-                        values.borderWidth = controls.widthSlider.customSlider("value");
-                    }
-                    if (this._settingsTab.hasChanged(controls.picker)) {
-                        values.borderColor = controls.picker.customColorpicker("value").toString();
-                    }
-
-                    var val;
-                    if (controls.symmetricRadius) {
-                        //yes this is intentional so it wont' go to the else statement
-                        if (this._settingsTab.hasChanged(controls.lastChangedRadiusSlider)) {
-                            val = controls.lastChangedRadiusSlider.customSlider("value");
-                            values["borderRadius"] = controls.lastChangedRadiusSlider.hasClass("border-radius-slider-r") ? 50 - val : val;
-                        }
-                    } else {
-                        var corners = ["TopLeft", "TopRight", "BottomLeft", "BottomRight"];
-                        for (var c in corners) {
-                            if (this._settingsTab.hasChanged(controls["simulatorSlider" + corners[c]])) {
-                                val = controls["simulatorSlider" + corners[c]].customSlider("value");
-                                values["border" + corners[c] + "Radius"] = val;
-                            }
-                        }
-                    }
+            applyToSelection: function(values) {
+                if(typeof values === "undefined"){
+                    values = this.getValues(this._controls);
                 }
-
-                mxBuilder.selection.each(function() {
-                    //apply the values to the selection
-                    this.setBorder(values);
+                mxBuilder.selection.each(function(){
+                    this.setSettings(values);
                 });
                 mxBuilder.selection.revalidateSelectionContainer();
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var border = this;
-                controls[controlKey].on(event, function() {
-                    border._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    border._settingsTab.setChanged(border._controls[controlKey]);
                     if (border._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        border.applyToSelection(controls);
+                        border.applyToSelection(this._controls);
                     }
                 });
             }

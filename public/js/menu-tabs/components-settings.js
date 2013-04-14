@@ -36,18 +36,34 @@
                 var hasClipart = false;
                 mxBuilder.selection.each(function() {
                     componentSettings._componentsRevertIDS[this.getID()] = this.cacheState();
-                    if(this.type === "ClipartComponent"){
+                    if (this.type === "ClipartComponent") {
                         hasClipart = true;
                     }
                 });
 
                 for (var p in displaySettings) {
-                    
-                    if(hasClipart && displaySettings[p].panel === mxBuilder.layout.settingsPanels.background){
+
+                    if (hasClipart && displaySettings[p].panel === mxBuilder.layout.settingsPanels.background) {
                         displaySettings[p].params.hidePattern = true;
                     }
-                    
+
                     var thePanel = displaySettings[p].panel.getPanel(displaySettings[p].params);
+
+                    //if the panel has the picker option inject it
+                    if (displaySettings[p].panel.hasPicker) {
+                        var picker = $('<div class="settings-picker">&#61648;</div>').appendTo(thePanel.find(".flexly-collapsable-header"))
+                                .data("panelObj", displaySettings[p].panel);
+                        picker.draggable({
+                            helper: function() {
+                                var thePicker = $(this);
+                                return thePicker.clone().appendTo(mxBuilder.layout.container)
+                                        .data("settings-picker",thePicker.data("panelObj"));
+                            },
+                            stop: function(event, ui) {
+                                ui.helper.remove();
+                            }
+                        });
+                    }
 
                     //patching webkit bug: scrollTop reset on parent/zindex change
                     var thePanelContent = thePanel.find(".jquery-scrollbar-container");
