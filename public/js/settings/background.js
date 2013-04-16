@@ -74,7 +74,8 @@
                 this.applyToSelectionOn("opacitySlider", "slide");
                 this.applyToSelectionOn("samples", "click", function() {
                     var element = $(this);
-                    background._controls.patterns.data("change-monitor", true).find(".selected").removeClass("selected");
+                    background._controls.patterns.data("change-monitor", true).data("current-selection", element.data("flexly-pattern-index"))
+                    .find(".selected").removeClass("selected");
                     element.addClass("selected");
                 });
 
@@ -160,9 +161,13 @@
                     var match = matches === null ? "0" : matches[0];
 
                     this._controls.samples.filter(".pattern-sample-" + match).trigger("click");
+                    
+                    this._controls.patterns.data("current-selection",match);
+                    
                     var background = this;
                     this._controls.thePanel.on({
                         panelOpen: function() {
+                            var match = background._controls.patterns.data("current-selection")+1;
                             var theSelected = background._controls.samples.filter(".pattern-sample-" + match).trigger("click");
                             background._controls.patterns.jqueryScrollbar("scrollTo", match * theSelected.outerHeight(), false);
                         }
