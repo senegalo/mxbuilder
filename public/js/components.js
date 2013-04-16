@@ -16,28 +16,28 @@
             //watching out for settings picker drop
             obj.element.droppable({
                 accept: ".settings-picker",
-                drop: function(event,ui){
+                drop: function(event, ui) {
                     var panelObj = ui.helper.data("settings-picker");
-                    
+
                     //does this component support this panel !?
                     var panels = instance.getSettingsPanels();
                     var found = false;
-                    for(var p in panels){
-                        if(!panels.hasOwnProperty(p)){
+                    for (var p in panels) {
+                        if (!panels.hasOwnProperty(p)) {
                             continue;
                         }
-                        if(panels[p].panel === panelObj){
+                        if (panels[p].panel === panelObj) {
                             found = true;
                             break;
                         }
                     }
-                    
-                    if(found){
-                        var settings = panelObj.getValues(true);
+
+                    if (found) {
+                        var settings = panelObj.getValues(true,true);
                         mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
                         instance.setSettings(settings);
                     }
-                    
+
                 }
             });
 
@@ -666,26 +666,36 @@
             };
         },
         setSettings: function(obj) {
-            if(typeof obj.x !== "undefined"){
-                this.setLeftPosition(obj.x);
+            if (typeof obj.position !== "undefined") {
+                this.setPosition(obj.position);
             }
-            if(typeof obj.y !== "undefined"){
-                this.setTopPosition(obj.y);
-            }
-            if(typeof obj.z !== "undefined"){
-                this.setZIndexTo(obj.z);
-            }
-            if(typeof obj.width !== "undefined"){
-                this.setWidth(obj.width);
-            }
-            if(typeof obj.height !== "undefined"){
-                this.setHeight(obj.height);
-            }
-            if(typeof obj.border !== "undefined"){
+            if (typeof obj.border !== "undefined") {
                 this.setBorder(obj.border);
             }
-            if(typeof obj.background !== "undefined"){
+            if (typeof obj.background !== "undefined") {
                 this.setBackground(obj.background);
+            }
+        },
+        setPosition: function(obj) {
+            for (var v in obj) {
+                var val = obj[v];
+                switch (v) {
+                    case "x":
+                        this.setLeftPosition(val);
+                        break;
+                    case "y":
+                        this.setTopPosition(val);
+                        break;
+                    case "z":
+                        this.setZIndexTo(val);
+                        break;
+                    case "width":
+                        this.setWidth(val);
+                        break;
+                    case "height":
+                        this.setHeight(val);
+                        break;
+                }
             }
         },
         getSettingsPanels: function getSettingsPanels() {
