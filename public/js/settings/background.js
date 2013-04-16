@@ -72,7 +72,8 @@
                 this.applyToSelectionOn(controls, "opacitySlider", "slide");
                 this.applyToSelectionOn(controls, "samples", "click", function() {
                     var element = $(this);
-                    controls.patterns.data("change-monitor", true).find(".selected").removeClass("selected");
+                    controls.patterns.data("change-monitor", true).data("current-selection", element.data("flexly-pattern-index"))
+                    .find(".selected").removeClass("selected");
                     element.addClass("selected");
                 });
                 
@@ -158,9 +159,12 @@
                     var match = matches === null ? "0" : matches[0];
 
                     controls.samples.filter(".pattern-sample-" + match).trigger("click");
+                    
+                    controls.patterns.data("current-selection",match);
 
                     controls.thePanel.on({
                         panelOpen: function() {
+                            var match = controls.patterns.data("current-selection")+1;
                             var theSelected = controls.samples.filter(".pattern-sample-" + match).trigger("click");
                             controls.patterns.jqueryScrollbar("scrollTo", match * theSelected.outerHeight(), false);
                         }
