@@ -33,7 +33,7 @@
                     }
 
                     if (found) {
-                        var settings = panelObj.getValues(true,true);
+                        var settings = panelObj.getValues(true, true);
                         mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
                         instance.setSettings(settings);
                     }
@@ -674,6 +674,13 @@
             }
             if (typeof obj.background !== "undefined") {
                 this.setBackground(obj.background);
+            }
+            if (typeof obj.shadow !== "undefined") {
+                if (obj.shadow.shadowIndex !== "none") {
+                    this.setShadow(obj.shadow.shadowIndex);
+                } else {
+                    this.removeShadow();
+                }
             }
         },
         setPosition: function(obj) {
