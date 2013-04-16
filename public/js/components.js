@@ -684,6 +684,9 @@
             if(typeof obj.border !== "undefined"){
                 this.setBorder(obj.border);
             }
+            if(typeof obj.background !== "undefined"){
+                this.setBackground(obj.background);
+            }
         },
         getSettingsPanels: function getSettingsPanels() {
             var out = {};
