@@ -71,19 +71,19 @@
                     }
                 });
                 this.applyToSelectionOn("simulatorSliderTopLeft", "slide", function(event, ui) {
-                    border._controls.lastChangedRadiusSlider = $(border);
+                    border._controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius("topLeft", ui.value);
                 });
                 this.applyToSelectionOn("simulatorSliderBottomLeft", "slide", function(event, ui) {
-                    border._controls.lastChangedRadiusSlider = $(border);
+                    border._controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius("bottomLeft", ui.value);
                 });
                 this.applyToSelectionOn("simulatorSliderTopRight", "slide", function(event, ui) {
-                    border._controls.lastChangedRadiusSlider = $(border);
+                    border._controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius("topRight", ui.value);
                 });
                 this.applyToSelectionOn("simulatorSliderBottomRight", "slide", function(event, ui) {
-                    border._controls.lastChangedRadiusSlider = $(border);
+                    border._controls.lastChangedRadiusSlider = $(this);
                     border.setSimRadius("bottomRight", ui.value);
                 });
                 this.applyToSelectionOn("widthSlider", "slide");
