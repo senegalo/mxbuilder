@@ -113,6 +113,22 @@
                 });
                 return out;
             },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this,obj);
+                if(typeof obj.tweetButton !== "undefined"){
+                    //apply the values to the selection
+                    for (var p in obj.tweetButton) {
+                        if (obj.tweetButton[p] === false) {
+                            continue;
+                        }
+                        this[p] = obj.tweetButton[p];
+                    }
+                    if (typeof obj.tweetButton.count !== "undefined") {
+                        this.rebuild();
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    }
+                }
+            },
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.count = this.count;

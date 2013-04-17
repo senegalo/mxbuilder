@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-tweet-button-settings"),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var tweetButton = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,7 +16,7 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     countPositionHorizontal: theInstance.find("#twitter-count-position-hr"),
                     countPositionNone: theInstance.find("#twitter-count-position-none"),
                     countPositionVertical: theInstance.find("#twitter-count-position-vr"),
@@ -29,18 +31,18 @@
 
                 //Configure the controls here
 
-                this.applyToSelectionOn(controls, "countPosition", "click");
-                this.applyToSelectionOn(controls, "urlText", "input");
-                this.applyToSelectionOn(controls, "tweetText", "input");
-                this.applyToSelectionOn(controls, "url", "change");
+                this.applyToSelectionOn("countPosition", "click");
+                this.applyToSelectionOn("urlText", "input");
+                this.applyToSelectionOn("tweetText", "input");
+                this.applyToSelectionOn("url", "change");
 
-                controls.urlText.on({
+                this._controls.urlText.on({
                     focus: function() {
-                        controls.urlCustom.attr("checked", "checked");
+                        tweetButton._controls.urlCustom.attr("checked", "checked");
                     }
                 });
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -61,15 +63,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        tweetButton.applyToSelection(controls);
+                        tweetButton.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        tweetButton.applyToSelection(controls);
+                        tweetButton.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -85,67 +87,60 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.text !== false) {
-                    controls.tweetText.val(values.text);
+                    this._controls.tweetText.val(values.text);
                 } else {
-                    controls.tweetText.val('');
+                    this._controls.tweetText.val('');
                 }
 
-                controls.countPosition.removeAttr("checked");
+                this._controls.countPosition.removeAttr("checked");
                 if (values.count !== false) {
-                    controls['countPosition' + values.count.uppercaseFirst()].attr("checked", "checked");
+                    this._controls['countPosition' + values.count.uppercaseFirst()].attr("checked", "checked");
                 }
 
-                controls.url.removeAttr("checked");
+                this._controls.url.removeAttr("checked");
                 if (values.url !== false) {
                     if (typeof values.url === "undefined" || values.url === "none") {
-                        controls.urlNone.attr("checked", "checked");
-                        controls.urlText.val("");
+                        this._controls.urlNone.attr("checked", "checked");
+                        this._controls.urlText.val("");
                     } else {
-                        controls.urlCustom.attr("checked", "checked");
-                        controls.urlText.val(values.url);
+                        this._controls.urlCustom.attr("checked", "checked");
+                        this._controls.urlText.val(values.url);
                     }
                 }
             },
-            applyToSelection: function(controls, values) {
-                if (typeof values === "undefined") {
-                    //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.tweetText)) {
-                        values.text = controls.tweetText.val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.countPosition)) {
-                        values.count = controls.countPosition.filter(":checked").val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.url)) {
-                        values.url = controls.urlNone.is(":checked") ? "none" : controls.urlText.val();
-                    }
+            getValues: function(all) {
+                var values = {};
+                if (all || this._settingsTab.hasChanged(this._controls.tweetText)) {
+                    values.text = this._controls.tweetText.val();
                 }
+                if (all || this._settingsTab.hasChanged(this._controls.countPosition)) {
+                    values.count = this._controls.countPosition.filter(":checked").val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.url)) {
+                    values.url = this._controls.urlNone.is(":checked") ? "none" : this._controls.urlText.val();
+                }
+                return {
+                    tweetButton: values
+                };
+            },
+            applyToSelection: function(values) {
+                values = this.getValues();
                 mxBuilder.selection.each(function() {
-                    //apply the values to the selection
-                    for (var p in values) {
-                        if (values[p] === false) {
-                            continue;
-                        }
-                        this[p] = values[p];
-                    }
-                    if (typeof values.count !== "undefined") {
-                        this.rebuild();
-                        mxBuilder.selection.revalidateSelectionContainer();
-                    }
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var tweetButton = this;
-                controls[controlKey].on(event, function() {
-                    tweetButton._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    tweetButton._settingsTab.setChanged(tweetButton._controls[controlKey]);
                     if (tweetButton._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        tweetButton.applyToSelection(controls);
+                        tweetButton.applyToSelection(tweetButton._controls);
                     }
                 });
             }
