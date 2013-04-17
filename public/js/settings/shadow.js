@@ -115,7 +115,7 @@
                 return { shadow: values };
             },
             applyToSelection: function(values) {
-                values = this.getValues();
+                values = typeof values === "undefined" ? this.getValues() : values;
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
                     this.setSettings(values);
