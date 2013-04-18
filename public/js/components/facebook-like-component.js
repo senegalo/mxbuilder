@@ -140,6 +140,20 @@
                 });
                 return out;
             },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+
+                if (typeof obj.fbButton !== "undefined") {
+                    if (typeof obj.fbButton.counterPosition !== "undefined") {
+                        this.setCounterPosition(obj.fbButton.counterPosition);
+                    }
+                    if (typeof obj.fbButton.action !== "undefined") {
+                        this.setAction(obj.fbButton.action);
+                    }
+                    this.rebuild();
+                }
+
+            },
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.counterPosition = this.counterPosition;

@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flexly-fb-button-settings"),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var fbButton = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,7 +16,7 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     counterPosition: theInstance.find('.fb-counter-position input'),
                     counterPositionHr: theInstance.find('#fb-count-position-hr'),
                     counterPositionVr: theInstance.find('#fb-count-position-vr'),
@@ -25,10 +27,10 @@
 
 
                 //Configure the controls here
-                this.applyToSelectionOn(controls, "counterPosition", "change");
-                this.applyToSelectionOn(controls, "action", "change");
+                this.applyToSelectionOn("counterPosition", "change");
+                this.applyToSelectionOn("action", "change");
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -49,15 +51,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        fbButton.applyToSelection(controls);
+                        fbButton.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        fbButton.applyToSelection(controls);
+                        fbButton.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -73,56 +75,54 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.counterPosition !== false) {
                     if (values.counterPosition === "button_count") {
-                        controls.counterPositionHr.attr("checked", "checked");
+                        this._controls.counterPositionHr.attr("checked", "checked");
                     } else {
-                        controls.counterPositionVr.attr("checked", "checked");
+                        this._controls.counterPositionVr.attr("checked", "checked");
                     }
                 } else {
-                    controls.counterPosition.removeAttr("checked");
+                    this._controls.counterPosition.removeAttr("checked");
                 }
                 if (values.action !== false) {
                     if (values.action === "like") {
-                        controls.actionLike.attr("checked", "checked");
+                        this._controls.actionLike.attr("checked", "checked");
                     } else {
-                        controls.actionRecommend.attr("checked", "checked");
+                        this._controls.actionRecommend.attr("checked", "checked");
                     }
                 } else {
-                    controls.action.removeAttr("checked");
+                    this._controls.action.removeAttr("checked");
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all) {
+                var values = {};
+                if (all || this._settingsTab.hasChanged(this._controls.counterPosition)) {
+                    values.counterPosition = this._controls.counterPosition.filter(":checked").val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.action)) {
+                    values.action = this._controls.action.filter(":checked").val();
+                }
+                return {fbButton: values};
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.counterPosition)) {
-                        values.counterPosition = controls.counterPosition.filter(":checked").val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.action)) {
-                        values.action = controls.action.filter(":checked").val();
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
-                    if (typeof values.counterPosition !== "undefined") {
-                        this.setCounterPosition(values.counterPosition);
-                    }
-                    if (typeof values.action !== "undefined") {
-                        this.setAction(values.action);
-                    }
-                    this.rebuild();
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var fbButton = this;
-                controls[controlKey].on(event, function() {
-                    fbButton._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    fbButton._settingsTab.setChanged(fbButton._controls[controlKey]);
                     if (fbButton._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        fbButton.applyToSelection(controls);
+                        fbButton.applyToSelection();
                     }
                 });
             }
