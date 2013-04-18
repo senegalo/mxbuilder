@@ -140,6 +140,19 @@
                     counterPosition: this.getCounterPosition()
                 });
                 return out;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                if (typeof obj.gplusButton !== "undefined") {
+                    //apply the values to the selection
+                    if (typeof obj.gplusButton.size !== "undefined") {
+                        this.setSize(obj.gplusButton.size);
+                    }
+                    if (typeof obj.gplusButton.counterPosition !== "undefined") {
+                        this.setCounterPosition(obj.gplusButton.counterPosition);
+                    }
+                    this.rebuild();
+                }
             }
         });
 
