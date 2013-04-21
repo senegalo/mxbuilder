@@ -131,6 +131,17 @@
                 });
                 return out;
             },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+
+                if (typeof obj.flickrBadge !== "undefined") {
+                    for (var p in obj.flickrBadge) {
+                        this[p] = obj.flickrBadge[p];
+                    }
+                    this.render();
+                }
+
+            },
             setWidth: function setWidth(val) {
                 //mxBuilder.Component.prototype.setWidth.call(this,val);
                 this.element.width(val);

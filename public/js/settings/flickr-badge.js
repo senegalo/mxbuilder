@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".flickr-badge-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var flickrBadge = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,7 +16,7 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     imgSize: theInstance.find(".flickr-badge-imgsize input"),
                     imgSizeSquare: theInstance.find("#flickr-badge-imgsize-s"),
                     imgSizeThumb: theInstance.find("#flickr-badge-imgsize-t"),
@@ -28,12 +30,12 @@
 
 
                 //Configure the controls here
-                this.applyToSelectionOn(controls, "count", "change");
-                this.applyToSelectionOn(controls, "imgSize", "change");
-                this.applyToSelectionOn(controls, "display", "change");
-                this.applyToSelectionOn(controls, "user", "input");
+                this.applyToSelectionOn("count", "change");
+                this.applyToSelectionOn("imgSize", "change");
+                this.applyToSelectionOn("display", "change");
+                this.applyToSelectionOn("user", "input");
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -54,15 +56,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        flickrBadge.applyToSelection(controls);
+                        flickrBadge.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        flickrBadge.applyToSelection(controls);
+                        flickrBadge.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -78,67 +80,70 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.count !== false) {
-                    controls.count.find('option[value="' + values.count + '"]').attr("selected", "selected");
+                    this._controls.count.find('option[value="' + values.count + '"]').attr("selected", "selected");
                 } else {
-                    controls.count.append('<option class="none">----------</option>');
+                    this._controls.count.append('<option class="none">----------</option>');
                 }
 
                 if (values.user !== false) {
-                    controls.user.val(values.user);
+                    this._controls.user.val(values.user);
                 } else {
-                    controls.user.val('');
+                    this._controls.user.val('');
                 }
 
 
                 if (values.display !== false) {
-                    controls.display.filter('[value="' + values.display + '"]').attr("checked", "checked");
+                    this._controls.display.filter('[value="' + values.display + '"]').attr("checked", "checked");
                 } else {
-                    controls.display.removeAttr("checked");
+                    this._controls.display.removeAttr("checked");
                 }
 
                 if (values.imgSize !== false) {
-                    controls.imgSize.filter('[value="' + values.imgSize + '"]').attr("checked", "checked");
+                    this._controls.imgSize.filter('[value="' + values.imgSize + '"]').attr("checked", "checked");
                 } else {
-                    controls.imgSize.removeAttr("checked");
+                    this._controls.imgSize.removeAttr("checked");
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all, isPicker) {
+                //if no values passed how to do we get the values ?
+                values = {};
+                if (all || this._settingsTab.hasChanged(this._controls.count)) {
+                    values.count = this._controls.count.val();
+                }
+                if (!isPicker && (all || this._settingsTab.hasChanged(this._controls.user))) {
+                    values.user = this._controls.user.val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.display)) {
+                    values.display = this._controls.display.filter(":checked").val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.imgSize)) {
+                    values.imgSize = this._controls.imgSize.filter(":checked").val();
+                }
+                
+                return {flickrBadge: values};
+                
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
-                    //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.count)) {
-                        values.count = controls.count.val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.user)) {
-                        values.user = controls.user.val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.display)) {
-                        values.display = controls.display.filter(":checked").val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.imgSize)) {
-                        values.imgSize = controls.imgSize.filter(":checked").val();
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    for (var p in values) {
-                        this[p] = values[p];
-                    }
-                    this.render();
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var flickrBadge = this;
-                controls[controlKey].on(event, function() {
-                    flickrBadge._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    flickrBadge._settingsTab.setChanged(flickrBadge._controls[controlKey]);
                     if (flickrBadge._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        flickrBadge.applyToSelection(controls);
+                        flickrBadge.applyToSelection();
                     }
                 });
             }
