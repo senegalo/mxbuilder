@@ -117,7 +117,10 @@
                 var out = mxBuilder.Component.prototype.getSettings.call(this);
                 $.extend(out, {
                     label: this.label,
-                    linkObj: this.linkObj
+                    linkType: this.linkObj.linkType,
+                    linkURL: this.linkObj.linkURL,
+                    linkProtocol: this.linkObj.linkProtocol,
+                    linkOpenIn: this.linkObj.linkOpenIn
                 });
                 return out;
             }

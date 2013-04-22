@@ -682,6 +682,16 @@
                     this.removeShadow();
                 }
             }
+            if (typeof obj.links !== "undefined") {
+                this.setLinkObj(obj.links);
+            }
+        },
+        setLinkObj: function(obj) {
+            if(typeof this.linkObj === "object"){
+                $.extend(this.linkObj, obj);
+            } else {
+                this.linkObj = obj;
+            }
         },
         setPosition: function(obj) {
             for (var v in obj) {
