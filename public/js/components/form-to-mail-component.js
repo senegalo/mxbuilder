@@ -153,6 +153,15 @@
                     redisplaySeconds: this.redisplaySeconds
                 });
                 return out;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                if (typeof obj.formToMail !== "undefined") {
+                    if (typeof obj.formToMail.mode !== "undefined") {
+                        this.setMode(obj.formToMail.mode);
+                    }
+                    $.extend(this, obj.formToMail);
+                }
             }
         });
 
