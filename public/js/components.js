@@ -1,6 +1,7 @@
 (function($) {
     mxBuilder.Component = function Component(obj) {
         if (obj) {
+            var instance = this;
             this.element = obj.element;
 
             //storing the size and position
@@ -11,6 +12,34 @@
 
             this.position = obj.element.position();
 
+
+            //watching out for settings picker drop
+            obj.element.droppable({
+                accept: ".settings-picker",
+                drop: function(event, ui) {
+                    var panelObj = ui.helper.data("settings-picker");
+
+                    //does this component support this panel !?
+                    var panels = instance.getSettingsPanels();
+                    var found = false;
+                    for (var p in panels) {
+                        if (!panels.hasOwnProperty(p)) {
+                            continue;
+                        }
+                        if (panels[p].panel === panelObj) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        var settings = panelObj.getValues(true, true);
+                        mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
+                        instance.setSettings(settings);
+                    }
+
+                }
+            });
 
             //applying the popped from the active stack behavior
             if (!obj.poppedFromActiveStack) {
@@ -395,7 +424,7 @@
                         mxBuilder.layout.revalidateLayout();
                     }
                 });
-                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                if (mxBuilder.settingsManager.getSetting("snap", "objects")) {
                     obj.resizable.snap = mxBuilder.settingsManager.getSnapSelector();
                 }
                 obj.element.resizable(obj.resizable);
@@ -636,6 +665,56 @@
                 height: this.element.outerHeight()
             };
         },
+        setSettings: function(obj) {
+            if (typeof obj.position !== "undefined") {
+                this.setPosition(obj.position);
+            }
+            if (typeof obj.border !== "undefined") {
+                this.setBorder(obj.border);
+            }
+            if (typeof obj.background !== "undefined") {
+                this.setBackground(obj.background);
+            }
+            if (typeof obj.shadow !== "undefined") {
+                if (obj.shadow.shadowIndex !== "none") {
+                    this.setShadow(obj.shadow.shadowIndex);
+                } else {
+                    this.removeShadow();
+                }
+            }
+            if (typeof obj.links !== "undefined") {
+                this.setLinkObj(obj.links);
+            }
+        },
+        setLinkObj: function(obj) {
+            if(typeof this.linkObj === "object"){
+                $.extend(this.linkObj, obj);
+            } else {
+                this.linkObj = obj;
+            }
+        },
+        setPosition: function(obj) {
+            for (var v in obj) {
+                var val = obj[v];
+                switch (v) {
+                    case "x":
+                        this.setLeftPosition(val);
+                        break;
+                    case "y":
+                        this.setTopPosition(val);
+                        break;
+                    case "z":
+                        this.setZIndexTo(val);
+                        break;
+                    case "width":
+                        this.setWidth(val);
+                        break;
+                    case "height":
+                        this.setHeight(val);
+                        break;
+                }
+            }
+        },
         getSettingsPanels: function getSettingsPanels() {
             var out = {};
             out.position = {
@@ -783,10 +862,16 @@
             return {};
         },
         setHeight: function setHeight(value) {
-            this.element.outerHeight(value);
+            var bounds = this.getHeightBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerHeight(value);
+            }
         },
         setWidth: function setWidth(value) {
-            this.element.outerWidth(value);
+            var bounds = this.getWidthBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerWidth(value);
+            }
         },
         setLeftPosition: function setLeftPosition(val) {
             this.element.css("left", val + "px");
@@ -1005,7 +1090,7 @@
                     var isTextComponent = firstComponent.type === "TextComponent" || firstComponent.type === "TitleComponent";
                     if (mxBuilder.selection.getSelectionCount() === 1 && isTextComponent && firstComponent.isEditMode()) {
                         return;
-                    }  else {
+                    } else {
                         mxBuilder.selection.each(function() {
                             this.nudgeComponent(event.keyCode, event.shiftKey);
                         });

@@ -1,62 +1,62 @@
-(function($){
-    
-    $(function(){
-        mxBuilder.TweetButtonComponent = function TweetButtonComponent(properties){
+(function($) {
+
+    $(function() {
+        mxBuilder.TweetButtonComponent = function TweetButtonComponent(properties) {
             this.init(properties);
-            mxBuilder.Component.apply(this,[{
-                type: "TweetButtonComponent",
-                draggable: {
-                    iframeFix: true
-                },
-                editableZIndex: true,
-                selectable: true,
-                element: properties.element
-            }]);
-        }
-        $.extend(mxBuilder.TweetButtonComponent.prototype,new mxBuilder.Component(), {
+            mxBuilder.Component.apply(this, [{
+                    type: "TweetButtonComponent",
+                    draggable: {
+                        iframeFix: true
+                    },
+                    editableZIndex: true,
+                    selectable: true,
+                    element: properties.element
+                }]);
+        };
+        $.extend(mxBuilder.TweetButtonComponent.prototype, new mxBuilder.Component(), {
             count: "horizontal",
             text: "",
             url: "none",
             template: mxBuilder.layout.templates.find(".tweet-button-component-instance").remove().find("a").addClass("twitter-share-button").end(),
-            init: function init(properties){
-                mxBuilder.Component.prototype.init.call(this,properties);
+            init: function init(properties) {
+                mxBuilder.Component.prototype.init.call(this, properties);
                 this.rebuild(properties.element);
             },
-            publish: function publish(){
+            publish: function publish() {
                 var position = this.element.position();
-                
+
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
-                script.src = mxBuilder.config.baseURL+"/public/js-libs/twitter-init-script.js";
-                
+                script.src = mxBuilder.config.baseURL + "/public/js-libs/twitter-init-script.js";
+
                 var newConfig = {
                     "data-count": this.count,
                     "data-text": this.text
-                }
-                if(this.url !== "" && this.url != "none"){
+                };
+                if (this.url !== "" && this.url !== "none") {
                     newConfig['data-url'] = this.url;
                 }
-                
+
                 var out = this.template.clone()
-                .find(".overlay")
-                .remove()
-                .end()
-                .find("a")
-                .attr(newConfig)
-                .end();
-                
+                        .find(".overlay")
+                        .remove()
+                        .end()
+                        .find("a")
+                        .attr(newConfig)
+                        .end();
+
                 out.css({
                     left: position.left,
                     top: position.top,
                     position: "absolute",
                     zIndex: this.element.css("zIndex")
                 });
-                
+
                 out.get(0).appendChild(script);
-                
+
                 return out;
             },
-            getSettingsPanels: function getSettingsPanels(){
+            getSettingsPanels: function getSettingsPanels() {
                 return {
                     position: {
                         panel: mxBuilder.layout.settingsPanels.position
@@ -64,56 +64,72 @@
                     tweetButton: {
                         panel: mxBuilder.layout.settingsPanels.tweetButton,
                         params: true
-                    } 
+                    }
                 };
             },
-            setCounterPosition: function setCounterPosition(position){
+            setCounterPosition: function setCounterPosition(position) {
                 this.count = position;
                 this.rebuild();
             },
-            setDefaultTweetText: function setDefaultTweetText(text){
+            setDefaultTweetText: function setDefaultTweetText(text) {
                 this.text = text;
-                this.rebuild()
+                this.rebuild();
             },
-            setUrl: function setUrl(url){
+            setUrl: function setUrl(url) {
                 this.url = url;
                 this.rebuild();
             },
-            rebuild: function rebuild(element){
+            rebuild: function rebuild(element) {
                 element = element ? element : this.element;
                 var newConfig = {
                     "data-count": this.count,
                     "data-text": this.text
-                }
-                if(this.url !== "" && this.url != "none"){
+                };
+                if (this.url !== "" && this.url !== "none") {
                     newConfig['data-url'] = this.url;
                 }
                 var newButton = this.template.find("a").clone().attr(newConfig);
                 element.find(".twitter-button").empty().append(newButton);
                 this.revalidate(element);
             },
-            revalidate: function revalidate(element){
+            revalidate: function revalidate(element) {
                 element = element ? element : this.element;
-                window.twttr && element.find("a").each(function(){
+                window.twttr && element.find("a").each(function() {
                     window.twttr.widgets.load();
                 });
                 var theIframe = element.find("iframe");
                 var theHeight = theIframe.height();
                 var theWidth = theIframe.width();
-                
+
                 element.height(theHeight);
                 element.width(theWidth);
             },
-            getSettings: function getSettings(){
+            getSettings: function getSettings() {
                 var out = mxBuilder.Component.prototype.getSettings.call(this);
-                $.extend(out,{
+                $.extend(out, {
                     count: this.count,
                     text: this.text,
                     url: this.url
                 });
                 return out;
             },
-            save: function save(){
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this,obj);
+                if(typeof obj.tweetButton !== "undefined"){
+                    //apply the values to the selection
+                    for (var p in obj.tweetButton) {
+                        if (obj.tweetButton[p] === false) {
+                            continue;
+                        }
+                        this[p] = obj.tweetButton[p];
+                    }
+                    if (typeof obj.tweetButton.count !== "undefined") {
+                        this.rebuild();
+                        mxBuilder.selection.revalidateSelectionContainer();
+                    }
+                }
+            },
+            save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.count = this.count;
                 out.data.text = this.text;
@@ -121,21 +137,21 @@
                 return out;
             }
         });
-        
+
         var widgets = mxBuilder.menuManager.menus.widgets;
-        widgets.addComponent("root",{
+        widgets.addComponent("root", {
             icon: "flexly-icon-box-component",
             title: "Tweet Button",
             draggableSettings: {
-                helper: function(event){
+                helper: function(event) {
                     var theContent = $('<div><img src="public/images/tweet.png"/></div>')
-                    .addClass("mx-helper")
-                    .data("component","TweetButtonComponent")
-                    .appendTo(mxBuilder.layout.container);
+                            .addClass("mx-helper")
+                            .data("component", "TweetButtonComponent")
+                            .appendTo(mxBuilder.layout.container);
                     return theContent;
                 }
             }
-        }); 
+        });
     });
-    
+
 }(jQuery));

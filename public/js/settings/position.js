@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".position-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var position = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,7 +16,7 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     x: theInstance.find("#component-x-position"),
                     y: theInstance.find("#component-y-position"),
                     z: theInstance.find("#component-z-position"),
@@ -28,38 +30,38 @@
                 };
 
                 //Configure the controls here
-                controls.x.spinner({numberFormat: "n"});
-                controls.y.spinner({numberFormat: "n"});
-                controls.z.spinner({numberFormat: "n"});
-                controls.width.spinner({numberFormat: "n"});
-                controls.height.spinner({numberFormat: "n"});
+                this._controls.x.spinner({numberFormat: "n"});
+                this._controls.y.spinner({numberFormat: "n"});
+                this._controls.z.spinner({numberFormat: "n"});
+                this._controls.width.spinner({numberFormat: "n"});
+                this._controls.height.spinner({numberFormat: "n"});
 
-                this.applyToSelectionOn(controls, "x", "spin");
-                this.applyToSelectionOn(controls, "x", "input", this.validateInteger(controls.x));
+                this.applyToSelectionOn("x", "spin");
+                this.applyToSelectionOn("x", "input", this.validateInteger(this._controls.x));
 
-                this.applyToSelectionOn(controls, "y", "spin");
-                this.applyToSelectionOn(controls, "y", "input", this.validateInteger(controls.y));
+                this.applyToSelectionOn("y", "spin");
+                this.applyToSelectionOn("y", "input", this.validateInteger(this._controls.y));
 
-                this.applyToSelectionOn(controls, "z", "spin");
-                this.applyToSelectionOn(controls, "z", "input", this.validateInteger(controls.z));
+                this.applyToSelectionOn("z", "spin");
+                this.applyToSelectionOn("z", "input", this.validateInteger(this._controls.z));
 
-                this.applyToSelectionOn(controls, "width", "spin");
-                this.applyToSelectionOn(controls, "width", "input", this.validateInteger(controls.width));
+                this.applyToSelectionOn("width", "spin");
+                this.applyToSelectionOn("width", "input", this.validateInteger(this._controls.width));
 
-                this.applyToSelectionOn(controls, "height", "spin");
-                this.applyToSelectionOn(controls, "height", "input", this.validateInteger(controls.height));
+                this.applyToSelectionOn("height", "spin");
+                this.applyToSelectionOn("height", "input", this.validateInteger(this._controls.height));
 
                 //refresh values on spinstop
-                for (var c in controls) {
-                    if (controls.hasOwnProperty(c)) {
+                for (var c in this._controls) {
+                    if (this._controls.hasOwnProperty(c)) {
                         switch (c) {
                             case "x":
                             case "y":
                             case "z":
                             case "width":
                             case "height":
-                                controls[c].on({
-                                    spinstop: position.refreshValues(controls)
+                                this._controls[c].on({
+                                    spinstop: position.refreshValues()
                                 });
                                 break;
                             default:
@@ -72,9 +74,9 @@
                 if (mxBuilder.selection.getSelectionCount() === 1) {
                     mxBuilder.selection.each(function() {
                         this.element.off(".settings-event").on({
-                            "drag.settings-event": position.refreshValues(controls),
-                            "resize.settings-event": position.refreshValues(controls),
-                            "zIndexChange.settings-event": position.refreshValues(controls),
+                            "drag.settings-event": position.refreshValues(),
+                            "resize.settings-event": position.refreshValues(),
+                            "zIndexChange.settings-event": position.refreshValues(),
                             "deselected.settings-event": function() {
                                 $(this).off(".settings-event");
                             }
@@ -82,18 +84,18 @@
                     });
                 }
 
-                this._settingsTab.monitorChangeOnControls(controls);
-                var originalSettings = this.getCurrentValues(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
+                var originalSettings = this.readSelComponentsPos();
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        position.applyToSelection(controls);
+                        position.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        position.applyToSelection(controls);
+                        position.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -109,8 +111,9 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            getCurrentValues: function(controls) {
+            readSelComponentsPos: function() {
                 //define component properties to add to the original settings object
+                var position = this;
                 var properties = ["x", "y", "z", "width", "height"];
 
                 var firstPass = true;
@@ -152,10 +155,10 @@
                         heightBounds.min = cmpBounds.min;
                     }
 
-                    controls.width.spinner("option", "min", widthBounds.min);
-                    controls.width.spinner("option", "max", widthBounds.max);
-                    controls.height.spinner("option", "min", heightBounds.min);
-                    controls.height.spinner("option", "max", heightBounds.max);
+                    position._controls.width.spinner("option", "min", widthBounds.min);
+                    position._controls.width.spinner("option", "max", widthBounds.max);
+                    position._controls.height.spinner("option", "min", heightBounds.min);
+                    position._controls.height.spinner("option", "max", heightBounds.max);
 
                     if (typeof this.resizable === "undefined" || !this.resizable) {
                         out.width = null;
@@ -179,112 +182,95 @@
                 });
                 return out;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.x === null) {
-                    controls.componentX.addClass("disabled");
-                    controls.x.spinner("disable");
+                    this._controls.componentX.addClass("disabled");
+                    this._controls.x.spinner("disable");
                 } else if (values.x !== false) {
-                    controls.x.val(values.x);
+                    this._controls.x.val(values.x);
                 } else {
-                    controls.x.val("");
+                    this._controls.x.val("");
                 }
 
                 if (values.y === null) {
-                    controls.componentY.addClass("disabled");
-                    controls.y.spinner("disable");
+                    this._controls.componentY.addClass("disabled");
+                    this._controls.y.spinner("disable");
                 } else if (values.y !== false) {
-                    controls.y.val(values.y);
+                    this._controls.y.val(values.y);
                 } else {
-                    controls.y.val('');
+                    this._controls.y.val('');
                 }
 
                 if (mxBuilder.selection.getSelectionCount() > 1) {
-                    controls.zIndexCategory.addClass("disabled");
-                    controls.z.spinner("disable");
+                    this._controls.zIndexCategory.addClass("disabled");
+                    this._controls.z.spinner("disable");
                 } else if (values.z !== false) {
-                    controls.z.val(values.z);
+                    this._controls.z.val(values.z);
                 } else {
-                    controls.z.val('');
+                    this._controls.z.val('');
                 }
 
                 if (values.width === null) {
-                    controls.componentWidth.addClass("disabled");
-                    controls.width.spinner("disable");
+                    this._controls.componentWidth.addClass("disabled");
+                    this._controls.width.spinner("disable");
                 } else if (values.width !== false) {
-                    controls.width.val(values.width);
+                    this._controls.width.val(values.width);
                 } else {
-                    controls.width.val('');
+                    this._controls.width.val('');
                 }
 
                 if (values.height === null) {
-                    controls.componentHeight.addClass("disabled");
-                    controls.height.spinner("disable");
+                    this._controls.componentHeight.addClass("disabled");
+                    this._controls.height.spinner("disable");
                 } else if (values.height !== false) {
-                    controls.height.val(values.height);
+                    this._controls.height.val(values.height);
                 } else {
-                    controls.height.val('');
+                    this._controls.height.val('');
                 }
 
             },
-            applyToSelection: function(controls, sourceEvent, ui) {
+            getValues: function(all, isPicker, sourceEvent, ui) {
                 var values = {};
-                if (this._settingsTab.hasChanged(controls.x)) {
-                    //fill up the values array
-                    values.x = controls.x.spinner("value");
+                if ((all || this._settingsTab.hasChanged(this._controls.x)) && !isPicker) {
+                    values.x = this._controls.x.spinner("value");
                 }
-                if (this._settingsTab.hasChanged(controls.y)) {
-                    values.y = controls.y.spinner("value");
+                if ((all || this._settingsTab.hasChanged(this._controls.y)) && !isPicker) {
+                    values.y = this._controls.y.spinner("value");
                 }
-                if (this._settingsTab.hasChanged(controls.z)) {
-                    if ($(sourceEvent.srcElement).parents(".ui-spinner:first").get(0) === controls.z.parent().get(0) && typeof ui !== "undefined") {
-                        values.z = ui.value+1000;
+                if ((all || this._settingsTab.hasChanged(this._controls.z)) && !isPicker) {
+                    if ($(sourceEvent.srcElement).parents(".ui-spinner:first").get(0) === this._controls.z.parent().get(0) && typeof ui !== "undefined") {
+                        values.z = ui.value + 1000;
                     } else {
-                        values.z = parseInt(controls.z.spinner("value"), 10) + 1000;
+                        values.z = parseInt(this._controls.z.spinner("value"), 10) + 1000;
                     }
                 }
-                if (this._settingsTab.hasChanged(controls.width)) {
-                    values.width = controls.width.spinner("value");
+                if (all || this._settingsTab.hasChanged(this._controls.width)) {
+                    values.width = this._controls.width.spinner("value");
                 }
-                if (this._settingsTab.hasChanged(controls.height)) {
-                    values.height = controls.height.spinner("value");
+                if (all || this._settingsTab.hasChanged(this._controls.height)) {
+                    values.height = this._controls.height.spinner("value");
                 }
-
+                return {position: values};
+            },
+            applyToSelection: function(sourceEvent, ui) {
+                var values = this.getValues(false,false, sourceEvent, ui);
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    for (var v in values) {
-                        var val = values[v];
-                        switch (v) {
-                            case "x":
-                                this.setLeftPosition(val);
-                                break;
-                            case "y":
-                                this.setTopPosition(val);
-                                break;
-                            case "z":
-                                this.setZIndexTo(val);
-                                break;
-                            case "width":
-                                this.setWidth(val);
-                                break;
-                            case "height":
-                                this.setHeight(val);
-                                break;
-                        }
-                    }
+                    this.setSettings(values);
                     mxBuilder.selection.revalidateSelectionContainer();
                 });
-                this.setValues(controls, this.getCurrentValues(controls));
+                this.setValues(this.readSelComponentsPos(this._controls));
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var position = this;
-                controls[controlKey].on(event, function(event, ui) {
-                    position._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function(event, ui) {
+                    position._settingsTab.setChanged(position._controls[controlKey]);
                     if (position._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        position.applyToSelection(controls, event, ui);
+                        position.applyToSelection(event, ui);
                     }
                 });
             },
@@ -296,10 +282,10 @@
                     }
                 };
             },
-            refreshValues: function(controls) {
+            refreshValues: function() {
                 var position = this;
                 return function() {
-                    position.setValues(controls, position.getCurrentValues(controls));
+                    position.setValues(position.readSelComponentsPos(position._controls));
                 };
             }
         };

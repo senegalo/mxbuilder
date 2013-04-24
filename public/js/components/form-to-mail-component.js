@@ -36,43 +36,50 @@
             hideForm: false,
             redisplay: false,
             redisplaySeconds: 10,
+            bounds: {
+                normal: {
+                    width: {
+                        min: 230,
+                        max: 230
+                    },
+                    height: {
+                        min: 100,
+                        max: 100
+                    }
+                },
+                compact: {
+                    width: {
+                        min: 190,
+                        max: 190
+                    },
+                    height: {
+                        min: 70,
+                        max: 70
+                    }
+                }
+            },
             setMode: function setMode(mode) {
                 this.mode = mode;
                 if (mode === "normal") {
-                    this.theForm.removeClass("form-inline").addClass("form-horizontal")
-                            .find("label.control-label").show().end()
-                            .find("input").each(function() {
-                        var input = $(this);
-                        input.removeAttr("placeholder");
-                    }).end().find(".form-message-container").removeClass("form-message-float");
-                    this.theForm.css("width", "290");
-//                    this.theForm.find(".form-split-one").css({
-//                        "float": "none"
-//                    }).end().find(".form-split-two").css({
-//                        "float": "none"
-//                    }).end().find("textarea").css({
-//                        width: "230px",
-//                        height: "100px"
-//                    });
-//                    this.element.css("width", "240");
+                    this.theForm.find(".form-split-one").css({
+                        "float": "none"
+                    }).end().find(".form-split-two").css({
+                        "float": "none"
+                    }).end().find("textarea").css({
+                        width: this.bounds.normal.width.max + "px",
+                        height: this.bounds.normal.height.max + "px"
+                    });
+                    //this.element.css("width", "240");
                 } else {
-                    this.theForm.removeClass("form-horizontal").addClass("form-inline")
-                            .find("label.control-label").hide().end()
-                            .find("input").each(function() {
-                        var input = $(this);
-                        input.attr("placeholder", input.data("placeholder"));
-                    }).end().find(".form-message-container").addClass("form-message-float");
-                    this.theForm.css("width", "523");
-                    //                    
-//                    this.theForm.find(".form-split-one").css({
-//                        "float": "left"
-//                    }).end().find(".form-split-two").css({
-//                        "float": "right"
-//                    }).end().find("textarea").css({
-//                        width: "190px",
-//                        height: "70px"
-//                    });
-//                    this.element.css("width", "436");
+                    this.theForm.find(".form-split-one").css({
+                        "float": "left"
+                    }).end().find(".form-split-two").css({
+                        "float": "right"
+                    }).end().find("textarea").css({
+                        width: this.bound.compact.width.max + "px",
+                        height: this.bound.compact.height.max + "px"
+                    });
+                    //this.element.css("width", "436");
                 }
                 this.revalidate();
             },
@@ -168,6 +175,21 @@
                     redisplaySeconds: this.redisplaySeconds
                 });
                 return out;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                if (typeof obj.formToMail !== "undefined") {
+                    if (typeof obj.formToMail.mode !== "undefined") {
+                        this.setMode(obj.formToMail.mode);
+                    }
+                    $.extend(this, obj.formToMail);
+                }
+            },
+            getWidthBounds: function() {
+                return this.bounds[this.mode].width;
+            },
+            getHeightBounds: function() {
+                return this.bounds[this.mode].height;
             }
         });
 

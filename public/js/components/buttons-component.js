@@ -118,8 +118,12 @@
             getSettings: function getSettings() {
                 var out = mxBuilder.Component.prototype.getSettings.call(this);
                 $.extend(out, {
-                    label: this.label
-                },this.linkObj);
+                    label: this.label,
+                    linkType: this.linkObj.linkType,
+                    linkURL: this.linkObj.linkURL,
+                    linkProtocol: this.linkObj.linkProtocol,
+                    linkOpenIn: this.linkObj.linkOpenIn
+                });
                 return out;
             },
             setColor: function(color){

@@ -1,124 +1,124 @@
 .flexly-component-border-settings .border-radius-shadow{
-	border: 2px solid #cfcfcf;
-	position: absolute;
-	height: 100px;
-	width: 232px;
-	top: 2px;
-	left: 0px;
-	z-index: 0;
+    border: 2px solid #cfcfcf;
+    position: absolute;
+    height: 100px;
+    width: 232px;
+    top: 2px;
+    left: 0px;
+    z-index: 0;
 }
 .flexly-component-border-settings .border-radius-simulator {
-	width: 232px;
-	height: 100px;
-	background-color: #e6e6e6;
-	border: 2px solid #999999;
-	position: relative;
+    width: 232px;
+    height: 100px;
+    background-color: #e6e6e6;
+    border: 2px solid #999999;
+    position: relative;
 }
 
 .flexly-component-border-settings .border-radius-sym {
-	margin: 39px auto 0 auto;
-	width: 100px;
-	clear:both;
-	position: relative;
+    margin: 39px auto 0 auto;
+    width: 100px;
+    clear:both;
+    position: relative;
 }
 
 .flexly-component-border-settings .border-width-value,.flexly-component-border-settings .border-radius-value  {
-	font-size: 10px;
-	color: #4b4a4a;
+    font-size: 10px;
+    color: #4b4a4a;
 }
 
 .flexly-component-border-settings .border-radius-value {
-	position: absolute;
-	right: 6px;
-	top: -16px;
+    position: absolute;
+    right: 6px;
+    top: -16px;
 }
 
 .flexly-component-border-settings .border-radius-slider-t-l {
-	margin-left: 0px;
-	position:relative;
-	top: 2px;
-	left: 1px;
-	background:none;
+    margin-left: 0px;
+    position:relative;
+    top: 2px;
+    left: 1px;
+    background:none;
 }
 
 .flexly-component-border-settings .border-radius-slider-b-l {
-	margin-left: 0px;
-	position:relative;
-	top: -2px;
-	left: 1px;
-	background:none;
+    margin-left: 0px;
+    position:relative;
+    top: -2px;
+    left: 1px;
+    background:none;
 }
 
 .flexly-component-border-settings .border-radius-slider-t-r { 
-	position: absolute;
-	right: 3px;
-	background: none;
+    position: absolute;
+    right: 3px;
+    background: none;
 }
 
 .flexly-component-border-settings .border-radius-slider-b-r {
-	position: absolute;
-	right: 3px;
-	bottom: 2px;
-	background: none;
+    position: absolute;
+    right: 3px;
+    bottom: 2px;
+    background: none;
 }
 
 .flexly-component-border-settings .border-radius-sym > *{
-	float:left;
-	height: auto;
-	width: auto;
-	margin:0px;
+    float:left;
+    height: auto;
+    width: auto;
+    margin:0px;
 }
 
 .flexly-component-border-settings .border-radius-sym label {
-	padding: 1px 0 0 4px;
-	font-weight: normal;
-	position: absolute;
-	top: 0px;
-	left: 20px;
+    padding: 1px 0 0 4px;
+    font-weight: normal;
+    position: absolute;
+    top: 0px;
+    left: 20px;
 }
 
 .flexly-component-border-settings .border-width-slider {
-	float:left;
-	width: 190px;
-	margin-right: 5px;
+    float:left;
+    width: 190px;
+    margin-right: 5px;
 }
 
 .flexly-component-border-settings .border-width-value {
-	float:left;
-	position: relative;
-	top:-5px;
+    float:left;
+    position: relative;
+    top:-5px;
 }
 
 .flexly-component-border-settings .border-simulator-container {
-	position: relative; 
-	margin: 35px 0 50px 0;
+    position: relative; 
+    margin: 35px 0 50px 0;
 }
 
 .flexly-component-border-settings .border-width-slider-container {
-	margin-top: 11px;
+    margin-top: 11px;
 }
 
 /*Value Boxes Positions */
 
 .flexly-component-border-settings .border-width-slider .slider-valuebox {
-	left: 82px;
-	bottom: 11px;
+    left: 82px;
+    bottom: 11px;
 }
 
 .flexly-component-border-settings .border-radius-slider-l .slider-valuebox {
-	left: -1px;
+    left: -1px;
 }
 
 .flexly-component-border-settings .border-radius-slider-r .slider-valuebox {
-	right: 0px;
-	left: auto;
+    right: 0px;
+    left: auto;
 }
 
 .flexly-component-border-settings .border-radius-slider-t .slider-valuebox {
-	bottom: 12px;
+    bottom: 12px;
 }
 .flexly-component-border-settings .border-radius-slider-b .slider-valuebox {
-	top: 12px;
+    top: 12px;
 }
 
 

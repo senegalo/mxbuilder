@@ -1,45 +1,45 @@
-(function($){
-    
-    $(function(){
-        mxBuilder.GooglePlusComponent = function GooglePlusComponent(properties){
+(function($) {
+
+    $(function() {
+        mxBuilder.GooglePlusComponent = function GooglePlusComponent(properties) {
             this.init(properties);
-            
+
             var instance = this;
-            
-            mxBuilder.Component.apply(this,[{
-                type: "GooglePlusComponent",
-                draggable: {
-                    iframeFix: true
-                },
-                editableZIndex: true,
-                selectable: true,
-                element: properties.element
-            }]);
-        
+
+            mxBuilder.Component.apply(this, [{
+                    type: "GooglePlusComponent",
+                    draggable: {
+                        iframeFix: true
+                    },
+                    editableZIndex: true,
+                    selectable: true,
+                    element: properties.element
+                }]);
+
             this.element.on({
-                selected: function selected(){
+                selected: function selected() {
                     instance.revalidate();
                 }
             });
-            
-        }
-        $.extend(mxBuilder.GooglePlusComponent.prototype,new mxBuilder.Component(), {
+
+        };
+        $.extend(mxBuilder.GooglePlusComponent.prototype, new mxBuilder.Component(), {
             buttonSize: "standard",
             annotation: "bubble",
             template: mxBuilder.layout.templates.find(".google-plus-component-instance").remove(),
-            init: function init(properties){
-                mxBuilder.Component.prototype.init.call(this,properties);
+            init: function init(properties) {
+                mxBuilder.Component.prototype.init.call(this, properties);
                 this.rebuild(properties.element);
             },
-            getHeadIncludes: function getHeadIncludes(){
+            getHeadIncludes: function getHeadIncludes() {
                 return {
                     scripts: {
                         googlePlusApi: "https://apis.google.com/js/plusone.js"
                     },
                     css: {}
-                }
+                };
             },
-            getSettingsPanels: function getSettingsPanels(){
+            getSettingsPanels: function getSettingsPanels() {
                 return {
                     position: {
                         panel: mxBuilder.layout.settingsPanels.position,
@@ -51,71 +51,71 @@
                     }
                 };
             },
-            setCounterPosition: function setCounterPosition(pos){
-                if(pos == "vertical"){
+            setCounterPosition: function setCounterPosition(pos) {
+                if (pos === "vertical") {
                     this.buttonSize = "tall";
                     this.annotation = "bubble";
-                } else if (pos == "none") {
+                } else if (pos === "none") {
                     this.annotation = "none";
-                } else if (pos == "horizontal"){
+                } else if (pos === "horizontal") {
                     this.annotation = "bubble";
-                    if(this.buttonSize == "tall"){
+                    if (this.buttonSize === "tall") {
                         this.buttonSize = "standard";
                     }
                 }
             },
-            setSize: function setSize(size){
+            setSize: function setSize(size) {
                 this.buttonSize = size;
             },
-            getSize: function getSize(){
+            getSize: function getSize() {
                 return this.buttonSize;
             },
-            getCounterPosition: function getCounterPosition(){
-                if(this.buttonSize == "tall" && this.annotation == "bubble"){
+            getCounterPosition: function getCounterPosition() {
+                if (this.buttonSize === "tall" && this.annotation === "bubble") {
                     return "vertical";
-                } else if (this.annotation == "none"){
+                } else if (this.annotation === "none") {
                     return "none";
                 } else {
                     return "horizontal";
                 }
             },
-            rebuild: function rebuild(element){
-                
-                element= element ? element : this.element;
-                gapi.plusone.render(element.find(".button").empty().get(0),{
+            rebuild: function rebuild(element) {
+
+                element = element ? element : this.element;
+                gapi.plusone.render(element.find(".button").empty().get(0), {
                     annotation: this.annotation,
                     size: this.buttonSize
                 });
                 this.revalidate();
             },
-            revalidate: function revalidate(element){
+            revalidate: function revalidate(element) {
                 element = element ? element : this.element;
-                var theHeight,theWidth;
-                
-                if(this.buttonSize == "tall"){
+                var theHeight, theWidth;
+
+                if (this.buttonSize === "tall") {
                     theWidth = 50;
-                    if(this.annotation == "bubble"){
-                        theHeight = 60; 
+                    if (this.annotation === "bubble") {
+                        theHeight = 60;
                     } else {
                         theHeight = 20;
                     }
-                } else if (this.buttonSize == "standard"){
+                } else if (this.buttonSize === "standard") {
                     theHeight = 24;
-                    if(this.annotation == "bubble"){
+                    if (this.annotation === "bubble") {
                         theWidth = 106;
                     } else {
                         theWidth = 38;
                     }
-                } else if (this.buttonSize == "medium"){
+                } else if (this.buttonSize === "medium") {
                     theHeight = 20;
-                    if(this.annotation == "bubble"){
+                    if (this.annotation === "bubble") {
                         theWidth = 90;
                     } else {
                         theWidth = 32;
                     }
-                } else if(this.buttonSize == "small"){
+                } else if (this.buttonSize === "small") {
                     theHeight = 15;
-                    if(this.annotation == "bubble"){
+                    if (this.annotation === "bubble") {
                         theWidth = 70;
                     } else {
                         theWidth = 24;
@@ -127,36 +127,49 @@
                 });
                 mxBuilder.selection.revalidateSelectionContainer();
             },
-            save: function save(){
+            save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
                 out.data.annotation = this.annotation;
                 out.data.buttonSize = this.buttonSize;
                 return out;
             },
-            getSettings: function getSettings(){
+            getSettings: function getSettings() {
                 var out = mxBuilder.Component.prototype.getSettings.call(this);
-                $.extend(out,{
+                $.extend(out, {
                     size: this.getSize(),
                     counterPosition: this.getCounterPosition()
                 });
                 return out;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                if (typeof obj.gplusButton !== "undefined") {
+                    //apply the values to the selection
+                    if (typeof obj.gplusButton.size !== "undefined") {
+                        this.setSize(obj.gplusButton.size);
+                    }
+                    if (typeof obj.gplusButton.counterPosition !== "undefined") {
+                        this.setCounterPosition(obj.gplusButton.counterPosition);
+                    }
+                    this.rebuild();
+                }
             }
         });
-        
+
         var widgets = mxBuilder.menuManager.menus.widgets;
-        widgets.addComponent("root",{
+        widgets.addComponent("root", {
             icon: "flexly-icon-box-component",
             title: "Google Plus Button",
             draggableSettings: {
-                helper: function(event){
+                helper: function(event) {
                     var theContent = $('<div><img src="public/images/gplus.png"/></div>')
-                    .addClass("mx-helper")
-                    .data("component","GooglePlusComponent")
-                    .appendTo(mxBuilder.layout.container);
+                            .addClass("mx-helper")
+                            .data("component", "GooglePlusComponent")
+                            .appendTo(mxBuilder.layout.container);
                     return theContent;
                 }
             }
-        }); 
+        });
     });
-    
+
 }(jQuery));
