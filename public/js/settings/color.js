@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".color-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var color = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -16,34 +18,34 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     opacitySlider: theInstance.find(".opacity-slider"),
                     colorPicker: theInstance.find(".picker")
                 };
 
 
                 //Configure the controls here
-                controls.colorPicker.customColorpicker();
-                controls.opacitySlider.customSlider({
+                this._controls.colorPicker.customColorpicker();
+                this._controls.opacitySlider.customSlider({
                     min: 0,
                     max: 100,
                     value: 100,
                     suffix: "%"
                 });
 
-                this.applyToSelectionOn(controls, "colorPicker", "pickerColorChanged", function(event, color) {
-                    var sliderVal = controls.opacitySlider.customSlider("value");
+                this.applyToSelectionOn("colorPicker", "pickerColorChanged", function(event, color) {
+                    var sliderVal = color._controls.opacitySlider.customSlider("value");
                     if (sliderVal === 0) {
                         sliderVal = 100;
-                        controls.opacitySlider.customSlider("value", 100);
+                        color._controls.opacitySlider.customSlider("value", 100);
                     }
                 });
-                this.applyToSelectionOn(controls, "colorPicker", "pickerColorRest", function() {
-                    controls.opacitySlider.customSlider("value", 0);
+                this.applyToSelectionOn("colorPicker", "pickerColorRest", function() {
+                    color._controls.opacitySlider.customSlider("value", 0);
                 });
-                this.applyToSelectionOn(controls, "opacitySlider", "slide");
+                this.applyToSelectionOn("opacitySlider", "slide");
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -64,15 +66,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        color.applyToSelection(controls);
+                        color.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        color.applyToSelection(controls);
+                        color.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -86,43 +88,47 @@
                 });
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.color) {
                     var colorObj = mxBuilder.colorsManager.createColorObjFromRGBAString(values.color);
-                    controls.colorPicker.customColorpicker("value", colorObj);
+                    this._controls.colorPicker.customColorpicker("value", colorObj);
 
                     //setting the opacity slider
                     var opacity = Math.round(colorObj.a * 100);
-                    controls.opacitySlider.customSlider("value", opacity);
+                    this._controls.opacitySlider.customSlider("value", opacity);
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all, isPicker, sourceEvent, ui) {
+                var values = {};
+
+                if (all || this._settingsTab.hasChanged(this._controls.colorPicker) || this._settingsTab.hasChanged(this._controls.opacitySlider)) {
+                    //fill up the values array
+                    values.color = this._controls.colorPicker.customColorpicker("value");
+                    values.color.a = this._controls.opacitySlider.customSlider("value") / 100;
+                }
+
+                return {color: values};
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
                     //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.colorPicker) || this._settingsTab.hasChanged(controls.opacitySlider)) {
-                        //fill up the values array
-                        values.color = controls.colorPicker.customColorpicker("value");
-                        values.color.a = controls.opacitySlider.customSlider("value") / 100;
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    if (typeof values.color !== "undefined") {
-                        this.setColor(values.color.toString());
-                    }
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var color = this;
-                controls[controlKey].on(event, function() {
-                    color._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    color._settingsTab.setChanged(color._controls[controlKey]);
                     if (color._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        color.applyToSelection(controls);
+                        color.applyToSelection();
                     }
                 });
             }
