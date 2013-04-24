@@ -862,10 +862,16 @@
             return {};
         },
         setHeight: function setHeight(value) {
-            this.element.outerHeight(value);
+            var bounds = this.getHeightBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerHeight(value);
+            }
         },
         setWidth: function setWidth(value) {
-            this.element.outerWidth(value);
+            var bounds = this.getWidthBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerWidth(value);
+            }
         },
         setLeftPosition: function setLeftPosition(val) {
             this.element.css("left", val + "px");
