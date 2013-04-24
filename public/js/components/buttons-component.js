@@ -123,6 +123,14 @@
                     linkOpenIn: this.linkObj.linkOpenIn
                 });
                 return out;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                
+                if (typeof obj.button !== "undefined") {
+                    this.setLabel(obj.button.label);
+                }
+
             }
         });
 

@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".button-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: false,
             getPanel: function(expand) {
                 var button = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,16 +16,16 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     label: theInstance.find("#button-label")
                 };
 
-                this.applyToSelectionOn(controls, "label", "input");
+                this.applyToSelectionOn("label", "input");
 
 
                 //Configure the controls here
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -44,15 +46,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        button.applyToSelection(controls);
+                        button.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        button.applyToSelection(controls);
+                        button.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -68,36 +70,42 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.label !== false) {
-                    controls.label.val(values.label);
+                    this._controls.label.val(values.label);
                 } else {
-                    controls.label.val('');
+                    this._controls.label.val('');
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all, isPicker, sourceEvent, ui) {
+                var values = {};
+
+                if (all || this._settingsTab.hasChanged(this._controls.label)) {
+                    values.label = this._controls.label.val();
+                }
+
+                return {button: values};
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
                     //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.label)) {
-                        values.label = controls.label.val();
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    this.setLabel(values.label);
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var button = this;
-                controls[controlKey].on(event, function() {
-                    button._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    button._settingsTab.setChanged(button._controls[controlKey]);
                     if (button._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        button.applyToSelection(controls);
+                        button.applyToSelection();
                     }
                 });
             }
