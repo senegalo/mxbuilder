@@ -36,6 +36,28 @@
             hideForm: false,
             redisplay: false,
             redisplaySeconds: 10,
+            bounds: {
+                normal: {
+                    width: {
+                        min: 230,
+                        max: 230
+                    },
+                    height: {
+                        min: 100,
+                        max: 100
+                    }
+                },
+                compact: {
+                    width: {
+                        min: 190,
+                        max: 190
+                    },
+                    height: {
+                        min: 70,
+                        max: 70
+                    }
+                }
+            },
             setMode: function setMode(mode) {
                 this.mode = mode;
                 if (mode === "normal") {
@@ -44,20 +66,20 @@
                     }).end().find(".form-split-two").css({
                         "float": "none"
                     }).end().find("textarea").css({
-                        width: "230px",
-                        height: "100px"
+                        width: this.bounds.normal.width.max + "px",
+                        height: this.bounds.normal.height.max + "px"
                     });
-                    this.element.css("width", "240");
+                    //this.element.css("width", "240");
                 } else {
                     this.theForm.find(".form-split-one").css({
                         "float": "left"
                     }).end().find(".form-split-two").css({
                         "float": "right"
                     }).end().find("textarea").css({
-                        width: "190px",
-                        height: "70px"
+                        width: this.bound.compact.width.max + "px",
+                        height: this.bound.compact.height.max + "px"
                     });
-                    this.element.css("width", "436");
+                    //this.element.css("width", "436");
                 }
                 this.revalidate();
             },
@@ -153,6 +175,12 @@
                     redisplaySeconds: this.redisplaySeconds
                 });
                 return out;
+            },
+            getWidthBounds: function() {
+                return this.bounds[this.mode].width;
+            },
+            getHeightBounds: function() {
+                return this.bounds[this.mode].height;
             }
         });
 
