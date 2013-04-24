@@ -395,7 +395,7 @@
                         mxBuilder.layout.revalidateLayout();
                     }
                 });
-                if(mxBuilder.settingsManager.getSetting("snap","objects")){
+                if (mxBuilder.settingsManager.getSetting("snap", "objects")) {
                     obj.resizable.snap = mxBuilder.settingsManager.getSnapSelector();
                 }
                 obj.element.resizable(obj.resizable);
@@ -783,10 +783,16 @@
             return {};
         },
         setHeight: function setHeight(value) {
-            this.element.outerHeight(value);
+            var bounds = this.getHeightBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerHeight(value);
+            }
         },
         setWidth: function setWidth(value) {
-            this.element.outerWidth(value);
+            var bounds = this.getWidthBounds();
+            if (value > bounds.min && value < bounds.max) {
+                this.element.outerWidth(value);
+            }
         },
         setLeftPosition: function setLeftPosition(val) {
             this.element.css("left", val + "px");
@@ -1005,7 +1011,7 @@
                     var isTextComponent = firstComponent.type === "TextComponent" || firstComponent.type === "TitleComponent";
                     if (mxBuilder.selection.getSelectionCount() === 1 && isTextComponent && firstComponent.isEditMode()) {
                         return;
-                    }  else {
+                    } else {
                         mxBuilder.selection.each(function() {
                             this.nudgeComponent(event.keyCode, event.shiftKey);
                         });
