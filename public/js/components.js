@@ -993,7 +993,7 @@
         var dropOnContainer = function dropOnContainer(container) {
             return function(event, ui) {
                 //if we are dropping while on top of the menu cancel
-                if (ui.helper.data("deny-drop") === true) {
+                if (ui.helper.data("deny-drop") === true || ui.helper.data("over-main-menu") === true) {
                     mxBuilder.layout.clearOutline(container);
                     return;
                 }

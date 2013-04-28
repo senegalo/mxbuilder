@@ -43,7 +43,6 @@
                     imageGridComponent.revalidate();
                 }
             }).droppable({
-                greedy: true,
                 over: function over(event, ui) {
                     ui.helper.data("deny-drop", true);
                 },
@@ -51,7 +50,7 @@
                     ui.helper.data("deny-drop", false);
                 },
                 drop: function drop(event, ui) {
-                    if (ui.helper.hasClass("mx-helper")) {
+                    if (ui.helper.hasClass("mx-helper") && ui.helper.data("over-main-menu") !== true) {
                         var component = ui.helper.data("component");
                         if (component === "ImageComponent") {
                             imageGridComponent.list.push({
@@ -136,7 +135,8 @@
         };
         $.extend(mxBuilder.ImageGridComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".image-grid-component-instance").remove(),
-            gridSettings: {
+            gridSettings: null,
+            gridDefaults: {
                 cols: 3,
                 spacing: 10
             },
@@ -318,6 +318,9 @@
                 return out;
             },
             init: function init(properties) {
+                //Setting default grid settings
+                this.gridSettings = {};
+                $.extend(this.gridSettings, this.gridDefaults);
                 mxBuilder.Component.prototype.init.call(this, properties);
             },
             getBorder: function getBorder(element) {

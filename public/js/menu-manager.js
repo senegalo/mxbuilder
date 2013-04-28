@@ -27,14 +27,12 @@
                     mxBuilder.menuManager.showTab("settings");
                 }
             }
-        })
-                .end()
-                .droppable({
+        }).end().droppable({
             over: function(event, ui) {
-                ui.helper.data("deny-drop", true);
+                ui.helper.data("over-main-menu", true);
             },
             out: function(event, ui) {
-                ui.helper.data("deny-drop", false);
+                ui.helper.data("over-main-menu", false);
             }
         });
 
