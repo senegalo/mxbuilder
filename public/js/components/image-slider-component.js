@@ -60,15 +60,18 @@
                     imageSlider.revalidate();
                 }
             }).droppable({
-                greedy: true,
                 over: function over(event, ui) {
-                    ui.helper.data("deny-drop", true);
+                    if (ui.helper.hasClass("mx-helper")) {
+                        ui.helper.data("deny-drop", true);
+                    }
                 },
                 out: function out(event, ui) {
-                    ui.helper.data("deny-drop", false);
+                    if (ui.helper.hasClass("mx-helper")) {
+                        ui.helper.data("deny-drop", false);
+                    }
                 },
                 drop: function drop(event, ui) {
-                    if (ui.helper.hasClass("mx-helper")) {
+                    if (ui.helper.hasClass("mx-helper") && ui.helper.data("over-main-menu") !== true) {
                         var component = ui.helper.data("component");
                         if (component === "ImageComponent") {
                             imageSlider.list.push({
@@ -145,7 +148,8 @@
         $.extend(mxBuilder.ImageSliderComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".image-slider-component-instance"),
             sliderTemplate: mxBuilder.layout.templates.find(".image-gallery-slider"),
-            sliderSettings: {
+            sliderSettings: null,
+            sliderDefaults: {
                 autoPlay: false,
                 transitionSpeed: 5000,
                 indicator: true,
@@ -287,8 +291,8 @@
                     }
                 }
 
-                var totalCols = this.gridSettings && this.gridSettings.cols ? this.gridSettings.cols : mxBuilder.ImageGridComponent.prototype.gridSettings.cols;
-                var spacing = this.gridSettings && this.gridSettings.spacing ? this.gridSettings.spacing : mxBuilder.ImageGridComponent.prototype.gridSettings.spacing;
+                var totalCols = this.gridSettings && this.gridSettings.cols ? this.gridSettings.cols : mxBuilder.ImageGridComponent.prototype.gridDefaults.cols;
+                var spacing = this.gridSettings && this.gridSettings.spacing ? this.gridSettings.spacing : mxBuilder.ImageGridComponent.prototype.gridDefaults.spacing;
                 var row = Math.floor(imageIndex / totalCols);
                 var col = imageIndex % totalCols;
                 var singleRowHeight = (this.element.height() / Math.ceil(this.list.length / totalCols)) - 2 * spacing;
@@ -368,6 +372,9 @@
                 return out;
             },
             init: function init(properties) {
+                //Setting default slider settings
+                this.sliderSettings = {};
+                $.extend(this.sliderSettings, this.sliderDefaults);
                 mxBuilder.Component.prototype.init.call(this, properties);
             },
             getBorder: function getBorder(element) {
@@ -534,11 +541,11 @@
                 return out;
             },
             setWidth: function(val) {
-                mxBuilder.Component.prototype.setWidth.call(this, val<this.minWidth?this.minWidth:val);
+                mxBuilder.Component.prototype.setWidth.call(this, val < this.minWidth ? this.minWidth : val);
                 this.revalidate();
             },
             setHeight: function(val) {
-                mxBuilder.Component.prototype.setHeight.call(this, val<this.minHeight?this.minHeight:val);
+                mxBuilder.Component.prototype.setHeight.call(this, val < this.minHeight ? this.minHeight : val);
                 this.revalidate();
             },
             getWidthBounds: function() {
@@ -546,7 +553,7 @@
                 out.min = this.minWidth;
                 return out;
             },
-            getHeightBounds: function(){
+            getHeightBounds: function() {
                 var out = mxBuilder.Component.prototype.getHeightBounds.call(this);
                 out.min = this.minHeight;
                 return out;
