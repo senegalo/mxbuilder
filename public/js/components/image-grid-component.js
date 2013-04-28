@@ -6,7 +6,7 @@
 
             this.element.on({
                 mousedown: function mousedown(event) {
-                    if (event.which == 3 && (mxBuilder.selection.getSelectionCount() == 0 || mxBuilder.selection.isAllSelectedSameType())) {
+                    if (event.which === 3 && (mxBuilder.selection.getSelectionCount() === 0 || mxBuilder.selection.isAllSelectedSameType())) {
                         mxBuilder.contextmenu.allowPropagation().getMainCtx().addItem({
                             label: "Convert to a Slider Gallery",
                             callback: function() {
@@ -17,7 +17,7 @@
                         });
                     }
                 }
-            })
+            });
 
             //Edit component behavious settings...
             mxBuilder.Component.apply(this, [{
@@ -52,7 +52,7 @@
                 drop: function drop(event, ui) {
                     if (ui.helper.hasClass("mx-helper") && ui.helper.data("over-main-menu") !== true) {
                         var component = ui.helper.data("component");
-                        if (component == "ImageComponent") {
+                        if (component === "ImageComponent") {
                             imageGridComponent.list.push({
                                 id: ui.helper.data("extra").originalAssetID,
                                 title: true,
@@ -63,7 +63,7 @@
                             imageGridComponent.rebuild();
                             imageGridComponent.revalidate();
                             return false;
-                        } else if (component == "ImageSliderComponent") {
+                        } else if (component === "ImageSliderComponent") {
                             var selected = ui.helper.data("extra");
                             for (var i in selected) {
                                 imageGridComponent.list.push({
@@ -77,7 +77,7 @@
                             imageGridComponent.rebuild();
                             imageGridComponent.revalidate();
                             return false;
-                        } else if (component == "FlickerAdapterComponent") {
+                        } else if (component === "FlickerAdapterComponent") {
                             imageGridComponent.element.find(".loading-overlay").show();
                             var flickrObj = ui.helper.data("extra").flickerObj;
                             if (!Array.isArray(imageGridComponent._flickrImageCount)) {
@@ -102,7 +102,7 @@
                                 },
                                 complete: function() {
                                     imageGridComponent._flickrImageCount.pop();
-                                    if (imageGridComponent._flickrImageCount.length == 0) {
+                                    if (imageGridComponent._flickrImageCount.length === 0) {
                                         imageGridComponent.element.find(".loading-overlay").hide();
                                     }
                                 }
@@ -132,7 +132,7 @@
 
             this.rebuild();
             this.revalidate();
-        }
+        };
         $.extend(mxBuilder.ImageGridComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".image-grid-component-instance").remove(),
             gridSettings: null,
@@ -163,7 +163,7 @@
                         break;
                     }
 
-                    if (iterator != 0 && iterator % breakRow == 0) {
+                    if (iterator !== 0 && iterator % breakRow === 0) {
                         row = $('<tr/>').appendTo(gridContainer);
                     }
                     var td = $('<td class="slide-' + imgObj.id + '" data-id="' + imgObj.id + '"/>').css({
@@ -188,7 +188,7 @@
             revalidate: function revalidate() {
                 var imageGrid = this;
                 var thumbSize = mxBuilder.imageUtils.getImageSource(this.thumbSize, this.element);
-                if (thumbSize != this.thumbSize) {
+                if (thumbSize !== this.thumbSize) {
                     this.thumbSize = thumbSize;
                     thumbSize = true;
                 }
@@ -233,7 +233,7 @@
             removeImage: function removeImage(id) {
                 var revalidate = false;
                 for (var i in this.list) {
-                    if (this.list[i].id == id) {
+                    if (this.list[i].id === id) {
                         this.list.splice(i, 1);
                         revalidate = true;
                         break;
@@ -242,15 +242,15 @@
 
                 if (revalidate) {
                     var listLen = this.list.length;
-                    if (listLen == 1) {
+                    if (listLen === 1) {
                         var properties = this.save();
                         properties.data.type = "ImageComponent";
                         properties.data.extra = {
                             originalAssetID: this.list[0].id
-                        }
+                        };
                         this.destroy();
                         mxBuilder.components.addComponent(properties);
-                    } else if (listLen == 0) {
+                    } else if (listLen === 0) {
                         this.destroy();
                     } else {
                         this.rebuild();
@@ -282,20 +282,20 @@
                         "data-relurl": 'images/' + imgObj[this.thumbSize]
                     }).css("backgroundImage", "");
 
-                    if (this.list[i].link.type && this.list[i].link.type != "none") {
+                    if (this.list[i].link.type && this.list[i].link.type !== "none") {
                         var theLink = $('<a></a>');
 
                         var attr = {};
-                        if (this.list[i].link.type == "external") {
+                        if (this.list[i].link.type === "external") {
                             attr.href = this.list[i].link.protocol + this.list[i].link.url;
-                        } else if (this.list[i].link.type == "page") {
+                        } else if (this.list[i].link.type === "page") {
                             var thePage = mxBuilder.pages.getPageObj(this.list[i].link.page);
                             if (thePage.homepage) {
                                 attr.href = "index.html";
                             } else {
                                 attr.href = mxBuilder.pages.address;
                             }
-                        } else if (this.list[i].link.type == "lightbox") {
+                        } else if (this.list[i].link.type === "lightbox") {
                             theLink.addClass("lightbox");
                             attr.href = "images" + "/" + imgObj[mxBuilder.imageUtils.getBiggestImageSize(imgObj.id)];
                         }
@@ -365,12 +365,12 @@
                 return this.gridSettings;
             },
             setSpacing: function setSpacing(spacing) {
-                if (typeof spacing != "undefined") {
+                if (typeof spacing !== "undefined") {
                     this.gridSettings.spacing = spacing;
                 }
             },
             setColumns: function setColumns(cols) {
-                if (typeof cols != "undefined") {
+                if (typeof cols !== "undefined") {
                     this.gridSettings.cols = cols;
                 }
             },
@@ -420,7 +420,7 @@
                 var theTd = this.element.find(".slide-" + imgObj.id);
                 var container = theTd.find(".caption-container");
                 if (flag) {
-                    if (container.length == 0) {
+                    if (container.length === 0) {
                         container = this.buildCaptionContainer(imgObj.title, imgObj.caption);
                     }
                     this.validateCaption(container, {
@@ -434,7 +434,7 @@
                 var theTd = this.element.find(".slide-" + imgObj.id);
                 var container = theTd.find(".caption-container");
                 if (flag) {
-                    if (container.length == 0) {
+                    if (container.length === 0) {
                         container = this.buildCaptionContainer(imgObj.title, imgObj.caption);
                     }
                     this.validateCaption(container, {
@@ -448,12 +448,12 @@
                 var captionContainer = $('<div class="caption-container"/>');
 
                 var titleContainer = $('<div class="image-title visible">' + title + '</div>').appendTo(captionContainer);
-                if (title == "") {
+                if (title === "") {
                     titleContainer.removeClass("visible").hide();
                 }
 
                 var captionTextContainer = $('<div class="image-caption visible">' + caption + '</div>').appendTo(captionContainer);
-                if (caption == "") {
+                if (caption === "") {
                     captionTextContainer.removeClass("visible").hide();
                 }
 
@@ -479,7 +479,7 @@
 
                 var hideCaption = true;
                 captionContainer.children().each(function() {
-                    if ($(this).text() != "") {
+                    if ($(this).text() !== "") {
                         hideCaption = false;
                     }
                 });
@@ -489,14 +489,14 @@
             },
             updateLink: function updateLink(id, link) {
                 for (var i in this.list) {
-                    if (this.list[i].id == id) {
+                    if (this.list[i].id === id) {
                         this.list[i].link = link;
                         break;
                     }
                 }
             },
             addToList: function addToList(item) {
-                if (typeof item == "number" || typeof item == "string") {
+                if (typeof item === "number" || typeof item === "string") {
                     item = {
                         id: item
                     };
@@ -506,7 +506,7 @@
                     caption: true,
                     title: true,
                     link: {}
-                }
+                };
                 $.extend(listItem, item);
                 this.list.push(listItem);
             },
@@ -519,4 +519,4 @@
             }
         });
     });
-}(jQuery))
+}(jQuery));
