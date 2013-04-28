@@ -16,7 +16,7 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     theInstance: theInstance,
                     listContainer: theInstance.find(".items-container"),
                     showLightbox: settings.lightbox,
@@ -35,16 +35,16 @@
                     thePanel.addClass("flexly-collapsable-disabled");
                 } else {
                     originalSettings = mxBuilder.components.getComponent(mxBuilder.selection.getSelection()).getImageList();
-                    this.setValues(controls, originalSettings);
+                    this.setValues(originalSettings);
                 }
 
                 thePanel.on({
                     previewEnabled: function() {
-                        galleryImageList.applyToSelection(controls);
+                        galleryImageList.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        galleryImageList.applyToSelection(controls);
+                        galleryImageList.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -58,11 +58,11 @@
                 });
                 return thePanel;
             },
-            setValues: function(controls, list) {
+            setValues: function(list) {
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
                 var galleryImageList = this;
 
-                controls.listContainer.empty();
+                this._controls.listContainer.empty();
                 //Getting the pages
                 var pagesOptions = mxBuilder.layout.utils.getOrderdPagesList();
                 for (var i in list) {
@@ -90,7 +90,7 @@
                                     callback: function() {
                                         header.parents(".flexly-collapsable-panel:first").remove();
                                         if (settingsTab.isPreview()) {
-                                            galleryImageList.applyToSelection(controls);
+                                            galleryImageList.applyToSelection();
                                         }
                                     }
                                 }).stopPropagation();
@@ -98,12 +98,12 @@
                         }
                     }).end()
                             .find('.flexly-icon').hide().end()
-                            .appendTo(controls.listContainer);
+                            .appendTo(galleryImageList._controls.listContainer);
 
                     //Preparing the collasable body
                     var theItem = this._itemTemplate.clone();
 
-                    if (controls.showLightbox) {
+                    if (this._controls.showLightbox) {
                         theItem.find(".lightbox").show();
                     }
 
@@ -243,18 +243,44 @@
 
                     theItem.appendTo(thePanel.find(".flexly-collapsable-content")).data("imgID", imgObj.id);
                 }
-                controls.listContainer.sortable({
+                this._controls.listContainer.sortable({
                     axis: "y",
                     containment: ".gallery-image-settings",
                     placeholder: ".list-item",
                     forcePlaceholderSize: true,
                     stop: function stop() {
                         if (settingsTab.isPreview()) {
-                            galleryImageList.applyToSelection(controls);
+                            galleryImageList.applyToSelection();
                         }
                     }
                 }).disableSelection();
 
+            },
+            getValues: function(all, isPicker, sourceEvent, ui) {
+                var values = [];
+                this._controls.listContainer.find(".list-item").each(function() {
+                    var theItem = $(this);
+                    var imgID = theItem.data("imgID");
+                    var theListObj = {
+                        id: imgID,
+                        caption: theItem.find("#gallery-settings-caption-" + imgID).is(":checked"),
+                        title: theItem.find("#gallery-settings-title-" + imgID).is(":checked"),
+                        link: {
+                            type: theItem.find(".link-type:checked").val()
+                        }
+                    };
+                    if (theListObj.link.type === "external") {
+                        theListObj.link.protocol = theItem.find("#linkto-protocol-" + imgID).val();
+                        theListObj.link.url = theItem.find("#link-input-" + imgID).val();
+                    } else if (theListObj.link.type === "page") {
+                        theListObj.link.page = theItem.find("#linkto-pages-" + imgID).val();
+                    }
+                    values.push(theListObj);
+                });
+                
+                return {
+                    galleryImageList: values
+                };
             },
             getLinkFromItem: function getLinkFromItem(item, id) {
                 var link = {
@@ -268,45 +294,24 @@
                 }
                 return link;
             },
-            applyToSelection: function applyToSelection(controls, values) {
+            applyToSelection: function applyToSelection(values) {
                 if (typeof values === "undefined") {
-                    values = [];
-                    controls.listContainer.find(".list-item").each(function() {
-                        var theItem = $(this);
-                        var imgID = theItem.data("imgID");
-                        var theListObj = {
-                            id: imgID,
-                            caption: theItem.find("#gallery-settings-caption-" + imgID).is(":checked"),
-                            title: theItem.find("#gallery-settings-title-" + imgID).is(":checked"),
-                            link: {
-                                type: theItem.find(".link-type:checked").val()
-                            }
-                        };
-                        if (theListObj.link.type === "external") {
-                            theListObj.link.protocol = theItem.find("#linkto-protocol-" + imgID).val();
-                            theListObj.link.url = theItem.find("#link-input-" + imgID).val();
-                        } else if (theListObj.link.type === "page") {
-                            theListObj.link.page = theItem.find("#linkto-pages-" + imgID).val();
-                        }
-                        values.push(theListObj);
-                    });
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    this.setImageList(values);
-                    this.rebuild();
-                    this.revalidate();
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function applyToSelectionOn(controls, controlKey, event, extra) {
+            applyToSelectionOn: function applyToSelectionOn(controlKey, event, extra) {
                 var galleryImageList = this;
                 var settingsTab = mxBuilder.menuManager.menus.componentSettings;
-                controls[controlKey].on(event, function() {
+                this._controls[controlKey].on(event, function() {
                     if (settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.call();
                         }
-                        galleryImageList.applyToSelection(controls);
+                        galleryImageList.applyToSelection();
                     }
                 });
             }

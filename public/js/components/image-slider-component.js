@@ -17,55 +17,16 @@
                             }
                         });
                     }
-                }
-            });
-
-            //Edit component behavious settings...
-            mxBuilder.Component.apply(this, [{
-                    type: "ImageSliderComponent",
-                    draggable: {},
-                    resizable: {
-                        orientation: "hv"
-                    },
-                    editableZIndex: true,
-                    pinnable: true,
-                    deletable: true,
-                    hasSettings: true,
-                    selectable: true,
-                    element: properties.element
-                }]);
-
-            //Add element events...
-            if (this.extra) {
-                this.list = [];
-                for (var i in this.extra) {
-                    //if the id is present then the list is transfered from another component
-                    //otherwise it's coming stright from the photo list so we generate the missing
-                    //properties
-                    if (this.extra[i].id) {
-                        this.addToList(this.extra[i]);
-                    } else {
-                        this.addToList({
-                            id: this.extra[i]
-                        });
-                    }
-                }
-            }
-
-            properties.element.on({
-                selected: function selected() {
-                    mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function resize() {
                     imageSlider.revalidate();
-                }
-            }).droppable({
-                over: function over(event, ui) {
+                },
+                dropover: function over(event, ui) {
                     if (ui.helper.hasClass("mx-helper")) {
                         ui.helper.data("deny-drop", true);
                     }
                 },
-                out: function out(event, ui) {
+                dropout: function out(event, ui) {
                     if (ui.helper.hasClass("mx-helper")) {
                         ui.helper.data("deny-drop", false);
                     }
@@ -127,6 +88,47 @@
                             });
                         }
                     }
+                }
+            });
+
+            //Edit component behavious settings...
+            mxBuilder.Component.apply(this, [{
+                    type: "ImageSliderComponent",
+                    draggable: {},
+                    resizable: {
+                        orientation: "hv"
+                    },
+                    editableZIndex: true,
+                    pinnable: true,
+                    deletable: true,
+                    hasSettings: true,
+                    selectable: true,
+                    element: properties.element
+                }]);
+
+            //Add element events...
+            if (this.extra) {
+                this.list = [];
+                for (var i in this.extra) {
+                    //if the id is present then the list is transfered from another component
+                    //otherwise it's coming stright from the photo list so we generate the missing
+                    //properties
+                    if (this.extra[i].id) {
+                        this.addToList(this.extra[i]);
+                    } else {
+                        this.addToList({
+                            id: this.extra[i]
+                        });
+                    }
+                }
+            }
+
+            properties.element.on({
+                selected: function selected() {
+                    mxBuilder.activeStack.push(properties.element);
+                },
+                resize: function resize() {
+                    imageSlider.revalidate();
                 }
             });
 
@@ -463,7 +465,7 @@
                         break;
                 }
             },
-            setSettings: function setSettings(obj) {
+            setSliderSettings: function(obj) {
                 if (obj && obj.transitionSpeed) {
                     this.setSpeed(obj.transitionSpeed);
                     delete obj.transitionSpeed;
@@ -480,6 +482,22 @@
                     navigation: this.sliderSettings.navigation
                 });
                 return out;
+            },
+            setSettings: function setSettings(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+
+                if (typeof obj.galleryImageList !== "undefined") {
+                    this.setImageList(obj.galleryImageList);
+                    this.rebuild();
+                    this.revalidate();
+                }
+
+                if (typeof obj.imageSlider !== "undefined") {
+                    //apply the values to the selection
+                    this.setSliderSettings(obj.imageSlider);
+                    this.revalidate();
+                }
+
             },
             updateLink: function updateLink(id, link) {
                 for (var i in this.list) {

@@ -35,18 +35,17 @@
                 }]);
 
             //Add element events...
-            properties.element.on({
+            this.element.on({
                 selected: function() {
                     mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function resize() {
                     imageGridComponent.revalidate();
-                }
-            }).droppable({
-                over: function over(event, ui) {
+                },
+                dropover: function over(event, ui) {
                     ui.helper.data("deny-drop", true);
                 },
-                out: function out(event, ui) {
+                dropout: function out(event, ui) {
                     ui.helper.data("deny-drop", false);
                 },
                 drop: function drop(event, ui) {
@@ -363,6 +362,23 @@
             },
             getSettings: function getSettings() {
                 return this.gridSettings;
+            },
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+
+                if (typeof obj.galleryImageList !== "undefined") {
+                    this.setImageList(obj.galleryImageList);
+                    this.rebuild();
+                    this.revalidate();
+                }
+
+                if (typeof obj.imageGrid !== "undefined") {
+                    this.setSpacing(obj.imageGrid.spacing);
+                    this.setColumns(obj.imageGrid.cols);
+                    this.rebuild();
+                    this.revalidate();
+                }
+
             },
             setSpacing: function setSpacing(spacing) {
                 if (typeof spacing !== "undefined") {

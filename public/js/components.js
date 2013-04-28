@@ -15,29 +15,29 @@
 
             //watching out for settings picker drop
             obj.element.droppable({
-                accept: ".settings-picker",
                 drop: function(event, ui) {
-                    var panelObj = ui.helper.data("settings-picker");
+                    if (ui.helper.hasClass(".settings-picker")) {
+                        var panelObj = ui.helper.data("settings-picker");
 
-                    //does this component support this panel !?
-                    var panels = instance.getSettingsPanels();
-                    var found = false;
-                    for (var p in panels) {
-                        if (!panels.hasOwnProperty(p)) {
-                            continue;
+                        //does this component support this panel !?
+                        var panels = instance.getSettingsPanels();
+                        var found = false;
+                        for (var p in panels) {
+                            if (!panels.hasOwnProperty(p)) {
+                                continue;
+                            }
+                            if (panels[p].panel === panelObj) {
+                                found = true;
+                                break;
+                            }
                         }
-                        if (panels[p].panel === panelObj) {
-                            found = true;
-                            break;
+
+                        if (found) {
+                            var settings = panelObj.getValues(true, true);
+                            mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
+                            instance.setSettings(settings);
                         }
                     }
-
-                    if (found) {
-                        var settings = panelObj.getValues(true, true);
-                        mxBuilder.historyManager.setRestorePoint([mxBuilder.components.getComponent(this)]);
-                        instance.setSettings(settings);
-                    }
-
                 }
             });
 
@@ -687,7 +687,7 @@
             }
         },
         setLinkObj: function(obj) {
-            if(typeof this.linkObj === "object"){
+            if (typeof this.linkObj === "object") {
                 $.extend(this.linkObj, obj);
             } else {
                 this.linkObj = obj;

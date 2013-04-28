@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".image-grid-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var imageGrid = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,17 +16,17 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     columns: theInstance.find("#image-grid-columns"),
                     spacing: theInstance.find("#image-grid-spacing")
                 };
 
 
                 //Configure the controls here
-                this.applyToSelectionOn(controls, "columns", "input");
-                this.applyToSelectionOn(controls, "spacing", "input");
+                this.applyToSelectionOn("columns", "input");
+                this.applyToSelectionOn("spacing", "input");
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -45,15 +47,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        imageGrid.applyToSelection(controls);
+                        imageGrid.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        imageGrid.applyToSelection(controls);
+                        imageGrid.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -69,49 +71,52 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.cols !== false) {
-                    controls.columns.val(values.cols);
+                    this._controls.columns.val(values.cols);
                 } else {
-                    controls.columns.val('');
+                    this._controls.columns.val('');
                 }
 
                 if (values.spacing !== false) {
-                    controls.spacing.val(values.spacing);
+                    this._controls.spacing.val(values.spacing);
                 } else {
-                    controls.spacing.val('');
+                    this._controls.spacing.val('');
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all, isPicker, sourceEvent, ui) {
+                var values = {};
+
+                if (all || this._settingsTab.hasChanged(this._controls.columns)) {
+                    //fill up the values array
+                    values.cols = this._controls.columns.val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.spacing)) {
+                    values.spacing = this._controls.spacing.val();
+                }
+
+                return {imageGrid: values};
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
                     //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.columns)) {
-                        //fill up the values array
-                        values.cols = controls.columns.val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.spacing)) {
-                        values.spacing = controls.spacing.val();
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
                     //apply the values to the selection
-                    this.setSpacing(values.spacing);
-                    this.setColumns(values.cols);
-                    this.rebuild();
-                    this.revalidate();
+                    this.setSettings(values);
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var imageGrid = this;
-                controls[controlKey].on(event, function() {
-                    imageGrid._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    imageGrid._settingsTab.setChanged(imageGrid._controls[controlKey]);
                     if (imageGrid._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        imageGrid.applyToSelection(controls);
+                        imageGrid.applyToSelection();
                     }
                 });
             }

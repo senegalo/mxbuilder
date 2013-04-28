@@ -4,6 +4,8 @@
             //update the template variable
             _template: mxBuilder.layout.templates.find(".image-gallery-settings").remove(),
             _settingsTab: mxBuilder.menuManager.menus.componentSettings,
+            _controls: null,
+            hasPicker: true,
             getPanel: function(expand) {
                 var imageSlider = this;
                 var thePanel = mxBuilder.layout.utils.getCollapsablePanel(expand);
@@ -14,7 +16,7 @@
                 var theInstance = this._template.clone();
 
                 //fill in all the controls 
-                var controls = {
+                this._controls = {
                     autoPlay: theInstance.find(".gallery-autoplay input"),
                     transitionSpeed: theInstance.find(".gallery-transition input"),
                     indicator: theInstance.find(".gallery-timer-indicator input"),
@@ -24,11 +26,11 @@
 
 
                 //Configure the controls here
-                for (var c in controls) {
-                    this.applyToSelectionOn(controls, c, "change");
+                for (var c in this._controls) {
+                    this.applyToSelectionOn(c, "change");
                 }
 
-                this._settingsTab.monitorChangeOnControls(controls);
+                this._settingsTab.monitorChangeOnControls(this._controls);
                 var originalSettings = {};
 
                 //define component properties to add to the original settings object
@@ -49,15 +51,15 @@
                     firstPass = false;
                 });
 
-                this.setValues(controls, originalSettings);
+                this.setValues(originalSettings);
 
                 thePanel.on({
                     previewEnabled: function() {
-                        imageSlider.applyToSelection(controls);
+                        imageSlider.applyToSelection();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
                     save: function() {
-                        imageSlider.applyToSelection(controls);
+                        imageSlider.applyToSelection();
                         mxBuilder.menuManager.closeTab();
                         mxBuilder.selection.revalidateSelectionContainer();
                     },
@@ -73,73 +75,76 @@
                 thePanel.find(".flexly-collapsable-content").append(theInstance);
                 return thePanel;
             },
-            setValues: function(controls, values) {
+            setValues: function(values) {
                 //implement the setValue function
                 if (values.autoPlay !== null) {
-                    controls.autoPlay.filter('[value="' + (values.autoPlay ? "on" : "off") + '"]').attr("checked", "checked");
+                    this._controls.autoPlay.filter('[value="' + (values.autoPlay ? "on" : "off") + '"]').attr("checked", "checked");
                 } else {
-                    controls.autoPlay.removeAttr("checked");
+                    this._controls.autoPlay.removeAttr("checked");
                 }
 
                 if (values.transitionSpeed !== null) {
-                    controls.transitionSpeed.filter('[value="' + values.transitionSpeed + '"]').attr("checked", "checked");
+                    this._controls.transitionSpeed.filter('[value="' + values.transitionSpeed + '"]').attr("checked", "checked");
                 } else {
-                    controls.transitionSpeed.removeAttr("checked");
+                    this._controls.transitionSpeed.removeAttr("checked");
                 }
 
                 if (values.indicator !== null) {
-                    controls.indicator.filter('[value="' + (values.indicator ? "on" : "off") + '"]').attr("checked", "checked");
+                    this._controls.indicator.filter('[value="' + (values.indicator ? "on" : "off") + '"]').attr("checked", "checked");
                 } else {
-                    controls.indicator.removeAttr("checked");
+                    this._controls.indicator.removeAttr("checked");
                 }
 
                 if (values.action !== null) {
-                    controls.action.filter('[value="' + (values.action ? "on" : "off") + '"]').attr("checked", "checked");
+                    this._controls.action.filter('[value="' + (values.action ? "on" : "off") + '"]').attr("checked", "checked");
                 } else {
-                    controls.action.removeAttr("checked");
+                    this._controls.action.removeAttr("checked");
                 }
 
                 if (values.navigation !== null) {
-                    controls.navigation.filter('[value="' + values.navigation + '"]').attr("checked", "checked");
+                    this._controls.navigation.filter('[value="' + values.navigation + '"]').attr("checked", "checked");
                 } else {
-                    controls.navigation.removeAttr("checked");
+                    this._controls.navigation.removeAttr("checked");
                 }
             },
-            applyToSelection: function(controls, values) {
+            getValues: function(all, isPicker, sourceEvent, ui) {
+                var values = {};
+
+                if (all || this._settingsTab.hasChanged(this._controls.autoPlay)) {
+                    values.autoPlay = this._controls.autoPlay.filter(":checked").val() === "on" ? true : false;
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.transitionSpeed)) {
+                    values.transitionSpeed = this._controls.transitionSpeed.filter(":checked").val();
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.indicator)) {
+                    values.indicator = this._controls.indicator.filter(":checked").val() === "on" ? true : false;
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.action)) {
+                    values.action = this._controls.action.filter(":checked").val() === "on" ? true : false;
+                }
+                if (all || this._settingsTab.hasChanged(this._controls.navigation)) {
+                    values.navigation = this._controls.navigation.filter(":checked").val();
+                }
+                return {imageSlider: values};
+            },
+            applyToSelection: function(values) {
                 if (typeof values === "undefined") {
                     //if no values passed how to do we get the values ?
-                    values = {};
-                    if (this._settingsTab.hasChanged(controls.autoPlay)) {
-                        values.autoPlay = controls.autoPlay.filter(":checked").val() === "on" ? true : false;
-                    }
-                    if (this._settingsTab.hasChanged(controls.transitionSpeed)) {
-                        values.transitionSpeed = controls.transitionSpeed.filter(":checked").val();
-                    }
-                    if (this._settingsTab.hasChanged(controls.indicator)) {
-                        values.indicator = controls.indicator.filter(":checked").val() === "on" ? true : false;
-                    }
-                    if (this._settingsTab.hasChanged(controls.action)) {
-                        values.action = controls.action.filter(":checked").val() === "on" ? true : false;
-                    }
-                    if (this._settingsTab.hasChanged(controls.navigation)) {
-                        values.navigation = controls.navigation.filter(":checked").val();
-                    }
+                    values = this.getValues();
                 }
                 mxBuilder.selection.each(function() {
-                    //apply the values to the selection
                     this.setSettings(values);
-                    this.revalidate();
                 });
             },
-            applyToSelectionOn: function(controls, controlKey, event, extra) {
+            applyToSelectionOn: function(controlKey, event, extra) {
                 var imageSlider = this;
-                controls[controlKey].on(event, function() {
-                    imageSlider._settingsTab.setChanged(controls[controlKey]);
+                this._controls[controlKey].on(event, function() {
+                    imageSlider._settingsTab.setChanged(imageSlider._controls[controlKey]);
                     if (imageSlider._settingsTab.isPreview()) {
                         if (typeof extra !== "undefined") {
                             extra.apply(this, arguments);
                         }
-                        imageSlider.applyToSelection(controls);
+                        imageSlider.applyToSelection();
                     }
                 });
             }
