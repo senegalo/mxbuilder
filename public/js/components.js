@@ -16,7 +16,7 @@
             //watching out for settings picker drop
             obj.element.droppable({
                 drop: function(event, ui) {
-                    if (ui.helper.hasClass(".settings-picker")) {
+                    if (ui.helper.hasClass("settings-picker")) {
                         var panelObj = ui.helper.data("settings-picker");
 
                         //does this component support this panel !?
