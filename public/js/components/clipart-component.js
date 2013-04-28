@@ -122,15 +122,7 @@
 
                 delete out.border;
                 delete out.shadow;
-                //delete out.background;
-
-//                out.color = {
-//                    panel: mxBuilder.layout.settingsPanels.color,
-//                    params: {
-//                        expand: true
-//                    }
-//                };
-//                
+                
                 out.linkto = {
                     panel: mxBuilder.layout.settingsPanels.links,
                     params: false

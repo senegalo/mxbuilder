@@ -126,8 +126,11 @@
                 });
                 return out;
             },
-            setColor: function(color){
-                this.element.find("a").css("color",color);
+            setSettings: function(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+                if (typeof obj.button !== "undefined") {
+                    this.setLabel(obj.button.label);
+                }
             }
         });
 

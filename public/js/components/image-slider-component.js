@@ -17,58 +17,22 @@
                             }
                         });
                     }
-                }
-            });
-
-            //Edit component behavious settings...
-            mxBuilder.Component.apply(this, [{
-                    type: "ImageSliderComponent",
-                    draggable: {},
-                    resizable: {
-                        orientation: "hv"
-                    },
-                    editableZIndex: true,
-                    pinnable: true,
-                    deletable: true,
-                    hasSettings: true,
-                    selectable: true,
-                    element: properties.element
-                }]);
-
-            //Add element events...
-            if (this.extra) {
-                this.list = [];
-                for (var i in this.extra) {
-                    //if the id is present then the list is transfered from another component
-                    //otherwise it's coming stright from the photo list so we generate the missing
-                    //properties
-                    if (this.extra[i].id) {
-                        this.addToList(this.extra[i]);
-                    } else {
-                        this.addToList({
-                            id: this.extra[i]
-                        });
-                    }
-                }
-            }
-
-            properties.element.on({
-                selected: function selected() {
-                    mxBuilder.activeStack.push(properties.element);
                 },
                 resize: function resize() {
                     imageSlider.revalidate();
-                }
-            }).droppable({
-                greedy: true,
-                over: function over(event, ui) {
-                    ui.helper.data("deny-drop", true);
                 },
-                out: function out(event, ui) {
-                    ui.helper.data("deny-drop", false);
+                dropover: function over(event, ui) {
+                    if (ui.helper.hasClass("mx-helper")) {
+                        ui.helper.data("deny-drop", true);
+                    }
+                },
+                dropout: function out(event, ui) {
+                    if (ui.helper.hasClass("mx-helper")) {
+                        ui.helper.data("deny-drop", false);
+                    }
                 },
                 drop: function drop(event, ui) {
-                    if (ui.helper.hasClass("mx-helper")) {
+                    if (ui.helper.hasClass("mx-helper") && ui.helper.data("over-main-menu") !== true) {
                         var component = ui.helper.data("component");
                         if (component === "ImageComponent") {
                             imageSlider.list.push({
@@ -127,6 +91,47 @@
                 }
             });
 
+            //Edit component behavious settings...
+            mxBuilder.Component.apply(this, [{
+                    type: "ImageSliderComponent",
+                    draggable: {},
+                    resizable: {
+                        orientation: "hv"
+                    },
+                    editableZIndex: true,
+                    pinnable: true,
+                    deletable: true,
+                    hasSettings: true,
+                    selectable: true,
+                    element: properties.element
+                }]);
+
+            //Add element events...
+            if (this.extra) {
+                this.list = [];
+                for (var i in this.extra) {
+                    //if the id is present then the list is transfered from another component
+                    //otherwise it's coming stright from the photo list so we generate the missing
+                    //properties
+                    if (this.extra[i].id) {
+                        this.addToList(this.extra[i]);
+                    } else {
+                        this.addToList({
+                            id: this.extra[i]
+                        });
+                    }
+                }
+            }
+
+            properties.element.on({
+                selected: function selected() {
+                    mxBuilder.activeStack.push(properties.element);
+                },
+                resize: function resize() {
+                    imageSlider.revalidate();
+                }
+            });
+
             //restricting the resize 
             if (this.element.width() < this.minWidth || this.element.height() < this.minHeight) {
                 this.element.css({
@@ -145,7 +150,8 @@
         $.extend(mxBuilder.ImageSliderComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".image-slider-component-instance"),
             sliderTemplate: mxBuilder.layout.templates.find(".image-gallery-slider"),
-            sliderSettings: {
+            sliderSettings: null,
+            sliderDefaults: {
                 autoPlay: false,
                 transitionSpeed: 5000,
                 indicator: true,
@@ -287,8 +293,8 @@
                     }
                 }
 
-                var totalCols = this.gridSettings && this.gridSettings.cols ? this.gridSettings.cols : mxBuilder.ImageGridComponent.prototype.gridSettings.cols;
-                var spacing = this.gridSettings && this.gridSettings.spacing ? this.gridSettings.spacing : mxBuilder.ImageGridComponent.prototype.gridSettings.spacing;
+                var totalCols = this.gridSettings && this.gridSettings.cols ? this.gridSettings.cols : mxBuilder.ImageGridComponent.prototype.gridDefaults.cols;
+                var spacing = this.gridSettings && this.gridSettings.spacing ? this.gridSettings.spacing : mxBuilder.ImageGridComponent.prototype.gridDefaults.spacing;
                 var row = Math.floor(imageIndex / totalCols);
                 var col = imageIndex % totalCols;
                 var singleRowHeight = (this.element.height() / Math.ceil(this.list.length / totalCols)) - 2 * spacing;
@@ -368,6 +374,9 @@
                 return out;
             },
             init: function init(properties) {
+                //Setting default slider settings
+                this.sliderSettings = {};
+                $.extend(this.sliderSettings, this.sliderDefaults);
                 mxBuilder.Component.prototype.init.call(this, properties);
             },
             getBorder: function getBorder(element) {
@@ -456,7 +465,7 @@
                         break;
                 }
             },
-            setSettings: function setSettings(obj) {
+            setSliderSettings: function(obj) {
                 if (obj && obj.transitionSpeed) {
                     this.setSpeed(obj.transitionSpeed);
                     delete obj.transitionSpeed;
@@ -473,6 +482,22 @@
                     navigation: this.sliderSettings.navigation
                 });
                 return out;
+            },
+            setSettings: function setSettings(obj) {
+                mxBuilder.Component.prototype.setSettings.call(this, obj);
+
+                if (typeof obj.galleryImageList !== "undefined") {
+                    this.setImageList(obj.galleryImageList);
+                    this.rebuild();
+                    this.revalidate();
+                }
+
+                if (typeof obj.imageSlider !== "undefined") {
+                    //apply the values to the selection
+                    this.setSliderSettings(obj.imageSlider);
+                    this.revalidate();
+                }
+
             },
             updateLink: function updateLink(id, link) {
                 for (var i in this.list) {
@@ -534,11 +559,11 @@
                 return out;
             },
             setWidth: function(val) {
-                mxBuilder.Component.prototype.setWidth.call(this, val<this.minWidth?this.minWidth:val);
+                mxBuilder.Component.prototype.setWidth.call(this, val < this.minWidth ? this.minWidth : val);
                 this.revalidate();
             },
             setHeight: function(val) {
-                mxBuilder.Component.prototype.setHeight.call(this, val<this.minHeight?this.minHeight:val);
+                mxBuilder.Component.prototype.setHeight.call(this, val < this.minHeight ? this.minHeight : val);
                 this.revalidate();
             },
             getWidthBounds: function() {
@@ -546,7 +571,7 @@
                 out.min = this.minWidth;
                 return out;
             },
-            getHeightBounds: function(){
+            getHeightBounds: function() {
                 var out = mxBuilder.Component.prototype.getHeightBounds.call(this);
                 out.min = this.minHeight;
                 return out;
