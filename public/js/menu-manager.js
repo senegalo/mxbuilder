@@ -25,6 +25,8 @@
                     mxBuilder.publishManager.publish();
                 } else if (element.hasClass("flexly-icon-settings")) {
                     mxBuilder.menuManager.showTab("settings");
+                } else if (element.hasClass("flexly-icon-clipart")){
+                    mxBuilder.menuManager.showTab("photosClipart");
                 }
             }
         }).end().droppable({
