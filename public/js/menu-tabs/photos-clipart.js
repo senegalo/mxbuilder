@@ -8,18 +8,7 @@
             _display: [],
             init: function(extra) {
                 mxBuilder.menuManager.tabTitle.text("Clipart");
-
-                mxBuilder.menuManager.addButtonTo("flexly-icon-photos-light photos-tab-icon", "aux").on({
-                    click: function click() {
-                        mxBuilder.menuManager.showTab("photos");
-                    }
-                });
-                mxBuilder.menuManager.addButtonTo("flexly-icon-clipart-light photos-tab-icon  photos-current", "aux");
-                mxBuilder.menuManager.addButtonTo("flexly-icon-flicker-light photos-tab-icon", "aux").on({
-                    click: function click() {
-                        mxBuilder.menuManager.showTab("photosFlicker");
-                    }
-                });
+                mxBuilder.menuManager.tabButtons.hide();
 
                 var theContent = this._template.clone();
                 var listContainer = theContent.find("ul");

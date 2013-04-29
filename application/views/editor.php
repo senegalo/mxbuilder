@@ -232,10 +232,7 @@
                     <div class="flexly-icon flexly-icon-photos flexly-button flexly-active-icon">
                     </div>
 
-                    <!--                    <div class="flexly-icon flexly-icon-clipart flexly-button flexly-active-icon">
-                                              </div>   -->
-
-                    <div class="flexly-icon flexly-icon-docs flexly-button flexly-active-icon">
+                    <div class="flexly-icon flexly-icon-clipart flexly-button flexly-active-icon">
                     </div>       
 
                     <div class="flexly-icon flexly-icon-widgets flexly-button flexly-active-icon">
