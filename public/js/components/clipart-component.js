@@ -36,6 +36,7 @@
             template: mxBuilder.layout.templates.find(".clipart-component-instance").remove(),
             clipartContainer: null,
             linkObj: null,
+            fontSize: 10,
             save: function save() {
                 var out = mxBuilder.Component.prototype.save.call(this);
 
@@ -97,11 +98,26 @@
                 }
             },
             revalidate: function revalidate() {
-                var height = this.element.height();
-                this.clipartContainer.css({
-                    lineHeight: height + "px",
-                    fontSize: height
-                });
+                var suggestedWidth = Math.round(0.8*this.element.width());
+                
+                this.fontSize = suggestedWidth;
+                this.clipartContainer.css("fontSize",suggestedWidth);
+                
+                if (this.clipartContainer.width() < this.element.width()) {
+                    while (this.clipartContainer.width() < this.element.width()) {
+                        this.clipartContainer.css("fontSize", ++this.fontSize);
+                    }
+                    while (this.clipartContainer.width() > this.element.width()) {
+                        this.clipartContainer.css("fontSize", --this.fontSize);
+                    }
+                } else {
+                    while (this.clipartContainer.width() > this.element.width()) {
+                        this.clipartContainer.css("fontSize", --this.fontSize);
+                    }
+                }
+                //fix height
+                var height = this.clipartContainer.height();
+                this.element.height(height);
             },
             getBorder: function getBorder(element) {
                 return mxBuilder.Component.prototype.getBorder.call(this, element);
@@ -122,7 +138,7 @@
 
                 delete out.border;
                 delete out.shadow;
-                
+
                 out.linkto = {
                     panel: mxBuilder.layout.settingsPanels.links,
                     params: false
@@ -143,6 +159,14 @@
             },
             setColor: function setColor(color) {
                 this.element.css("color", color);
+            },
+            setHeight: function(height) {
+                mxBuilder.Component.prototype.setHeight.call(this, height);
+                this.revalidate();
+            },
+            setWidth: function(width) {
+                mxBuilder.Component.prototype.setWidth.call(this, width);
+                this.revalidate();
             }
         });
     });
