@@ -1187,7 +1187,7 @@
             </div>
 
             <div class="clipart-component-instance">
-                <div class="clipart" style="cursor: move;"></div>
+                <div class="clipart" style="cursor: move;display:inline-block;"></div>
             </div>
 
             <div class="color-settings">
