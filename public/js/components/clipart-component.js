@@ -35,6 +35,7 @@
         $.extend(mxBuilder.ClipartComponent.prototype, new mxBuilder.Component(), {
             template: mxBuilder.layout.templates.find(".clipart-component-instance").remove(),
             clipartContainer: null,
+            slope: 0,
             linkObj: null,
             fontSize: 10,
             save: function save() {
@@ -43,6 +44,7 @@
                 out.css.color = this.element.css("color");
                 out.data.clipartID = this.clipartID;
                 out.data.linkObj = this.linkObj;
+                out.data.fontSize = this.fontSize;
 
                 return out;
             },
@@ -92,40 +94,50 @@
                     this.clipartID = properties.data.extra;
                 }
                 this.clipartContainer = this.element.find(".clipart").append("&#" + this.clipartID + ";");
+                
+                this.slope = 100/this.clipartContainer.css("fontSize",100).width();
+                
+                this.clipartContainer.css("fontSize", this.fontSize);
+                
                 this.revalidate();
                 if (this.linkObj === null) {
                     this.linkObj = {};
                 }
             },
             revalidate: function revalidate() {
-//                var height = this.element.height();
-//                this.clipartContainer.css({
-//                    lineHeight: height + "px",
-//                    fontSize: height
-//                });
-//                this.element.width(this.clipartContainer.width());
 
-                //var this.clipartContainer = this.element.find(".cke-font-size");
-                var suggestedWidth = Math.round(0.8*this.element.width());
-                
-                this.fontSize = suggestedWidth;
-                this.clipartContainer.css("fontSize",suggestedWidth);
-                
+                this.fontSize = Math.round(this.slope * this.element.width());
+                this.clipartContainer.css("fontSize", this.fontSize);
                 if (this.clipartContainer.width() < this.element.width()) {
                     while (this.clipartContainer.width() < this.element.width()) {
-                        this.clipartContainer.css("fontSize", ++this.fontSize);
+                        this.fontSize += Math.round(this.slope * (this.element.width()-this.clipartContainer.width()));
+                        this.clipartContainer.css("fontSize", this.fontSize);
                     }
                     while (this.clipartContainer.width() > this.element.width()) {
                         this.clipartContainer.css("fontSize", --this.fontSize);
                     }
                 } else {
                     while (this.clipartContainer.width() > this.element.width()) {
-                        this.clipartContainer.css("fontSize", --this.fontSize);
+                        this.fontSize -= Math.round(this.slope * (this.clipartContainer.width()-this.element.width()));
+                        this.clipartContainer.css("fontSize", this.fontSize);
+                    }
+                    while (this.clipartContainer.width() > this.element.width()) {
+                        this.clipartContainer.css("fontSize", ++this.fontSize);
                     }
                 }
                 //fix height
                 var height = this.clipartContainer.height();
                 this.element.height(height);
+            },
+
+            drawPoints: function(points,step) {
+                var font = 0;
+                var out = "";
+                for (var i = 0; i < points; i++, font+=step) {
+                    this.clipartContainer.css("fontSize", font);
+                    out += font+","+this.clipartContainer.height()+"\n";
+                }
+                console.log(out);
             },
             getBorder: function getBorder(element) {
                 return mxBuilder.Component.prototype.getBorder.call(this, element);
