@@ -120,7 +120,7 @@
                 };
                 $.extend(data, this.defaults);
                 $.ajax({
-                    url: "http://api.flickr.com/services/rest/",
+                    url: "https://api.flickr.com/services/rest/",
                     data: data,
                     success: function(data) {
                         if (data.stat === "ok") {

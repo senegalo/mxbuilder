@@ -315,5 +315,3 @@ class Assets_Model extends CI_Model {
     }
 
 }
-
-?>

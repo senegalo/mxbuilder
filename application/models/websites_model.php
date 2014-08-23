@@ -38,10 +38,13 @@ class Websites_Model extends CI_Model {
         $this->db->query($sql, array($user['id'], $content));
         
         //saving to the temp
+        /*
         $sql = 'INSERT INTO websites_temp (user_id, content, created_on, last_saved_on)
         VALUES (?, ?, NOW(), NOW())';
 
         $this->db->query($sql, array($user['id'], $content));
+         * 
+         */
     }
 
     public function get_publish_folder($username) {
