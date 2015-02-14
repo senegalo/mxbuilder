@@ -249,10 +249,10 @@
                 }
             },
             contextmenu: function contextmenu(event) {
-                //if(ctxMenu.is(":visible")){
-                //                    event.preventDefault();
-                //                    return false;
-                //}
+                if (!ctxMenu.is(":visible")) {
+                    event.preventDefault();
+                    return false;
+                }
             }
         });
 
