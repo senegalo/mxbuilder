@@ -24,6 +24,8 @@ class Websites_Model extends CI_Model {
                         ->where("user_id", $user['id'])->get();
         if ($query->num_rows() > 0) {
             return end($query->result_array());
+        } else {
+            return array("content" => file_get_contents("application/models/default_website.json"));
         }
         return Websites_Model::WEBSITE_NOT_FOUND;
     }
