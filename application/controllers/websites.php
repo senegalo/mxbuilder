@@ -81,5 +81,3 @@ class websites extends MX_Controller {
     }
 
 }
-
-?>

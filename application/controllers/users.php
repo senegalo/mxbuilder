@@ -24,5 +24,3 @@ class Users extends MX_Controller {
     }
 
 }
-
-?>

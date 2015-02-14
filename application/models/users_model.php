@@ -15,7 +15,7 @@ class Users_Model extends CI_Model {
      * @return array|USER_NOT_FOUND
      */
     public function authenticate($token) {
-        $query = $this->db->select("id, username, type, token, email")
+        $query = $this->db->select("id, username, type, token")
                         ->from("users")
                         ->where("token", $token)->get();
         if ($query->num_rows() > 0) {

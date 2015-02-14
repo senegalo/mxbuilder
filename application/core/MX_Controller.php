@@ -26,25 +26,15 @@ class MX_Controller extends CI_Controller {
         }
         if ($token === false) {
             $out = $this->users_model->create_guest_session();
-            $this->input->set_cookie(array(
-                "name" => "token",
-                "value" => $out['token'],
-                "expire" => 31536000
-            ));
+            setcookie("token",$out['token'], time()+2629740);
         } else {
             $out = $this->users_model->authenticate($token);
             if ($out == Users_Model::USER_NOT_FOUND) {
                 $out = $this->users_model->create_guest_session();
-                $this->input->set_cookie(array(
-                    "name" => "token",
-                    "value" => $out['token'],
-                    "expire" => 31536000
-                ));
+                setcookie("token",$out['token'], time()+2629740);
             }
         }
         $this->user = $out;
     }
 
 }
-
-?>

@@ -4,12 +4,14 @@ if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 
-class Editor extends CI_Controller {
+class Editor extends MX_Controller {
 
     public function index() {
         $this->load->helper('url');
         
         $data = array();
+        
+        $this->authenticate();
         
         $max_upload = (int) (ini_get('upload_max_filesize'));
         $max_post = (int) (ini_get('post_max_size'));
