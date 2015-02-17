@@ -174,7 +174,7 @@ class Assets_Model extends CI_Model {
         foreach ($paths as $path) {
             $current_lookup .= "/" . $path;
             if (!is_dir($current_lookup)) {
-                if (!@mkdir($current_lookup, 0777)) {
+                if (!@mkdir($current_lookup, 0775)) {
                     return false;
                 }
             }
