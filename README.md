@@ -1,7 +1,8 @@
 MXbuilder
 =========
 
-MXbuilder is a website builder that lets you build your pages with draggable compoenents on the client WYSIWYG style.
+MXbuilder is an HTML5 website builder that lets you build your pages with draggable components on the client WYSIWYG style.
+It enable users to easily edit the layout of their website and add dynamic features such as photo galleries, cliparts, facebook twitter and google plus social features, youtube videos.
 
 Demo:
 http://senegalo.com/mxbuilder
